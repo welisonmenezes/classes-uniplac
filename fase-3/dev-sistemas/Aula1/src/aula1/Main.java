@@ -6,6 +6,7 @@
 package aula1;
 
 import java.awt.Color;
+import javax.swing.JColorChooser;
 
 /**
  *
@@ -73,13 +74,11 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        JanelaCor auxColor = new JanelaCor(this);
-        auxColor.setVisible(true);
+        Color aux = JColorChooser.showDialog(this, "Escolha uma Cor", Color.white);
+        this.selectedColor = aux;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
         TestColor auxTest = new TestColor(this);
         auxTest.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
