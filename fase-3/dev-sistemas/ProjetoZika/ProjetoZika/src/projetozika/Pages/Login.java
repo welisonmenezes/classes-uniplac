@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projetozika;
+package projetozika.Pages;
 
+import Utils.UtilsElements;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,9 +22,7 @@ public class Login extends javax.swing.JPanel {
      */
     public Login() {
         initComponents();
-        
-        //setLayout(new FlowLayout(FlowLayout.LEFT));
-        //add(fLogin);
+        System.out.println("projetozika.Pages.Login.<init>()");
     }
 
     /**
@@ -42,6 +42,7 @@ public class Login extends javax.swing.JPanel {
         fEmail2 = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(37, 38, 39));
+        setName("login"); // NOI18N
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -61,6 +62,11 @@ public class Login extends javax.swing.JPanel {
         jButton1.setContentAreaFilled(false);
         jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
         jButton1.setPreferredSize(new java.awt.Dimension(80, 35));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -82,6 +88,11 @@ public class Login extends javax.swing.JPanel {
         fEmail2.setPreferredSize(new java.awt.Dimension(200, 35));
         add(fEmail2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 240, -1));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        UtilsElements.updateLayout("dashboard");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
