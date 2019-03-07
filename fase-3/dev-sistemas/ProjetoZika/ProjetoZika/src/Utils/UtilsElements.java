@@ -5,19 +5,15 @@
  */
 package Utils;
 
-import Models.PageModel;
-import Models.PagesModel;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.Fornecedores;
-import projetozika.Pages.Login;
+import projetozika.Pages.NotFound;
 
 /**
  *
@@ -26,6 +22,7 @@ import projetozika.Pages.Login;
 public class UtilsElements {
     
     private static JPanel jBody;
+    private static String currentPage = "";
     
     public static void makeFrameFullSize(JFrame aFrame)
     {
@@ -42,6 +39,10 @@ public class UtilsElements {
        return  jBody;
     }
     
+    public static String getCurrentPage() {
+        return currentPage;
+    }
+    
     public static void setAllInvisible() {
         JPanel jb = getJBody();
         Component[] comps = jb.getComponents();
@@ -51,17 +52,19 @@ public class UtilsElements {
         }
     }
     
-    /*
+    public static void clearStage() {
+        JPanel jb = getJBody();
+        jb.removeAll();
+        jb.revalidate();
+    }
+    
+    ///*
     public static void updateLayout(String pageName) {
-        
+        if (currentPage.equals(pageName)) return;
         JPanel tmpPanel = null;
-        
-        setAllInvisible();
-        
+        currentPage = pageName;
+        clearStage();
         switch (pageName) {
-            case "login":
-                tmpPanel = new Login();
-                break;
             case "dashboard":
                 tmpPanel = new Dashboard();
                 break;
@@ -69,16 +72,14 @@ public class UtilsElements {
                 tmpPanel = new Fornecedores();
                 break;
             default:
-                System.out.println("Page Not Found.");
+                currentPage = "";
+                tmpPanel = new NotFound();
         }
-        
-        if (tmpPanel != null) {
-            getJBody().add(tmpPanel, BorderLayout.CENTER);
-            tmpPanel.setVisible(true); 
-        }
+        getJBody().add(tmpPanel, BorderLayout.CENTER);
+        tmpPanel.setVisible(true);
     }
-    */
-    //*
+    //*/
+    /*
     public static void updateLayout(String pageName){
         setAllInvisible();
         if (PagesModel.getPage(pageName) != null) {

@@ -6,19 +6,23 @@
 package projetozika.Pages;
 
 import Utils.UtilsElements;
+import javax.swing.JFrame;
+import projetozika.Login;
+import projetozika.Main;
 
 /**
  *
  * @author Welison
  */
 public class Menu extends javax.swing.JPanel {
-
+    
+    Main main;
     /**
      * Creates new form Menu
      */
-    public Menu() {
+    public Menu(Main main) {
         initComponents();
-        System.out.println("projetozika.Pages.Menu.<init>()");
+        this.main = main;
     }
 
     /**
@@ -106,7 +110,7 @@ public class Menu extends javax.swing.JPanel {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("logout");
+        jButton1.setText("sair");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
         jButton1.setContentAreaFilled(false);
         jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -116,7 +120,7 @@ public class Menu extends javax.swing.JPanel {
                 jButton1ActionPerformed(evt);
             }
         });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 50, 20));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, 20));
 
         lPedidos.setBackground(new java.awt.Color(7, 7, 7));
         lPedidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -148,7 +152,10 @@ public class Menu extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        UtilsElements.updateLayout("login");
+        //UtilsElements.updateLayout("login");
+        this.main.dispose();
+        JFrame login = new Login();
+        login.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void lDashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lDashboardMouseClicked

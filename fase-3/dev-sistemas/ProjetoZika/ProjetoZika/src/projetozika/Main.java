@@ -6,14 +6,9 @@
 package projetozika;
 
 import projetozika.Pages.Menu;
-import projetozika.Pages.Dashboard;
-import projetozika.Pages.Login;
-import Models.PageModel;
-import Models.PagesModel;
 import Utils.UtilsElements;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import projetozika.Pages.Fornecedores.Fornecedores;
 
 /**
  *
@@ -26,6 +21,10 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+        initLayout();
+    }
+    
+    private void initLayout() {
         UtilsElements.makeFrameFullSize(this);
         
         JPanel jBG = new JPanel();
@@ -41,15 +40,14 @@ public class Main extends javax.swing.JFrame {
         jBODY.setLayout(new BorderLayout());
         jSIDE.setLayout(new BorderLayout());
         
-        JPanel jMenu = new Menu();
+        JPanel jMenu = new Menu(this);
         jSIDE.add(jMenu, BorderLayout.CENTER);
         
         jBG.add(jSIDE, BorderLayout.WEST);
         jBG.add(jBODY, BorderLayout.CENTER);
 
         UtilsElements.setJBody(jBODY);
-        UtilsElements.updateLayout("login");
-
+        UtilsElements.updateLayout("dashboard");
     }
 
     /**
