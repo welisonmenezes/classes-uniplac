@@ -35,42 +35,61 @@ public class Login extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        fEmail = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        fEmail1 = new javax.swing.JTextField();
+        fEmail2 = new javax.swing.JTextField();
 
-        setBackground(new java.awt.Color(244, 244, 244));
+        setBackground(new java.awt.Color(37, 38, 39));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Senha");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, 20));
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 170, -1, 20));
 
-        fEmail.setPreferredSize(new java.awt.Dimension(200, 30));
-        add(fEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 240, -1));
-
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Login");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 20));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, -1, 20));
 
-        jPasswordField1.setPreferredSize(new java.awt.Dimension(200, 30));
-        add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 240, -1));
-
+        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(8, 253, 216));
         jButton1.setText("Entrar");
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(8, 253, 216)));
+        jButton1.setContentAreaFilled(false);
+        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton1.setPreferredSize(new java.awt.Dimension(80, 35));
+        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, -1, -1));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Faça seu login");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, -1, -1));
+
+        fEmail1.setBackground(new java.awt.Color(55, 57, 59));
+        fEmail1.setForeground(new java.awt.Color(255, 255, 255));
+        fEmail1.setCaretColor(new java.awt.Color(255, 255, 255));
+        fEmail1.setOpaque(false);
+        fEmail1.setPreferredSize(new java.awt.Dimension(200, 35));
+        add(fEmail1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 240, -1));
+
+        fEmail2.setBackground(new java.awt.Color(55, 57, 59));
+        fEmail2.setForeground(new java.awt.Color(255, 255, 255));
+        fEmail2.setCaretColor(new java.awt.Color(255, 255, 255));
+        fEmail2.setOpaque(false);
+        fEmail2.setPreferredSize(new java.awt.Dimension(200, 35));
+        add(fEmail2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 240, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField fEmail;
+    private javax.swing.JTextField fEmail1;
+    private javax.swing.JTextField fEmail2;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPasswordField1;
     // End of variables declaration//GEN-END:variables
 }

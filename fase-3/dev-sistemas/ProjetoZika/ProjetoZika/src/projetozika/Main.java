@@ -21,14 +21,27 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         UtilsElements.makeFrameFullSize(this);
+        
+        JPanel jBG = new JPanel();
+        JPanel jBODY = new JPanel();
+        JPanel jSIDE = new JPanel();
+        
         setLayout(new BorderLayout());
+        this.add(jBG);
+    
+        jBG.setLayout(new BorderLayout());
+        jBODY.setLayout(new BorderLayout());
+        jSIDE.setLayout(new BorderLayout());
         
-        JPanel login = new Login();
-        //login.setVisible(false);
-        add(login, BorderLayout.CENTER);
+        JPanel jLogin = new Login();
+        JPanel jMenu = new Menu();
         
-        //JPanel menu = new Menu();
-        //add(menu, BorderLayout.NORTH);
+        jBODY.add(jLogin, BorderLayout.CENTER);
+        jSIDE.add(jMenu, BorderLayout.CENTER);
+        
+        jBG.add(jSIDE, BorderLayout.WEST);
+        jBG.add(jBODY, BorderLayout.CENTER);
+
     }
 
     /**
@@ -47,11 +60,11 @@ public class Main extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 714, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
 
         pack();
