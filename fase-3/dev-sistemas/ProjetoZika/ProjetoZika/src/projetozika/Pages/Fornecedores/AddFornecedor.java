@@ -3,37 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projetozika.Pages;
+package projetozika.Pages.Fornecedores;
 
 import Utils.UtilsCreator;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Welison
  */
-public class Dashboard extends javax.swing.JPanel {
+public class AddFornecedor extends javax.swing.JPanel {
     
     JPanel pTop;
     JPanel pCenter;
     JPanel pFilter;
     JPanel pBottom;
-    
 
     /**
-     * Creates new form Dashboard
+     * Creates new form AddFornecedor
      */
-    public Dashboard() {
+    public AddFornecedor() {
         initComponents();
-        System.out.println("projetozika.Pages.Dashboard.<init>()");
         
         pTop = new JPanel();
         pCenter = new JPanel();
@@ -49,7 +41,7 @@ public class Dashboard extends javax.swing.JPanel {
         JLabel label = new JLabel();
         label.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         label.setForeground(new java.awt.Color(255, 255, 255));
-        label.setText("Dashboard");
+        label.setText("Adicionar Novo Fornecedor");
         pTop.add(label);
     }
 
@@ -66,7 +58,6 @@ public class Dashboard extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
