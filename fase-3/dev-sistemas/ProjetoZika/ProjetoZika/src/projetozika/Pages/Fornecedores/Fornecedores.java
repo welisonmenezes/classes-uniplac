@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Fornecedores;
 
+import Models.BaseLayout;
 import Utils.UtilsElements;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,12 +25,16 @@ import javax.swing.table.DefaultTableModel;
 public class Fornecedores extends Models.BaseLayout {
     
     JButton addMore;
+    JButton next;
+    JButton prev;
+    BaseLayout self;
 
     /**
      * Creates new form NewJPanel
      */
     public Fornecedores() {
         super();
+        self = this;
         initComponents();
         createBaseLayout();
         addTopContent("Fornecedores");
@@ -127,10 +133,39 @@ public class Fornecedores extends Models.BaseLayout {
     }
     
     public void addBottomContent() {
-        JButton bNext = new JButton("Next");
-        JButton bPrev = new JButton("Previous");
-        pBottom.add(bPrev);
-        pBottom.add(bNext);
+        next = new JButton("Next");
+        prev = new JButton("Previous");
+        pBottom.add(prev);
+        pBottom.add(next);
+        
+        prev.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UtilsElements.showLoadPopup(self);
+                timerTest();
+            }
+        });
+        
+        next.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UtilsElements.showLoadPopup(self);
+                timerTest();
+            }
+        });
+    }
+    
+    private Timer t;
+    private void timerTest() {
+        
+        t = new Timer(2000,new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UtilsElements.hideLoadPopup(self);
+                t.stop();
+            }
+        });
+        t.start();
     }
 
     /**

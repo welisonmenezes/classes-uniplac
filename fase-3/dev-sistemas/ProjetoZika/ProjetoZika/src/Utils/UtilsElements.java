@@ -6,11 +6,19 @@
 package Utils;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import projetozika.Main;
 import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.AddFornecedor;
 import projetozika.Pages.Fornecedores.Fornecedores;
@@ -24,6 +32,7 @@ public class UtilsElements {
     
     private static JPanel jBody;
     private static String currentPage = "";
+    private static JFrame dialog;
     
     public static void makeFrameFullSize(JFrame aFrame)
     {
@@ -90,5 +99,51 @@ public class UtilsElements {
         }
         getJBody().add(tmpPanel, BorderLayout.CENTER);
         tmpPanel.setVisible(true);
+    }
+    
+    public static void setEnableRecursively(JComponent el, boolean isEnable) {
+        Component[] comps = el.getComponents();
+        if (comps.length > 0) {
+            for (Component comp : comps) {
+                if (comp instanceof JComponent) {
+                    setEnableRecursively((JComponent) comp, isEnable);
+                }
+                //System.out.println(comp.toString());
+                comp.setEnabled(isEnable);
+            }
+        }
+    }
+    
+    public static void showLoadPopup(JComponent context) {
+        setEnableRecursively(Main.rootComponent, false);
+        setEnableRecursively(context, false);
+        dialog = new JFrame();
+        dialog.setAlwaysOnTop(true);
+        dialog.setDefaultCloseOperation(JDialog .DISPOSE_ON_CLOSE);
+        dialog.setSize(200, 200);
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.requestFocus();
+        dialog.setVisible(false);
+	dialog.setUndecorated(true);
+	dialog.setVisible(true);
+        
+        JLabel lImage = new JLabel();
+        lImage.setIcon(new ImageIcon(context.getClass().getResource("/sources/ajax-loader.gif")));
+        lImage.setText("");
+        lImage.setBorder(BorderFactory.createEmptyBorder(75, 0, 0, 0));
+        
+        JPanel dialogPanel = new JPanel();
+        dialogPanel.setBackground(new Color(37,38,39));
+        dialogPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        dialogPanel.add(lImage);
+        
+        dialog.add(dialogPanel);
+    }
+    
+    public static void hideLoadPopup(JComponent context) {
+        setEnableRecursively(Main.rootComponent, true);
+        setEnableRecursively(context, true);
+        dialog.dispose();
     }
 }

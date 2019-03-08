@@ -8,6 +8,8 @@ package projetozika;
 import projetozika.Pages.Menu;
 import Utils.UtilsElements;
 import java.awt.BorderLayout;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -15,21 +17,27 @@ import javax.swing.JPanel;
  * @author Welison
  */
 public class Main extends javax.swing.JFrame {
-
+    
+    private JPanel jBG;
+    private JPanel jBODY;
+    private JPanel jSIDE;
+    public static JComponent rootComponent;
     /**
      * Creates new form Main
      */
     public Main() {
         initComponents();
         initLayout();
+        
+        rootComponent = this.jBG;
     }
     
     private void initLayout() {
         UtilsElements.makeFrameFullSize(this);
         
-        JPanel jBG = new JPanel();
-        JPanel jBODY = new JPanel();
-        JPanel jSIDE = new JPanel();
+        jBG = new JPanel();
+        jBODY = new JPanel();
+        jSIDE = new JPanel();
         
         UtilsElements.setJBody(jBODY);
         

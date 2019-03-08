@@ -151,7 +151,7 @@ public class Menu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         // logout
         this.main.dispose();
         JFrame login = new Login();
@@ -160,16 +160,19 @@ public class Menu extends javax.swing.JPanel {
 
     private void lDashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lDashboardMouseClicked
         // TODO add your handling code here:
+        if (!evt.getComponent().isEnabled()) return;
         UtilsElements.updateLayout("dashboard");
     }//GEN-LAST:event_lDashboardMouseClicked
 
     private void lFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lFornecedoresMouseClicked
         // TODO add your handling code here:
+        if (!evt.getComponent().isEnabled()) return;
         UtilsElements.updateLayout("fornecedores");
     }//GEN-LAST:event_lFornecedoresMouseClicked
 
     private void lNotasFiscaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lNotasFiscaisMouseClicked
         // TODO add your handling code here:
+        if (!evt.getComponent().isEnabled()) return;
         UtilsElements.updateLayout("notas");
     }//GEN-LAST:event_lNotasFiscaisMouseClicked
 
