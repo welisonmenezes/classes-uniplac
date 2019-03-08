@@ -8,9 +8,13 @@ package Utils;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
@@ -19,9 +23,9 @@ import javax.swing.JTextField;
  */
 public class UtilsStyles {
     
-    public static JButton defaultButton(JButton btn) {
-        
-        btn.setFont(new java.awt.Font("Tahoma", 0, 12));
+    public static void defaultButton(JButton btn) {
+        // styles
+        btn.setFont(new Font("Tahoma", 0, 12));
         btn.setForeground(new Color(8, 253, 216));
         btn.setBorder(BorderFactory.createLineBorder(new Color(8, 253, 216)));
         btn.setContentAreaFilled(false);
@@ -29,29 +33,53 @@ public class UtilsStyles {
         btn.setPreferredSize(new Dimension(100, 35));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setBackground(new Color(8, 253, 216));
-        
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        // hover event
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
                 btn.setForeground(new Color(0, 0, 0));
                 btn.setContentAreaFilled(true);
             }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(MouseEvent evt) {
                 btn.setForeground(new Color(8, 253, 216));
                 btn.setContentAreaFilled(false);
             }
         });
-        
-        return btn;
     }
     
-    public static JTextField defaultField(JTextField field) {
+    public static void defaultField(JTextField field) {
         field.setBackground(new Color(55, 57, 59));
         field.setForeground(new Color(255, 255, 255));
         field.setCaretColor(new Color(255, 255, 255));
         field.setOpaque(false);
         field.setPreferredSize(new Dimension(200, 39));
-        
-        return field;
+    }
+    
+    public static void menuButton(JLabel label) {
+        label.setBackground(new Color(7, 7, 7));
+        label.setFont(new Font("Tahoma", 1, 14));
+        label.setForeground(new Color(8, 253, 216));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        label.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
+        label.setOpaque(true);
+        /*
+        label.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                setMenuButtonActive(label);
+            }
+            public void mouseExited(MouseEvent evt) {
+                setMenuButtonInactive(label);
+            }
+        }); 
+        */
+    }
+    
+    public static void setMenuButtonActive(JLabel label) {
+        label.setBackground(new Color(8, 253, 216));
+        label.setForeground(new Color(7, 7, 7));
+    }
+    
+    public static void setMenuButtonInactive(JLabel label) {
+        label.setBackground(new Color(7, 7, 7));
+        label.setForeground(new Color(8, 253, 216));
     }
 }

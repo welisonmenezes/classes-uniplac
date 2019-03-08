@@ -68,6 +68,20 @@ public class UtilsElements {
         jb.removeAll();
         jb.revalidate();
     }
+    
+    public static void updateSatusMenu(String name) {
+        Component[] comps = Main.menu.getComponents();
+        for (Component comp : comps) {
+            String nameComp = comp.getName();
+            if (nameComp != null && (comp instanceof javax.swing.JLabel)) {
+                if (nameComp.equals(name)) {
+                    UtilsStyles.setMenuButtonActive((JLabel)comp);
+                } else {
+                    UtilsStyles.setMenuButtonInactive((JLabel)comp);
+                }
+            }
+        }
+    }
   
     public static void updateLayout(String pageName) {
         if (currentPage.equals(pageName)) return;
@@ -76,15 +90,19 @@ public class UtilsElements {
         clearStage();
         switch (pageName) {
             case "dashboard":
+                updateSatusMenu("dashboard");
                 tmpPanel = new Dashboard();
                 break;
             case "fornecedores":
+                updateSatusMenu("fornecedores");
                 tmpPanel = new Fornecedores();
                 break;
             case "addFornecedor":
+                updateSatusMenu("fornecedores");
                 tmpPanel = new AddFornecedor();
                 break;
             default:
+                updateSatusMenu("");
                 currentPage = "";
                 tmpPanel = new NotFound();
         }

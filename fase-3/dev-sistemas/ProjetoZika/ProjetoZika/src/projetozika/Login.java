@@ -102,6 +102,7 @@ public class Login extends javax.swing.JFrame {
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
+            UtilsElements.updateLayout("");
             UtilsElements.updateLayout("dashboard");
         } else {
             lInfo.setText("Login ou senha inválidos");

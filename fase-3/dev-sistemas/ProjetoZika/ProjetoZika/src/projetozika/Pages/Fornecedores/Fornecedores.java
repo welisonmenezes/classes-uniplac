@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -122,11 +123,16 @@ public class Fornecedores extends Models.BaseLayout {
     public void addFilterContent() {
         addMore = new JButton("Criar Novo");
         UtilsStyles.defaultButton(addMore);
+        
         fFilter = new JTextField();
         UtilsStyles.defaultField(fFilter);
         fFilter.setPreferredSize( new Dimension( 150, 39 ) );
         
+        JLabel hideL = new JLabel();
+        hideL.setPreferredSize(new Dimension(100, 35));
+        
         pFilter.add(fFilter);
+        pFilter.add(hideL);
         pFilter.add(addMore);
         
         addMore.addActionListener(new ActionListener(){

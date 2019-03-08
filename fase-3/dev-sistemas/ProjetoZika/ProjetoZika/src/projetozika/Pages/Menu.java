@@ -6,6 +6,7 @@
 package projetozika.Pages;
 
 import Utils.UtilsElements;
+import Utils.UtilsStyles;
 import javax.swing.JFrame;
 import projetozika.Login;
 import projetozika.Main;
@@ -23,6 +24,15 @@ public class Menu extends javax.swing.JPanel {
     public Menu(Main main) {
         initComponents();
         this.main = main;
+        
+        UtilsStyles.menuButton(lDashboard);
+        UtilsStyles.menuButton(lFornecedores);
+        UtilsStyles.menuButton(lPedidos);
+        UtilsStyles.menuButton(lProdutos);
+        UtilsStyles.menuButton(lPerfil);
+        UtilsStyles.menuButton(lNotasFiscais);
+        UtilsStyles.menuButton(lRelatorios);
+        UtilsStyles.menuButton(lUsuarios);
     }
 
     /**
@@ -48,13 +58,8 @@ public class Menu extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(250, 50));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lNotasFiscais.setBackground(new java.awt.Color(7, 7, 7));
-        lNotasFiscais.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lNotasFiscais.setForeground(new java.awt.Color(8, 253, 216));
         lNotasFiscais.setText("Notas Fiscais");
-        lNotasFiscais.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lNotasFiscais.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lNotasFiscais.setOpaque(true);
+        lNotasFiscais.setName("notasFiscais"); // NOI18N
         lNotasFiscais.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lNotasFiscaisMouseClicked(evt);
@@ -62,13 +67,8 @@ public class Menu extends javax.swing.JPanel {
         });
         add(lNotasFiscais, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 230, 30));
 
-        lDashboard.setBackground(new java.awt.Color(7, 7, 7));
-        lDashboard.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lDashboard.setForeground(new java.awt.Color(8, 253, 216));
         lDashboard.setText("Dashboard");
-        lDashboard.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lDashboard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lDashboard.setOpaque(true);
+        lDashboard.setName("dashboard"); // NOI18N
         lDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lDashboardMouseClicked(evt);
@@ -76,31 +76,16 @@ public class Menu extends javax.swing.JPanel {
         });
         add(lDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 230, 30));
 
-        lPerfil.setBackground(new java.awt.Color(7, 7, 7));
-        lPerfil.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lPerfil.setForeground(new java.awt.Color(8, 253, 216));
         lPerfil.setText("Perfil");
-        lPerfil.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lPerfil.setOpaque(true);
+        lPerfil.setName("perfil"); // NOI18N
         add(lPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 230, 30));
 
-        lProdutos.setBackground(new java.awt.Color(7, 7, 7));
-        lProdutos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lProdutos.setForeground(new java.awt.Color(8, 253, 216));
         lProdutos.setText("Produtos");
-        lProdutos.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lProdutos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lProdutos.setOpaque(true);
+        lProdutos.setName("produtos"); // NOI18N
         add(lProdutos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 230, 30));
 
-        lFornecedores.setBackground(new java.awt.Color(7, 7, 7));
-        lFornecedores.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lFornecedores.setForeground(new java.awt.Color(8, 253, 216));
         lFornecedores.setText("Fornecedores");
-        lFornecedores.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lFornecedores.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lFornecedores.setOpaque(true);
+        lFornecedores.setName("fornecedores"); // NOI18N
         lFornecedores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lFornecedoresMouseClicked(evt);
@@ -122,31 +107,17 @@ public class Menu extends javax.swing.JPanel {
         });
         add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 40, 20));
 
-        lPedidos.setBackground(new java.awt.Color(7, 7, 7));
-        lPedidos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lPedidos.setForeground(new java.awt.Color(8, 253, 216));
         lPedidos.setText("Pedidos");
-        lPedidos.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lPedidos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lPedidos.setOpaque(true);
+        lPedidos.setToolTipText("");
+        lPedidos.setName("pedidos"); // NOI18N
         add(lPedidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, 230, 30));
 
-        lUsuarios.setBackground(new java.awt.Color(7, 7, 7));
-        lUsuarios.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lUsuarios.setForeground(new java.awt.Color(8, 253, 216));
         lUsuarios.setText("Usuários");
-        lUsuarios.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lUsuarios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lUsuarios.setOpaque(true);
+        lUsuarios.setName("usuarios"); // NOI18N
         add(lUsuarios, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 230, 30));
 
-        lRelatorios.setBackground(new java.awt.Color(7, 7, 7));
-        lRelatorios.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lRelatorios.setForeground(new java.awt.Color(8, 253, 216));
         lRelatorios.setText("Relatórios");
-        lRelatorios.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        lRelatorios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lRelatorios.setOpaque(true);
+        lRelatorios.setName("relatorios"); // NOI18N
         add(lRelatorios, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 230, 30));
     }// </editor-fold>//GEN-END:initComponents
 

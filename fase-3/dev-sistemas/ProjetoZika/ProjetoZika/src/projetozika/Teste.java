@@ -5,56 +5,17 @@
  */
 package projetozika;
 
-import projetozika.Pages.Menu;
-import Utils.UtilsElements;
-import java.awt.BorderLayout;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 /**
  *
  * @author Welison
  */
-public class Main extends javax.swing.JFrame {
-    
-    private JPanel jBG;
-    private JPanel jBODY;
-    private JPanel jSIDE;
-    public static JComponent rootComponent;
-    public static JPanel menu;
-    /**
-     * Creates new form Main
-     */
-    public Main() {
-        initComponents();
-        menu = new Menu(this);
-        initLayout();
-        rootComponent = this.jBG;
-    }
-    
-    private void initLayout() {
-        UtilsElements.makeFrameFullSize(this);
-        
-        jBG = new JPanel();
-        jBODY = new JPanel();
-        jSIDE = new JPanel();
-        
-        UtilsElements.setJBody(jBODY);
-        
-        this.setLayout(new BorderLayout());
-        this.add(jBG);
-    
-        jBG.setLayout(new BorderLayout());
-        jBODY.setLayout(new BorderLayout());
-        jSIDE.setLayout(new BorderLayout());
-        
-        jSIDE.add(menu, BorderLayout.CENTER);
-        
-        jBG.add(jSIDE, BorderLayout.WEST);
-        jBG.add(jBODY, BorderLayout.CENTER);
+public class Teste extends javax.swing.JFrame {
 
-        UtilsElements.setJBody(jBODY);
+    /**
+     * Creates new form Teste
+     */
+    public Teste() {
+        initComponents();
     }
 
     /**
@@ -67,17 +28,16 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Projeto Zika");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 714, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
 
         pack();
@@ -100,20 +60,20 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Teste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Teste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Teste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Teste.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new Teste().setVisible(true);
             }
         });
     }
