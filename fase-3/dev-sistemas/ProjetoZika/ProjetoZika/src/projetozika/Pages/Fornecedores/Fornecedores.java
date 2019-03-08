@@ -5,15 +5,12 @@
  */
 package projetozika.Pages.Fornecedores;
 
-import Utils.UtilsCreator;
 import Utils.UtilsElements;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -23,40 +20,21 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Welison
  */
-public class Fornecedores extends javax.swing.JPanel {
+public class Fornecedores extends Models.BaseLayout {
     
-    JPanel pTop;
-    JPanel pCenter;
-    JPanel pFilter;
-    JPanel pBottom;
     JButton addMore;
 
     /**
      * Creates new form NewJPanel
      */
     public Fornecedores() {
+        super();
         initComponents();
-        System.out.println("projetozika.Pages.Fornecedores.Fornecedores.<init>()");
-        
-        pTop = new JPanel();
-        pCenter = new JPanel();
-        pFilter = new JPanel();
-        pBottom = new JPanel();
-        UtilsCreator creator = new UtilsCreator();
-        creator.createBaseLayout(this , pTop, pCenter, pBottom, pFilter);
-        
-        addTopContent();
+        createBaseLayout();
+        addTopContent("Fornecedores");
         addCenterContent();
-        addFilterContent();
         addBottomContent();
-    }
-    
-    public void addTopContent() {
-        JLabel label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        label.setForeground(new java.awt.Color(255, 255, 255));
-        label.setText("Fornecedores");
-        pTop.add(label);
+        addFilterContent();
     }
     
     public void addCenterContent() {
@@ -115,6 +93,7 @@ public class Fornecedores extends javax.swing.JPanel {
             {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"}
         };
         JTable tabela = new JTable();
+        tabela.setRowHeight(35);
         tabela.setModel(new DefaultTableModel(dados, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {

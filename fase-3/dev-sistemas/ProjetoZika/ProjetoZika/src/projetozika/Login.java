@@ -104,11 +104,10 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // login
         lInfo.setText("Login ou senha inválidos");
         String login = fEmail.getText();
         String password = fSenha.getText();
-        System.out.println(login);
-        System.out.println(password);
         if (login.equals("welison") && password.equals("123456")) {
             this.setVisible(false);
             JFrame main = new Main();

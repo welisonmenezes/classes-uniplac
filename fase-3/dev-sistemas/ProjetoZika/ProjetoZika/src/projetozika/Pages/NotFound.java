@@ -9,13 +9,15 @@ package projetozika.Pages;
  *
  * @author Welison
  */
-public class NotFound extends javax.swing.JPanel {
+public class NotFound extends Models.BaseLayout {
 
     /**
      * Creates new form NotFound
      */
     public NotFound() {
         initComponents();
+        createBaseLayout();
+        addTopContent("Page Not Found");
     }
 
     /**
@@ -27,19 +29,12 @@ public class NotFound extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
-
         setBackground(new java.awt.Color(37, 38, 39));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Página não encontrada!");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
+        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

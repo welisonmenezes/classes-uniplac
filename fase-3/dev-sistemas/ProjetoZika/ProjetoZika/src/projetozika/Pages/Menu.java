@@ -152,7 +152,7 @@ public class Menu extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        //UtilsElements.updateLayout("login");
+        // logout
         this.main.dispose();
         JFrame login = new Login();
         login.setVisible(true);

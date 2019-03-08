@@ -68,8 +68,7 @@ public class UtilsElements {
         jb.removeAll();
         jb.revalidate();
     }
-    
-    ///*
+  
     public static void updateLayout(String pageName) {
         if (currentPage.equals(pageName)) return;
         JPanel tmpPanel = null;
@@ -92,32 +91,4 @@ public class UtilsElements {
         getJBody().add(tmpPanel, BorderLayout.CENTER);
         tmpPanel.setVisible(true);
     }
-    //*/
-    /*
-    public static void updateLayout(String pageName){
-        setAllInvisible();
-        if (PagesModel.getPage(pageName) != null) {
-            JPanel tmpPanel = PagesModel.getPage(pageName).getPanel();
-            getJBody().add(tmpPanel, BorderLayout.CENTER);
-            tmpPanel.setVisible(true);
-        } else {
-            switch (pageName) {
-                case "login":
-                    PagesModel.addPage(new PageModel("login", new Login()));
-                    updateLayout("login");
-                    break;
-                case "dashboard":
-                    PagesModel.addPage(new PageModel("dashboard", new Dashboard()));
-                    updateLayout("dashboard");
-                    break;
-                case "fornecedores":
-                    PagesModel.addPage(new PageModel("fornecedores", new Fornecedores()));
-                    updateLayout("fornecedores");
-                    break;
-                default:
-                    System.out.println("Page Not Found.");
-            }
-        }
-    }
-    //*/
 }

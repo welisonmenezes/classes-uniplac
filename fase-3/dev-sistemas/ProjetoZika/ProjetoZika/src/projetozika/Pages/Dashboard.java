@@ -5,52 +5,19 @@
  */
 package projetozika.Pages;
 
-import Utils.UtilsCreator;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Welison
  */
-public class Dashboard extends javax.swing.JPanel {
+public class Dashboard extends Models.BaseLayout {
     
-    JPanel pTop;
-    JPanel pCenter;
-    JPanel pFilter;
-    JPanel pBottom;
-    
-
     /**
      * Creates new form Dashboard
      */
     public Dashboard() {
         initComponents();
-        System.out.println("projetozika.Pages.Dashboard.<init>()");
-        
-        pTop = new JPanel();
-        pCenter = new JPanel();
-        pFilter = new JPanel();
-        pBottom = new JPanel();
-        UtilsCreator creator = new UtilsCreator();
-        creator.createBaseLayout(this , pTop, pCenter, pBottom, pFilter);
-        
-        addTopContent();
-    }
-    
-    public void addTopContent() {
-        JLabel label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        label.setForeground(new java.awt.Color(255, 255, 255));
-        label.setText("Dashboard");
-        pTop.add(label);
+        createBaseLayout();
+        addTopContent("Dashboard");
     }
 
     /**

@@ -5,21 +5,11 @@
  */
 package projetozika.Pages.Fornecedores;
 
-import Utils.UtilsCreator;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 /**
  *
  * @author Welison
  */
-public class AddFornecedor extends javax.swing.JPanel {
-    
-    JPanel pTop;
-    JPanel pCenter;
-    JPanel pFilter;
-    JPanel pBottom;
+public class AddFornecedor extends Models.BaseLayout {
 
     /**
      * Creates new form AddFornecedor
@@ -27,22 +17,8 @@ public class AddFornecedor extends javax.swing.JPanel {
     public AddFornecedor() {
         initComponents();
         
-        pTop = new JPanel();
-        pCenter = new JPanel();
-        pFilter = new JPanel();
-        pBottom = new JPanel();
-        UtilsCreator creator = new UtilsCreator();
-        creator.createBaseLayout(this , pTop, pCenter, pBottom, pFilter);
-        
-        addTopContent();
-    }
-    
-    public void addTopContent() {
-        JLabel label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        label.setForeground(new java.awt.Color(255, 255, 255));
-        label.setText("Adicionar Novo Fornecedor");
-        pTop.add(label);
+        createBaseLayout();
+        addTopContent("Adicionar Fornecedor");
     }
 
     /**
