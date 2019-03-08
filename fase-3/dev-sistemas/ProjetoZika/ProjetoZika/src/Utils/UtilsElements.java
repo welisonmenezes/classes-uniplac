@@ -63,16 +63,7 @@ public class UtilsElements {
         return currentPage;
     }
     
-    public static void setAllInvisible() {
-        JPanel jb = getJBody();
-        Component[] comps = jb.getComponents();
-        System.out.println(comps.length);
-        for (Component comp : comps) {
-            comp.setVisible(false);
-        }
-    }
-    
-    public static void clearStage() {
+    private static void clearStage() {
         JPanel jb = getJBody();
         jb.removeAll();
         jb.revalidate();
@@ -134,7 +125,7 @@ public class UtilsElements {
         lImage.setBorder(BorderFactory.createEmptyBorder(75, 0, 0, 0));
         
         JPanel dialogPanel = new JPanel();
-        dialogPanel.setBackground(new Color(37,38,39));
+        dialogPanel.setBackground(new Color(24,24,24));
         dialogPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         dialogPanel.add(lImage);
         

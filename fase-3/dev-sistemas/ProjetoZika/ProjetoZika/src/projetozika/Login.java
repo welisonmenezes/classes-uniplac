@@ -6,6 +6,7 @@
 package projetozika;
 
 import Utils.UtilsElements;
+import Utils.UtilsStyles;
 import javax.swing.JFrame;
 
 /**
@@ -20,6 +21,10 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         UtilsElements.positionFrameInCenter(this);
+        
+        UtilsStyles.defaultButton(jButton1);
+        UtilsStyles.defaultField(fEmail);
+        UtilsStyles.defaultField(fSenha);
     }
 
     /**
@@ -59,44 +64,29 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setText("Login");
         jBg.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
 
-        fEmail.setBackground(new java.awt.Color(55, 57, 59));
-        fEmail.setForeground(new java.awt.Color(255, 255, 255));
         fEmail.setText("welison");
-        fEmail.setCaretColor(new java.awt.Color(255, 255, 255));
-        fEmail.setOpaque(false);
-        fEmail.setPreferredSize(new java.awt.Dimension(200, 35));
         jBg.add(fEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Senha");
-        jBg.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, -1, 20));
+        jBg.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, 20));
 
-        fSenha.setBackground(new java.awt.Color(55, 57, 59));
-        fSenha.setForeground(new java.awt.Color(255, 255, 255));
         fSenha.setText("123456");
-        fSenha.setCaretColor(new java.awt.Color(255, 255, 255));
-        fSenha.setOpaque(false);
-        fSenha.setPreferredSize(new java.awt.Dimension(200, 35));
-        jBg.add(fSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 240, -1));
+        jBg.add(fSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 240, -1));
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(8, 253, 216));
         jButton1.setText("Entrar");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(8, 253, 216)));
-        jButton1.setContentAreaFilled(false);
         jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton1.setPreferredSize(new java.awt.Dimension(200, 35));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        jBg.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, 70, 30));
+        jBg.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 70, 30));
 
         lInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lInfo.setForeground(new java.awt.Color(255, 0, 0));
-        jBg.add(lInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 210, 160, 30));
+        jBg.add(lInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 160, 30));
 
         getContentPane().add(jBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
@@ -112,6 +102,7 @@ public class Login extends javax.swing.JFrame {
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
+            UtilsElements.updateLayout("dashboard");
         } else {
             lInfo.setText("Login ou senha inválidos");
         }

@@ -55,7 +55,6 @@ public class Main extends javax.swing.JFrame {
         jBG.add(jBODY, BorderLayout.CENTER);
 
         UtilsElements.setJBody(jBODY);
-        UtilsElements.updateLayout("dashboard");
     }
 
     /**

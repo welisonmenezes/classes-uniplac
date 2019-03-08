@@ -7,6 +7,7 @@ package projetozika.Pages.Fornecedores;
 
 import Models.BaseLayout;
 import Utils.UtilsElements;
+import Utils.UtilsStyles;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,8 @@ public class Fornecedores extends Models.BaseLayout {
     JButton next;
     JButton prev;
     BaseLayout self;
+    JTable tabela;
+    JTextField fFilter;
 
     /**
      * Creates new form NewJPanel
@@ -98,7 +101,7 @@ public class Fornecedores extends Models.BaseLayout {
             {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
             {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"}
         };
-        JTable tabela = new JTable();
+        tabela = new JTable();
         tabela.setRowHeight(35);
         tabela.setModel(new DefaultTableModel(dados, colunas) {
             @Override
@@ -118,8 +121,10 @@ public class Fornecedores extends Models.BaseLayout {
     
     public void addFilterContent() {
         addMore = new JButton("Criar Novo");
-        JTextField fFilter = new JTextField();
-        fFilter.setPreferredSize( new Dimension( 150, 30 ) );
+        UtilsStyles.defaultButton(addMore);
+        fFilter = new JTextField();
+        UtilsStyles.defaultField(fFilter);
+        fFilter.setPreferredSize( new Dimension( 150, 39 ) );
         
         pFilter.add(fFilter);
         pFilter.add(addMore);
@@ -135,6 +140,8 @@ public class Fornecedores extends Models.BaseLayout {
     public void addBottomContent() {
         next = new JButton("Next");
         prev = new JButton("Previous");
+        UtilsStyles.defaultButton(next);
+        UtilsStyles.defaultButton(prev);
         pBottom.add(prev);
         pBottom.add(next);
         
@@ -150,6 +157,7 @@ public class Fornecedores extends Models.BaseLayout {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UtilsElements.showLoadPopup(self);
+                
                 timerTest();
             }
         });
@@ -162,6 +170,22 @@ public class Fornecedores extends Models.BaseLayout {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UtilsElements.hideLoadPopup(self);
+                
+                String [] colunas = {"Nome", "Telefone", "Email"};
+                Object [][] dados = {
+                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
+                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
+                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
+                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
+                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"}
+                };
+                tabela.setModel(new DefaultTableModel(dados, colunas) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                       return false;
+                    }
+                });
+                
                 t.stop();
             }
         });
