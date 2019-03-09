@@ -9,9 +9,11 @@ import Models.BaseLayout;
 import Utils.UtilsElements;
 import Utils.UtilsStyles;
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -19,6 +21,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 /**
  *
@@ -32,6 +35,8 @@ public class Fornecedores extends Models.BaseLayout {
     BaseLayout self;
     JTable tabela;
     JTextField fFilter;
+    JLabel lSearch;
+    JButton bSearch;
 
     /**
      * Creates new form NewJPanel
@@ -48,59 +53,56 @@ public class Fornecedores extends Models.BaseLayout {
     }
     
     public void addCenterContent() {
-        String [] colunas = {"Nome", "Telefone", "Email"};
+        String [] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
         Object [][] dados = {
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-                
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"},
-            {"João da Silva", "48 8890-3345", "joaosilva@hotmail.com"},
-            {"Pedro Cascaes", "48 9870-5634", "pedrinho@gmail.com"},
-            {"Ana Monteiro", "48 9923-7898", "ana.monteiro@gmail.com"}
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"}
         };
         tabela = new JTable();
         tabela.setRowHeight(35);
@@ -128,10 +130,19 @@ public class Fornecedores extends Models.BaseLayout {
         UtilsStyles.defaultField(fFilter);
         fFilter.setPreferredSize( new Dimension( 150, 39 ) );
         
-        JLabel hideL = new JLabel();
-        hideL.setPreferredSize(new Dimension(100, 35));
+        lSearch = new JLabel("Buscar");
+        UtilsStyles.defaultLabel(lSearch);
+        lSearch.setPreferredSize( new Dimension( 45, 39 ) );
         
+        bSearch = new JButton("");
+        UtilsStyles.searchButton(bSearch);
+        
+        JLabel hideL = new JLabel();
+        hideL.setPreferredSize(new Dimension(50, 35));
+        
+        pFilter.add(lSearch);
         pFilter.add(fFilter);
+        pFilter.add(bSearch);
         pFilter.add(hideL);
         pFilter.add(addMore);
         
@@ -139,6 +150,14 @@ public class Fornecedores extends Models.BaseLayout {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UtilsElements.updateLayout("addFornecedor");
+            }
+        });
+        
+        bSearch.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UtilsElements.showLoadPopup(self);
+                timerTest();
             }
         });
     }
@@ -177,13 +196,15 @@ public class Fornecedores extends Models.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 UtilsElements.hideLoadPopup(self);
                 
-                String [] colunas = {"Nome", "Telefone", "Email"};
+                String [] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
                 Object [][] dados = {
-                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
-                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
-                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
-                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"},
-                    {"Fulano de Tal", "48 9923-7898", "fulano.tal@gmail.com"}
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
+                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"}
                 };
                 tabela.setModel(new DefaultTableModel(dados, colunas) {
                     @Override

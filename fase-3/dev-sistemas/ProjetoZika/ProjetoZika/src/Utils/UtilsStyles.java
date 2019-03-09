@@ -13,6 +13,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -54,6 +55,12 @@ public class UtilsStyles {
         field.setPreferredSize(new Dimension(200, 39));
     }
     
+    public static void defaultLabel(JLabel label) {
+        label.setPreferredSize( new Dimension( 150, 39 ) );
+        label.setForeground(new Color(255, 255, 255));
+        label.setFont(new Font("Tahoma", 0, 12));
+    }
+    
     public static void menuButton(JLabel label) {
         label.setBackground(new Color(7, 7, 7));
         label.setFont(new Font("Tahoma", 1, 14));
@@ -81,5 +88,12 @@ public class UtilsStyles {
     public static void setMenuButtonInactive(JLabel label) {
         label.setBackground(new Color(7, 7, 7));
         label.setForeground(new Color(8, 253, 216));
+    }
+    
+    public static void searchButton(JButton btn) {
+        btn.setContentAreaFilled(false);
+        btn.setPreferredSize(new Dimension(35, 35));
+        btn.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa.png")));
     }
 }

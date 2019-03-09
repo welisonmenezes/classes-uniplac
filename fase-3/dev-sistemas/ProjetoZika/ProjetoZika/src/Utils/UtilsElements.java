@@ -31,8 +31,10 @@ import projetozika.Pages.NotFound;
 public class UtilsElements {
     
     private static JPanel jBody;
-    private static String currentPage = "";
+    public static String currentPage = "";
     private static JFrame dialog;
+    private static JPanel tmpPanel;
+    private static JFrame tmpFrame;
     
     public static void makeFrameFullSize(JFrame aFrame)
     {
@@ -44,6 +46,14 @@ public class UtilsElements {
     {
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         aFrame.setSize(screenSize.width, screenSize.height);
+    }
+    
+    public static void makePanelRelativeSize(JFrame aFrame, int w, int h)
+    {
+        Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        //int w = (int)(screenSize.width * rw);
+        //int h = (int)(screenSize.height * rh);
+        aFrame.setSize(w, h);
     }
     
     public static void positionFrameInCenter(JFrame aFrame) {
@@ -85,7 +95,12 @@ public class UtilsElements {
   
     public static void updateLayout(String pageName) {
         if (currentPage.equals(pageName)) return;
-        JPanel tmpPanel = null;
+        //JPanel tmpPanel = null;
+        //tmpFrame.dispose();
+        if (tmpFrame != null) {
+            tmpFrame.dispose();
+            tmpFrame = null;
+        }
         currentPage = pageName;
         clearStage();
         switch (pageName) {
@@ -99,7 +114,8 @@ public class UtilsElements {
                 break;
             case "addFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpPanel = new AddFornecedor();
+                tmpFrame = new AddFornecedor();
+                tmpFrame.setVisible(true);
                 break;
             default:
                 updateSatusMenu("");
@@ -117,7 +133,6 @@ public class UtilsElements {
                 if (comp instanceof JComponent) {
                     setEnableRecursively((JComponent) comp, isEnable);
                 }
-                //System.out.println(comp.toString());
                 comp.setEnabled(isEnable);
             }
         }
@@ -154,5 +169,14 @@ public class UtilsElements {
         setEnableRecursively(Main.rootComponent, true);
         setEnableRecursively(context, true);
         dialog.dispose();
+    }
+    
+    public static void configInternalFrame(JFrame frame) {
+        UtilsElements.makePanelRelativeSize(frame, 450, 350);
+        UtilsElements.positionFrameInCenter(frame);
+        frame.setAlwaysOnTop(true);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.requestFocus();
     }
 }
