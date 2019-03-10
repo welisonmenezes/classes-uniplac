@@ -9,7 +9,7 @@ package projetozika.Pages;
  *
  * @author Welison
  */
-public class Dashboard extends Models.BaseLayout {
+public class Dashboard extends Templates.BaseLayout {
     
     /**
      * Creates new form Dashboard

@@ -5,8 +5,12 @@
  */
 package projetozika.Pages.Fornecedores;
 
-import Models.BaseLayout;
+import Models.Fornecedor;
+import Templates.BaseLayout;
+import Templates.ButtonEditor;
+import Templates.ButtonRenderer;
 import Utils.Dialogs;
+import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
 import Utils.Styles;
@@ -14,8 +18,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Method;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -26,7 +33,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Welison
  */
-public class Fornecedores extends Models.BaseLayout {
+public class Fornecedores extends Templates.BaseLayout {
     
     JButton addMore;
     BaseLayout self;
@@ -34,6 +41,7 @@ public class Fornecedores extends Models.BaseLayout {
     JTextField fFilter;
     JLabel lSearch;
     JButton bSearch;
+    DefaultTableModel tableModel;
 
     /**
      * Creates new form NewJPanel
@@ -50,66 +58,56 @@ public class Fornecedores extends Models.BaseLayout {
     }
     
     public void addCenterContent() {
-        String [] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
-        Object [][] dados = {
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-            {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"}
-        };
+        // cria tabela
         tabela = new JTable();
         tabela.setRowHeight(35);
-        tabela.setModel(new DefaultTableModel(dados, colunas) {
+        // seta colunas
+        String[] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
+       // seta modelo
+        tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               return false;
+               if(column != 4 && column != 5 && column != 6){
+                   return false;
+               }
+               return true;
+            }
+        };
+        // adiciona linhas
+        for(int i = 0; i < 25; i++) {
+            Fornecedor f = new Fornecedor(""+i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+            Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
+            tableModel.addRow(data);
+        }
+        // inicializa
+        tabela.setModel(tableModel);
+        
+        tabela.getColumn("Editar").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                JOptionPane.showMessageDialog(self, "Editar item: " + id);
             }
         });
-        //tabela.setEnabled(false);
+        
+        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                JOptionPane.showMessageDialog(self, "Excluir item: " + id);
+            }
+        });
+        
+        tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                JOptionPane.showMessageDialog(self, "Ver item: " + id);
+            }
+        });
         
         JScrollPane barraRolagem = new JScrollPane(tabela);
         barraRolagem.setOpaque(false);
@@ -178,22 +176,15 @@ public class Fornecedores extends Models.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(self);
                 
-                String [] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
-                Object [][] dados = {
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"},
-                    {"2134", "Nome Fornecedor", "2333230-3", "(99) 99999-9999", "Editar", "Excluir", "Ver"}
-                };
-                tabela.setModel(new DefaultTableModel(dados, colunas) {
-                    @Override
-                    public boolean isCellEditable(int row, int column) {
-                       return false;
-                    }
-                });
+                // reseta tabela
+                tableModel.getDataVector().removeAllElements();
+                tableModel.fireTableDataChanged();
+                // adiciona novas linhas
+                for(int i = 26; i < 35; i++) {
+                    Fornecedor f = new Fornecedor(""+i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+                    Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
+                    tableModel.addRow(data);
+                }
                 
                 t.stop();
             }

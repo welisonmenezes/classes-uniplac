@@ -17,6 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import projetozika.Main;
 
 /**
@@ -74,5 +75,11 @@ public class Methods {
                 comp.setEnabled(isEnable);
             }
         }
+    }
+    
+    public static String selectedTableItemId(JTable table) {
+        int row = table.getSelectedRow();
+        Object id = table.getValueAt(row, 0);
+        return id.toString();
     }
 }

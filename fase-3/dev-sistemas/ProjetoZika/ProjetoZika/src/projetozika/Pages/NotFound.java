@@ -9,7 +9,7 @@ package projetozika.Pages;
  *
  * @author Welison
  */
-public class NotFound extends Models.BaseLayout {
+public class NotFound extends Templates.BaseLayout {
 
     /**
      * Creates new form NotFound

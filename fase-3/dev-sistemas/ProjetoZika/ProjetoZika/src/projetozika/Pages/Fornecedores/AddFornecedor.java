@@ -24,7 +24,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  *
  * @author Welison
  */
-public class AddFornecedor extends Models.BaseFrame {
+public class AddFornecedor extends Templates.BaseFrame {
     private final JFrame self;
     private JPanel bg;
     /**
