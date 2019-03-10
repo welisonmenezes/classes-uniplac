@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -54,6 +55,14 @@ public class Styles {
         field.setCaretColor(new Color(255, 255, 255));
         field.setOpaque(false);
         field.setPreferredSize(new Dimension(200, 39));
+    }
+    
+    public static void defaultComboBox(JComboBox field) {
+        //field.setBackground(new Color(55, 57, 59));
+        //field.setForeground(new Color(255, 255, 255));
+        //field.setCaretColor(new Color(255, 255, 255));
+        field.setOpaque(false);
+        field.setPreferredSize(new Dimension(160, 39));
     }
     
     public static void defaultLabel(JLabel label) {

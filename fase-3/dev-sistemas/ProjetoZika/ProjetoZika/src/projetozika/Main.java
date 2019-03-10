@@ -9,7 +9,6 @@ import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**

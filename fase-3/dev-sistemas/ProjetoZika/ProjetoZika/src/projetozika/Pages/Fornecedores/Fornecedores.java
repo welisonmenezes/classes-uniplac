@@ -18,9 +18,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Method;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -42,6 +42,7 @@ public class Fornecedores extends Templates.BaseLayout {
     JLabel lSearch;
     JButton bSearch;
     DefaultTableModel tableModel;
+    private JComboBox<String> cFilter;
 
     /**
      * Creates new form NewJPanel
@@ -96,7 +97,11 @@ public class Fornecedores extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                JOptionPane.showMessageDialog(self, "Excluir item: " + id);
+
+                int opcion = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o item " + id + "?", "Aviso", JOptionPane.YES_NO_OPTION);
+                if (opcion == 0) {
+                   JOptionPane.showMessageDialog(null, "Item " + id + " deletado com sucesso!");
+                }
             }
         });
         
@@ -125,9 +130,13 @@ public class Fornecedores extends Templates.BaseLayout {
         Styles.defaultField(fFilter);
         fFilter.setPreferredSize( new Dimension( 150, 39 ) );
         
-        lSearch = new JLabel("Buscar");
+        lSearch = new JLabel("Filtrar por");
         Styles.defaultLabel(lSearch);
-        lSearch.setPreferredSize( new Dimension( 45, 39 ) );
+        lSearch.setPreferredSize( new Dimension( 65, 39 ) );
+        
+        cFilter = new javax.swing.JComboBox<>();
+        cFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Cnpj", "Telefone" }));
+        Styles.defaultComboBox(cFilter);
         
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
@@ -136,6 +145,7 @@ public class Fornecedores extends Templates.BaseLayout {
         hideL.setPreferredSize(new Dimension(50, 35));
         
         pFilter.add(lSearch);
+        pFilter.add(cFilter);
         pFilter.add(fFilter);
         pFilter.add(bSearch);
         pFilter.add(hideL);

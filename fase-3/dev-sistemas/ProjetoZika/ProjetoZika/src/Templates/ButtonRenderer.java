@@ -6,6 +6,7 @@
 package Templates;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -19,6 +20,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
 
     public ButtonRenderer() {
         setOpaque(true);
+        setPreferredSize(new Dimension(100, 20));
     }
 
     @Override
