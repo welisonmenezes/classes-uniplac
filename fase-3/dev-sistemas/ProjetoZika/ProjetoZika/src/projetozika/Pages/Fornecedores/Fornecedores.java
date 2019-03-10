@@ -87,7 +87,7 @@ public class Fornecedores extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                JOptionPane.showMessageDialog(self, "Editar item: " + id);
+                Navigation.updateLayout("editarFornecedor", id);
             }
         });
         
@@ -105,7 +105,7 @@ public class Fornecedores extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                JOptionPane.showMessageDialog(self, "Ver item: " + id);
+                Navigation.updateLayout("verFornecedor", id);
             }
         });
         

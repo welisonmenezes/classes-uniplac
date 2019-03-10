@@ -40,15 +40,30 @@ public class Navigation {
             }
         }
     }
+    
+    public static void updateLayout(String pageName, String id) {
+        if (currentPage.equals(pageName)) return;
+        resetLayout(pageName);
+        switch (pageName) {
+            case "editarFornecedor":
+                updateSatusMenu("fornecedores");
+                tmpFrame = new AddFornecedor(id, "edit");
+                tmpFrame.setVisible(true);
+                break;
+            case "verFornecedor":
+                updateSatusMenu("fornecedores");
+                tmpFrame = new AddFornecedor(id, "view");
+                tmpFrame.setVisible(true);
+                break;
+            default:
+                setDefaultPage();
+        }
+        addNewPage();
+    }
   
     public static void updateLayout(String pageName) {
         if (currentPage.equals(pageName)) return;
-        if (tmpFrame != null) {
-            tmpFrame.dispose();
-            tmpFrame = null;
-        }
-        currentPage = pageName;
-        Methods.clearStage();
+        resetLayout(pageName);
         switch (pageName) {
             case "dashboard":
                 updateSatusMenu("dashboard");
@@ -64,11 +79,28 @@ public class Navigation {
                 tmpFrame.setVisible(true);
                 break;
             default:
-                updateSatusMenu("");
-                currentPage = "";
-                tmpPanel = new NotFound();
+                setDefaultPage();
         }
+        addNewPage();
+    }
+    
+    private static void resetLayout(String pageName) {
+        if (tmpFrame != null) {
+            tmpFrame.dispose();
+            tmpFrame = null;
+        }
+        currentPage = pageName;
+        Methods.clearStage();
+    }
+    
+    private static void addNewPage() {
         getJBody().add(tmpPanel, BorderLayout.CENTER);
         tmpPanel.setVisible(true);
+    }
+    
+    private static void setDefaultPage() {
+        updateSatusMenu("");
+        currentPage = "";
+        tmpPanel = new NotFound();
     }
 }

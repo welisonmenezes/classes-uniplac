@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Fornecedores;
 
+import Models.Fornecedor;
 import Utils.Dialogs;
 import Utils.Navigation;
 import Utils.Styles;
@@ -27,17 +28,36 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class AddFornecedor extends Templates.BaseFrame {
     private final JFrame self;
     private JPanel bg;
-    /**
-     * Creates new form AddFornecedor
-     */
+    private JTextField fname;
+    private JTextField ftel;
+    private JTextField fcnpj;
+    private JButton bSave;
+   
     public AddFornecedor() {
         this.self = this;
-        initComponents();
+        initPage("Adicionar Fornecedor");
+    }
+    
+    public AddFornecedor(String id, String mode) {
+        this.self = this;
         
+        if(mode.equals("view")){
+            initPage("Ver Fornecedor");
+            disabledFields();
+        } else if (mode.equals("edit")){
+            initPage("Editar Fornecedor");
+        }
+        
+        fillFields(id);
+    }
+    
+    private void initPage(String title) {
+        
+        initComponents();
         Styles.internalFrame(this);
         
         createBaseLayout();
-        addTopContent("Adicionar Fornecedor");
+        addTopContent(title);
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -47,6 +67,20 @@ public class AddFornecedor extends Templates.BaseFrame {
         });
         
         addCenterContent();
+    }
+    
+    private void fillFields(String id) {
+        Fornecedor f = new Fornecedor("xxx", "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+        fname.setText(f.getNome());
+        ftel.setText(f.getTelefone());
+        fcnpj.setText(f.getCnpj());
+    }
+    
+    private void disabledFields() {
+        bSave.setVisible(false);
+        fname.setEditable(false);
+        ftel.setEditable(false);
+        fcnpj.setEditable(false);
     }
     
     public void addCenterContent() {
@@ -59,27 +93,27 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.defaultLabel(lname);
         bg.add(lname, new AbsoluteConstraints(0, 0, -1, -1));
 
-        JTextField fname = new JTextField();
+        fname = new JTextField();
         Styles.defaultField(fname);
         bg.add(fname, new AbsoluteConstraints(0, 40, -1, -1));
         
-        JLabel lemail = new JLabel("Email");
-        Styles.defaultLabel(lemail);
-        bg.add(lemail, new AbsoluteConstraints(220, 0, -1, -1));
+        JLabel ltel = new JLabel("Telefone");
+        Styles.defaultLabel(ltel);
+        bg.add(ltel, new AbsoluteConstraints(220, 0, -1, -1));
 
-        JTextField femail = new JTextField();
-        Styles.defaultField(femail);
-        bg.add(femail, new AbsoluteConstraints(220, 40, -1, -1));
+        ftel = new JTextField();
+        Styles.defaultField(ftel);
+        bg.add(ftel, new AbsoluteConstraints(220, 40, -1, -1));
         
         JLabel lcnpj = new JLabel("CNPJ");
         Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(0, 90, -1, -1));
 
-        JTextField fcnpj = new JTextField();
+        fcnpj = new JTextField();
         Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(0, 130, -1, -1));
         
-        JButton bSave = new JButton("Salvar");
+        bSave = new JButton("Salvar");
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
