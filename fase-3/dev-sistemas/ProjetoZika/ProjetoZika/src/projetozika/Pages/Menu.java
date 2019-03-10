@@ -5,8 +5,9 @@
  */
 package projetozika.Pages;
 
-import Utils.UtilsElements;
-import Utils.UtilsStyles;
+import Utils.Navigation;
+import Utils.Methods;
+import Utils.Styles;
 import javax.swing.JFrame;
 import projetozika.Login;
 import projetozika.Main;
@@ -25,14 +26,14 @@ public class Menu extends javax.swing.JPanel {
         initComponents();
         this.main = main;
         
-        UtilsStyles.menuButton(lDashboard);
-        UtilsStyles.menuButton(lFornecedores);
-        UtilsStyles.menuButton(lPedidos);
-        UtilsStyles.menuButton(lProdutos);
-        UtilsStyles.menuButton(lPerfil);
-        UtilsStyles.menuButton(lNotasFiscais);
-        UtilsStyles.menuButton(lRelatorios);
-        UtilsStyles.menuButton(lUsuarios);
+        Styles.menuButton(lDashboard);
+        Styles.menuButton(lFornecedores);
+        Styles.menuButton(lPedidos);
+        Styles.menuButton(lProdutos);
+        Styles.menuButton(lPerfil);
+        Styles.menuButton(lNotasFiscais);
+        Styles.menuButton(lRelatorios);
+        Styles.menuButton(lUsuarios);
     }
 
     /**
@@ -132,19 +133,19 @@ public class Menu extends javax.swing.JPanel {
     private void lDashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lDashboardMouseClicked
         // TODO add your handling code here:
         if (!evt.getComponent().isEnabled()) return;
-        UtilsElements.updateLayout("dashboard");
+        Navigation.updateLayout("dashboard");
     }//GEN-LAST:event_lDashboardMouseClicked
 
     private void lFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lFornecedoresMouseClicked
         // TODO add your handling code here:
         if (!evt.getComponent().isEnabled()) return;
-        UtilsElements.updateLayout("fornecedores");
+        Navigation.updateLayout("fornecedores");
     }//GEN-LAST:event_lFornecedoresMouseClicked
 
     private void lNotasFiscaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lNotasFiscaisMouseClicked
         // TODO add your handling code here:
         if (!evt.getComponent().isEnabled()) return;
-        UtilsElements.updateLayout("notas");
+        Navigation.updateLayout("notas");
     }//GEN-LAST:event_lNotasFiscaisMouseClicked
 
 

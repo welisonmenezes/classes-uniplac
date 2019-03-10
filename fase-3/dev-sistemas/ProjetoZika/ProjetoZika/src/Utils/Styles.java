@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
@@ -22,7 +23,7 @@ import javax.swing.JTextField;
  *
  * @author Welison
  */
-public class UtilsStyles {
+public class Styles {
     
     public static void defaultButton(JButton btn) {
         // styles
@@ -95,5 +96,14 @@ public class UtilsStyles {
         btn.setPreferredSize(new Dimension(35, 35));
         btn.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
         btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa.png")));
+    }
+    
+    public static void internalFrame(JFrame frame) {
+        Methods.makePanelRelativeSize(frame, 450, 350);
+        Methods.positionFrameInCenter(frame);
+        frame.setAlwaysOnTop(true);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.requestFocus();
     }
 }

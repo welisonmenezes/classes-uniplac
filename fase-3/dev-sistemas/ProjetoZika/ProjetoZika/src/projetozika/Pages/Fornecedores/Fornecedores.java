@@ -6,14 +6,14 @@
 package projetozika.Pages.Fornecedores;
 
 import Models.BaseLayout;
-import Utils.UtilsElements;
-import Utils.UtilsStyles;
+import Utils.Dialogs;
+import Utils.Navigation;
+import Utils.Pagination;
+import Utils.Styles;
 import java.awt.BorderLayout;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -21,7 +21,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 /**
  *
@@ -30,8 +29,6 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 public class Fornecedores extends Models.BaseLayout {
     
     JButton addMore;
-    JButton next;
-    JButton prev;
     BaseLayout self;
     JTable tabela;
     JTextField fFilter;
@@ -124,18 +121,18 @@ public class Fornecedores extends Models.BaseLayout {
     
     public void addFilterContent() {
         addMore = new JButton("Criar Novo");
-        UtilsStyles.defaultButton(addMore);
+        Styles.defaultButton(addMore);
         
         fFilter = new JTextField();
-        UtilsStyles.defaultField(fFilter);
+        Styles.defaultField(fFilter);
         fFilter.setPreferredSize( new Dimension( 150, 39 ) );
         
         lSearch = new JLabel("Buscar");
-        UtilsStyles.defaultLabel(lSearch);
+        Styles.defaultLabel(lSearch);
         lSearch.setPreferredSize( new Dimension( 45, 39 ) );
         
         bSearch = new JButton("");
-        UtilsStyles.searchButton(bSearch);
+        Styles.searchButton(bSearch);
         
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
@@ -149,43 +146,28 @@ public class Fornecedores extends Models.BaseLayout {
         addMore.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                UtilsElements.updateLayout("addFornecedor");
+                Navigation.updateLayout("addFornecedor");
             }
         });
         
         bSearch.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                UtilsElements.showLoadPopup(self);
+                Dialogs.showLoadPopup(self);
                 timerTest();
             }
         });
     }
     
     public void addBottomContent() {
-        next = new JButton("Next");
-        prev = new JButton("Previous");
-        UtilsStyles.defaultButton(next);
-        UtilsStyles.defaultButton(prev);
-        pBottom.add(prev);
-        pBottom.add(next);
-        
-        prev.addActionListener(new ActionListener(){
+        Pagination pag = new Pagination(){
             @Override
-            public void actionPerformed(ActionEvent e) {
-                UtilsElements.showLoadPopup(self);
+            public void callbackPagination() {
+                Dialogs.showLoadPopup(self);
                 timerTest();
             }
-        });
-        
-        next.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UtilsElements.showLoadPopup(self);
-                
-                timerTest();
-            }
-        });
+        };
+        pag.makePagination(5, pBottom);
     }
     
     private Timer t;
@@ -194,7 +176,7 @@ public class Fornecedores extends Models.BaseLayout {
         t = new Timer(2000,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UtilsElements.hideLoadPopup(self);
+                Dialogs.hideLoadPopup(self);
                 
                 String [] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
                 Object [][] dados = {

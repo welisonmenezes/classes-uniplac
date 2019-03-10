@@ -6,7 +6,7 @@
 package projetozika;
 
 import projetozika.Pages.Menu;
-import Utils.UtilsElements;
+import Utils.Methods;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -34,13 +34,13 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void initLayout() {
-        UtilsElements.makeFrameFullSize(this);
+        Methods.makeFrameFullSize(this);
         
         jBG = new JPanel();
         jBODY = new JPanel();
         jSIDE = new JPanel();
         
-        UtilsElements.setJBody(jBODY);
+        Methods.setJBody(jBODY);
         
         this.setLayout(new BorderLayout());
         this.add(jBG);
@@ -54,7 +54,7 @@ public class Main extends javax.swing.JFrame {
         jBG.add(jSIDE, BorderLayout.WEST);
         jBG.add(jBODY, BorderLayout.CENTER);
 
-        UtilsElements.setJBody(jBODY);
+        Methods.setJBody(jBODY);
     }
 
     /**

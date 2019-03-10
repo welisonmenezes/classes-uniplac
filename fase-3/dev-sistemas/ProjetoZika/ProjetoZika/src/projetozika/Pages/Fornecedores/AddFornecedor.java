@@ -5,27 +5,18 @@
  */
 package projetozika.Pages.Fornecedores;
 
-import Utils.UtilsElements;
-import Utils.UtilsStyles;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import Utils.Dialogs;
+import Utils.Navigation;
+import Utils.Styles;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -34,7 +25,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * @author Welison
  */
 public class AddFornecedor extends Models.BaseFrame {
-    private JFrame self;
+    private final JFrame self;
     private JPanel bg;
     /**
      * Creates new form AddFornecedor
@@ -43,7 +34,7 @@ public class AddFornecedor extends Models.BaseFrame {
         this.self = this;
         initComponents();
         
-        UtilsElements.configInternalFrame(this);
+        Styles.internalFrame(this);
         
         createBaseLayout();
         addTopContent("Adicionar Fornecedor");
@@ -51,7 +42,7 @@ public class AddFornecedor extends Models.BaseFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                UtilsElements.currentPage = "fornecedores";
+                Navigation.currentPage = "fornecedores";
             }
         });
         
@@ -65,38 +56,38 @@ public class AddFornecedor extends Models.BaseFrame {
 
         
         JLabel lname = new JLabel("Nome");
-        UtilsStyles.defaultLabel(lname);
+        Styles.defaultLabel(lname);
         bg.add(lname, new AbsoluteConstraints(0, 0, -1, -1));
 
         JTextField fname = new JTextField();
-        UtilsStyles.defaultField(fname);
+        Styles.defaultField(fname);
         bg.add(fname, new AbsoluteConstraints(0, 40, -1, -1));
         
         JLabel lemail = new JLabel("Email");
-        UtilsStyles.defaultLabel(lemail);
+        Styles.defaultLabel(lemail);
         bg.add(lemail, new AbsoluteConstraints(220, 0, -1, -1));
 
         JTextField femail = new JTextField();
-        UtilsStyles.defaultField(femail);
+        Styles.defaultField(femail);
         bg.add(femail, new AbsoluteConstraints(220, 40, -1, -1));
         
         JLabel lcnpj = new JLabel("CNPJ");
-        UtilsStyles.defaultLabel(lcnpj);
+        Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(0, 90, -1, -1));
 
         JTextField fcnpj = new JTextField();
-        UtilsStyles.defaultField(fcnpj);
+        Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(0, 130, -1, -1));
         
         JButton bSave = new JButton("Salvar");
-        UtilsStyles.defaultButton(bSave);
+        Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
         
         bSave.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                UtilsElements.showLoadPopup(bg);
+                Dialogs.showLoadPopup(bg);
                 timerTest();
             }
         });
@@ -110,7 +101,7 @@ public class AddFornecedor extends Models.BaseFrame {
         t = new Timer(2000,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UtilsElements.hideLoadPopup(bg);
+                Dialogs.hideLoadPopup(bg);
                 self.dispose();
                 t.stop();
             }

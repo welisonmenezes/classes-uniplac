@@ -5,8 +5,9 @@
  */
 package projetozika;
 
-import Utils.UtilsElements;
-import Utils.UtilsStyles;
+import Utils.Navigation;
+import Utils.Methods;
+import Utils.Styles;
 import javax.swing.JFrame;
 
 /**
@@ -20,11 +21,11 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-        UtilsElements.positionFrameInCenter(this);
+        Methods.positionFrameInCenter(this);
         
-        UtilsStyles.defaultButton(jButton1);
-        UtilsStyles.defaultField(fEmail);
-        UtilsStyles.defaultField(fSenha);
+        Styles.defaultButton(jButton1);
+        Styles.defaultField(fEmail);
+        Styles.defaultField(fSenha);
     }
 
     /**
@@ -102,8 +103,8 @@ public class Login extends javax.swing.JFrame {
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
-            UtilsElements.updateLayout("");
-            UtilsElements.updateLayout("dashboard");
+            Navigation.updateLayout("");
+            Navigation.updateLayout("dashboard");
         } else {
             lInfo.setText("Login ou senha inválidos");
         }

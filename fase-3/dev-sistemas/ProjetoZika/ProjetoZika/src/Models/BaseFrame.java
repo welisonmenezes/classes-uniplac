@@ -53,10 +53,6 @@ public class BaseFrame extends javax.swing.JFrame{
         this.pCenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         this.pCenter.setOpaque(false);
         
-        //this.pFilter.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        //this.pFilter.setBorder(BorderFactory.createEmptyBorder(0, 0, 25, 0));
-        //this.pFilter.setOpaque(false);
-        
         this.pBottom.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.pBottom.setBorder(BorderFactory.createEmptyBorder(25, 0, 0, 0));
         this.pBottom.setOpaque(false);
@@ -64,7 +60,6 @@ public class BaseFrame extends javax.swing.JFrame{
         this.add(this.pBG, BorderLayout.CENTER);
         this.pBG.add(this.pTop, BorderLayout.NORTH);
         this.pBG.add(this.pCenter, BorderLayout.CENTER);
-        //this.pCenter.add(this.pFilter, BorderLayout.NORTH);
         this.pBG.add(this.pBottom, BorderLayout.SOUTH);
     }
 }
