@@ -5,6 +5,7 @@
  */
 package Utils;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -55,6 +56,14 @@ public class Styles {
         field.setCaretColor(new Color(255, 255, 255));
         field.setOpaque(false);
         field.setPreferredSize(new Dimension(200, 39));
+    }
+    
+    public static void defaultDateChooser(JDateChooser fDate) {
+        fDate.setBackground(new Color(55, 57, 59));
+        fDate.setForeground(new Color(255, 255, 255));
+        fDate.getDateEditor().getUiComponent().setBackground(new Color(55, 57, 59));
+        fDate.getDateEditor().getUiComponent().setForeground(new Color(255, 255, 255));
+        fDate.setPreferredSize(new Dimension(200, 39));
     }
     
     public static void defaultComboBox(JComboBox field) {

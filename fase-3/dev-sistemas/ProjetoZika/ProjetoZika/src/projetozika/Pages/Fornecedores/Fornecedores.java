@@ -14,6 +14,7 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
 import Utils.Styles;
+import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Welison
@@ -43,6 +43,7 @@ public class Fornecedores extends Templates.BaseLayout {
     JButton bSearch;
     public static DefaultTableModel tableModel;
     private JComboBox<String> cFilter;
+    private JDateChooser fDate;
 
     /**
      * Creates new form NewJPanel
@@ -135,9 +136,14 @@ public class Fornecedores extends Templates.BaseLayout {
         Styles.defaultLabel(lSearch);
         lSearch.setPreferredSize( new Dimension( 65, 39 ) );
         
-        cFilter = new javax.swing.JComboBox<>();
+        cFilter = new JComboBox();
         cFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Cnpj", "Telefone" }));
         Styles.defaultComboBox(cFilter);
+        cFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                System.out.println(cFilter.getSelectedItem().toString());
+            }
+        });
         
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
@@ -145,9 +151,13 @@ public class Fornecedores extends Templates.BaseLayout {
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
+        //fDate = new JDateChooser();
+        //Styles.defaultDateChooser(fDate);
+        
         pFilter.add(lSearch);
         pFilter.add(cFilter);
         pFilter.add(fFilter);
+        //pFilter.add(fDate);
         pFilter.add(bSearch);
         pFilter.add(hideL);
         pFilter.add(addMore);
