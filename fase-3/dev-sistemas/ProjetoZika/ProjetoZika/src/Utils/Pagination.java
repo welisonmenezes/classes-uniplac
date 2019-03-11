@@ -4,9 +4,12 @@
  * and open the template in the editor.
  */
 package Utils;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
@@ -16,9 +19,19 @@ import javax.swing.JComponent;
  */
 public class Pagination {
     
-    public void Pagination() {}
+    private int page;
+    private JComponent context;
+    private int total;
     
-    public void makePagination(int total, JComponent context) {
+    public Pagination(JComponent c, int total) {
+        this.page = 1;
+        this.context = c;
+        this.total = total;
+        
+        makePagination();
+    }
+    
+    private void makePagination() {
         int pages = 5;
         JButton next = new JButton("Next");
         JButton prev = new JButton("Previous");
@@ -31,10 +44,20 @@ public class Pagination {
             Styles.defaultButton(pBtn);
             pBtn.setPreferredSize(new Dimension(35, 35));
             
+            if(i == 1) {
+                pBtn.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
+                pBtn.setForeground(new Color(255, 255, 255));
+            }
+            
             pBtn.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    callbackPagination();
+                    if(e.getSource() instanceof JButton){
+                        JButton tmp = (JButton) e.getSource();
+                        page = Integer.parseInt(tmp.getText());
+                        updateActivePage();
+                        callbackPagination();
+                    }
                 }
             });
             
@@ -45,19 +68,51 @@ public class Pagination {
         prev.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                callbackPagination();
+                if(e.getSource() instanceof JButton){
+                    if(page > 1) {
+                        page--;
+                        updateActivePage();
+                        callbackPagination();
+                    }
+                }
             }
         });
         
         next.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                callbackPagination();
+                if(e.getSource() instanceof JButton){
+                    if(page < total) {
+                        page++;
+                        updateActivePage();
+                        callbackPagination();
+                    }
+                }
             }
         });
     }
     
     public void callbackPagination() {
         System.out.println("Override it");
+    }
+    
+    public void updateActivePage() {
+        Component[] comps = context.getComponents();
+        for(int i = 0; i < comps.length; i++) {
+            if (comps[i] instanceof JButton) {
+                JButton tmp = (JButton) comps[i];
+                if(this.page == i){
+                    tmp.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
+                    tmp.setForeground(new Color(255, 255, 255));
+                } else {
+                    tmp.setForeground(new Color(8, 253, 216));
+                    tmp.setBorder(BorderFactory.createLineBorder(new Color(8, 253, 216)));
+                }
+            }
+        }
+    }
+    
+    public int getCurrentPage() {
+        return page;
     }
 }

@@ -179,14 +179,14 @@ public class Fornecedores extends Templates.BaseLayout {
     }
     
     public void addBottomContent() {
-        Pagination pag = new Pagination(){
+        Pagination pag = new Pagination(pBottom, 5){
             @Override
             public void callbackPagination() {
+                System.out.println(this.getCurrentPage());
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        pag.makePagination(5, pBottom);
     }
     
     private Timer t;
