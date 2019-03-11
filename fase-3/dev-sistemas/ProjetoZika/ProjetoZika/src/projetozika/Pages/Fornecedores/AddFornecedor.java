@@ -9,15 +9,20 @@ import Models.Fornecedor;
 import Utils.Dialogs;
 import Utils.Navigation;
 import Utils.Styles;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -29,22 +34,30 @@ public class AddFornecedor extends Templates.BaseFrame {
     private final JFrame self;
     private JPanel bg;
     private JTextField fname;
+    private JLabel lname;
+    private JLabel ename;
     private JTextField ftel;
+    private JLabel ltel;
+    private JLabel etel;
     private JTextField fcnpj;
+    private JLabel lcnpj;
+    private JLabel ecnpj;
     private JButton bSave;
+    private String mode;
    
     public AddFornecedor() {
         this.self = this;
+        this.mode = "add";
         initPage("Adicionar Fornecedor");
     }
     
     public AddFornecedor(String id, String mode) {
         this.self = this;
-        
-        if(mode.equals("view")){
+        this.mode = mode;
+        if(this.mode.equals("view")){
             initPage("Ver Fornecedor");
             disabledFields();
-        } else if (mode.equals("edit")){
+        } else if (this.mode.equals("edit")){
             initPage("Editar Fornecedor");
         }
         
@@ -89,7 +102,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         bg.setOpaque(false);
 
         
-        JLabel lname = new JLabel("Nome");
+        lname = new JLabel("Nome");
         Styles.defaultLabel(lname);
         bg.add(lname, new AbsoluteConstraints(0, 0, -1, -1));
 
@@ -97,7 +110,11 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.defaultField(fname);
         bg.add(fname, new AbsoluteConstraints(0, 40, -1, -1));
         
-        JLabel ltel = new JLabel("Telefone");
+        ename = new JLabel("");
+        Styles.errorLabel(ename);
+        bg.add(ename, new AbsoluteConstraints(0, 75, -1, -1));
+        
+        ltel = new JLabel("Telefone");
         Styles.defaultLabel(ltel);
         bg.add(ltel, new AbsoluteConstraints(220, 0, -1, -1));
 
@@ -105,13 +122,21 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.defaultField(ftel);
         bg.add(ftel, new AbsoluteConstraints(220, 40, -1, -1));
         
-        JLabel lcnpj = new JLabel("CNPJ");
+        etel = new JLabel("");
+        Styles.errorLabel(etel);
+        bg.add(etel, new AbsoluteConstraints(220, 75, -1, -1));
+        
+        lcnpj = new JLabel("CNPJ");
         Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(0, 90, -1, -1));
 
         fcnpj = new JTextField();
         Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(0, 130, -1, -1));
+        
+        ecnpj = new JLabel("");
+        Styles.errorLabel(ecnpj);
+        bg.add(ecnpj, new AbsoluteConstraints(0, 165, -1, -1));
         
         bSave = new JButton("Salvar");
         Styles.defaultButton(bSave);
@@ -121,8 +146,23 @@ public class AddFornecedor extends Templates.BaseFrame {
         bSave.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(bg);
-                timerTest();
+                    
+                if(fname.getText().equals("") || ftel.getText().equals("") || fcnpj.getText().equals("")){
+                    if(fname.getText().equals("")){
+                        ename.setText("Campo obrigatório");
+                    }
+                    if(ftel.getText().equals("")) {
+                        etel.setText("Campo obrigatório");
+                    }
+                    if(fcnpj.getText().equals("")) {
+                        ecnpj.setText("Campo obrigatório");
+                    }
+                } else {
+                    Dialogs.showLoadPopup(bg);
+                    timerTest();
+                }
+                
+                
             }
         });
         
@@ -136,7 +176,27 @@ public class AddFornecedor extends Templates.BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
-                self.dispose();
+                
+                JTable tabela = Fornecedores.tabela;
+                DefaultTableModel tableModel = Fornecedores.tableModel;
+                int row = tabela.getSelectedRow();
+                    
+                if (mode.equals("edit")) {
+                    tableModel.setValueAt(fname.getText() , row, 1);
+                    tableModel.setValueAt(fcnpj.getText() , row, 2);
+                    tableModel.setValueAt(ftel.getText() , row, 3);
+                    self.dispose();
+                    JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
+
+                } else if(mode.equals("add")) {
+                    tableModel.addRow(new Object[]{"5454",fname.getText(),fcnpj.getText(),ftel.getText(),"Editar","Excluir","Ver"});
+                    self.dispose();
+                    JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                } else {
+                    self.dispose();
+                }
+                
+                
                 t.stop();
             }
         });

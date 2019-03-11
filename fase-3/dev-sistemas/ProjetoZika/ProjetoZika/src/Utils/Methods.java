@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import projetozika.Main;
 
 /**
@@ -81,5 +82,10 @@ public class Methods {
         int row = table.getSelectedRow();
         Object id = table.getValueAt(row, 0);
         return id.toString();
+    }
+    
+    public static void removeSelectedTableRow(JTable table, DefaultTableModel tableModel){
+        int row = table.getSelectedRow();
+        tableModel.removeRow(row);
     }
 }

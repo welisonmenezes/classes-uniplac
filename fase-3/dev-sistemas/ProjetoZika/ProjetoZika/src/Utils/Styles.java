@@ -71,6 +71,12 @@ public class Styles {
         label.setFont(new Font("Tahoma", 0, 12));
     }
     
+    public static void errorLabel(JLabel label) {
+        label.setForeground(new Color(255, 0, 0));
+        label.setFont(new Font("Tahoma", 0, 12));
+        label.setPreferredSize( new Dimension( 150, 20 ) );
+    }
+    
     public static void menuButton(JLabel label) {
         label.setBackground(new Color(7, 7, 7));
         label.setFont(new Font("Tahoma", 1, 14));

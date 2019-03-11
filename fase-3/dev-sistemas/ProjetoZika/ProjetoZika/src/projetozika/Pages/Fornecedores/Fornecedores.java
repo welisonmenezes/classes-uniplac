@@ -37,11 +37,11 @@ public class Fornecedores extends Templates.BaseLayout {
     
     JButton addMore;
     BaseLayout self;
-    JTable tabela;
+    public static JTable tabela;
     JTextField fFilter;
     JLabel lSearch;
     JButton bSearch;
-    DefaultTableModel tableModel;
+    public static DefaultTableModel tableModel;
     private JComboBox<String> cFilter;
 
     /**
@@ -100,6 +100,7 @@ public class Fornecedores extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o item " + id + "?", "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
+                    Methods.removeSelectedTableRow(tabela, tableModel);
                    JOptionPane.showMessageDialog(null, "Item " + id + " deletado com sucesso!");
                 }
             }
