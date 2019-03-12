@@ -174,12 +174,17 @@ public class Fornecedores extends Templates.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.showLoadPopup(self);
                 timerTest();
+                pagination(3);
             }
         });
     }
     
     public void addBottomContent() {
-        Pagination pag = new Pagination(pBottom, 5){
+        this.pagination(5);
+    }
+    
+    public void pagination(int total) {
+        Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
                 System.out.println(this.getCurrentPage());
@@ -222,8 +227,8 @@ public class Fornecedores extends Templates.BaseLayout {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setBackground(new java.awt.Color(37, 38, 39));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
+        setMinimumSize(new java.awt.Dimension(1, 1));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 

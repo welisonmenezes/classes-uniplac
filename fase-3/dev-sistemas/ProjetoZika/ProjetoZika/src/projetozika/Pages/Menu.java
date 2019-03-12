@@ -6,7 +6,6 @@
 package projetozika.Pages;
 
 import Utils.Navigation;
-import Utils.Methods;
 import Utils.Styles;
 import javax.swing.JFrame;
 import projetozika.Login;
@@ -145,7 +144,7 @@ public class Menu extends javax.swing.JPanel {
     private void lNotasFiscaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lNotasFiscaisMouseClicked
         // TODO add your handling code here:
         if (!evt.getComponent().isEnabled()) return;
-        Navigation.updateLayout("notas");
+        Navigation.updateLayout("notasFiscais");
     }//GEN-LAST:event_lNotasFiscaisMouseClicked
 
 

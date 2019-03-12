@@ -6,6 +6,7 @@
 package Templates;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -26,6 +27,10 @@ public class BaseLayout extends javax.swing.JPanel {
         pCenter = new JPanel();
         pFilter = new JPanel();
         pBottom = new JPanel();
+        
+        setBackground(new Color(37, 38, 39));
+        setBorder(BorderFactory.createEmptyBorder(50, 25, 50, 25));
+        setLayout(new BorderLayout());
     }
     
     public void addTopContent(String title) {

@@ -16,6 +16,7 @@ import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.AddFornecedor;
 import projetozika.Pages.Fornecedores.Fornecedores;
 import projetozika.Pages.NotFound;
+import projetozika.Pages.NotasFiscais.NotasFiscais;
 
 /**
  *
@@ -78,6 +79,10 @@ public class Navigation {
                 tmpFrame = new AddFornecedor();
                 tmpFrame.setVisible(true);
                 break;
+            case "notasFiscais":
+                updateSatusMenu("notasFiscais");
+                tmpPanel = new NotasFiscais();
+                break;
             default:
                 setDefaultPage();
         }
@@ -90,7 +95,7 @@ public class Navigation {
             tmpFrame = null;
         }
         currentPage = pageName;
-        Methods.clearStage();
+        Methods.clearStage(Methods.getJBody());
     }
     
     private static void addNewPage() {

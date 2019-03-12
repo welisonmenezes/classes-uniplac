@@ -53,8 +53,7 @@ public class Methods {
        return  jBody;
     }
     
-    public static void clearStage() {
-        JPanel jb = getJBody();
+    public static void clearStage(JPanel jb) {
         jb.removeAll();
         jb.revalidate();
     }

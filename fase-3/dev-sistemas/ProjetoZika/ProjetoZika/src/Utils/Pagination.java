@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  *
@@ -20,26 +21,26 @@ import javax.swing.JComponent;
 public class Pagination {
     
     private int page;
-    private JComponent context;
+    private JPanel context;
     private int total;
     
     public Pagination(JComponent c, int total) {
         this.page = 1;
-        this.context = c;
+        this.context = (JPanel) c;
         this.total = total;
         
+        Methods.clearStage(context);
         makePagination();
     }
     
     private void makePagination() {
-        int pages = 5;
         JButton next = new JButton("Next");
         JButton prev = new JButton("Previous");
         Styles.defaultButton(next);
         Styles.defaultButton(prev);
         
         context.add(prev);
-        for(int i = 1; i <= pages; i++) {
+        for(int i = 1; i <= total; i++) {
             JButton pBtn = new JButton("" + i);
             Styles.defaultButton(pBtn);
             pBtn.setPreferredSize(new Dimension(35, 35));
