@@ -42,7 +42,7 @@ public class Teste extends javax.swing.JFrame {
         jScrollPane1.setBackground(new java.awt.Color(255, 0, 51));
         jScrollPane1.setOpaque(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("teste"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)), "teste", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 51, 51))); // NOI18N
         jPanel1.setForeground(new java.awt.Color(255, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

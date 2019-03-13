@@ -66,7 +66,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JList<String> lSugestoes;
     private JLabel addFornecedor;
     
-    private JPanel panelProduto;
+    private JPanel panelAddProduto;
+    private JPanel panelListarProdutos;
     
     public AddNotaFiscal() {
         
@@ -225,10 +226,15 @@ public class AddNotaFiscal extends Templates.BaseFrame {
             }
         });
         
-        panelProduto = new SelecionarProduto();
-        panelProduto.setVisible(true);
-        panelProduto.setPreferredSize(new Dimension(360, 300));
-        bg.add(panelProduto, new AbsoluteConstraints(570, 40, -1, -1));
+        panelAddProduto = new SelecionarProduto();
+        panelAddProduto.setVisible(true);
+        panelAddProduto.setPreferredSize(new Dimension(375, 250));
+        bg.add(panelAddProduto, new AbsoluteConstraints(570, 20, -1, -1));
+        
+        panelListarProdutos = new ListarProdutos();
+        panelListarProdutos.setVisible(true);
+        panelListarProdutos.setPreferredSize(new Dimension(945, 300));
+        bg.add(panelListarProdutos, new AbsoluteConstraints(0, 300, -1, -1));
         
         bgScroll.setViewportView(bg);
         pCenter.add(bgScroll);

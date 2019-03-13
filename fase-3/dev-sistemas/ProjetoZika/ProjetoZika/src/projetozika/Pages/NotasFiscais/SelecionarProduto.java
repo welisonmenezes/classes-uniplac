@@ -21,10 +21,11 @@ public class SelecionarProduto extends javax.swing.JPanel {
     public SelecionarProduto() {
         initComponents();
         
-        TitledBorder borderTitle = BorderFactory.createTitledBorder("Selecionar/Add Produto");
+        TitledBorder borderTitle = BorderFactory.createTitledBorder("Adicionar/Selecionar Produto");
+        borderTitle.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
         borderTitle.setTitleColor(new Color(255, 255, 255));
         setBorder(borderTitle);
-        setForeground(new Color(255, 102, 102));
+        //setForeground(new Color(255, 102, 102));
         setBackground(new Color(37, 38, 39));
     }
 
