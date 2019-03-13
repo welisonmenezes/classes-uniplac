@@ -30,6 +30,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  */
 public class AddFornecedor extends Templates.BaseFrame {
     private final JFrame self;
+    private String mode;
     private JPanel bg;
     private JTextField fname;
     private JLabel lname;
@@ -41,7 +42,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JLabel lcnpj;
     private JLabel ecnpj;
     private JButton bSave;
-    private String mode;
+    
    
     public AddFornecedor() {
         this.self = this;
@@ -81,7 +82,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     }
     
     private void fillFields(String id) {
-        Fornecedor f = new Fornecedor("xxx", "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+        Fornecedor f = new Fornecedor(111, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
         fname.setText(f.getNome());
         ftel.setText(f.getTelefone());
         fcnpj.setText(f.getCnpj());

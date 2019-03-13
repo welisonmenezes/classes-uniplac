@@ -6,6 +6,7 @@
 package Utils;
 
 import com.toedter.calendar.JDateChooser;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -14,12 +15,15 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
+import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneLayout;
 
 /**
  *
@@ -124,10 +128,30 @@ public class Styles {
     
     public static void internalFrame(JFrame frame) {
         Methods.makePanelRelativeSize(frame, 450, 350);
+        _internalFramesBase(frame);
+    }
+    
+    public static void internalFrame(JFrame frame, int width, int height) {
+        Methods.makePanelRelativeSize(frame, width, height);
+        _internalFramesBase(frame);
+    }
+    
+    private static void _internalFramesBase(JFrame frame) {
+        frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+        frame.setBackground(new Color(37, 38, 39));
         Methods.positionFrameInCenter(frame);
         frame.setAlwaysOnTop(true);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         frame.requestFocus();
+    }
+    
+    public static void resetScrollPanel(JScrollPane panel) {
+        panel.setLayout(new ScrollPaneLayout());
+        panel.getViewport().setOpaque(false);
+        panel.getViewport().setBackground(new Color(37, 38, 39));
+        panel.setBorder(createEmptyBorder());
+        panel.setViewportBorder(null);
     }
 }

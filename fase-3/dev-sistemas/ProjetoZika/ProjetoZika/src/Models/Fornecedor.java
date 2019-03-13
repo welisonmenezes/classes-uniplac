@@ -10,7 +10,7 @@ package Models;
  * @author Welison
  */
 public class Fornecedor {
-    private String ID;
+    private int Id;
     private String Nome;
     private String Cnpj;
     private String Telefone;
@@ -22,20 +22,20 @@ public class Fornecedor {
         
     }
     
-    public Fornecedor(String id, String nome, String cnpj, String telefone, String data){
-        this.ID = id;
+    public Fornecedor(int id, String nome, String cnpj, String telefone, String data){
+        this.Id = id;
         this.Nome = nome;
         this.Cnpj = cnpj;
         this.Telefone = telefone;
         this.Data = data;
     }
 
-    public String getID() {
-        return ID;
+    public int getID() {
+        return Id;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
+    public void setID(int ID) {
+        this.Id = ID;
     }
 
     public String getNome() {

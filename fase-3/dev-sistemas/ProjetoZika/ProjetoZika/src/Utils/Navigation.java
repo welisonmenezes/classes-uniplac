@@ -16,6 +16,7 @@ import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.AddFornecedor;
 import projetozika.Pages.Fornecedores.Fornecedores;
 import projetozika.Pages.NotFound;
+import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
 
 /**
@@ -82,6 +83,11 @@ public class Navigation {
             case "notasFiscais":
                 updateSatusMenu("notasFiscais");
                 tmpPanel = new NotasFiscais();
+                break;
+            case "addNotaFiscal":
+                updateSatusMenu("notasFiscais");
+                tmpFrame = new AddNotaFiscal();
+                tmpFrame.setVisible(true);
                 break;
             default:
                 setDefaultPage();

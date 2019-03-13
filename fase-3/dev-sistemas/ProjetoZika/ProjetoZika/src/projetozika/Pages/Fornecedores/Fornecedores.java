@@ -35,13 +35,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Fornecedores extends Templates.BaseLayout {
     
-    JButton addMore;
     BaseLayout self;
     public static JTable tabela;
+    public static DefaultTableModel tableModel;
+    JButton addMore;
     JTextField fFilter;
     JLabel lSearch;
     JButton bSearch;
-    public static DefaultTableModel tableModel;
     private JComboBox<String> cFilter;
     private JDateChooser fDate;
 
@@ -77,7 +77,7 @@ public class Fornecedores extends Templates.BaseLayout {
         };
         // adiciona linhas
         for(int i = 0; i < 25; i++) {
-            Fornecedor f = new Fornecedor(""+i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+            Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
             Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
             tableModel.addRow(data);
         }
@@ -207,7 +207,7 @@ public class Fornecedores extends Templates.BaseLayout {
                 tableModel.fireTableDataChanged();
                 // adiciona novas linhas
                 for(int i = 26; i < 35; i++) {
-                    Fornecedor f = new Fornecedor(""+i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+                    Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
                     Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
                     tableModel.addRow(data);
                 }
