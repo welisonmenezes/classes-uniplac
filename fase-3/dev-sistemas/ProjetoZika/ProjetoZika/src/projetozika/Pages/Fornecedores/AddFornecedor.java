@@ -23,6 +23,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 
 /**
  *
@@ -42,12 +43,21 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JLabel lcnpj;
     private JLabel ecnpj;
     private JButton bSave;
+    private JPanel panelCaller;
     
    
     public AddFornecedor() {
         this.self = this;
         this.mode = "add";
         initPage("Adicionar Fornecedor");
+    }
+    
+    public AddFornecedor(JPanel panelCaller) {
+        this.self = this;
+        this.mode = "add";
+        initPage("Adicionar Fornecedor");
+        this.mode = "nota";
+        this.panelCaller = panelCaller;
     }
     
     public AddFornecedor(String id, String mode) {
@@ -191,6 +201,9 @@ public class AddFornecedor extends Templates.BaseFrame {
                     tableModel.addRow(new Object[]{"5454",fname.getText(),fcnpj.getText(),ftel.getText(),"Editar","Excluir","Ver"});
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                } else if(mode.equals("nota")){
+                    AddNotaFiscal.fcnpj.setText(fcnpj.getText());
+                    self.dispose();
                 } else {
                     self.dispose();
                 }

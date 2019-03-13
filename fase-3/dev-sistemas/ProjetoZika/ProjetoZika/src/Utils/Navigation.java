@@ -89,6 +89,11 @@ public class Navigation {
                 tmpFrame = new AddNotaFiscal();
                 tmpFrame.setVisible(true);
                 break;
+            case "addFornecedorNota":
+                updateSatusMenu("notasFiscais");
+                tmpFrame = new AddFornecedor(tmpPanel);
+                tmpFrame.setVisible(true);
+                break;
             default:
                 setDefaultPage();
         }
@@ -96,9 +101,11 @@ public class Navigation {
     }
     
     private static void resetLayout(String pageName) {
-        if (tmpFrame != null) {
-            tmpFrame.dispose();
-            tmpFrame = null;
+        if (!pageName.equals("addFornecedorNota")){
+            if (tmpFrame != null) {;
+                tmpFrame.dispose();
+                tmpFrame = null;
+            }
         }
         currentPage = pageName;
         Methods.clearStage(Methods.getJBody());

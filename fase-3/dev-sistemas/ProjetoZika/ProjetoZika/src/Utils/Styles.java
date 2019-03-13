@@ -97,7 +97,7 @@ public class Styles {
         label.setFont(new Font("Tahoma", 1, 14));
         label.setForeground(new Color(8, 253, 216));
         label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        label.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
+        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
         label.setOpaque(true);
         /*
         label.addMouseListener(new MouseAdapter() {
@@ -124,7 +124,7 @@ public class Styles {
     public static void searchButton(JButton btn) {
         btn.setContentAreaFilled(false);
         btn.setPreferredSize(new Dimension(35, 35));
-        btn.setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa.png")));
     }
     

@@ -42,6 +42,8 @@ public class Teste extends javax.swing.JFrame {
         jScrollPane1.setBackground(new java.awt.Color(255, 0, 51));
         jScrollPane1.setOpaque(false);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("teste"));
+        jPanel1.setForeground(new java.awt.Color(255, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

@@ -9,9 +9,12 @@ import Utils.Dialogs;
 import Utils.Navigation;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -50,7 +53,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JTextField fserie;
     private JLabel  eserie;
     private JLabel lcnpj;
-    private JTextField fcnpj;
+    public static JTextField fcnpj;
     private JLabel  ecnpj;
     private JLabel lvalor;
     private JTextField fvalor;
@@ -61,6 +64,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JButton bSave;
     private JScrollPane scrollList;
     private JList<String> lSugestoes;
+    private JLabel addFornecedor;
+    
+    private JPanel panelProduto;
     
     public AddNotaFiscal() {
         
@@ -73,12 +79,13 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                 scrollList.setVisible(false);
             }
         });
+       
     }
     
     private void initPage(String title) {
         
         initComponents();
-        Styles.internalFrame(this, 850, 450);
+        Styles.internalFrame(this, 1000, 600);
         
         createBaseLayout();
         addTopContent(title);
@@ -121,6 +128,17 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(220, 40, -1, -1));
         
+        addFornecedor = new JLabel("<html><u>Novo Fornecedor</u></html>");
+        Styles.defaultLabel(addFornecedor);
+        addFornecedor.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        bg.add(addFornecedor, new AbsoluteConstraints(430, 40, -1, -1));
+        
+        addFornecedor.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                Navigation.updateLayout("addFornecedorNota");
+            }
+        });
+        
         scrollList = new JScrollPane();
         lSugestoes = new JList<>();
         String[] strings = {};
@@ -138,6 +156,16 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         lSugestoes.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 fcnpj.setText(lSugestoes.getSelectedValue());
+                scrollList.setVisible(false);
+            }
+        });
+        
+        lSugestoes.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {}
+
+            @Override
+            public void focusLost(FocusEvent e) {
                 scrollList.setVisible(false);
             }
         });
@@ -196,6 +224,11 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                 
             }
         });
+        
+        panelProduto = new SelecionarProduto();
+        panelProduto.setVisible(true);
+        panelProduto.setPreferredSize(new Dimension(360, 300));
+        bg.add(panelProduto, new AbsoluteConstraints(570, 40, -1, -1));
         
         bgScroll.setViewportView(bg);
         pCenter.add(bgScroll);
