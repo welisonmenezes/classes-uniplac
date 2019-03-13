@@ -14,6 +14,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import static javax.swing.BorderFactory.createEmptyBorder;
 import javax.swing.ImageIcon;
@@ -21,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
@@ -153,5 +155,16 @@ public class Styles {
         panel.getViewport().setBackground(new Color(37, 38, 39));
         panel.setBorder(createEmptyBorder());
         panel.setViewportBorder(null);
+    }
+    
+    public static void defaultSuggestions(JScrollPane panel, JList list, String[] model) {
+        list.setModel(new AbstractListModel<String>() {
+            String[] strings = model;
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+            });
+        panel.setPreferredSize( new Dimension( 200, 200 ) );
+        panel.setViewportView(list);
+        panel.setVisible(false);
     }
 }

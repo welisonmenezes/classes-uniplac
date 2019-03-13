@@ -12,9 +12,15 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,12 +59,20 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JDateChooser fdata;
     private JLabel  edata;
     private JButton bSave;
+    private JScrollPane scrollList;
+    private JList<String> lSugestoes;
     
     public AddNotaFiscal() {
         
         this.self = this;
         this.mode = "add";
         initPage("Adicionar Nota Fiscal");
+        
+        this.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                scrollList.setVisible(false);
+            }
+        });
     }
     
     private void initPage(String title) {
@@ -106,6 +120,27 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fcnpj = new JTextField();
         Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(220, 40, -1, -1));
+        
+        scrollList = new JScrollPane();
+        lSugestoes = new JList<>();
+        String[] strings = {};
+        Styles.defaultSuggestions(scrollList, lSugestoes, strings);
+        bg.add(scrollList, new AbsoluteConstraints(220, 75, -1, -1));
+        
+        fcnpj.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                String[] strings = {"1111-12", "2222-12", "3333-12", "4444-12", "5555-12", "6666-12", "7777-12", "8888-12", "9999-12"};
+                lSugestoes.setListData(strings);
+                scrollList.setVisible(true);
+            }
+        });
+        
+        lSugestoes.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                fcnpj.setText(lSugestoes.getSelectedValue());
+                scrollList.setVisible(false);
+            }
+        });
         
         ecnpj = new JLabel("");
         Styles.errorLabel(ecnpj);
