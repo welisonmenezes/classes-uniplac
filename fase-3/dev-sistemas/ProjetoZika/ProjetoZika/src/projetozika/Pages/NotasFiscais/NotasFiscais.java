@@ -90,7 +90,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                //Navigation.updateLayout("editarNotaFiscal", id);
+                Navigation.updateLayout("editarNotaFiscal", id);
             }
         });
         
@@ -113,7 +113,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                //Navigation.updateLayout("verNotaFiscal", id);
+                Navigation.updateLayout("verNotaFiscal", id);
             }
         });
         

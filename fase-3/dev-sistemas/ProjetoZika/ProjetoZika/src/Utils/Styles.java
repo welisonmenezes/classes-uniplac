@@ -23,10 +23,12 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
+import javax.swing.border.TitledBorder;
 
 /**
  *  Gerencia os estilos comuns dos elementos da aplicação
@@ -270,5 +272,13 @@ public class Styles {
         panel.setPreferredSize( new Dimension( 200, 200 ) );
         panel.setViewportView(list);
         panel.setVisible(false);
+    }
+    
+    public static void setBorderTitle(JPanel panel, String title) {
+        TitledBorder borderTitle = BorderFactory.createTitledBorder(title);
+        borderTitle.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
+        borderTitle.setTitleColor(new Color(255, 255, 255));
+        panel.setBorder(borderTitle);
+        panel.setBackground(new Color(37, 38, 39));
     }
 }

@@ -55,6 +55,14 @@ public class AddProduto extends Templates.BaseFrame {
         initPage("Adicionar Produto");
     }
     
+    public AddProduto(JPanel panelCaller) {
+        this.self = this;
+        this.mode = "add";
+        initPage("Adicionar Produto");
+        this.mode = "nota";
+        this.panelCaller = panelCaller;
+    }
+    
     public AddProduto(String id, String mode) {
         this.self = this;
         this.mode = mode;
@@ -142,7 +150,7 @@ public class AddProduto extends Templates.BaseFrame {
         
         edescricao = new JLabel("");
         Styles.errorLabel(edescricao);
-        bg.add(edescricao, new AbsoluteConstraints(0, 165, -1, -1));
+        bg.add(edescricao, new AbsoluteConstraints(0, 205, -1, -1));
         
         bSave = new JButton("Salvar");
         Styles.defaultButton(bSave);
@@ -197,6 +205,9 @@ public class AddProduto extends Templates.BaseFrame {
                     tableModel.addRow(new Object[]{"5454",fnome.getText(),funidade.getSelectedItem(),"10/10/2000","Editar","Excluir","Ver"});
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                } else if(mode.equals("nota")){
+                    
+                    self.dispose();
                 } else {
                     self.dispose();
                 }

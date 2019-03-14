@@ -10,6 +10,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -208,6 +210,23 @@ public class Methods {
                 } else {
                     frame.getFocusOwner().transferFocus();
                 }
+            }
+        });
+    }
+    
+    /**
+     * Habilita o desabilita os componetes do JBody e JMenu no abrie e fecha deste frame
+     */
+    public static void disableEnableRootAndMenuPanel(JFrame frame) {
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowOpened(WindowEvent we) {
+                Methods.setEnableRecursively(Methods.getJBody(), false);
+                Methods.setEnableRecursively(Methods.getJMenu(), false);
+            }
+            
+            public void windowClosed(WindowEvent we) {
+                Methods.setEnableRecursively(Methods.getJBody(), true);
+                Methods.setEnableRecursively(Methods.getJMenu(), true);
             }
         });
     }

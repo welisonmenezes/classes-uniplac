@@ -72,6 +72,17 @@ public class Navigation {
                 updateSatusMenu("fornecedores");
                 tmpFrame = new AddFornecedor(id, "view");
                 tmpFrame.setVisible(true);
+                break;
+            case "editarNotaFiscal":
+                updateSatusMenu("notasFiscais");
+                tmpFrame = new AddNotaFiscal(id, "edit");
+                tmpFrame.setVisible(true);
+                break;
+            case "verNotaFiscal":
+                updateSatusMenu("notasFiscais");
+                tmpFrame = new AddNotaFiscal(id, "view");
+                tmpFrame.setVisible(true);
+                break;
             case "editarProduto":
                 updateSatusMenu("produtos");
                 tmpFrame = new AddProduto(id, "edit");
@@ -134,6 +145,11 @@ public class Navigation {
                 tmpFrame = new AddProduto();
                 tmpFrame.setVisible(true);
                 break;
+            case "addProdutoNota":
+                updateSatusMenu("notasFiscais");
+                tmpFrame = new AddProduto(tmpPanel);
+                tmpFrame.setVisible(true);
+                break;
             default:
                 setDefaultPage();
         }
@@ -145,7 +161,8 @@ public class Navigation {
      * @param pageName 
      */
     private static void resetLayout(String pageName) {
-        if (!pageName.equals("addFornecedorNota")){
+        if (!pageName.equals("addFornecedorNota")
+            && !pageName.equals("addProdutoNota")){
             if (tmpFrame != null) {;
                 tmpFrame.dispose();
                 tmpFrame = null;

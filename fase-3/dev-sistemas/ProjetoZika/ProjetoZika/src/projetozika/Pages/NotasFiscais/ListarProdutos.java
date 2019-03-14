@@ -5,50 +5,45 @@
  */
 package projetozika.Pages.NotasFiscais;
 
-import Models.Fornecedor;
+import Models.Produto;
+import Templates.ButtonEditor;
+import Templates.ButtonRenderer;
+import Utils.Methods;
+import Utils.Styles;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import static projetozika.Pages.Fornecedores.Fornecedores.tabela;
-import static projetozika.Pages.Fornecedores.Fornecedores.tableModel;
 
 /**
  *
  * @author Welison
  */
 public class ListarProdutos extends javax.swing.JPanel {
+    
+    public static DefaultTableModel tableModel;
+    public static JTable tabela;
 
     /**
      * Creates new form ListarProdutos
      */
     public ListarProdutos() {
         initComponents();
-        
-        TitledBorder borderTitle = BorderFactory.createTitledBorder("Produtos da Nota Fiscal");
-        borderTitle.setBorder(BorderFactory.createLineBorder(new Color(37, 38, 39)));
-        borderTitle.setTitleColor(new Color(255, 255, 255));
-        setBorder(borderTitle);
-        //setForeground(new Color(255, 102, 102));
-        setBackground(new Color(37, 38, 39));
+        Styles.setBorderTitle(this, "Produtos da Nota Fiscal");
         setLayout(new BorderLayout());
-        
-        
-        
         
         
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
+        String[] colunas = {"Código", "Nome", "Unidade", "Excluir"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5 && column != 6){
+               if(column != 3){
                    return false;
                }
                return true;
@@ -56,10 +51,11 @@ public class ListarProdutos extends javax.swing.JPanel {
         };
         // adiciona linhas
         for(int i = 0; i < 5; i++) {
-            Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-            Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
+            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+            Object[] data = {p.getId(),p.getNome(),p.getUnidade(),"Excluir"};
             tableModel.addRow(data);
         }
+    
         // inicializa
         tabela.setModel(tableModel);
         JScrollPane barraRolagem = new JScrollPane(tabela);
@@ -68,6 +64,15 @@ public class ListarProdutos extends javax.swing.JPanel {
         barraRolagem.setBorder(null);
         barraRolagem.setViewportBorder(null);
         add(barraRolagem, BorderLayout.CENTER);
+        
+        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                Methods.removeSelectedTableRow(tabela, tableModel);
+            }
+        });
     }
 
     /**

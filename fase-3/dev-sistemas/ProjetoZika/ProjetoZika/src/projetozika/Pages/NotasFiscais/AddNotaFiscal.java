@@ -20,7 +20,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.AbstractListModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,14 +29,10 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
-import projetozika.Pages.Fornecedores.Fornecedores;
 
 /**
  *
@@ -71,20 +68,36 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JPanel panelListarProdutos;
     
     public AddNotaFiscal() {
-        
         this.self = this;
         this.mode = "add";
         initPage("Adicionar Nota Fiscal");
+    }
+    
+    public AddNotaFiscal(String id, String mode) {
+        this.self = this;
+        this.mode = mode;
+        if(this.mode.equals("view")){
+            initPage("Ver Nota Fiscal");
+        } else if (this.mode.equals("edit")){
+            initPage("Editar Nota Fiscal");
+        }
+    }
+    
+    
+    
+    private void initPage(String title) {
+        
+        this.addWindowListener(new WindowAdapter(){ 
+            public void windowOpened( WindowEvent e){ 
+              fnumero.requestFocusInWindow();
+            } 
+        }); 
         
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 scrollList.setVisible(false);
             }
         });
-       
-    }
-    
-    private void initPage(String title) {
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
@@ -150,7 +163,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         
         fcnpj.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                String[] strings = {"1111-12", "2222-12", "3333-12", "4444-12", "5555-12", "6666-12", "7777-12", "8888-12", "9999-12"};
+                String[] strings = {"1111-12", "2222-12", "3333-12", "4444-12", "5555-12", "6666-12", "7777-12", "8888-12", "9999-12",};
                 lSugestoes.setListData(strings);
                 scrollList.setVisible(true);
             }
@@ -230,13 +243,13 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         
         panelAddProduto = new SelecionarProduto();
         panelAddProduto.setVisible(true);
-        panelAddProduto.setPreferredSize(new Dimension(375, 250));
-        bg.add(panelAddProduto, new AbsoluteConstraints(570, 20, -1, -1));
+        panelAddProduto.setPreferredSize(new Dimension(375, 360));
+        bg.add(panelAddProduto, new AbsoluteConstraints(570, 10, -1, -1));
         
         panelListarProdutos = new ListarProdutos();
         panelListarProdutos.setVisible(true);
         panelListarProdutos.setPreferredSize(new Dimension(945, 300));
-        bg.add(panelListarProdutos, new AbsoluteConstraints(0, 300, -1, -1));
+        bg.add(panelListarProdutos, new AbsoluteConstraints(0, 400, -1, -1));
         
         bgScroll.setViewportView(bg);
         pCenter.add(bgScroll);

@@ -5,28 +5,166 @@
  */
 package projetozika.Pages.NotasFiscais;
 
-import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.border.TitledBorder;
+import Utils.Dialogs;
+import Utils.Navigation;
+import Utils.Styles;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.Timer;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 /**
  *
  * @author Welison
  */
 public class SelecionarProduto extends javax.swing.JPanel {
+    
+    private JPanel self;
 
     /**
      * Creates new form SelecionarProduto
      */
     public SelecionarProduto() {
         initComponents();
+        self = this;
+        Styles.setBorderTitle(this, "Adicionar/Selecionar Produto");
         
-        TitledBorder borderTitle = BorderFactory.createTitledBorder("Adicionar/Selecionar Produto");
-        borderTitle.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
-        borderTitle.setTitleColor(new Color(255, 255, 255));
-        setBorder(borderTitle);
-        //setForeground(new Color(255, 102, 102));
-        setBackground(new Color(37, 38, 39));
+        addElements();
+    }
+    
+    private void addElements() {
+        JLabel lnome = new JLabel("Nome");
+        Styles.defaultLabel(lnome);
+        add(lnome, new AbsoluteConstraints(20, 20, -1, -1));
+        
+        JTextField fnome = new JTextField();
+        Styles.defaultField(fnome);
+        add(fnome, new AbsoluteConstraints(20, 50, -1, -1));
+        
+        JScrollPane scrollList = new JScrollPane();
+        JList lSugestoes = new JList<>();
+        String[] strings = {};
+        Styles.defaultSuggestions(scrollList, lSugestoes, strings);
+        scrollList.setPreferredSize( new Dimension( 200, 150 ) );
+        add(scrollList, new AbsoluteConstraints(20, 85, -1, -1));
+        
+        fnome.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                String[] strings = {"Nome Produto 1","Nome Produto 2","Nome Produto 3","Nome Produto 4","Nome Produto 5","Nome Produto 6","Nome Produto 7","Nome Produto 8","Nome Produto 9"};
+                lSugestoes.setListData(strings);
+                scrollList.setVisible(true);
+            }
+        });
+        
+        lSugestoes.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                //fnome.setText(lSugestoes.getSelectedValue());
+                scrollList.setVisible(false);
+            }
+        });
+        
+        lSugestoes.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {}
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                scrollList.setVisible(false);
+            }
+        });
+        
+        JLabel addProduto = new JLabel("<html><u>Novo Produto</u></html>");
+        Styles.defaultLabel(addProduto);
+        addProduto.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        add(addProduto, new AbsoluteConstraints(230, 45, -1, -1));
+        
+        addProduto.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                Navigation.updateLayout("addProdutoNota");
+            }
+        });
+        
+        JLabel enome = new JLabel("");
+        Styles.errorLabel(enome);
+        add(enome, new AbsoluteConstraints(20, 85, -1, -1));
+        
+        JLabel lunidade = new JLabel("Unidade");
+        Styles.defaultLabel(lunidade);
+        add(lunidade, new AbsoluteConstraints(20, 100, -1, -1));
+        
+        JTextField funidade = new JTextField();
+        Styles.defaultField(funidade);
+        funidade.setEnabled(false);
+        add(funidade, new AbsoluteConstraints(20, 130, -1, -1));
+        
+        JLabel eunidade = new JLabel("");
+        Styles.errorLabel(eunidade);
+        add(eunidade, new AbsoluteConstraints(20, 165, -1, -1));
+        
+        JLabel lquantidade = new JLabel("Quantidade");
+        Styles.defaultLabel(lquantidade);
+        add(lquantidade, new AbsoluteConstraints(20, 180, -1, -1));
+        
+        JTextField fquantidade = new JTextField();
+        Styles.defaultField(fquantidade);
+        add(fquantidade, new AbsoluteConstraints(20, 210, -1, -1));
+        
+        JLabel equantidade = new JLabel("");
+        Styles.errorLabel(equantidade);
+        add(equantidade, new AbsoluteConstraints(20, 245, -1, -1));
+        
+        JLabel lvalor = new JLabel("Quantidade");
+        Styles.defaultLabel(lvalor);
+        add(lvalor, new AbsoluteConstraints(20, 260, -1, -1));
+        
+        JTextField fvalor = new JTextField();
+        Styles.defaultField(fvalor);
+        add(fvalor, new AbsoluteConstraints(20, 290, -1, -1));
+        
+        JLabel evalor = new JLabel("");
+        Styles.errorLabel(evalor);
+        add(evalor, new AbsoluteConstraints(20, 325, -1, -1));
+        
+        JButton selProd = new JButton("Adicionar");
+        Styles.defaultButton(selProd);
+        selProd.setPreferredSize(new Dimension(100, 34));
+        add(selProd, new AbsoluteConstraints(240, 293, -1, -1));
+        selProd.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    
+                Dialogs.showLoadPopup(self);
+                timerTest();
+                
+            }
+        });
+    }
+    
+    private Timer t;
+    private void timerTest() {
+        
+        t = new Timer(2000,new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Dialogs.hideLoadPopup(self);
+                t.stop();
+            }
+        });
+        t.start();
     }
 
     /**

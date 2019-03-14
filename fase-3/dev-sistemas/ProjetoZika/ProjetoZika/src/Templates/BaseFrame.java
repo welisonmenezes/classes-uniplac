@@ -30,25 +30,9 @@ public class BaseFrame extends javax.swing.JFrame{
         pFilter = new JPanel();
         pBottom = new JPanel();
         
-        disableEnableRootAndMenuPanel();
+        Methods.disableEnableRootAndMenuPanel(this);
     }
     
-    /**
-     * Habilita o desabilita os componetes do JBody e JMenu no abrie e fecha deste frame
-     */
-    private void disableEnableRootAndMenuPanel() {
-        this.addWindowListener(new WindowAdapter() {
-            public void windowOpened(WindowEvent we) {
-                Methods.setEnableRecursively(Methods.getJBody(), false);
-                Methods.setEnableRecursively(Methods.getJMenu(), false);
-            }
-            
-            public void windowClosed(WindowEvent we) {
-                Methods.setEnableRecursively(Methods.getJBody(), true);
-                Methods.setEnableRecursively(Methods.getJMenu(), true);
-            }
-        });
-    }
     
     /**
      * Adiciona um título para o topo do grid
