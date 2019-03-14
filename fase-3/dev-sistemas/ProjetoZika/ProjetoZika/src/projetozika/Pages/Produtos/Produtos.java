@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -40,7 +41,7 @@ public class Produtos extends Templates.BaseLayout {
     public static DefaultTableModel tableModel;
     JButton addMore;
     JTextField fNome;
-    JTextField fUnidade;
+    private JComboBox<String> funidade;
     JDateChooser fData;
     JLabel lNome;
     JLabel lUnidade;
@@ -145,8 +146,9 @@ public class Produtos extends Templates.BaseLayout {
         lNome = new JLabel("Nome:");
         Styles.defaultLabel(lNome, false);
         
-        fUnidade = new JTextField();
-        Styles.defaultField(fUnidade, 150);
+        funidade = new JComboBox();
+        funidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"" ,"Quilo", "Litro", "Caixa", "Unidade" }));
+        Styles.defaultComboBox(funidade);
         
         lUnidade = new JLabel("Unidade:");
         Styles.defaultLabel(lUnidade, false);
@@ -169,7 +171,7 @@ public class Produtos extends Templates.BaseLayout {
         pFilter.add(lNome);
         pFilter.add(fNome);
         pFilter.add(lUnidade);
-        pFilter.add(fUnidade);
+        pFilter.add(funidade);
         pFilter.add(lData);
         pFilter.add(fData);
         pFilter.add(bSearch);

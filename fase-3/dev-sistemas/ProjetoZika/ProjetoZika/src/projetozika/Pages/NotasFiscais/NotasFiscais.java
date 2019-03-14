@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -41,11 +40,11 @@ public class NotasFiscais extends Templates.BaseLayout {
     public static DefaultTableModel tableModel;
     public static JTable tabela;
     JButton addMore;
-    JTextField fFilter;
-    JLabel lSearch;
+    JDateChooser fdata;
+    JTextField fcnpj;
+    JLabel ldata;
+    JLabel lcnpj;
     JButton bSearch;
-    private JComboBox<String> cFilter;
-    private JDateChooser fDate;
     
     /**
      * Creates new form NotasFiscais
@@ -130,29 +129,17 @@ public class NotasFiscais extends Templates.BaseLayout {
         addMore = new JButton("Criar Novo");
         Styles.defaultButton(addMore);
         
-        fFilter = new JTextField();
-        Styles.defaultField(fFilter);
-        fFilter.setPreferredSize( new Dimension( 150, 39 ) );
+        fcnpj = new JTextField();
+        Styles.defaultField(fcnpj, 150);
         
-        lSearch = new JLabel("Filtrar por");
-        Styles.defaultLabel(lSearch);
-        lSearch.setPreferredSize( new Dimension( 65, 39 ) );
+        lcnpj = new JLabel("Cnpj:");
+        Styles.defaultLabel(lcnpj, false);
         
-        cFilter = new JComboBox();
-        cFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Cnpj", "Data" }));
-        Styles.defaultComboBox(cFilter);
-        cFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.out.println(cFilter.getSelectedItem().toString());
-                if (cFilter.getSelectedItem().toString().equals("Data")) {
-                    fDate.setVisible(true);
-                    fFilter.setVisible(false);
-                } else {
-                    fDate.setVisible(false);
-                    fFilter.setVisible(true);
-                }
-            }
-        });
+        fdata = new JDateChooser();
+        Styles.defaultDateChooser(fdata);
+        
+        ldata = new JLabel("Data:");
+        Styles.defaultLabel(ldata, false);
         
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
@@ -160,14 +147,10 @@ public class NotasFiscais extends Templates.BaseLayout {
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
-        fDate = new JDateChooser();
-        Styles.defaultDateChooser(fDate);
-        fDate.setVisible(false);
-        
-        pFilter.add(lSearch);
-        pFilter.add(cFilter);
-        pFilter.add(fFilter);
-        pFilter.add(fDate);
+        pFilter.add(lcnpj);
+        pFilter.add(fcnpj);
+        pFilter.add(ldata);
+        pFilter.add(fdata);
         pFilter.add(bSearch);
         pFilter.add(hideL);
         pFilter.add(addMore);
@@ -211,8 +194,6 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(self);
-                
-                
                 
                 t.stop();
             }

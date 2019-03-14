@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
 
@@ -84,6 +85,15 @@ public class Styles {
     public static void defaultField(JTextField field, int width) {
         defaultField(field);
         field.setPreferredSize(new Dimension(width, 39));
+    }
+    
+    public static void defaultTextArea(JTextArea field, JScrollPane panel) {
+        field.setBackground(new Color(55, 57, 59));
+        field.setForeground(new Color(255, 255, 255));
+        field.setCaretColor(new Color(255, 255, 255));
+        field.setOpaque(false);
+        panel.setViewportView(field);
+        panel.setPreferredSize( new Dimension( 200, 80 ) );
     }
     
     /**

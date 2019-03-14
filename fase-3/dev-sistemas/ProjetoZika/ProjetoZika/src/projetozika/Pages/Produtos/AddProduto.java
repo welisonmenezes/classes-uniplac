@@ -14,11 +14,14 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -36,10 +39,10 @@ public class AddProduto extends Templates.BaseFrame {
     private JTextField fnome;
     private JLabel lnome;
     private JLabel enome;
-    private JTextField funidade;
+    private JComboBox<String> funidade;
     private JLabel lunidade;
     private JLabel eunidade;
-    private JTextField fdescricao;
+    private JTextArea fdescricao;
     private JLabel ldescricao;
     private JLabel edescricao;
     private JButton bSave;
@@ -68,7 +71,7 @@ public class AddProduto extends Templates.BaseFrame {
     private void initPage(String title) {
         
         initComponents();
-        Styles.internalFrame(this);
+        Styles.internalFrame(this, 450, 400);
         Methods.setAccessibility(this);
         
         createBaseLayout();
@@ -87,14 +90,14 @@ public class AddProduto extends Templates.BaseFrame {
     private void fillFields(String id) {
         Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
         fnome.setText(p.getNome());
-        funidade.setText(p.getUnidade());
+        funidade.setSelectedItem("Unidade");
         fdescricao.setText(p.getDescricao());
     }
     
     private void disabledFields() {
         bSave.setVisible(false);
         fnome.setEditable(false);
-        funidade.setEditable(false);
+        funidade.setEnabled(false);
         fdescricao.setEditable(false);
     }
     
@@ -119,8 +122,9 @@ public class AddProduto extends Templates.BaseFrame {
         Styles.defaultLabel(lunidade);
         bg.add(lunidade, new AbsoluteConstraints(220, 0, -1, -1));
 
-        funidade = new JTextField();
-        Styles.defaultField(funidade);
+        funidade = new JComboBox();
+        funidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "Quilo", "Litro", "Caixa", "Unidade" }));
+        Styles.defaultComboBox(funidade);
         bg.add(funidade, new AbsoluteConstraints(220, 40, -1, -1));
         
         eunidade = new JLabel("");
@@ -131,9 +135,10 @@ public class AddProduto extends Templates.BaseFrame {
         Styles.defaultLabel(ldescricao);
         bg.add(ldescricao, new AbsoluteConstraints(0, 90, -1, -1));
 
-        fdescricao = new JTextField();
-        Styles.defaultField(fdescricao);
-        bg.add(fdescricao, new AbsoluteConstraints(0, 130, -1, -1));
+        fdescricao = new JTextArea();
+        JScrollPane sp = new JScrollPane();
+        Styles.defaultTextArea(fdescricao, sp);
+        bg.add(sp, new AbsoluteConstraints(0, 130, -1, -1));
         
         edescricao = new JLabel("");
         Styles.errorLabel(edescricao);
@@ -148,11 +153,11 @@ public class AddProduto extends Templates.BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                     
-                if(fnome.getText().equals("") || funidade.getText().equals("") || fdescricao.getText().equals("")){
+                if(fnome.getText().equals("") || funidade.getSelectedItem().equals("") || fdescricao.getText().equals("")){
                     if(fnome.getText().equals("")){
                         enome.setText("Campo obrigatório");
                     }
-                    if(funidade.getText().equals("")) {
+                    if(funidade.getSelectedItem().equals("")) {
                         eunidade.setText("Campo obrigatório");
                     }
                     if(fdescricao.getText().equals("")) {
@@ -184,12 +189,12 @@ public class AddProduto extends Templates.BaseFrame {
                     
                 if (mode.equals("edit")) {
                     tableModel.setValueAt(fnome.getText() , row, 1);
-                    tableModel.setValueAt(funidade.getText() , row, 2);
+                    tableModel.setValueAt(funidade.getSelectedItem() , row, 2);
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
 
                 } else if(mode.equals("add")) {
-                    tableModel.addRow(new Object[]{"5454",fnome.getText(),funidade.getText(),"10/10/2000","Editar","Excluir","Ver"});
+                    tableModel.addRow(new Object[]{"5454",fnome.getText(),funidade.getSelectedItem(),"10/10/2000","Editar","Excluir","Ver"});
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
                 } else {
