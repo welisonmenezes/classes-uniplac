@@ -28,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
 public class Methods {
     
     private static JPanel jBody;
+    private static JPanel jBg;
+    private static JPanel jMenu;
     
     /**
      * Seta altura e largura full a um dado JFrame
@@ -75,7 +77,7 @@ public class Methods {
     }
     
     /**
-     * Seta o JPanel que exibe o conteúdo raiz de cada menu
+     * Seta o container do conteúdo da apalicação
      * 
      * @param jb o JPanel que exibirá o conteúdo root
      */
@@ -84,12 +86,48 @@ public class Methods {
     }
     
     /**
-     * Retorna o JPanel que exibe o conteúdo root
+     * Retorna o container que exibe o conteúdo root
      * 
      * @return o JPanel
      */
     public static JPanel getJBody() {
        return  jBody;
+    }
+    
+    /**
+     * Seta o container geral da aplicação
+     * 
+     * @param jb o JPanel que exibirá o conteúdo root
+     */
+    public static void setJBg(JPanel jb) {
+        jBg = jb;
+    }
+    
+    /**
+     * Retorna o container geral da aplicação
+     * 
+     * @return o JPanel
+     */
+    public static JPanel getJBg() {
+       return  jBg;
+    }
+    
+    /**
+     * Seta o container do menu da aplicação
+     * 
+     * @param jb o JPanel que exibirá o conteúdo root
+     */
+    public static void setJMenu(JPanel jb) {
+        jMenu = jb;
+    }
+    
+    /**
+     * Retorna o container do menu da aplicação
+     * 
+     * @return o JPanel
+     */
+    public static JPanel getJMenu() {
+       return  jMenu;
     }
     
     /**

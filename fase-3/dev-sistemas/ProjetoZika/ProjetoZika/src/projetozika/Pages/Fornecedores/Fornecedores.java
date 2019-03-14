@@ -14,14 +14,12 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
 import Utils.Styles;
-import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -30,7 +28,8 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 /**
- *
+ * Tela de listagem do fornecedores
+ * 
  * @author Welison
  */
 public class Fornecedores extends Templates.BaseLayout {
@@ -39,14 +38,17 @@ public class Fornecedores extends Templates.BaseLayout {
     public static JTable tabela;
     public static DefaultTableModel tableModel;
     JButton addMore;
-    JTextField fFilter;
+    JTextField fCnpj;
+    JTextField fNome;
+    JTextField fTelefone;
+    JLabel lNome;
+    JLabel lCnpj;
+    JLabel lTelefone;
     JLabel lSearch;
     JButton bSearch;
-    private JComboBox<String> cFilter;
-    private JDateChooser fDate;
 
     /**
-     * Creates new form NewJPanel
+     * Cria a tela de fornecedores
      */
     public Fornecedores() {
         super();
@@ -59,7 +61,21 @@ public class Fornecedores extends Templates.BaseLayout {
         addFilterContent();
     }
     
+    // Adiciona conteúdo ao centro da area de conteúdo
     public void addCenterContent() {
+        makeTable();
+        JScrollPane barraRolagem = new JScrollPane(tabela);
+        barraRolagem.setOpaque(false);
+        barraRolagem.getViewport().setOpaque(false);
+        barraRolagem.setBorder(null);
+        barraRolagem.setViewportBorder(null);
+        pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    /**
+     * Gera a tabela com os dados
+     */
+    private void makeTable() {
         // cria tabela
         tabela = new JTable();
         tabela.setRowHeight(35);
@@ -115,35 +131,30 @@ public class Fornecedores extends Templates.BaseLayout {
                 Navigation.updateLayout("verFornecedor", id);
             }
         });
-        
-        JScrollPane barraRolagem = new JScrollPane(tabela);
-        barraRolagem.setOpaque(false);
-        barraRolagem.getViewport().setOpaque(false);
-        barraRolagem.setBorder(null);
-        barraRolagem.setViewportBorder(null);
-        pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Adiciona o conteúdo à area de filtro da tela de conteúdo
+     */
     public void addFilterContent() {
-        addMore = new JButton("Criar Novo");
-        Styles.defaultButton(addMore);
         
-        fFilter = new JTextField();
-        Styles.defaultField(fFilter);
-        fFilter.setPreferredSize( new Dimension( 150, 39 ) );
+        fNome = new JTextField();
+        Styles.defaultField(fNome, 150);
         
-        lSearch = new JLabel("Filtrar por");
-        Styles.defaultLabel(lSearch);
-        lSearch.setPreferredSize( new Dimension( 65, 39 ) );
+        lNome = new JLabel("Nome:");
+        Styles.defaultLabel(lNome, false);
         
-        cFilter = new JComboBox();
-        cFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Cnpj", "Telefone" }));
-        Styles.defaultComboBox(cFilter);
-        cFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.out.println(cFilter.getSelectedItem().toString());
-            }
-        });
+        fCnpj = new JTextField();
+        Styles.defaultField(fCnpj, 150);
+        
+        lCnpj = new JLabel("CNPJ:");
+        Styles.defaultLabel(lCnpj, false);
+        
+        fTelefone = new JTextField();
+        Styles.defaultField(fTelefone, 150);
+        
+        lTelefone = new JLabel("Telefone:");
+        Styles.defaultLabel(lTelefone, false);
         
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
@@ -151,17 +162,20 @@ public class Fornecedores extends Templates.BaseLayout {
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
-        //fDate = new JDateChooser();
-        //Styles.defaultDateChooser(fDate);
+        addMore = new JButton("Criar Novo");
+        Styles.defaultButton(addMore);
         
-        pFilter.add(lSearch);
-        pFilter.add(cFilter);
-        pFilter.add(fFilter);
-        //pFilter.add(fDate);
+        pFilter.add(lNome);
+        pFilter.add(fNome);
+        pFilter.add(lCnpj);
+        pFilter.add(fCnpj);
+        pFilter.add(lTelefone);
+        pFilter.add(fTelefone);
         pFilter.add(bSearch);
         pFilter.add(hideL);
         pFilter.add(addMore);
         
+        // click do adicionar novo
         addMore.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -169,6 +183,7 @@ public class Fornecedores extends Templates.BaseLayout {
             }
         });
         
+        // click do buscar
         bSearch.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,15 +194,22 @@ public class Fornecedores extends Templates.BaseLayout {
         });
     }
     
+    /**
+     * Adiciona o conteúdo à area de footer do conteúdo
+     */
     public void addBottomContent() {
         this.pagination(5);
     }
     
+    /**
+     * Gera a paginação
+     * 
+     * @param total o total de páginas
+     */
     public void pagination(int total) {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
-                System.out.println(this.getCurrentPage());
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }

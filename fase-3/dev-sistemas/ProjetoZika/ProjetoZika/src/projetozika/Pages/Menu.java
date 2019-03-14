@@ -7,7 +7,9 @@ package projetozika.Pages;
 
 import Utils.Navigation;
 import Utils.Styles;
+import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import projetozika.Login;
 import projetozika.Main;
 
@@ -25,9 +27,14 @@ public class Menu extends javax.swing.JPanel {
         initComponents();
         this.main = main;
         
+        
+        labelEspacoTopo.setPreferredSize(new Dimension(200, 45));
+        labelEspacoLogout.setPreferredSize(new Dimension(200, 100));
+        
         Styles.menuButton(bDashboard);
         Styles.menuButton(bFornecedores);
         Styles.menuButton(bNotasFiscais);
+        Styles.menuButton(bProdutos);
     }
 
     /**
@@ -39,37 +46,17 @@ public class Menu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        bNotasFiscais = new javax.swing.JButton();
+        labelEspacoTopo = new javax.swing.JLabel();
         bDashboard = new javax.swing.JButton();
         bFornecedores = new javax.swing.JButton();
+        bNotasFiscais = new javax.swing.JButton();
+        bProdutos = new javax.swing.JButton();
+        labelEspacoLogout = new javax.swing.JLabel();
+        logout = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(24, 24, 24));
         setPreferredSize(new java.awt.Dimension(250, 50));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("sair");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
-        jButton1.setContentAreaFilled(false);
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton1.setPreferredSize(new java.awt.Dimension(80, 35));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 40, 20));
-
-        bNotasFiscais.setText("Notas Fiscais");
-        bNotasFiscais.setName("notasFiscais"); // NOI18N
-        bNotasFiscais.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bNotasFiscaisActionPerformed(evt);
-            }
-        });
-        add(bNotasFiscais, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
+        add(labelEspacoTopo);
 
         bDashboard.setText("Dashboard");
         bDashboard.setName("dashboard"); // NOI18N
@@ -78,7 +65,7 @@ public class Menu extends javax.swing.JPanel {
                 bDashboardActionPerformed(evt);
             }
         });
-        add(bDashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
+        add(bDashboard);
 
         bFornecedores.setText("Fornecedores");
         bFornecedores.setName("fornecedores"); // NOI18N
@@ -87,16 +74,45 @@ public class Menu extends javax.swing.JPanel {
                 bFornecedoresActionPerformed(evt);
             }
         });
-        add(bFornecedores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        add(bFornecedores);
+
+        bNotasFiscais.setText("Notas Fiscais");
+        bNotasFiscais.setName("notasFiscais"); // NOI18N
+        bNotasFiscais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bNotasFiscaisActionPerformed(evt);
+            }
+        });
+        add(bNotasFiscais);
+
+        bProdutos.setText("Produtos");
+        bProdutos.setName("produtos"); // NOI18N
+        add(bProdutos);
+        add(labelEspacoLogout);
+
+        logout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        logout.setForeground(new java.awt.Color(255, 0, 0));
+        logout.setText("sair");
+        logout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+        logout.setContentAreaFilled(false);
+        logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        logout.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        logout.setPreferredSize(new java.awt.Dimension(80, 35));
+        logout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutActionPerformed(evt);
+            }
+        });
+        add(logout);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
 
         // logout
         this.main.dispose();
         JFrame login = new Login();
         login.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_logoutActionPerformed
 
     private void bNotasFiscaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNotasFiscaisActionPerformed
         // TODO add your handling code here:
@@ -119,6 +135,9 @@ public class Menu extends javax.swing.JPanel {
     private javax.swing.JButton bDashboard;
     private javax.swing.JButton bFornecedores;
     private javax.swing.JButton bNotasFiscais;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton bProdutos;
+    private javax.swing.JLabel labelEspacoLogout;
+    private javax.swing.JLabel labelEspacoTopo;
+    private javax.swing.JButton logout;
     // End of variables declaration//GEN-END:variables
 }

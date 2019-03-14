@@ -11,7 +11,8 @@ import Utils.Styles;
 import javax.swing.JFrame;
 
 /**
- *
+ * Tela de login
+ * 
  * @author Welison
  */
 public class Login extends javax.swing.JFrame {
@@ -21,12 +22,16 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        
+        // posiciona o frame na tela
         Methods.positionFrameInCenter(this);
         
+        // seta estilos aos elementos
         Styles.defaultButton(jButton1);
         Styles.defaultField(fEmail);
         Styles.defaultField(fSenha);
         
+        // seta a acessibilidade
         Methods.setAccessibility(this);
     }
 
@@ -95,7 +100,12 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Escuta o evento de click do botão de login
+     * 
+     * @param evt o ActionEvent
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // login
         lInfo.setText("Login ou senha inválidos");

@@ -76,6 +76,17 @@ public class Styles {
     }
     
     /**
+     * Estiliza os JTextField default da aplicação
+     * 
+     * @param field o JTextField a ser estilizado
+     * @param width a largura do campo
+     */
+    public static void defaultField(JTextField field, int width) {
+        defaultField(field);
+        field.setPreferredSize(new Dimension(width, 39));
+    }
+    
+    /**
      * Estiliza os JDateChooser default da aplicação
      * 
      * @param fDate o JDateChooser a ser estilizado
@@ -107,6 +118,20 @@ public class Styles {
         label.setPreferredSize( new Dimension( 150, 39 ) );
         label.setForeground(new Color(255, 255, 255));
         label.setFont(new Font("Tahoma", 0, 12));
+    }
+    
+    /**
+     * Estiliza os JLabel default da aplicação
+     * 
+     * @param label o JLabel a ser estilizado
+     * @param hasDimension true se setará dimensões default (150x39) ou fale se não
+     */
+    public static void defaultLabel(JLabel label, boolean hasDimension) {
+        label.setForeground(new Color(255, 255, 255));
+        label.setFont(new Font("Tahoma", 0, 12));
+        if (hasDimension) {
+            label.setPreferredSize( new Dimension( 150, 39 ) );
+        }
     }
     
     /**

@@ -1,8 +1,11 @@
 package Templates;
 
+import Utils.Methods;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,6 +29,25 @@ public class BaseFrame extends javax.swing.JFrame{
         pCenter = new JPanel();
         pFilter = new JPanel();
         pBottom = new JPanel();
+        
+        disableEnableRootAndMenuPanel();
+    }
+    
+    /**
+     * Habilita o desabilita os componetes do JBody e JMenu no abrie e fecha deste frame
+     */
+    private void disableEnableRootAndMenuPanel() {
+        this.addWindowListener(new WindowAdapter() {
+            public void windowOpened(WindowEvent we) {
+                Methods.setEnableRecursively(Methods.getJBody(), false);
+                Methods.setEnableRecursively(Methods.getJMenu(), false);
+            }
+            
+            public void windowClosed(WindowEvent we) {
+                Methods.setEnableRecursively(Methods.getJBody(), true);
+                Methods.setEnableRecursively(Methods.getJMenu(), true);
+            }
+        });
     }
     
     /**

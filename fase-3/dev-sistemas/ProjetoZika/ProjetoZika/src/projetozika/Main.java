@@ -12,16 +12,17 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
- *
+ * A tela principal da aplicação
+ * 
  * @author Welison
  */
 public class Main extends javax.swing.JFrame {
     
-    private JPanel jBG;
-    private JPanel jBODY;
-    private JPanel jSIDE;
-    public static JComponent rootComponent;
-    public static JPanel menu;
+    private JPanel jBG; // container geral
+    private JPanel jBODY; // container do conteúdo
+    private JPanel jSIDE; // container do menu
+    //public static JComponent rootComponent; // acesso estático ao container geral
+    public static JPanel menu; // o menu
     /**
      * Creates new form Main
      */
@@ -29,19 +30,28 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         menu = new Menu(this);
         initLayout();
-        rootComponent = this.jBG;
+        //rootComponent = this.jBG;
         
         Methods.setAccessibility(this);
     }
     
+    /**
+     * Inicializa o layout da aplicação baseado em BorderLayout
+     * a aplicação recebera um conteiner geral, um container para o menu e um para o conteúdo
+     */
     private void initLayout() {
+        // seta o tamanho do frame
         Methods.makeFrameFullSize(this);
         
+        // inicializa os panels (containers)
         jBG = new JPanel();
         jBODY = new JPanel();
         jSIDE = new JPanel();
         
+        // seta os containers base da aplicação
+        Methods.setJBg(jBG);
         Methods.setJBody(jBODY);
+        Methods.setJMenu(jSIDE);
         
         this.setLayout(new BorderLayout());
         this.add(jBG);

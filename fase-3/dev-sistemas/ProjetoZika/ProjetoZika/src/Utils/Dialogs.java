@@ -26,7 +26,7 @@ public class Dialogs {
      * @param context o JPanel ou JFrame a partir de onde o popup será chamado
      */
     public static void showLoadPopup(JComponent context) {
-        setEnableRecursively(Main.rootComponent, false);
+        setEnableRecursively(Methods.getJBg(), false);
         setEnableRecursively(context, false);
         dialog = new JFrame();
         dialog.setAlwaysOnTop(true);
@@ -59,7 +59,7 @@ public class Dialogs {
      * @param context o JPanel ou JFrame a partir de onde o popup foi chamado
      */
     public static void hideLoadPopup(JComponent context) {
-        setEnableRecursively(Main.rootComponent, true);
+        setEnableRecursively(Methods.getJBg(), true);
         setEnableRecursively(context, true);
         dialog.dispose();
     }
