@@ -18,6 +18,7 @@ import projetozika.Pages.Fornecedores.Fornecedores;
 import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
+import projetozika.Pages.Produtos.Produtos;
 
 /**
  * Gerencia a navegação da aplicação
@@ -113,6 +114,10 @@ public class Navigation {
                 updateSatusMenu("notasFiscais");
                 tmpFrame = new AddFornecedor(tmpPanel);
                 tmpFrame.setVisible(true);
+                break;
+            case "produtos":
+                updateSatusMenu("produtos");
+                tmpPanel = new Produtos();
                 break;
             default:
                 setDefaultPage();

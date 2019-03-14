@@ -87,6 +87,11 @@ public class Menu extends javax.swing.JPanel {
 
         bProdutos.setText("Produtos");
         bProdutos.setName("produtos"); // NOI18N
+        bProdutos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bProdutosActionPerformed(evt);
+            }
+        });
         add(bProdutos);
         add(labelEspacoLogout);
 
@@ -129,6 +134,11 @@ public class Menu extends javax.swing.JPanel {
         // TODO add your handling code here:
         Navigation.updateLayout("dashboard");
     }//GEN-LAST:event_bDashboardActionPerformed
+
+    private void bProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bProdutosActionPerformed
+        // TODO add your handling code here:
+        Navigation.updateLayout("produtos");
+    }//GEN-LAST:event_bProdutosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
