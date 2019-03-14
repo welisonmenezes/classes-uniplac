@@ -6,6 +6,7 @@
 package projetozika.Pages.NotasFiscais;
 
 import Utils.Dialogs;
+import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
@@ -87,6 +88,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
+        Methods.setAccessibility(this);
         
         createBaseLayout();
         addTopContent(title);

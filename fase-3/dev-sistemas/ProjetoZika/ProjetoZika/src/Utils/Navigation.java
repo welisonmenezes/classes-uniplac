@@ -8,6 +8,7 @@ package Utils;
 import static Utils.Methods.getJBody;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,11 +34,11 @@ public class Navigation {
         Component[] comps = Main.menu.getComponents();
         for (Component comp : comps) {
             String nameComp = comp.getName();
-            if (nameComp != null && (comp instanceof javax.swing.JLabel)) {
+            if (nameComp != null && (comp instanceof javax.swing.JButton)) {
                 if (nameComp.equals(name)) {
-                    Styles.setMenuButtonActive((JLabel)comp);
+                    Styles.setMenuButtonActive((JButton)comp);
                 } else {
-                    Styles.setMenuButtonInactive((JLabel)comp);
+                    Styles.setMenuButtonInactive((JButton)comp);
                 }
             }
         }

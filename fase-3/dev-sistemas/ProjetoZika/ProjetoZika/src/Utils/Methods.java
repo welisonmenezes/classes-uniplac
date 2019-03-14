@@ -5,13 +5,24 @@
  */
 package Utils;
 
+import java.awt.AWTKeyStroke;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.GraphicsEnvironment;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashSet;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -79,5 +90,28 @@ public class Methods {
     public static void removeSelectedTableRow(JTable table, DefaultTableModel tableModel){
         int row = table.getSelectedRow();
         tableModel.removeRow(row);
+    }
+  
+    public static void setAccessibility(final JFrame frame) {
+        JRootPane meurootpane = frame.getRootPane();
+        
+        meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESCAPE");
+        meurootpane.getRootPane().getActionMap().put("ESCAPE", new AbstractAction("ESCAPE") {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+        
+        meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ENTER");
+        meurootpane.getRootPane().getActionMap().put("ENTER", new AbstractAction("ENTER") {
+            public void actionPerformed(ActionEvent e) {
+                if(frame.getFocusOwner() instanceof JButton) {
+                    JButton btn = (JButton) frame.getFocusOwner();
+                    btn.doClick();
+                } else {
+                    frame.getFocusOwner().transferFocus();
+                }
+            }
+        });
     }
 }

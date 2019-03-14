@@ -26,6 +26,8 @@ public class Login extends javax.swing.JFrame {
         Styles.defaultButton(jButton1);
         Styles.defaultField(fEmail);
         Styles.defaultField(fSenha);
+        
+        Methods.setAccessibility(this);
     }
 
     /**
@@ -155,4 +157,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lInfo;
     // End of variables declaration//GEN-END:variables
+
 }

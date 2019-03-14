@@ -92,13 +92,15 @@ public class Styles {
         label.setPreferredSize( new Dimension( 150, 20 ) );
     }
     
-    public static void menuButton(JLabel label) {
-        label.setBackground(new Color(7, 7, 7));
-        label.setFont(new Font("Tahoma", 1, 14));
-        label.setForeground(new Color(8, 253, 216));
-        label.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        label.setOpaque(true);
+    public static void menuButton(JButton btn) {
+        btn.setBackground(new Color(7, 7, 7));
+        btn.setFont(new Font("Tahoma", 1, 14));
+        btn.setForeground(new Color(8, 253, 216));
+        btn.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setOpaque(true);
+        btn.setPreferredSize( new Dimension( 230, 35 ) );
+        //label.setFocusable(true);
         /*
         label.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
@@ -111,14 +113,14 @@ public class Styles {
         */
     }
     
-    public static void setMenuButtonActive(JLabel label) {
-        label.setBackground(new Color(8, 253, 216));
-        label.setForeground(new Color(7, 7, 7));
+    public static void setMenuButtonActive(JButton btn) {
+        btn.setBackground(new Color(8, 253, 216));
+        btn.setForeground(new Color(7, 7, 7));
     }
     
-    public static void setMenuButtonInactive(JLabel label) {
-        label.setBackground(new Color(7, 7, 7));
-        label.setForeground(new Color(8, 253, 216));
+    public static void setMenuButtonInactive(JButton btn) {
+        btn.setBackground(new Color(7, 7, 7));
+        btn.setForeground(new Color(8, 253, 216));
     }
     
     public static void searchButton(JButton btn) {

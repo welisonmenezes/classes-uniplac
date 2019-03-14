@@ -7,6 +7,7 @@ package projetozika.Pages.Fornecedores;
 
 import Models.Fornecedor;
 import Utils.Dialogs;
+import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
@@ -77,6 +78,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         
         initComponents();
         Styles.internalFrame(this);
+        Methods.setAccessibility(this);
         
         createBaseLayout();
         addTopContent(title);

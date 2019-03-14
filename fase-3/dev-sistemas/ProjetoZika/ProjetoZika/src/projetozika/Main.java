@@ -30,6 +30,8 @@ public class Main extends javax.swing.JFrame {
         menu = new Menu(this);
         initLayout();
         rootComponent = this.jBG;
+        
+        Methods.setAccessibility(this);
     }
     
     private void initLayout() {
