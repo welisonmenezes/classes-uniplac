@@ -15,7 +15,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
- *
+ * Gerencia a paginação da aplicação
+ * 
  * @author Welison
  */
 public class Pagination {
@@ -24,6 +25,12 @@ public class Pagination {
     private JPanel context;
     private int total;
     
+    /**
+     * Construtor. Ao ser instanciada, a classe gera os botões e adiciona no Footer da aplicação
+     * 
+     * @param c o JPanel que receberá a paginação
+     * @param total o total de páginas
+     */
     public Pagination(JComponent c, int total) {
         this.page = 1;
         this.context = (JPanel) c;
@@ -33,6 +40,9 @@ public class Pagination {
         makePagination();
     }
     
+    /**
+     * Gera os botões da aplicação, com seus respectivos eventos, e os insere na tela
+     */
     private void makePagination() {
         JButton next = new JButton("Next");
         JButton prev = new JButton("Previous");
@@ -93,10 +103,16 @@ public class Pagination {
         });
     }
     
+    /**
+     * Metodo a ser sobreescrito. Será chamada ao click de cada botão
+     */
     public void callbackPagination() {
         System.out.println("Override it");
     }
     
+    /**
+     * Seta o estilo do link ativo da paginação
+     */
     public void updateActivePage() {
         Component[] comps = context.getComponents();
         for(int i = 0; i < comps.length; i++) {
@@ -113,6 +129,11 @@ public class Pagination {
         }
     }
     
+    /**
+     * Pega a página corrent da paginação
+     * 
+     * @return a página corrente
+     */
     public int getCurrentPage() {
         return page;
     }

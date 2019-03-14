@@ -5,16 +5,11 @@
  */
 package Utils;
 
-import java.awt.AWTKeyStroke;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.GraphicsEnvironment;
-import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashSet;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -26,49 +21,93 @@ import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Metodos e funcionalidades genéricas da aplicação
+ * 
  * @author Welison
  */
 public class Methods {
     
     private static JPanel jBody;
     
+    /**
+     * Seta altura e largura full a um dado JFrame
+     * 
+     * @param aFrame o JFrame que será dimensionado
+     */
     public static void makeFrameFullSize(JFrame aFrame)
     {
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         aFrame.setSize(screenSize.width, screenSize.height);
     }
     
+    /**
+     * Seta altura e largura full a um dado JPanel
+     * 
+     * @param aFrame o Jpanel que será dimensionado
+     */
     public static void makePanelfullSize(JPanel aFrame)
     {
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         aFrame.setSize(screenSize.width, screenSize.height);
     }
     
+    /**
+     * Seta uma dada altura e uma dada largura a um dado JFrame
+     * 
+     * @param aFrame o JFrame que será dimensionado
+     * @param w a largura desejada
+     * @param h a altura desejada
+     */
     public static void makePanelRelativeSize(JFrame aFrame, int w, int h)
     {
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         aFrame.setSize(w, h);
     }
     
+    /**
+     * Posiciona um dado JFrame no centro da tela
+     * 
+     * @param aFrame o JFrame a ser posicionado
+     */
     public static void positionFrameInCenter(JFrame aFrame) {
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
         aFrame.setLocation(screenSize.width/2-aFrame.getSize().width/2, screenSize.height/2-aFrame.getSize().height/2);
     }
     
+    /**
+     * Seta o JPanel que exibe o conteúdo raiz de cada menu
+     * 
+     * @param jb o JPanel que exibirá o conteúdo root
+     */
     public static void setJBody(JPanel jb) {
         jBody = jb;
     }
     
+    /**
+     * Retorna o JPanel que exibe o conteúdo root
+     * 
+     * @return o JPanel
+     */
     public static JPanel getJBody() {
        return  jBody;
     }
     
+    /**
+     * Limpa a area de um dado JPanel
+     * 
+     * @param jb o JPanel a ser limpo
+     */
     public static void clearStage(JPanel jb) {
         jb.removeAll();
         jb.revalidate();
     }
     
+    /**
+     * Seta os elementos de um dado JComponent como habilitado ou desabilitado
+     * 
+     * @param el o JComponent a ser habilitado ou desabilitado
+     * @param isEnable true pra habilitar ou false pra desabilitar
+     */
     public static void setEnableRecursively(JComponent el, boolean isEnable) {
         Component[] comps = el.getComponents();
         if (comps.length > 0) {
@@ -81,20 +120,38 @@ public class Methods {
         }
     }
     
+    /**
+     * Retorna o valor da primeira coluna da linha selecionda de um dado JTable
+     * 
+     * @param table o JTable cuja valor será retornado
+     * @return o valor da primeira coluna da linha selecionada
+     */
     public static String selectedTableItemId(JTable table) {
         int row = table.getSelectedRow();
         Object id = table.getValueAt(row, 0);
         return id.toString();
     }
     
+    /**
+     * Remove a linha selecionada de um dado JTable
+     * 
+     * @param table o JTable cuja linha selecionada será removida
+     * @param tableModel o JTableModel cuja linha selecionada será removida
+     */
     public static void removeSelectedTableRow(JTable table, DefaultTableModel tableModel){
         int row = table.getSelectedRow();
         tableModel.removeRow(row);
     }
   
+    /**
+     * Seta, para um dado JFrame, a escuta dos eventos VK_ESCAPE e VK_ENTER
+     * 
+     * @param frame o JFrame que receberá o listener
+     */
     public static void setAccessibility(final JFrame frame) {
         JRootPane meurootpane = frame.getRootPane();
         
+        // add listener para o VK_ESCAPE. Quando acionado fecha o frame
         meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESCAPE");
         meurootpane.getRootPane().getActionMap().put("ESCAPE", new AbstractAction("ESCAPE") {
             public void actionPerformed(ActionEvent e) {
@@ -102,6 +159,8 @@ public class Methods {
             }
         });
         
+        // add listener para o VK_ENTER.
+        // Quando acionado simula o tab. Se o elemento focado for um botão, simula o click
         meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ENTER");
         meurootpane.getRootPane().getActionMap().put("ENTER", new AbstractAction("ENTER") {
             public void actionPerformed(ActionEvent e) {

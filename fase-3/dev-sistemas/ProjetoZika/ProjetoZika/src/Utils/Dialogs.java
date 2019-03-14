@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utils;
 
 import static Utils.Methods.setEnableRecursively;
@@ -18,12 +13,18 @@ import javax.swing.JPanel;
 import projetozika.Main;
 
 /**
- *
+ * Popups genéricos da aplicação
+ * 
  * @author Welison
  */
 public class Dialogs {
     private static JFrame dialog;
     
+    /**
+     * Mostra o popup de loading...
+     * 
+     * @param context o JPanel ou JFrame a partir de onde o popup será chamado
+     */
     public static void showLoadPopup(JComponent context) {
         setEnableRecursively(Main.rootComponent, false);
         setEnableRecursively(context, false);
@@ -38,6 +39,7 @@ public class Dialogs {
 	dialog.setUndecorated(true);
 	dialog.setVisible(true);
         
+        // adiciona gif animado
         JLabel lImage = new JLabel();
         lImage.setIcon(new ImageIcon(context.getClass().getResource("/sources/ajax-loader.gif")));
         lImage.setText("");
@@ -51,6 +53,11 @@ public class Dialogs {
         dialog.add(dialogPanel);
     }
     
+    /**
+     * Esconde o popup de loading...
+     * 
+     * @param context o JPanel ou JFrame a partir de onde o popup foi chamado
+     */
     public static void hideLoadPopup(JComponent context) {
         setEnableRecursively(Main.rootComponent, true);
         setEnableRecursively(context, true);

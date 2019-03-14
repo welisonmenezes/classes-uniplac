@@ -28,11 +28,17 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
 
 /**
- *
+ *  Gerencia os estilos comuns dos elementos da aplicação
+ * 
  * @author Welison
  */
 public class Styles {
     
+    /**
+     * Estiliza os botões default
+     * 
+     * @param btn o JButton a ser estilizado
+     */
     public static void defaultButton(JButton btn) {
         // styles
         btn.setFont(new Font("Tahoma", 0, 12));
@@ -56,6 +62,11 @@ public class Styles {
         });
     }
     
+    /**
+     * Estiliza os JTextField default da aplicação
+     * 
+     * @param field o JTextField a ser estilizado
+     */
     public static void defaultField(JTextField field) {
         field.setBackground(new Color(55, 57, 59));
         field.setForeground(new Color(255, 255, 255));
@@ -64,6 +75,11 @@ public class Styles {
         field.setPreferredSize(new Dimension(200, 39));
     }
     
+    /**
+     * Estiliza os JDateChooser default da aplicação
+     * 
+     * @param fDate o JDateChooser a ser estilizado
+     */
     public static void defaultDateChooser(JDateChooser fDate) {
         fDate.setBackground(new Color(55, 57, 59));
         fDate.setForeground(new Color(255, 255, 255));
@@ -72,26 +88,43 @@ public class Styles {
         fDate.setPreferredSize(new Dimension(200, 39));
     }
     
+    /**
+     * Estiliza os JCombobox default da aplicação
+     * 
+     * @param field o JCombobox a ser estilizado
+     */
     public static void defaultComboBox(JComboBox field) {
-        //field.setBackground(new Color(55, 57, 59));
-        //field.setForeground(new Color(255, 255, 255));
-        //field.setCaretColor(new Color(255, 255, 255));
         field.setOpaque(false);
         field.setPreferredSize(new Dimension(160, 39));
     }
     
+    /**
+     * Estiliza os JLabel default da aplicação
+     * 
+     * @param label o JLabel a ser estilizado
+     */
     public static void defaultLabel(JLabel label) {
         label.setPreferredSize( new Dimension( 150, 39 ) );
         label.setForeground(new Color(255, 255, 255));
         label.setFont(new Font("Tahoma", 0, 12));
     }
     
+    /**
+     * Estliza os JLabel que exibem mensagens de erro da aplicação
+     * 
+     * @param label o JLabel a ser estilizado
+     */
     public static void errorLabel(JLabel label) {
         label.setForeground(new Color(255, 0, 0));
         label.setFont(new Font("Tahoma", 0, 12));
         label.setPreferredSize( new Dimension( 150, 20 ) );
     }
     
+    /**
+     * Estliza os JButtons do menu da aplicação
+     * 
+     * @param btn o JButton a ser estilizado
+     */
     public static void menuButton(JButton btn) {
         btn.setBackground(new Color(7, 7, 7));
         btn.setFont(new Font("Tahoma", 1, 14));
@@ -100,29 +133,33 @@ public class Styles {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setOpaque(true);
         btn.setPreferredSize( new Dimension( 230, 35 ) );
-        //label.setFocusable(true);
-        /*
-        label.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) {
-                setMenuButtonActive(label);
-            }
-            public void mouseExited(MouseEvent evt) {
-                setMenuButtonInactive(label);
-            }
-        }); 
-        */
     }
     
+    /**
+     * Estiliza o JButton do menu ativo da aplicação
+     * 
+     * @param btn o JButton a ser estilizado
+     */
     public static void setMenuButtonActive(JButton btn) {
         btn.setBackground(new Color(8, 253, 216));
         btn.setForeground(new Color(7, 7, 7));
     }
     
+    /**
+     * Estiliza o JButton do menu não ativo da aplicação
+     * 
+     * @param btn o JButton a ser estilizado
+     */
     public static void setMenuButtonInactive(JButton btn) {
         btn.setBackground(new Color(7, 7, 7));
         btn.setForeground(new Color(8, 253, 216));
     }
     
+    /**
+     * Estliza o JButton de busca da aplicação
+     * 
+     * @param btn o JButton a ser estilizado
+     */
     public static void searchButton(JButton btn) {
         btn.setContentAreaFilled(false);
         btn.setPreferredSize(new Dimension(35, 35));
@@ -130,16 +167,34 @@ public class Styles {
         btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa.png")));
     }
     
+    /**
+     * Estiliza os JFrame de add/editar/vizualizar (ou outro interno qualquer)
+     * Esse metodo fixa altura e largura (450x350)
+     * 
+     * @param frame o JFrame a ser estilizado
+     */
     public static void internalFrame(JFrame frame) {
         Methods.makePanelRelativeSize(frame, 450, 350);
         _internalFramesBase(frame);
     }
     
+    /**
+     * Estiliza os JFrame de add/editar/vizualizar (ou outro interno qualquer)
+     * 
+     * @param frame o JFrame a ser estilizado
+     * @param width a largura desejada
+     * @param height a altura desejada
+     */
     public static void internalFrame(JFrame frame, int width, int height) {
         Methods.makePanelRelativeSize(frame, width, height);
         _internalFramesBase(frame);
     }
     
+    /**
+     * Seta os estilos base de um JFrame interno da aplicação
+     * 
+     * @param frame o JFrame a ser estilizado
+     */
     private static void _internalFramesBase(JFrame frame) {
         frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         frame.setLayout(new BorderLayout());
@@ -151,6 +206,11 @@ public class Styles {
         frame.requestFocus();
     }
     
+    /**
+     * Estiliza os JScrollPane default da aplicação
+     * 
+     * @param panel o JScrollPane a ser estilizado
+     */
     public static void resetScrollPanel(JScrollPane panel) {
         panel.setLayout(new ScrollPaneLayout());
         panel.getViewport().setOpaque(false);
@@ -159,6 +219,13 @@ public class Styles {
         panel.setViewportBorder(null);
     }
     
+    /**
+     * Estiliza os componentes de sugestões da aplicação
+     * 
+     * @param panel o JScrollpane onde o JList de sugestão será inserido
+     * @param list o JList onde as sugestões serão inseridas
+     * @param model as sugestões um uma lista de strig
+     */
     public static void defaultSuggestions(JScrollPane panel, JList list, String[] model) {
         list.setModel(new AbstractListModel<String>() {
             String[] strings = model;

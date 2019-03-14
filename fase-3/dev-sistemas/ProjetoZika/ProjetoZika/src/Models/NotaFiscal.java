@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Models;
 
 /**
- *
+ * Modelo para Notas Fiscais
+ * 
  * @author Welison
  */
 public class NotaFiscal {
@@ -16,6 +12,8 @@ public class NotaFiscal {
     private String Cnpj;
     private float Valor;
     private String Data;
+    
+    public NotaFiscal() {}
     
     public NotaFiscal(long numero, int serie, String cnpj, float valor, String data) {
         Numero = numero;

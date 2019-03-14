@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Templates;
 
 import java.awt.Component;
@@ -14,7 +9,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JTable;
 
 /**
- *
+ * Adiciona um JButton numa celula da JTable
+ * 
  * @author Welison
  */
 public class ButtonEditor extends DefaultCellEditor {
@@ -67,6 +63,9 @@ public class ButtonEditor extends DefaultCellEditor {
         return super.stopCellEditing();
     }
     
+    /**
+     * Metodo a ser sobreescrito, agindo como um callback do evento click do botão
+     */
     public void buttonAction(){
         System.out.println("Overrde it");
     }

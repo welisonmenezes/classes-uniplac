@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Models;
 
 /**
- *
+ * Modelo para fornecedores
+ * 
  * @author Welison
  */
 public class Fornecedor {
@@ -16,11 +12,7 @@ public class Fornecedor {
     private String Telefone;
     private String Data;
     
-    //public void Fornecedor(){};
-    
-    public Fornecedor(String id) {
-        
-    }
+    public Fornecedor(){};
     
     public Fornecedor(int id, String nome, String cnpj, String telefone, String data){
         this.Id = id;

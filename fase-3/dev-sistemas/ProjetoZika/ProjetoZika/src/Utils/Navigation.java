@@ -10,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import projetozika.Main;
 import projetozika.Pages.Dashboard;
@@ -21,15 +20,22 @@ import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
 
 /**
- *
+ * Gerencia a navegação da aplicação
+ * 
  * @author Welison
  */
 public class Navigation {
     
-    private static JFrame tmpFrame;
-    private static JPanel tmpPanel;
-    public static String currentPage = "";
+    private static JFrame tmpFrame; // o jframe corrente (se houver)
+    private static JPanel tmpPanel; // o jpanel corrent
+    public static String currentPage = ""; // a página corrente
     
+    /**
+     * Atualiza o status do menu, indicando qual modulo está ativo.
+     * Importante indicar um 'name' aos botões do menu na criação dos mesmos.
+     * 
+     * @param name o nome do menu que deverá ficar ativo
+     */
     public static void updateSatusMenu(String name) {
         Component[] comps = Main.menu.getComponents();
         for (Component comp : comps) {
@@ -44,6 +50,13 @@ public class Navigation {
         }
     }
     
+    /**
+     * Atualiza o JBody, area onde o conteúdo de cada menu será exibido
+     * Este metodo cuida das ediçoes e/ou visualizações de detalhe
+     * 
+     * @param pageName o nome do modulo desejado
+     * @param id o id para consulta ao banco de dados
+     */
     public static void updateLayout(String pageName, String id) {
         if (currentPage.equals(pageName)) return;
         resetLayout(pageName);
@@ -63,7 +76,13 @@ public class Navigation {
         }
         addNewPage();
     }
-  
+    
+    /**
+     * Atualiza o JBody, area onde o conteúdo de cada menu será exibido
+     * Este metodo cuida das listagens e adições
+     * 
+     * @param pageName o nome do modulo desejado
+     */
     public static void updateLayout(String pageName) {
         if (currentPage.equals(pageName)) return;
         resetLayout(pageName);
@@ -101,6 +120,10 @@ public class Navigation {
         addNewPage();
     }
     
+    /**
+     * Reseta o JBody
+     * @param pageName 
+     */
     private static void resetLayout(String pageName) {
         if (!pageName.equals("addFornecedorNota")){
             if (tmpFrame != null) {;
@@ -112,11 +135,17 @@ public class Navigation {
         Methods.clearStage(Methods.getJBody());
     }
     
+    /**
+     * Adiciona o jpanel corrente ao JBody
+     */
     private static void addNewPage() {
         getJBody().add(tmpPanel, BorderLayout.CENTER);
         tmpPanel.setVisible(true);
     }
     
+    /**
+     * Seta um valor default para links não encontrados
+     */
     private static void setDefaultPage() {
         updateSatusMenu("");
         currentPage = "";
