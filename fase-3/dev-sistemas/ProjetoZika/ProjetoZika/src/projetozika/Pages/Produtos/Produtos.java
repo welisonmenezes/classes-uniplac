@@ -5,7 +5,6 @@
  */
 package projetozika.Pages.Produtos;
 
-import Models.Fornecedor;
 import Models.Produto;
 import Templates.BaseLayout;
 import Templates.ButtonEditor;

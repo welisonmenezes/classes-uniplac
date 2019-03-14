@@ -18,6 +18,7 @@ import projetozika.Pages.Fornecedores.Fornecedores;
 import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
+import projetozika.Pages.Produtos.AddProduto;
 import projetozika.Pages.Produtos.Produtos;
 
 /**
@@ -71,6 +72,15 @@ public class Navigation {
                 updateSatusMenu("fornecedores");
                 tmpFrame = new AddFornecedor(id, "view");
                 tmpFrame.setVisible(true);
+            case "editarProduto":
+                updateSatusMenu("produtos");
+                tmpFrame = new AddProduto(id, "edit");
+                tmpFrame.setVisible(true);
+                break;
+            case "verProduto":
+                updateSatusMenu("produtos");
+                tmpFrame = new AddProduto(id, "view");
+                tmpFrame.setVisible(true);
                 break;
             default:
                 setDefaultPage();
@@ -118,6 +128,11 @@ public class Navigation {
             case "produtos":
                 updateSatusMenu("produtos");
                 tmpPanel = new Produtos();
+                break;
+            case "addProduto":
+                updateSatusMenu("produtos");
+                tmpFrame = new AddProduto();
+                tmpFrame.setVisible(true);
                 break;
             default:
                 setDefaultPage();
