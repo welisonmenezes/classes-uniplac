@@ -68,7 +68,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         this.mode = mode;
         if(this.mode.equals("view")){
             initPage("Ver Fornecedor");
-            disabledFields();
+            Methods.disabledFields(bg);
         } else if (this.mode.equals("edit")){
             initPage("Editar Fornecedor");
         }
@@ -100,13 +100,6 @@ public class AddFornecedor extends Templates.BaseFrame {
         fname.setText(f.getNome());
         ftel.setText(f.getTelefone());
         fcnpj.setText(f.getCnpj());
-    }
-    
-    private void disabledFields() {
-        bSave.setVisible(false);
-        fname.setEditable(false);
-        ftel.setEditable(false);
-        fcnpj.setEditable(false);
     }
     
     public void addCenterContent() {

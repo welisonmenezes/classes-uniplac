@@ -122,6 +122,16 @@ public class Styles {
     }
     
     /**
+     * Estiliza os JCombobox default da aplicação
+     * 
+     * @param field o JCombobox a ser estilizado
+     */
+    public static void defaultComboBox(JComboBox field, int width, int height) {
+        field.setOpaque(false);
+        field.setPreferredSize(new Dimension(width, height));
+    }
+    
+    /**
      * Estiliza os JLabel default da aplicação
      * 
      * @param label o JLabel a ser estilizado

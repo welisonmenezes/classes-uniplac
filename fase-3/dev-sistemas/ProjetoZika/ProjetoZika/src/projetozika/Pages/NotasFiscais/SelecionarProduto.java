@@ -94,6 +94,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         
         addProduto.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
+                if (!addProduto.isEnabled()) return;
                 Navigation.updateLayout("addProdutoNota");
             }
         });

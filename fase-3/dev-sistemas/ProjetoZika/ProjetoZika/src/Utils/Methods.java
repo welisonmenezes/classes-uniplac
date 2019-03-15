@@ -14,11 +14,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
@@ -230,5 +235,35 @@ public class Methods {
                 Methods.setEnableRecursively(Methods.getJMenu(), true);
             }
         });
+    }
+    
+    /**
+     * Desabilita os campos de formulario
+     * 
+     * @param wrap o container cujo filhos serão desabilitados
+     */
+    public static void disabledFields(JComponent wrap) {
+        Component[] comps = wrap.getComponents();
+        for (int i = 0; i < comps.length; i++) {
+            //System.out.println(comps[i]);
+            if(comps[i] instanceof JScrollPane) {
+                JScrollPane comp = (JScrollPane) comps[i];
+                disabledFields(comp);
+            } else if(comps[i] instanceof JViewport) {
+                JViewport comp = (JViewport) comps[i];
+                disabledFields(comp);
+            } else if (comps[i] instanceof JTextField) {
+                JTextField comp = (JTextField)comps[i];
+                comp.setEditable(false);
+            } else if (comps[i] instanceof JTextArea) {
+                JTextArea comp = (JTextArea)comps[i];
+                comp.setEditable(false);
+            } else if (comps[i] instanceof JButton) {
+                JButton comp = (JButton)comps[i];
+                comp.setVisible(false);
+            } else {
+                comps[i].setEnabled(false);
+            }
+        }
     }
 }

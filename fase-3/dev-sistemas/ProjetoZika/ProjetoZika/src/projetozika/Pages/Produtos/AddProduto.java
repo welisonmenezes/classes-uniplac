@@ -68,7 +68,7 @@ public class AddProduto extends Templates.BaseFrame {
         this.mode = mode;
         if(this.mode.equals("view")){
             initPage("Ver Produto");
-            disabledFields();
+            Methods.disabledFields(bg);
         } else if (this.mode.equals("edit")){
             initPage("Editar Produto");
         }
@@ -100,13 +100,6 @@ public class AddProduto extends Templates.BaseFrame {
         fnome.setText(p.getNome());
         funidade.setSelectedItem("Unidade");
         fdescricao.setText(p.getDescricao());
-    }
-    
-    private void disabledFields() {
-        bSave.setVisible(false);
-        fnome.setEditable(false);
-        funidade.setEnabled(false);
-        fdescricao.setEditable(false);
     }
     
     public void addCenterContent() {

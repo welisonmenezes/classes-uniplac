@@ -78,6 +78,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         this.mode = mode;
         if(this.mode.equals("view")){
             initPage("Ver Nota Fiscal");
+            Methods.disabledFields(bg);
+            Methods.disabledFields(panelAddProduto);
         } else if (this.mode.equals("edit")){
             initPage("Editar Nota Fiscal");
         }
@@ -151,6 +153,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         
         addFornecedor.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
+                if (!addFornecedor.isEnabled()) return;
                 Navigation.updateLayout("addFornecedorNota");
             }
         });
