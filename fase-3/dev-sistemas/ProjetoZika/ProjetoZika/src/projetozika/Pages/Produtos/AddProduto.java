@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Produtos;
 
+import Config.Environment;
 import Models.Produto;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -13,6 +14,7 @@ import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -124,7 +126,7 @@ public class AddProduto extends Templates.BaseFrame {
         bg.add(lunidade, new AbsoluteConstraints(220, 0, -1, -1));
 
         funidade = new JComboBox();
-        funidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"", "Quilo", "Litro", "Caixa", "Unidade" }));
+        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES.toArray()));
         Styles.defaultComboBox(funidade);
         bg.add(funidade, new AbsoluteConstraints(220, 40, -1, -1));
         

@@ -5,6 +5,8 @@
  */
 package projetozika.Pages.Usuarios;
 
+import Config.Environment;
+import Models.Setor;
 import Models.Usuario;
 import Templates.BaseLayout;
 import Templates.ButtonEditor;
@@ -18,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -60,6 +63,8 @@ public class Usuarios extends Templates.BaseLayout {
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        
+        //Environment.SETORES.forEach(action);
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
@@ -152,7 +157,14 @@ public class Usuarios extends Templates.BaseLayout {
         Styles.defaultLabel(lEmail, false);
         
         fSetor = new JComboBox();
-        fSetor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"" ,"RH", "Contabilidade", "Manutenção", "Administração" }));
+        fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES.toArray()));
+        /* example
+        fSetor.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(fSetor.getSelectedIndex());
+            }
+        });
+        */
         Styles.defaultComboBox(fSetor);
         
         lSetor = new JLabel("Setor:");
