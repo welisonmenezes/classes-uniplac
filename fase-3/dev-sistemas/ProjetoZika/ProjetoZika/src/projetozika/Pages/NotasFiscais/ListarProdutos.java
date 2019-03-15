@@ -12,7 +12,6 @@ import Utils.Methods;
 import Utils.Styles;
 import java.awt.BorderLayout;
 import javax.swing.JCheckBox;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -25,20 +24,26 @@ public class ListarProdutos extends javax.swing.JPanel {
     
     public static DefaultTableModel tableModel;
     public static JTable tabela;
+    private String mode;
 
     /**
      * Creates new form ListarProdutos
      */
-    public ListarProdutos() {
+    public ListarProdutos(String mode) {
         initComponents();
         Styles.setBorderTitle(this, "Produtos da Nota Fiscal");
         setLayout(new BorderLayout());
+        this.mode = mode;
         
         
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "Unidade", "Excluir"};
+        String[] colunas = {"Código", "Nome", "Unidade", ""};
+        if(! mode.equals("view")) {
+            colunas[3] = "Excluir";
+        } 
+        
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -52,7 +57,10 @@ public class ListarProdutos extends javax.swing.JPanel {
         // adiciona linhas
         for(int i = 0; i < 5; i++) {
             Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-            Object[] data = {p.getId(),p.getNome(),p.getUnidade(),"Excluir"};
+            Object[] data = {p.getId(),p.getNome(),p.getUnidade(),""};
+            if (! mode.equals("view")) {
+                data[3] = "Excluir";
+            }
             tableModel.addRow(data);
         }
     
@@ -65,14 +73,16 @@ public class ListarProdutos extends javax.swing.JPanel {
         barraRolagem.setViewportBorder(null);
         add(barraRolagem, BorderLayout.CENTER);
         
-        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
-            @Override
-            public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
-                Methods.removeSelectedTableRow(tabela, tableModel);
-            }
-        });
+        if (! mode.equals("view")) {
+            tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
+            tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+                @Override
+                public void buttonAction() {
+                    String id = Methods.selectedTableItemId(tabela);
+                    Methods.removeSelectedTableRow(tabela, tableModel);
+                }
+            });
+        }
     }
 
     /**

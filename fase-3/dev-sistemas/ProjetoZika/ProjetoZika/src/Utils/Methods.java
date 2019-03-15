@@ -139,6 +139,7 @@ public class Methods {
      */
     public static void clearStage(JPanel jb) {
         jb.removeAll();
+        jb.repaint();
         jb.revalidate();
     }
     

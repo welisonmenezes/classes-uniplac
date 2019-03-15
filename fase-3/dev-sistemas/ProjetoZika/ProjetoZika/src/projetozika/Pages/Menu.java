@@ -35,6 +35,7 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bFornecedores);
         Styles.menuButton(bNotasFiscais);
         Styles.menuButton(bProdutos);
+        Styles.menuButton(bUsuarios);
     }
 
     /**
@@ -51,6 +52,7 @@ public class Menu extends javax.swing.JPanel {
         bFornecedores = new javax.swing.JButton();
         bNotasFiscais = new javax.swing.JButton();
         bProdutos = new javax.swing.JButton();
+        bUsuarios = new javax.swing.JButton();
         labelEspacoLogout = new javax.swing.JLabel();
         logout = new javax.swing.JButton();
 
@@ -93,6 +95,15 @@ public class Menu extends javax.swing.JPanel {
             }
         });
         add(bProdutos);
+
+        bUsuarios.setText("Usuários");
+        bUsuarios.setName("usuarios"); // NOI18N
+        bUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bUsuariosActionPerformed(evt);
+            }
+        });
+        add(bUsuarios);
         add(labelEspacoLogout);
 
         logout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -140,12 +151,18 @@ public class Menu extends javax.swing.JPanel {
         Navigation.updateLayout("produtos");
     }//GEN-LAST:event_bProdutosActionPerformed
 
+    private void bUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUsuariosActionPerformed
+        // TODO add your handling code here:
+        Navigation.updateLayout("usuarios");
+    }//GEN-LAST:event_bUsuariosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDashboard;
     private javax.swing.JButton bFornecedores;
     private javax.swing.JButton bNotasFiscais;
     private javax.swing.JButton bProdutos;
+    private javax.swing.JButton bUsuarios;
     private javax.swing.JLabel labelEspacoLogout;
     private javax.swing.JLabel labelEspacoTopo;
     private javax.swing.JButton logout;

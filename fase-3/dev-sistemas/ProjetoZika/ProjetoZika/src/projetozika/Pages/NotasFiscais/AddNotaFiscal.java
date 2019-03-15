@@ -246,7 +246,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         panelAddProduto.setPreferredSize(new Dimension(375, 360));
         bg.add(panelAddProduto, new AbsoluteConstraints(570, 10, -1, -1));
         
-        panelListarProdutos = new ListarProdutos();
+        panelListarProdutos = new ListarProdutos(this.mode);
         panelListarProdutos.setVisible(true);
         panelListarProdutos.setPreferredSize(new Dimension(945, 300));
         bg.add(panelListarProdutos, new AbsoluteConstraints(0, 400, -1, -1));
