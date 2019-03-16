@@ -32,6 +32,7 @@ public class Menu extends javax.swing.JPanel {
         labelEspacoLogout.setPreferredSize(new Dimension(200, 100));
         
         Styles.menuButton(bDashboard);
+        Styles.menuButton(bPedidos);
         Styles.menuButton(bFornecedores);
         Styles.menuButton(bNotasFiscais);
         Styles.menuButton(bProdutos);
@@ -49,6 +50,7 @@ public class Menu extends javax.swing.JPanel {
 
         labelEspacoTopo = new javax.swing.JLabel();
         bDashboard = new javax.swing.JButton();
+        bPedidos = new javax.swing.JButton();
         bFornecedores = new javax.swing.JButton();
         bNotasFiscais = new javax.swing.JButton();
         bProdutos = new javax.swing.JButton();
@@ -68,6 +70,15 @@ public class Menu extends javax.swing.JPanel {
             }
         });
         add(bDashboard);
+
+        bPedidos.setText("Pedidos");
+        bPedidos.setName("pedidos"); // NOI18N
+        bPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bPedidosActionPerformed(evt);
+            }
+        });
+        add(bPedidos);
 
         bFornecedores.setText("Fornecedores");
         bFornecedores.setName("fornecedores"); // NOI18N
@@ -156,11 +167,17 @@ public class Menu extends javax.swing.JPanel {
         Navigation.updateLayout("usuarios");
     }//GEN-LAST:event_bUsuariosActionPerformed
 
+    private void bPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPedidosActionPerformed
+        // TODO add your handling code here:
+        Navigation.updateLayout("pedidos");
+    }//GEN-LAST:event_bPedidosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDashboard;
     private javax.swing.JButton bFornecedores;
     private javax.swing.JButton bNotasFiscais;
+    private javax.swing.JButton bPedidos;
     private javax.swing.JButton bProdutos;
     private javax.swing.JButton bUsuarios;
     private javax.swing.JLabel labelEspacoLogout;

@@ -14,6 +14,7 @@ public class Produto {
     private String Nome;
     private String Unidade;
     private String Descricao;
+    private String Status;
     private String Data;
     
     public Produto() {}
@@ -64,6 +65,14 @@ public class Produto {
 
     public void setData(String Data) {
         this.Data = Data;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
     
     

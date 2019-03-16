@@ -35,6 +35,15 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bDashboardActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JButton" name="bPedidos">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Pedidos"/>
+        <Property name="name" type="java.lang.String" value="pedidos" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bPedidosActionPerformed"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JButton" name="bFornecedores">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fornecedores"/>

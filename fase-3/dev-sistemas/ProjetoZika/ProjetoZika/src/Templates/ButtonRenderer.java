@@ -22,6 +22,13 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
+        
+        
+        if (value.equals("-")) {
+            setEnabled(false);
+            setVisible(false);
+        }
+        
         if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());

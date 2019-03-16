@@ -11,6 +11,7 @@ public class NotaFiscal {
     private int Serie;
     private String Cnpj;
     private float Valor;
+    private String Status;
     private String Data;
     
     public NotaFiscal() {}
@@ -70,5 +71,14 @@ public class NotaFiscal {
     public void setData(String Data) {
         this.Data = Data;
     }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+    
     
 }

@@ -19,6 +19,7 @@ public class Usuario {
     private String Setor;
     private String Sexo;
     private String Permissao;
+    private String Status;
     private String Data;
     
     public Usuario() {}
@@ -113,6 +114,14 @@ public class Usuario {
 
     public void setData(String Data) {
         this.Data = Data;
+    }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
     }
     
     
