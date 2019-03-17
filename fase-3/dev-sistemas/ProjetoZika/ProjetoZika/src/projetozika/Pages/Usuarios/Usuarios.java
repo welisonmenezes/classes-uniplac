@@ -38,18 +38,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Usuarios extends Templates.BaseLayout {
     
-    BaseLayout self;
+    private BaseLayout self;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
-    JButton addMore;
-    JTextField fEmail;
-    JTextField fNome;
-    JComboBox<String> fSetor;
-    JLabel lNome;
-    JLabel lEmail;
-    JLabel lSetor;
-    JLabel lSearch;
-    JButton bSearch;
+    private JButton addMore;
+    private JTextField fEmail;
+    private JTextField fNome;
+    private JComboBox<String> fSetor;
+    private JLabel lNome;
+    private JLabel lEmail;
+    private JLabel lSetor;
+    private JLabel lSearch;
+    private JButton bSearch;
+    private JScrollPane barraRolagem;
+    private JLabel hideL;
 
     /**
      * Cria a tela de fornecedores
@@ -70,7 +72,7 @@ public class Usuarios extends Templates.BaseLayout {
     // Adiciona conteúdo ao centro da area de conteúdo
     public void addCenterContent() {
         makeTable();
-        JScrollPane barraRolagem = new JScrollPane(tabela);
+        barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
@@ -170,7 +172,7 @@ public class Usuarios extends Templates.BaseLayout {
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
         
-        JLabel hideL = new JLabel();
+        hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
         addMore = new JButton("Criar Novo");

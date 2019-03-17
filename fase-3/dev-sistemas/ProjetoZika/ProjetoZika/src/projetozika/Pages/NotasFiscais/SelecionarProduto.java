@@ -34,6 +34,21 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 public class SelecionarProduto extends javax.swing.JPanel {
     
     private JPanel self;
+    private JLabel lnome;
+    private JTextField fnome;
+    private JScrollPane scrollList;
+    private JLabel addProduto;
+    private JLabel enome;
+    private JLabel lunidade;
+    private JTextField funidade;
+    private JLabel eunidade;
+    private JLabel lquantidade;
+    private JTextField fquantidade;
+    private JLabel equantidade;
+    private JLabel lvalor;
+    private JTextField fvalor;
+    private JLabel evalor;
+    private JButton selProd;
 
     /**
      * Creates new form SelecionarProduto
@@ -47,15 +62,15 @@ public class SelecionarProduto extends javax.swing.JPanel {
     }
     
     private void addElements() {
-        JLabel lnome = new JLabel("Nome");
+        lnome = new JLabel("Nome");
         Styles.defaultLabel(lnome);
         add(lnome, new AbsoluteConstraints(20, 20, -1, -1));
         
-        JTextField fnome = new JTextField();
+        fnome = new JTextField();
         Styles.defaultField(fnome);
         add(fnome, new AbsoluteConstraints(20, 50, -1, -1));
         
-        JScrollPane scrollList = new JScrollPane();
+        scrollList = new JScrollPane();
         JList lSugestoes = new JList<>();
         String[] strings = {};
         Styles.defaultSuggestions(scrollList, lSugestoes, strings);
@@ -87,7 +102,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             }
         });
         
-        JLabel addProduto = new JLabel("<html><u>Novo Produto</u></html>");
+        addProduto = new JLabel("<html><u>Novo Produto</u></html>");
         Styles.defaultLabel(addProduto);
         addProduto.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(addProduto, new AbsoluteConstraints(230, 45, -1, -1));
@@ -99,48 +114,48 @@ public class SelecionarProduto extends javax.swing.JPanel {
             }
         });
         
-        JLabel enome = new JLabel("");
+        enome = new JLabel("");
         Styles.errorLabel(enome);
         add(enome, new AbsoluteConstraints(20, 85, -1, -1));
         
-        JLabel lunidade = new JLabel("Unidade");
+        lunidade = new JLabel("Unidade");
         Styles.defaultLabel(lunidade);
         add(lunidade, new AbsoluteConstraints(20, 100, -1, -1));
         
-        JTextField funidade = new JTextField();
+        funidade = new JTextField();
         Styles.defaultField(funidade);
         funidade.setEnabled(false);
         add(funidade, new AbsoluteConstraints(20, 130, -1, -1));
         
-        JLabel eunidade = new JLabel("");
+        eunidade = new JLabel("");
         Styles.errorLabel(eunidade);
         add(eunidade, new AbsoluteConstraints(20, 165, -1, -1));
         
-        JLabel lquantidade = new JLabel("Quantidade");
+        lquantidade = new JLabel("Quantidade");
         Styles.defaultLabel(lquantidade);
         add(lquantidade, new AbsoluteConstraints(20, 180, -1, -1));
         
-        JTextField fquantidade = new JTextField();
+        fquantidade = new JTextField();
         Styles.defaultField(fquantidade);
         add(fquantidade, new AbsoluteConstraints(20, 210, -1, -1));
         
-        JLabel equantidade = new JLabel("");
+        equantidade = new JLabel("");
         Styles.errorLabel(equantidade);
         add(equantidade, new AbsoluteConstraints(20, 245, -1, -1));
         
-        JLabel lvalor = new JLabel("Quantidade");
+        lvalor = new JLabel("Quantidade");
         Styles.defaultLabel(lvalor);
         add(lvalor, new AbsoluteConstraints(20, 260, -1, -1));
         
-        JTextField fvalor = new JTextField();
+        fvalor = new JTextField();
         Styles.defaultField(fvalor);
         add(fvalor, new AbsoluteConstraints(20, 290, -1, -1));
         
-        JLabel evalor = new JLabel("");
+        evalor = new JLabel("");
         Styles.errorLabel(evalor);
         add(evalor, new AbsoluteConstraints(20, 325, -1, -1));
         
-        JButton selProd = new JButton("Adicionar");
+        selProd = new JButton("Adicionar");
         Styles.defaultButton(selProd);
         selProd.setPreferredSize(new Dimension(100, 34));
         add(selProd, new AbsoluteConstraints(240, 293, -1, -1));

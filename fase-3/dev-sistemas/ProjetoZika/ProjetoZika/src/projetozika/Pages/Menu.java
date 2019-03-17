@@ -19,7 +19,7 @@ import projetozika.Main;
  */
 public class Menu extends javax.swing.JPanel {
     
-    Main main;
+    private Main main;
     /**
      * Creates new form Menu
      */

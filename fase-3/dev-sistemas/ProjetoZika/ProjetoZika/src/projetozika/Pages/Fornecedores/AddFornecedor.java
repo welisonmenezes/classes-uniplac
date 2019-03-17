@@ -55,8 +55,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     
     public AddFornecedor(JPanel panelCaller) {
         this.self = this;
-        this.mode = "add";
-        initPage("Adicionar Fornecedor");
+        initPage("Adicionar Fornecedor pela Nota");
         this.mode = "nota";
         this.panelCaller = panelCaller;
     }
@@ -180,12 +179,11 @@ public class AddFornecedor extends Templates.BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
-                
-                JTable tabela = Fornecedores.tabela;
-                DefaultTableModel tableModel = Fornecedores.tableModel;
-                int row = tabela.getSelectedRow();
-                    
+                 
                 if (mode.equals("edit")) {
+                    JTable tabela = Fornecedores.tabela;
+                    DefaultTableModel tableModel = Fornecedores.tableModel;
+                    int row = tabela.getSelectedRow();
                     tableModel.setValueAt(fname.getText() , row, 1);
                     tableModel.setValueAt(fcnpj.getText() , row, 2);
                     tableModel.setValueAt(ftel.getText() , row, 3);
@@ -193,6 +191,7 @@ public class AddFornecedor extends Templates.BaseFrame {
                     JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
 
                 } else if(mode.equals("add")) {
+                    DefaultTableModel tableModel = Fornecedores.tableModel;
                     tableModel.addRow(new Object[]{"5454",fname.getText(),fcnpj.getText(),ftel.getText(),"Editar","Excluir","Ver"});
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");

@@ -25,6 +25,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private final JFrame self;
     private String mode;
     private JPanel bg;
+    private JLabel title;
     
    public EditarPedido() {
        this.self = this;
@@ -61,11 +62,10 @@ public class EditarPedido extends Templates.BaseFrame {
         bg.setLayout(new BorderLayout());
         bg.setOpaque(false);
         
-        JLabel title = new JLabel("Itens");
+        title = new JLabel("Itens");
         Styles.defaultLabel(title);
         bg.add(title, BorderLayout.NORTH);
 
-        
         pCenter.add(bg);
     }
     

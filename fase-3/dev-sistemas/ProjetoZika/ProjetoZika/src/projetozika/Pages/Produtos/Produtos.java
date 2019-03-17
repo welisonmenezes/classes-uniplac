@@ -38,18 +38,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Produtos extends Templates.BaseLayout {
     
-    BaseLayout self;
+    private BaseLayout self;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
-    JButton addMore;
-    JTextField fNome;
-    JComboBox<String> funidade;
-    JDateChooser fData;
-    JLabel lNome;
-    JLabel lUnidade;
-    JLabel lSearch;
-    JLabel lData;
-    JButton bSearch;
+    private JButton addMore;
+    private JTextField fNome;
+    private JComboBox<String> funidade;
+    private JDateChooser fData;
+    private JLabel lNome;
+    private JLabel lUnidade;
+    private JLabel lSearch;
+    private JLabel lData;
+    private JButton bSearch;
+    private JScrollPane barraRolagem;
+    private JLabel hideL;
 
     /**
      * Cria a tela de fornecedores
@@ -68,7 +70,7 @@ public class Produtos extends Templates.BaseLayout {
     // Adiciona conteúdo ao centro da area de conteúdo
     public void addCenterContent() {
         makeTable();
-        JScrollPane barraRolagem = new JScrollPane(tabela);
+        barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
@@ -161,7 +163,7 @@ public class Produtos extends Templates.BaseLayout {
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
         
-        JLabel hideL = new JLabel();
+        hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
         addMore = new JButton("Criar Novo");

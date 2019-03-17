@@ -37,17 +37,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Pedidos extends Templates.BaseLayout {
     
-    BaseLayout self;
+    private BaseLayout self;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
-    JDateChooser fData;
-    JTextField fNome;
-    JComboBox<String> fStatus;
-    JLabel lNome;
-    JLabel lData;
-    JLabel lStatus;
-    JLabel lSearch;
-    JButton bSearch;
+    private JDateChooser fData;
+    private JTextField fNome;
+    private JComboBox<String> fStatus;
+    private JLabel lNome;
+    private JLabel lData;
+    private JLabel lStatus;
+    private JLabel lSearch;
+    private JButton bSearch;
+    private JScrollPane barraRolagem;
 
     /**
      * Cria a tela de fornecedores
@@ -66,7 +67,7 @@ public class Pedidos extends Templates.BaseLayout {
     // Adiciona conteúdo ao centro da area de conteúdo
     public void addCenterContent() {
         makeTable();
-        JScrollPane barraRolagem = new JScrollPane(tabela);
+        barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }

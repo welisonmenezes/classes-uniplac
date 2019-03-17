@@ -34,18 +34,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Fornecedores extends Templates.BaseLayout {
     
-    BaseLayout self;
+    private BaseLayout self;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
-    JButton addMore;
-    JTextField fCnpj;
-    JTextField fNome;
-    JTextField fTelefone;
-    JLabel lNome;
-    JLabel lCnpj;
-    JLabel lTelefone;
-    JLabel lSearch;
-    JButton bSearch;
+    private JButton addMore;
+    private JTextField fCnpj;
+    private JTextField fNome;
+    private JTextField fTelefone;
+    private JLabel lNome;
+    private JLabel lCnpj;
+    private JLabel lTelefone;
+    private JLabel lSearch;
+    private JButton bSearch;
 
     /**
      * Cria a tela de fornecedores

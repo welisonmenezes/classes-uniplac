@@ -36,15 +36,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class NotasFiscais extends Templates.BaseLayout {
     
-    BaseLayout self;
+    private BaseLayout self;
     public static DefaultTableModel tableModel;
     public static JTable tabela;
-    JButton addMore;
-    JDateChooser fdata;
-    JTextField fcnpj;
-    JLabel ldata;
-    JLabel lcnpj;
-    JButton bSearch;
+    private JButton addMore;
+    private JDateChooser fdata;
+    private JTextField fcnpj;
+    private JLabel ldata;
+    private JLabel lcnpj;
+    private JButton bSearch;
     
     /**
      * Creates new form NotasFiscais

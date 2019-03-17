@@ -59,8 +59,7 @@ public class AddProduto extends Templates.BaseFrame {
     
     public AddProduto(JPanel panelCaller) {
         this.self = this;
-        this.mode = "add";
-        initPage("Adicionar Produto");
+        initPage("Adicionar Produto pela Nota");
         this.mode = "nota";
         this.panelCaller = panelCaller;
     }
@@ -186,22 +185,22 @@ public class AddProduto extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
                 
-                JTable tabela = Produtos.tabela;
-                DefaultTableModel tableModel = Produtos.tableModel;
-                int row = tabela.getSelectedRow();
-                    
                 if (mode.equals("edit")) {
+                    JTable tabela = Produtos.tabela;
+                    DefaultTableModel tableModel = Produtos.tableModel;
+                    int row = tabela.getSelectedRow();
                     tableModel.setValueAt(fnome.getText() , row, 1);
                     tableModel.setValueAt(funidade.getSelectedItem() , row, 2);
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
 
                 } else if(mode.equals("add")) {
+                    DefaultTableModel tableModel = Produtos.tableModel;
                     tableModel.addRow(new Object[]{"5454",fnome.getText(),funidade.getSelectedItem(),"10/10/2000","Editar","Excluir","Ver"});
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
                 } else if(mode.equals("nota")){
-                    
+                    // TODO
                     self.dispose();
                 } else {
                     self.dispose();
