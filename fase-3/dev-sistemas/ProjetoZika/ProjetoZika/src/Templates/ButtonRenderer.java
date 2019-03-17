@@ -24,9 +24,12 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
             boolean isSelected, boolean hasFocus, int row, int column) {
         
         
-        if (value.equals("-")) {
+        if (value.equals("")) {
             setEnabled(false);
             setVisible(false);
+        } else {
+            setEnabled(true);
+            setVisible(true);
         }
         
         if (isSelected) {

@@ -43,7 +43,7 @@ public class Produtos extends Templates.BaseLayout {
     public static DefaultTableModel tableModel;
     JButton addMore;
     JTextField fNome;
-    private JComboBox<String> funidade;
+    JComboBox<String> funidade;
     JDateChooser fData;
     JLabel lNome;
     JLabel lUnidade;

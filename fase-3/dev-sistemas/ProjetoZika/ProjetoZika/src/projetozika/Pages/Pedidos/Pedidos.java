@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Pedidos;
 
+import Config.Environment;
 import projetozika.Pages.Fornecedores.*;
 import Models.Fornecedor;
 import Models.Pedido;
@@ -17,12 +18,15 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
 import Utils.Styles;
+import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -41,12 +45,12 @@ public class Pedidos extends Templates.BaseLayout {
     public static JTable tabela;
     public static DefaultTableModel tableModel;
     JButton addMore;
-    JTextField fCnpj;
+    JDateChooser fData;
     JTextField fNome;
-    JTextField fTelefone;
+    JComboBox<String> fStatus;
     JLabel lNome;
-    JLabel lCnpj;
-    JLabel lTelefone;
+    JLabel lData;
+    JLabel lStatus;
     JLabel lSearch;
     JButton bSearch;
 
@@ -83,7 +87,7 @@ public class Pedidos extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Ver", "Finalizar"};
+        String[] colunas = {"Código", "Nome", "Data", "Status", "Ver", "Finalizar"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -98,7 +102,11 @@ public class Pedidos extends Templates.BaseLayout {
         for(int i = 0; i < 25; i++) {
             Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver", "-"};
+            String btnValue = "Finalizar";
+            if ( i % 2 == 0 ) {
+                btnValue = "";
+            } 
+            Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver", btnValue};
             tableModel.addRow(data);
         }
         // inicializa
@@ -109,7 +117,12 @@ public class Pedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("finalizarPedido", id);
+                int col = tabela.getSelectedColumn();
+                int row = tabela.getSelectedRow();
+                String actionValue = (String)tabela.getModel().getValueAt(row, col);
+                if (!actionValue.equals("")) {
+                    Navigation.updateLayout("finalizarPedido", id);
+                }
             }
         });
         
@@ -134,17 +147,18 @@ public class Pedidos extends Templates.BaseLayout {
         lNome = new JLabel("Nome:");
         Styles.defaultLabel(lNome, false);
         
-        fCnpj = new JTextField();
-        Styles.defaultField(fCnpj, 150);
+        fData = new JDateChooser();
+        Styles.defaultDateChooser(fData);
         
-        lCnpj = new JLabel("CNPJ:");
-        Styles.defaultLabel(lCnpj, false);
+        lData = new JLabel("Data:");
+        Styles.defaultLabel(lData, false);
         
-        fTelefone = new JTextField();
-        Styles.defaultField(fTelefone, 150);
+        fStatus = new JComboBox();
+        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
+        Styles.defaultComboBox(fStatus);
         
-        lTelefone = new JLabel("Telefone:");
-        Styles.defaultLabel(lTelefone, false);
+        lStatus = new JLabel("Status:");
+        Styles.defaultLabel(lStatus, false);
         
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
@@ -157,10 +171,10 @@ public class Pedidos extends Templates.BaseLayout {
         
         pFilter.add(lNome);
         pFilter.add(fNome);
-        pFilter.add(lCnpj);
-        pFilter.add(fCnpj);
-        pFilter.add(lTelefone);
-        pFilter.add(fTelefone);
+        pFilter.add(lData);
+        pFilter.add(fData);
+        pFilter.add(lStatus);
+        pFilter.add(fStatus);
         pFilter.add(bSearch);
         pFilter.add(hideL);
         pFilter.add(addMore);
@@ -214,17 +228,20 @@ public class Pedidos extends Templates.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(self);
                 
-                /*
                 // reseta tabela
                 tableModel.getDataVector().removeAllElements();
                 tableModel.fireTableDataChanged();
                 // adiciona novas linhas
-                for(int i = 26; i < 35; i++) {
-                    Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-                    Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
+                for(int i = 0; i < 8; i++) {
+                    Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+                    Pedido p = new Pedido("10/11/2019", "Pendente", u);
+                    String btnValue = "Finalizar";
+                    if ( i % 2 == 0 ) {
+                        btnValue = "";
+                    } 
+                    Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver", btnValue};
                     tableModel.addRow(data);
                 }
-                */
                 
                 t.stop();
             }

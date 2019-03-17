@@ -7,6 +7,7 @@ package Config;
 
 import Models.Permissao;
 import Models.Setor;
+import Models.Status;
 import Models.Unidade;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,5 +44,15 @@ public class Environment {
         SETORES.add(new Setor(3, "Manutenção"));
         SETORES.add(new Setor(4, "Administração"));
         SETORES.add(new Setor(5, "Almixerifado"));
+    };
+    
+    public static final ArrayList<Status> STATUS = new ArrayList<Status>();
+    static {
+        STATUS.add(new Status(0, ""));
+        STATUS.add(new Status(0, "Pendente"));
+        STATUS.add(new Status(0, "Aguardando Entrega"));
+        STATUS.add(new Status(0, "Aprovado"));
+        STATUS.add(new Status(0, "Aprovado Parcial"));
+        STATUS.add(new Status(0, "Negado"));
     };
 }
