@@ -67,10 +67,7 @@ public class ListarProdutos extends javax.swing.JPanel {
         // inicializa
         tabela.setModel(tableModel);
         JScrollPane barraRolagem = new JScrollPane(tabela);
-        barraRolagem.setOpaque(false);
-        barraRolagem.getViewport().setOpaque(false);
-        barraRolagem.setBorder(null);
-        barraRolagem.setViewportBorder(null);
+        Styles.defaultScroll(barraRolagem);
         add(barraRolagem, BorderLayout.CENTER);
         
         if (! mode.equals("view")) {

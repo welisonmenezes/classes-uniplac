@@ -118,10 +118,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         });
         
         JScrollPane barraRolagem = new JScrollPane(tabela);
-        barraRolagem.setOpaque(false);
-        barraRolagem.getViewport().setOpaque(false);
-        barraRolagem.setBorder(null);
-        barraRolagem.setViewportBorder(null);
+        Styles.defaultScroll(barraRolagem);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     

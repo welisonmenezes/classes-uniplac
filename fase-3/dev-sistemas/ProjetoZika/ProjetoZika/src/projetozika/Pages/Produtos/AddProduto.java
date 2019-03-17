@@ -127,7 +127,7 @@ public class AddProduto extends Templates.BaseFrame {
 
         funidade = new JComboBox();
         funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES.toArray()));
-        Styles.defaultComboBox(funidade);
+        Styles.defaultComboBox(funidade, 200, 39);
         bg.add(funidade, new AbsoluteConstraints(220, 40, -1, -1));
         
         eunidade = new JLabel("");

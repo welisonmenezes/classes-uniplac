@@ -6,8 +6,6 @@
 package projetozika.Pages.Pedidos;
 
 import Config.Environment;
-import projetozika.Pages.Fornecedores.*;
-import Models.Fornecedor;
 import Models.Pedido;
 import Models.Usuario;
 import Templates.BaseLayout;
@@ -20,7 +18,6 @@ import Utils.Pagination;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
@@ -28,7 +25,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -44,7 +40,6 @@ public class Pedidos extends Templates.BaseLayout {
     BaseLayout self;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
-    JButton addMore;
     JDateChooser fData;
     JTextField fNome;
     JComboBox<String> fStatus;
@@ -72,10 +67,7 @@ public class Pedidos extends Templates.BaseLayout {
     public void addCenterContent() {
         makeTable();
         JScrollPane barraRolagem = new JScrollPane(tabela);
-        barraRolagem.setOpaque(false);
-        barraRolagem.getViewport().setOpaque(false);
-        barraRolagem.setBorder(null);
-        barraRolagem.setViewportBorder(null);
+        Styles.defaultScroll(barraRolagem);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
@@ -87,7 +79,7 @@ public class Pedidos extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "Data", "Status", "Ver", "Finalizar"};
+        String[] colunas = {"Código", "Nome", "Data", "Status", "Ver/Editar", "Finalizar"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -106,7 +98,7 @@ public class Pedidos extends Templates.BaseLayout {
             if ( i % 2 == 0 ) {
                 btnValue = "";
             } 
-            Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver", btnValue};
+            Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver/Editar", btnValue};
             tableModel.addRow(data);
         }
         // inicializa
@@ -121,17 +113,18 @@ public class Pedidos extends Templates.BaseLayout {
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, col);
                 if (!actionValue.equals("")) {
-                    Navigation.updateLayout("finalizarPedido", id);
+                    // TODO : tela de finalizar
+                    //Navigation.updateLayout("finalizarPedido", id);
                 }
             }
         });
         
-        tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn("Ver/Editar").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Ver/Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verPedido", id);
+                Navigation.updateLayout("editarPedido", id);
             }
         });
     }
@@ -163,12 +156,6 @@ public class Pedidos extends Templates.BaseLayout {
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
         
-        JLabel hideL = new JLabel();
-        hideL.setPreferredSize(new Dimension(50, 35));
-        
-        addMore = new JButton("Criar Novo");
-        Styles.defaultButton(addMore);
-        
         pFilter.add(lNome);
         pFilter.add(fNome);
         pFilter.add(lData);
@@ -176,17 +163,8 @@ public class Pedidos extends Templates.BaseLayout {
         pFilter.add(lStatus);
         pFilter.add(fStatus);
         pFilter.add(bSearch);
-        pFilter.add(hideL);
-        pFilter.add(addMore);
         
-        // click do adicionar novo
-        addMore.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addPedido");
-            }
-        });
-        
+
         // click do buscar
         bSearch.addActionListener(new ActionListener(){
             @Override

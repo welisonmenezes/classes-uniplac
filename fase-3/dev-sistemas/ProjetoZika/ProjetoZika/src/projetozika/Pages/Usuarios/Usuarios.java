@@ -71,10 +71,7 @@ public class Usuarios extends Templates.BaseLayout {
     public void addCenterContent() {
         makeTable();
         JScrollPane barraRolagem = new JScrollPane(tabela);
-        barraRolagem.setOpaque(false);
-        barraRolagem.getViewport().setOpaque(false);
-        barraRolagem.setBorder(null);
-        barraRolagem.setViewportBorder(null);
+        Styles.defaultScroll(barraRolagem);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     

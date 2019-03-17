@@ -18,6 +18,7 @@ import projetozika.Pages.Fornecedores.Fornecedores;
 import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
+import projetozika.Pages.Pedidos.EditarPedido;
 import projetozika.Pages.Pedidos.Pedidos;
 import projetozika.Pages.Produtos.AddProduto;
 import projetozika.Pages.Produtos.Produtos;
@@ -104,6 +105,11 @@ public class Navigation {
             case "verUsuario":
                 updateSatusMenu("usuarios");
                 tmpFrame = new AddUsuario(id, "view");
+                tmpFrame.setVisible(true);
+                break;
+            case "editarPedido":
+                updateSatusMenu("pedidos");
+                tmpFrame = new EditarPedido(id, "edit");
                 tmpFrame.setVisible(true);
                 break;
             default:

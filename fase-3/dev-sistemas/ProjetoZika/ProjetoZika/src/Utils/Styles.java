@@ -291,4 +291,11 @@ public class Styles {
         panel.setBorder(borderTitle);
         panel.setBackground(new Color(37, 38, 39));
     }
+    
+    public static void defaultScroll(JScrollPane scroll) {
+        scroll.setOpaque(false);
+        scroll.getViewport().setOpaque(false);
+        scroll.setBorder(null);
+        scroll.setViewportBorder(null);
+    }
 }
