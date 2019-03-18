@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -44,6 +45,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private JLabel title;
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
+    private JPanel paction;
     
    public EditarPedido() {
        this.self = this;
@@ -106,7 +108,7 @@ public class EditarPedido extends Templates.BaseFrame {
             }
         });
         
-        JPanel paction = new JPanel();
+        paction = new JPanel();
         paction.setLayout(new FlowLayout(FlowLayout.RIGHT));
         paction.setOpaque(false);
         paction.add(btnFinalizar);
@@ -171,6 +173,7 @@ public class EditarPedido extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
                 self.dispose();
+                JOptionPane.showMessageDialog(null, "Ok! Item aguardando retirada.");
                 t.stop();
             }
         });

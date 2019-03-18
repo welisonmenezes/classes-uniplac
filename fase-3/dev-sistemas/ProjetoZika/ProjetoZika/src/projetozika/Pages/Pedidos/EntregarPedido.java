@@ -5,7 +5,6 @@
  */
 package projetozika.Pages.Pedidos;
 
-import Config.Environment;
 import Models.PedidoProduto;
 import Models.Produto;
 import Utils.Dialogs;
@@ -13,25 +12,24 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
@@ -44,7 +42,16 @@ public class EntregarPedido extends Templates.BaseFrame {
     public static DefaultTableModel tableModel;
     private JLabel title;
     private JScrollPane barraRolagem;
-    private JButton btnFinalizar;
+    private JPanel ptable;
+    private JPanel pform;
+    private JLabel ltitle;
+    private JLabel llogin;
+    private JTextField flogin;
+    private JLabel elogin;
+    private JLabel lsenha;
+    private JTextField fsenha;
+    private JLabel esenha;
+    private JButton btnConfirm;
     
    public EntregarPedido() {
        this.self = this;
@@ -77,13 +84,12 @@ public class EntregarPedido extends Templates.BaseFrame {
     }
     
     public void addCenterContent() {
-        JPanel ptable = new JPanel();
+        ptable = new JPanel();
         ptable.setLayout(new BorderLayout());
         ptable.setOpaque(false);
         ptable.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
-        //ptable.setPreferredSize(new Dimension(400, 400));
         
-        title = new JLabel("Itens");
+        title = new JLabel("Detalhes do pedido");
         Styles.defaultLabel(title);
         ptable.add(title, BorderLayout.NORTH);
         
@@ -94,10 +100,55 @@ public class EntregarPedido extends Templates.BaseFrame {
         
         
         
-        JPanel pform = new JPanel();
-        pform.setLayout(new BorderLayout());
-        //pform.setOpaque(false);
-        pform.setPreferredSize(new Dimension(400, 400));
+        pform = new JPanel();
+        pform.setLayout(new AbsoluteLayout());
+        pform.setBackground(new Color(24,24,24));
+        pform.setPreferredSize(new Dimension(400, 350));
+        
+        ltitle = new JLabel("Usuário e senha do solicitante");
+        Styles.defaultLabel(ltitle);
+        ltitle.setFont(new Font("Tahoma", 0, 14));
+        ltitle.setPreferredSize(new Dimension(200, 35));
+        pform.add(ltitle, new AbsoluteConstraints(100, 50, -1, -1));
+        
+        llogin = new JLabel("Login");
+        Styles.defaultLabel(llogin);
+        pform.add(llogin, new AbsoluteConstraints(100, 90, -1, -1));
+
+        flogin = new JTextField();
+        Styles.defaultField(flogin);
+        pform.add(flogin, new AbsoluteConstraints(100, 130, -1, -1));
+        
+        elogin = new JLabel("");
+        Styles.errorLabel(elogin);
+        pform.add(elogin, new AbsoluteConstraints(100, 165, -1, -1));
+        
+        lsenha = new JLabel("Senha");
+        Styles.defaultLabel(lsenha);
+        pform.add(lsenha, new AbsoluteConstraints(100, 180, -1, -1));
+
+        fsenha = new JTextField();
+        Styles.defaultField(fsenha);
+        pform.add(fsenha, new AbsoluteConstraints(100, 220, -1, -1));
+        
+        esenha = new JLabel("");
+        Styles.errorLabel(esenha);
+        pform.add(esenha, new AbsoluteConstraints(100, 255, -1, -1));
+        
+        btnConfirm = new JButton("Confirmar Recebimento");
+        Styles.defaultButton(btnConfirm);
+        btnConfirm.setPreferredSize(new Dimension(200, 35));
+        pform.add(btnConfirm, new AbsoluteConstraints(100, 290, -1, -1));
+        
+        btnConfirm.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    
+                Dialogs.showLoadPopup(pCenter);
+                timerTest();
+                
+            }
+        });
         
         pCenter.add(pform, BorderLayout.WEST);
         pCenter.add(ptable, BorderLayout.CENTER);
@@ -138,6 +189,7 @@ public class EntregarPedido extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(pCenter);
                 self.dispose();
+                JOptionPane.showMessageDialog(null, "Item entregue com sucesso!");
                 t.stop();
             }
         });
