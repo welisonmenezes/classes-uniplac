@@ -13,9 +13,11 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -35,25 +37,24 @@ import javax.swing.table.TableColumn;
  *
  * @author Welison
  */
-public class EditarPedido extends Templates.BaseFrame {
+public class EntregarPedido extends Templates.BaseFrame {
     private final JFrame self;
     private String mode;
-    private JPanel bg;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
     private JLabel title;
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
     
-   public EditarPedido() {
+   public EntregarPedido() {
        this.self = this;
    }
     
-    public EditarPedido(String id, String mode) {
+    public EntregarPedido(String id, String mode) {
         this.self = this;
         this.mode = mode;
         
-        initPage("Pedido xxx - Usuário Fulano - 12/12/2018");
+        initPage("Confirmação de Entrega");
     }
     
     private void initPage(String title) {
@@ -73,44 +74,33 @@ public class EditarPedido extends Templates.BaseFrame {
         });
         
         addCenterContent();
-        addBottomContent();
     }
     
     public void addCenterContent() {
-        bg = new JPanel();
-        bg.setLayout(new BorderLayout());
-        bg.setOpaque(false);
+        JPanel ptable = new JPanel();
+        ptable.setLayout(new BorderLayout());
+        ptable.setOpaque(false);
+        ptable.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
+        //ptable.setPreferredSize(new Dimension(400, 400));
         
         title = new JLabel("Itens");
         Styles.defaultLabel(title);
-        bg.add(title, BorderLayout.NORTH);
+        ptable.add(title, BorderLayout.NORTH);
         
         makeTable();
         barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
-        bg.add(barraRolagem, BorderLayout.CENTER);
+        ptable.add(barraRolagem, BorderLayout.CENTER);
         
-        pCenter.add(bg);
-    }
-    
-    public void addBottomContent() {
-        btnFinalizar = new JButton("Finalizar Pedido");
-        Styles.defaultButton(btnFinalizar);
         
-        btnFinalizar.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: finalizar pedido aqui
-                Dialogs.showLoadPopup(bg);
-                timerTest();
-            }
-        });
         
-        JPanel paction = new JPanel();
-        paction.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        paction.setOpaque(false);
-        paction.add(btnFinalizar);
-        pBottom.add(paction, BorderLayout.SOUTH);
+        JPanel pform = new JPanel();
+        pform.setLayout(new BorderLayout());
+        //pform.setOpaque(false);
+        pform.setPreferredSize(new Dimension(400, 400));
+        
+        pCenter.add(pform, BorderLayout.WEST);
+        pCenter.add(ptable, BorderLayout.CENTER);
     }
     
     /**
@@ -121,46 +111,23 @@ public class EditarPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Produto", "Quantidade", "Gerenciar"};
+        String[] colunas = {"Produto", "Quantidade"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 1 && column != 2){
-                   return false;
-               }
-               return true;
+               return false;
             }
         };
         // adiciona linhas
         for(int i = 0; i < 25; i++) {
             Produto p = new Produto(212, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
             PedidoProduto pp = new PedidoProduto(p, 5, "Pendente");
-            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getStatus()};
+            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade()};
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
-        
-        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(1);
-        JComboBox cquantidade = new JComboBox();
-        for(int i = 1; i <= 5; i++) {
-            cquantidade.addItem(i);
-        }
-        quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
-        
-        TableColumn statusCol = tabela.getColumnModel().getColumn(2);
-        JComboBox cstatus = new JComboBox();
-        cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
-        cstatus.removeItemAt(0);
-        statusCol.setCellEditor(new DefaultCellEditor(cstatus));
-        
-        tabela.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                // TODO: editar produto do pedido
-            }
-        });
     }
     
     private Timer t;
@@ -169,7 +136,7 @@ public class EditarPedido extends Templates.BaseFrame {
         t = new Timer(2000,new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
+                Dialogs.hideLoadPopup(pCenter);
                 self.dispose();
                 t.stop();
             }
@@ -209,21 +176,23 @@ public class EditarPedido extends Templates.BaseFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditarPedido().setVisible(true);
+                new EntregarPedido().setVisible(true);
             }
         });
     }

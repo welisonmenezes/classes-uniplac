@@ -32,8 +32,8 @@ public class Environment {
     static {
         PERMISSOES.add(new Permissao(0, ""));
         PERMISSOES.add(new Permissao(1, "Usuário"));
-        PERMISSOES.add(new Permissao(2, "Administrador"));
-        PERMISSOES.add(new Permissao(3, "Almoxerife"));
+        PERMISSOES.add(new Permissao(2, "Almoxerife"));
+        PERMISSOES.add(new Permissao(3, "Administrador"));
     };
     
     public static final ArrayList<Setor> SETORES = new ArrayList<Setor>();

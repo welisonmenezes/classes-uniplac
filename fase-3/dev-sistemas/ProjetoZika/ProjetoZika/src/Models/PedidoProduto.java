@@ -13,6 +13,14 @@ public class PedidoProduto {
     private Produto Produto;
     private int Quantidade;
     private String Status;
+    
+    public PedidoProduto() {}
+    
+    public PedidoProduto(Produto produto, int quantidade, String status) {
+        Produto = produto;
+        Quantidade = quantidade;
+        Status = status;
+    }
 
     public Produto getProduto() {
         return Produto;

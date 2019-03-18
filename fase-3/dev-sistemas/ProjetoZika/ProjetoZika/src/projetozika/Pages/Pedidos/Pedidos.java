@@ -80,7 +80,7 @@ public class Pedidos extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "Data", "Status", "Ver/Editar", "Finalizar"};
+        String[] colunas = {"Código", "Nome", "Data", "Status", "Ver/Editar", "Entregar"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -95,7 +95,7 @@ public class Pedidos extends Templates.BaseLayout {
         for(int i = 0; i < 25; i++) {
             Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            String btnValue = "Finalizar";
+            String btnValue = "Entregar";
             if ( i % 2 == 0 ) {
                 btnValue = "";
             } 
@@ -105,8 +105,8 @@ public class Pedidos extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn("Finalizar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Finalizar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn("Entregar").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Entregar").setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -115,7 +115,7 @@ public class Pedidos extends Templates.BaseLayout {
                 String actionValue = (String)tabela.getModel().getValueAt(row, col);
                 if (!actionValue.equals("")) {
                     // TODO : tela de finalizar
-                    //Navigation.updateLayout("finalizarPedido", id);
+                    Navigation.updateLayout("entregarPedido", id);
                 }
             }
         });

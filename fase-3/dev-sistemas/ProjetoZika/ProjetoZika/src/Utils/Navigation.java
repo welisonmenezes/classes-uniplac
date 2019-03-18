@@ -19,6 +19,7 @@ import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
 import projetozika.Pages.Pedidos.EditarPedido;
+import projetozika.Pages.Pedidos.EntregarPedido;
 import projetozika.Pages.Pedidos.Pedidos;
 import projetozika.Pages.Produtos.AddProduto;
 import projetozika.Pages.Produtos.Produtos;
@@ -110,6 +111,11 @@ public class Navigation {
             case "editarPedido":
                 updateSatusMenu("pedidos");
                 tmpFrame = new EditarPedido(id, "edit");
+                tmpFrame.setVisible(true);
+                break;
+            case "entregarPedido":
+                updateSatusMenu("pedidos");
+                tmpFrame = new EntregarPedido(id, "edit");
                 tmpFrame.setVisible(true);
                 break;
             default:
