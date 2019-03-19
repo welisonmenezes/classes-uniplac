@@ -5,49 +5,43 @@
  */
 package projetozika.Pages.SeusPedidos;
 
-import projetozika.Pages.Pedidos.*;
-import Config.Environment;
-import Models.PedidoProduto;
 import Models.Produto;
+import Templates.ButtonEditor;
+import Templates.ButtonRenderer;
 import Templates.ComboItem;
+import Templates.ItemRenderer;
+import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.OverlayLayout;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
-import static projetozika.Pages.NotasFiscais.AddNotaFiscal.fcnpj;
 
 /**
  *
@@ -59,7 +53,6 @@ public class FazerPedido extends Templates.BaseFrame {
     private JPanel bg;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
-    private JLabel title;
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
     private JPanel paction;
@@ -112,58 +105,29 @@ public class FazerPedido extends Templates.BaseFrame {
      */
     public void addFilterContent() {
         pFilter = new JPanel();
-        pSuggestions = new JPanel();
-        
-        pSuggestions.setLayout(new AbsoluteLayout());
-        pSuggestions.setPreferredSize(new Dimension(300, 39));
-        pSuggestions.setOpaque(false);
         
         lproduto = new JLabel("Buscar Produto:");
         Styles.defaultLabel(lproduto, false);
         
+        // suggestion box
+        pSuggestions = new JPanel();
         fproduto = new JTextField();
-        Styles.defaultField(fproduto, 300);
-       
         cproduto = new JComboBox();
-        Styles.defaultComboBox(cproduto, 300, 39);
-
-        fproduto.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent event) {
-                cproduto.removeAllItems();
-                cproduto.hidePopup();
-                cproduto.addItem("");
-                for (int i = 0; i < 25; i++) {
-                    
-                    cproduto.addItem(new ComboItem("Prod_"+i, "ProdName_"+i).toString());
+        new SuggestionsBox(pSuggestions, fproduto, cproduto, 300) {
+            public ArrayList<ComboItem> addElements() {
+                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                for (int i = 1; i <= 25; i++) {
+                    // TODO: implements real database results
+                    elements.add(new ComboItem(i, "Nome_"+i));
                 }
-                cproduto.showPopup();
+                return elements;
             }
-        });
-        
-        cproduto.addActionListener (new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox) e.getSource();
-                Object item = e.getActionCommand();
-
-                if (item.equals("comboBoxChanged") && cb.getItemCount() > 0) {
-                    String selected = cb.getSelectedItem().toString();
-                    if (!selected.equals("")) {
-                        fproduto.setText(selected);
-                    }
-                }
-            }
-        });
-        //*/
-        
-        pSuggestions.add(fproduto, new AbsoluteConstraints(0, 0, -1, -1));
-        pSuggestions.add(cproduto, new AbsoluteConstraints(0, 0, -1, -1));
+        };
         
         btnAddProduto = new JButton("Adicionar");
         Styles.defaultButton(btnAddProduto);
        
         pFilter.add(lproduto);
-        //pFilter.add(fproduto);
         pFilter.add(pSuggestions);
         pFilter.add(btnAddProduto);
         
@@ -171,9 +135,15 @@ public class FazerPedido extends Templates.BaseFrame {
         btnAddProduto.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Dialogs.showLoadPopup(self);
-                //timerTest();
-                //pagination(3);
+                ComboItem selectedProd = (ComboItem)cproduto.getSelectedItem();
+                String typedText = fproduto.getText();
+                if (selectedProd != null && selectedProd.getDescription().equals(typedText)) {
+                    // TODO: implement real database add product
+                    Produto p = new Produto(selectedProd.getId(), selectedProd.getDescription(), "Caixa", "Descrição Produto", "1/12/2009");
+                    Object[] data = {p.getId(),p.getNome(),p.getUnidade(),0,"Remover" };
+                    tableModel.addRow(data);
+                }
+                
             }
         });
         
@@ -184,7 +154,7 @@ public class FazerPedido extends Templates.BaseFrame {
     }
     
     public void addBottomContent() {
-        btnFinalizar = new JButton("Finalizar Pedido");
+        btnFinalizar = new JButton("Enviar Pedido");
         Styles.defaultButton(btnFinalizar);
         
         btnFinalizar.addActionListener(new ActionListener(){
@@ -211,44 +181,47 @@ public class FazerPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Produto", "Quantidade solicitada", "Quantidade aprovada", "Gerenciar"};
+        String[] colunas = {"Código", "Produto", "Unidade", "Quantidade", "Remover"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 2 && column != 3){
+               if(column != 3 && column != 4){
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
+        for(int i = 0; i < 5; i++) {
             Produto p = new Produto(212, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 5,  "Pendente");
-            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
+            Object[] data = {p.getId(),p.getNome(),p.getUnidade(),0,"Remover" };
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(2);
+        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
         JComboBox cquantidade = new JComboBox();
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 1; i <= 15; i++) {
             cquantidade.addItem(i);
         }
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
-        
-        TableColumn statusCol = tabela.getColumnModel().getColumn(3);
-        JComboBox cstatus = new JComboBox();
-        cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
-        cstatus.removeItemAt(0);
-        statusCol.setCellEditor(new DefaultCellEditor(cstatus));
         
         tabela.getModel().addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 // TODO: editar produto do pedido
+            }
+        });
+        
+        
+        tabela.getColumn("Remover").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Remover").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                Methods.removeSelectedTableRow(tabela, tableModel);
             }
         });
     }
@@ -261,7 +234,7 @@ public class FazerPedido extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
                 self.dispose();
-                JOptionPane.showMessageDialog(null, "Ok! Item aguardando retirada.");
+                JOptionPane.showMessageDialog(null, "Pedido enviado com sucesso!");
                 t.stop();
             }
         });
