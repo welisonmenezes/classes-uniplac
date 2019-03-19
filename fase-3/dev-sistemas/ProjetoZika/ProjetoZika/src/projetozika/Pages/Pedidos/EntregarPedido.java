@@ -162,7 +162,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Produto", "Quantidade"};
+        String[] colunas = {"Produto", "Quantidade solicitada", "Quantidade aprovada"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -174,7 +174,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         for(int i = 0; i < 25; i++) {
             Produto p = new Produto(212, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
             PedidoProduto pp = new PedidoProduto(p, 5, "Pendente");
-            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade()};
+            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada()};
             tableModel.addRow(data);
         }
         // inicializa

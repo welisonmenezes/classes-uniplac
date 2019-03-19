@@ -11,7 +11,9 @@ package Models;
  */
 public class PedidoProduto {
     private Produto Produto;
+    private int Id;
     private int Quantidade;
+    private int QuantidadeAprovada;
     private String Status;
     
     public PedidoProduto() {}
@@ -19,6 +21,7 @@ public class PedidoProduto {
     public PedidoProduto(Produto produto, int quantidade, String status) {
         Produto = produto;
         Quantidade = quantidade;
+        QuantidadeAprovada = quantidade;
         Status = status;
     }
 
@@ -30,6 +33,14 @@ public class PedidoProduto {
         this.Produto = Produto;
     }
 
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
+    }
+
     public int getQuantidade() {
         return Quantidade;
     }
@@ -38,6 +49,14 @@ public class PedidoProduto {
         this.Quantidade = Quantidade;
     }
 
+    public int getQuantidadeAprovada() {
+        return QuantidadeAprovada;
+    }
+
+    public void setQuantidadeAprovada(int QuantidadeAprovada) {
+        this.QuantidadeAprovada = QuantidadeAprovada;
+    }
+    
     public String getStatus() {
         return Status;
     }

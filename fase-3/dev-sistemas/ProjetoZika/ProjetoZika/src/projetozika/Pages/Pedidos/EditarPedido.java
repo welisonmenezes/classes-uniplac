@@ -123,12 +123,12 @@ public class EditarPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Produto", "Quantidade", "Gerenciar"};
+        String[] colunas = {"Produto", "Quantidade solicitada", "Quantidade aprovada", "Gerenciar"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 1 && column != 2){
+               if(column != 2 && column != 3){
                    return false;
                }
                return true;
@@ -137,21 +137,21 @@ public class EditarPedido extends Templates.BaseFrame {
         // adiciona linhas
         for(int i = 0; i < 25; i++) {
             Produto p = new Produto(212, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 5, "Pendente");
-            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getStatus()};
+            PedidoProduto pp = new PedidoProduto(p, 5,  "Pendente");
+            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(1);
+        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(2);
         JComboBox cquantidade = new JComboBox();
         for(int i = 1; i <= 5; i++) {
             cquantidade.addItem(i);
         }
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
         
-        TableColumn statusCol = tabela.getColumnModel().getColumn(2);
+        TableColumn statusCol = tabela.getColumnModel().getColumn(3);
         JComboBox cstatus = new JComboBox();
         cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
         cstatus.removeItemAt(0);
