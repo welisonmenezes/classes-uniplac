@@ -23,6 +23,7 @@ import projetozika.Pages.Pedidos.EntregarPedido;
 import projetozika.Pages.Pedidos.Pedidos;
 import projetozika.Pages.Produtos.AddProduto;
 import projetozika.Pages.Produtos.Produtos;
+import projetozika.Pages.SeusPedidos.FazerPedido;
 import projetozika.Pages.SeusPedidos.SeusPedidos;
 import projetozika.Pages.Usuarios.AddUsuario;
 import projetozika.Pages.Usuarios.Usuarios;
@@ -192,6 +193,11 @@ public class Navigation {
             case "seusPedidos":
                 updateSatusMenu("seusPedidos");
                 tmpPanel = new SeusPedidos();
+                break;
+            case "fazerPedido":
+                updateSatusMenu("seusPedidos");
+                tmpFrame = new FazerPedido();
+                tmpFrame.setVisible(true);
                 break;
             default:
                 setDefaultPage();

@@ -5,7 +5,6 @@
  */
 package projetozika.Pages.SeusPedidos;
 
-import projetozika.Pages.Pedidos.*;
 import Config.Environment;
 import Models.Pedido;
 import Models.Usuario;
@@ -29,7 +28,6 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -81,12 +79,12 @@ public class SeusPedidos extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Data", "Status", "Ver"};
+        String[] colunas = {"Código", "Data", "Status", "Editar", "Cancelar", "Ver"};
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 3){
+               if(column != 3 || column != 4 || column != 5){
                    return false;
                }
                return true;
@@ -96,11 +94,35 @@ public class SeusPedidos extends Templates.BaseLayout {
         for(int i = 0; i < 25; i++) {
             Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            Object[] data = {p.getCodigo(),p.getData(),p.getStatus(),"Ver"};
+            String btnEditar = "Editar";
+            String btnCancelar = "Cancelar";
+            if ( i % 2 == 0 ) {
+                btnEditar = "";
+                btnCancelar = "";
+            } 
+            Object[] data = {p.getCodigo(),p.getData(),p.getStatus(),btnEditar,btnCancelar,"Ver"};
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
+        
+        tabela.getColumn("Editar").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                //Navigation.updateLayout("editarPedido", id);
+            }
+        });
+        
+        tabela.getColumn("Cancelar").setCellRenderer(new ButtonRenderer());
+        tabela.getColumn("Cancelar").setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                //Navigation.updateLayout("editarPedido", id);
+            }
+        });
         
         tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
         tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -132,7 +154,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
         
-        btnAddPedido = new JButton("Requisitar Produto");
+        btnAddPedido = new JButton("Fazer Pedido");
         Styles.defaultButton(btnAddPedido);
         btnAddPedido.setPreferredSize(new Dimension(200, 35));
         
@@ -158,7 +180,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         btnAddPedido.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                // 
+                Navigation.updateLayout("fazerPedido"); 
             }
         });
     }
