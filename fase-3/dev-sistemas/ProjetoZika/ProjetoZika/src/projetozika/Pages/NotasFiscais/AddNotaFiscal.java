@@ -5,6 +5,8 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Templates.ComboItem;
+import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -14,18 +16,15 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -61,11 +60,12 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JLabel  edata;
     private JButton bSave;
     private JScrollPane scrollList;
-    private JList<String> lSugestoes;
     private JLabel addFornecedor;
     
     private JPanel panelAddProduto;
     private JPanel panelListarProdutos;
+    private JPanel pSuggestions;
+    private JComboBox ccnpj;
     
     public AddNotaFiscal() {
         this.self = this;
@@ -141,51 +141,32 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         lcnpj = new JLabel("CNPJ");
         Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(220, 0, -1, -1));
-
+        
+        // suggestion box
+        pSuggestions = new JPanel();
         fcnpj = new JTextField();
-        Styles.defaultField(fcnpj);
-        bg.add(fcnpj, new AbsoluteConstraints(220, 40, -1, -1));
+        ccnpj = new JComboBox();
+        new SuggestionsBox(pSuggestions, fcnpj, ccnpj, 200) {
+            public ArrayList<ComboItem> addElements() {
+                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                for (int i = 1; i <= 25; i++) {
+                    // TODO: implements real database results
+                    elements.add(new ComboItem(i, "Nome_"+i));
+                }
+                return elements;
+            }
+        };
+        bg.add(pSuggestions, new AbsoluteConstraints(220, 40, -1, -1));
         
         addFornecedor = new JLabel("<html><u>Novo Fornecedor</u></html>");
         Styles.defaultLabel(addFornecedor);
         addFornecedor.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bg.add(addFornecedor, new AbsoluteConstraints(430, 40, -1, -1));
-        
+        // button click
         addFornecedor.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (!addFornecedor.isEnabled()) return;
                 Navigation.updateLayout("addFornecedorNota");
-            }
-        });
-        
-        scrollList = new JScrollPane();
-        lSugestoes = new JList<>();
-        String[] strings = {};
-        Styles.defaultSuggestions(scrollList, lSugestoes, strings);
-        bg.add(scrollList, new AbsoluteConstraints(220, 75, -1, -1));
-        
-        fcnpj.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                String[] strings = {"1111-12", "2222-12", "3333-12", "4444-12", "5555-12", "6666-12", "7777-12", "8888-12", "9999-12",};
-                lSugestoes.setListData(strings);
-                scrollList.setVisible(true);
-            }
-        });
-        
-        lSugestoes.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                fcnpj.setText(lSugestoes.getSelectedValue());
-                scrollList.setVisible(false);
-            }
-        });
-        
-        lSugestoes.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {}
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                scrollList.setVisible(false);
             }
         });
         

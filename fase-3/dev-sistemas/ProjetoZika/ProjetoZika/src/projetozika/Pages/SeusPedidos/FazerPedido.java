@@ -9,7 +9,6 @@ import Models.Produto;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Templates.ComboItem;
-import Templates.ItemRenderer;
 import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -20,13 +19,9 @@ import java.awt.FlowLayout;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -139,6 +134,7 @@ public class FazerPedido extends Templates.BaseFrame {
                 String typedText = fproduto.getText();
                 if (selectedProd != null && selectedProd.getDescription().equals(typedText)) {
                     // TODO: implement real database add product
+                    System.out.println(selectedProd.getId());
                     Produto p = new Produto(selectedProd.getId(), selectedProd.getDescription(), "Caixa", "Descrição Produto", "1/12/2009");
                     Object[] data = {p.getId(),p.getNome(),p.getUnidade(),0,"Remover" };
                     tableModel.addRow(data);

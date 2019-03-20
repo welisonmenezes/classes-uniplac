@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -31,14 +30,14 @@ public class SuggestionsBox {
     private JTextField Field;
     private JComboBox Combo;
     private int Width;
-    private Vector Model;
+    private ArrayList<ComboItem> Model;
     
     public SuggestionsBox(JPanel panel, JTextField field, JComboBox combo, int width) {
         Panel = panel;
         Field = field;
         Combo = combo;
         Width = width;
-        Model = new Vector();
+        Model = new ArrayList();
         addStyles();
         addComboboxEvent();
         addTextFieldEvent();
@@ -76,20 +75,47 @@ public class SuggestionsBox {
     private void addTextFieldEvent() {
         Field.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent event) {
-                Combo.removeAll();
-                Combo.revalidate();
-                Model.clear();
-                Model.addElement(new ComboItem(0, ""));
-                ArrayList<ComboItem> elements = addElements();
-                elements.forEach((element) -> {
-                    Model.add(element);
-                });
-                Combo.setModel(new DefaultComboBoxModel(Model));
-                Combo.setRenderer( new ItemRenderer() );
-                Combo.showPopup();
+            public void keyReleased(KeyEvent e) {
+                handleKeyEvents(e);
+            }
+            
+            @Override
+            public void keyPressed(KeyEvent e) {
+                handleKeyEvents(e);
+            }
+            
+            @Override
+            public void keyTyped(KeyEvent e) {
+                handleKeyEvents(e);
             }
         });
+    }
+    
+    private void handleKeyEvents(KeyEvent e) {
+        JTextField tf = (JTextField) e.getSource();
+        Combo.removeAll();
+        Combo.revalidate();
+        Model.clear();
+        Model.add(new ComboItem(0, ""));
+        ArrayList<ComboItem> elements = addElements();
+        elements.forEach((element) -> {
+            Model.add(element);
+        });
+        Combo.setModel(new DefaultComboBoxModel(Model.toArray()));
+        Combo.setRenderer( new ItemRenderer() );
+        Combo.showPopup();
+
+        setSelectedItem(tf.getText());
+    }
+    
+    private void setSelectedItem(String value) {
+        for (int i = 0; i < Model.size(); i++) {
+            ComboItem item = (ComboItem) Model.get(i);
+            if (value.equals(item.getDescription())) {
+                Combo.setSelectedItem(item);
+                break;
+            }
+        }
     }
     
     public ArrayList<ComboItem> addElements() {
