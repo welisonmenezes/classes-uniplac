@@ -45,7 +45,6 @@ public class SeusPedidos extends Templates.BaseLayout {
     private JComboBox<String> fStatus;
     private JLabel lData;
     private JLabel lStatus;
-    private JLabel lSearch;
     private JButton bSearch;
     private JScrollPane barraRolagem;
 
@@ -84,7 +83,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 3 || column != 4 || column != 5){
+               if(column != 3 && column != 4 && column != 5){
                    return false;
                }
                return true;
@@ -111,7 +110,11 @@ public class SeusPedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                //Navigation.updateLayout("editarPedido", id);
+                int row = tabela.getSelectedRow();
+                String actionValue = (String)tabela.getModel().getValueAt(row, 4);
+                if (!actionValue.equals("")) {
+                    Navigation.updateLayout("editarSeuPedido", id);
+                }
             }
         });
         
@@ -119,8 +122,12 @@ public class SeusPedidos extends Templates.BaseLayout {
         tabela.getColumn("Cancelar").setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
-                //Navigation.updateLayout("editarPedido", id);
+                // TODO: real database delete
+                int row = tabela.getSelectedRow();
+                String actionValue = (String)tabela.getModel().getValueAt(row, 4);
+                if (!actionValue.equals("")) {
+                    Methods.removeSelectedTableRow(tabela, tableModel);
+                }
             }
         });
         
@@ -129,7 +136,7 @@ public class SeusPedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                //Navigation.updateLayout("editarPedido", id);
+                Navigation.updateLayout("verSeuPedido", id);
             }
         });
     }
@@ -154,7 +161,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
         
-        btnAddPedido = new JButton("Fazer Pedido");
+        btnAddPedido = new JButton("Fazer Novo Pedido");
         Styles.defaultButton(btnAddPedido);
         btnAddPedido.setPreferredSize(new Dimension(200, 35));
         

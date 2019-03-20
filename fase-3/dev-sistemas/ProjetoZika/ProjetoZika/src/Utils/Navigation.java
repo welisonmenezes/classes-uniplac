@@ -120,6 +120,16 @@ public class Navigation {
                 tmpFrame = new EntregarPedido(id, "edit");
                 tmpFrame.setVisible(true);
                 break;
+            case "verSeuPedido":
+                updateSatusMenu("seusPedidos");
+                tmpFrame = new FazerPedido(id, "view");
+                tmpFrame.setVisible(true);
+                break;
+            case "editarSeuPedido":
+                updateSatusMenu("seusPedidos");
+                tmpFrame = new FazerPedido(id, "edit");
+                tmpFrame.setVisible(true);
+                break;
             default:
                 setDefaultPage();
         }

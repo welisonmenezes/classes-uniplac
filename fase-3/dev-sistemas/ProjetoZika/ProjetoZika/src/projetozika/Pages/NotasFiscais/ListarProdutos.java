@@ -48,9 +48,13 @@ public class ListarProdutos extends javax.swing.JPanel {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 3){
-                   return false;
-               }
+                if (mode.equals("view")) {
+                    return false;
+                } else {
+                    if(column != 3){
+                        return false;
+                    }
+                }
                return true;
             }
         };
@@ -75,7 +79,7 @@ public class ListarProdutos extends javax.swing.JPanel {
             tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
-                    String id = Methods.selectedTableItemId(tabela);
+                    //String id = Methods.selectedTableItemId(tabela);
                     Methods.removeSelectedTableRow(tabela, tableModel);
                 }
             });
