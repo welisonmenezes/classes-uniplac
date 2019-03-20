@@ -12,7 +12,6 @@ import Utils.Navigation;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -98,6 +97,8 @@ public class AddUsuario extends Templates.BaseFrame {
             Methods.disabledFields(bg);
         } else if (this.mode.equals("edit")){
             initPage("Editar Usuario");
+        } else if (this.mode.equals("perfil")){
+            initPage("Editar Perfil");
         }
         
         fillFields(id);
@@ -270,13 +271,11 @@ public class AddUsuario extends Templates.BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
-                
-                JTable tabela = Usuarios.tabela;
-                DefaultTableModel tableModel = Usuarios.tableModel;
-                int row = tabela.getSelectedRow();
-                    
+                  
                 if (mode.equals("edit")) {
                     // TODO: edit here
+                    JTable tabela = Usuarios.tabela;
+                    int row = tabela.getSelectedRow();
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
 
@@ -284,6 +283,10 @@ public class AddUsuario extends Templates.BaseFrame {
                     // TODO: save here
                     self.dispose();
                     JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                } else if(mode.equals("perfil")) {
+                    // TODO: save here
+                    self.dispose();
+                    JOptionPane.showMessageDialog(null, "Perfil editado com sucesso!");
                 } else {
                     self.dispose();
                 }

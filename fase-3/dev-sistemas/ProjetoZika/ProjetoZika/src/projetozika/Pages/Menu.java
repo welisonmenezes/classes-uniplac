@@ -9,7 +9,6 @@ import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import projetozika.Login;
 import projetozika.Main;
 
@@ -38,6 +37,7 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bProdutos);
         Styles.menuButton(bUsuarios);
         Styles.menuButton(bSeusPedidos);
+        Styles.menuButton(bPerfil);
     }
 
     /**
@@ -57,6 +57,7 @@ public class Menu extends javax.swing.JPanel {
         bNotasFiscais = new javax.swing.JButton();
         bProdutos = new javax.swing.JButton();
         bUsuarios = new javax.swing.JButton();
+        bPerfil = new javax.swing.JButton();
         labelEspacoLogout = new javax.swing.JLabel();
         logout = new javax.swing.JButton();
 
@@ -126,6 +127,15 @@ public class Menu extends javax.swing.JPanel {
             }
         });
         add(bUsuarios);
+
+        bPerfil.setText("Perfil");
+        bPerfil.setName("perfil"); // NOI18N
+        bPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bPerfilActionPerformed(evt);
+            }
+        });
+        add(bPerfil);
         add(labelEspacoLogout);
 
         logout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -188,12 +198,18 @@ public class Menu extends javax.swing.JPanel {
         Navigation.updateLayout("seusPedidos");
     }//GEN-LAST:event_bSeusPedidosActionPerformed
 
+    private void bPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPerfilActionPerformed
+        // TODO add your handling code here:
+        Navigation.updateLayout("perfil");
+    }//GEN-LAST:event_bPerfilActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDashboard;
     private javax.swing.JButton bFornecedores;
     private javax.swing.JButton bNotasFiscais;
     private javax.swing.JButton bPedidos;
+    private javax.swing.JButton bPerfil;
     private javax.swing.JButton bProdutos;
     private javax.swing.JButton bSeusPedidos;
     private javax.swing.JButton bUsuarios;

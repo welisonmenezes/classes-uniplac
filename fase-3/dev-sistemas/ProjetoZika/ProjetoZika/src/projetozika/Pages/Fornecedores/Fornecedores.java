@@ -44,7 +44,6 @@ public class Fornecedores extends Templates.BaseLayout {
     private JLabel lNome;
     private JLabel lCnpj;
     private JLabel lTelefone;
-    private JLabel lSearch;
     private JButton bSearch;
 
     /**

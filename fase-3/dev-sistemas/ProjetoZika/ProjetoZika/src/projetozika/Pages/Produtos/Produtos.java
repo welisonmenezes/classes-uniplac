@@ -47,7 +47,6 @@ public class Produtos extends Templates.BaseLayout {
     private JDateChooser fData;
     private JLabel lNome;
     private JLabel lUnidade;
-    private JLabel lSearch;
     private JLabel lData;
     private JButton bSearch;
     private JScrollPane barraRolagem;

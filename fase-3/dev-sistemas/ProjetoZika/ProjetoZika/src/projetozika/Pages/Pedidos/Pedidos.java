@@ -46,7 +46,6 @@ public class Pedidos extends Templates.BaseLayout {
     private JLabel lNome;
     private JLabel lData;
     private JLabel lStatus;
-    private JLabel lSearch;
     private JButton bSearch;
     private JScrollPane barraRolagem;
 

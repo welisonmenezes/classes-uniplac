@@ -21,6 +21,7 @@ import projetozika.Pages.NotasFiscais.NotasFiscais;
 import projetozika.Pages.Pedidos.EditarPedido;
 import projetozika.Pages.Pedidos.EntregarPedido;
 import projetozika.Pages.Pedidos.Pedidos;
+import projetozika.Pages.Perfil.Perfil;
 import projetozika.Pages.Produtos.AddProduto;
 import projetozika.Pages.Produtos.Produtos;
 import projetozika.Pages.SeusPedidos.FazerPedido;
@@ -103,6 +104,11 @@ public class Navigation {
             case "editarUsuario":
                 updateSatusMenu("usuarios");
                 tmpFrame = new AddUsuario(id, "edit");
+                tmpFrame.setVisible(true);
+                break;
+            case "editarPerfil":
+                updateSatusMenu("perfil");
+                tmpFrame = new AddUsuario(id, "perfil");
                 tmpFrame.setVisible(true);
                 break;
             case "verUsuario":
@@ -208,6 +214,10 @@ public class Navigation {
                 updateSatusMenu("seusPedidos");
                 tmpFrame = new FazerPedido();
                 tmpFrame.setVisible(true);
+                break;
+            case "perfil":
+                updateSatusMenu("perfil");
+                tmpPanel = new Perfil();
                 break;
             default:
                 setDefaultPage();

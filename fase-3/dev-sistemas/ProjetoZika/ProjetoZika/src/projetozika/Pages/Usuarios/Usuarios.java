@@ -6,7 +6,6 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
-import Models.Setor;
 import Models.Usuario;
 import Templates.BaseLayout;
 import Templates.ButtonEditor;
@@ -48,7 +47,6 @@ public class Usuarios extends Templates.BaseLayout {
     private JLabel lNome;
     private JLabel lEmail;
     private JLabel lSetor;
-    private JLabel lSearch;
     private JButton bSearch;
     private JScrollPane barraRolagem;
     private JLabel hideL;
