@@ -5,6 +5,8 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Templates.ComboItem;
+import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Navigation;
 import Utils.Styles;
@@ -12,17 +14,13 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
@@ -36,7 +34,6 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private JPanel self;
     private JLabel lnome;
     private JTextField fnome;
-    private JScrollPane scrollList;
     private JLabel addProduto;
     private JLabel enome;
     private JLabel lunidade;
@@ -49,6 +46,8 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private JTextField fvalor;
     private JLabel evalor;
     private JButton selProd;
+    private JPanel pSuggestions;
+    private JComboBox cnome;
 
     /**
      * Creates new form SelecionarProduto
@@ -66,41 +65,21 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.defaultLabel(lnome);
         add(lnome, new AbsoluteConstraints(20, 20, -1, -1));
         
+        // suggestion box
+        pSuggestions = new JPanel();
         fnome = new JTextField();
-        Styles.defaultField(fnome);
-        add(fnome, new AbsoluteConstraints(20, 50, -1, -1));
-        
-        scrollList = new JScrollPane();
-        JList lSugestoes = new JList<>();
-        String[] strings = {};
-        Styles.defaultSuggestions(scrollList, lSugestoes, strings);
-        scrollList.setPreferredSize( new Dimension( 200, 150 ) );
-        add(scrollList, new AbsoluteConstraints(20, 85, -1, -1));
-        
-        fnome.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                String[] strings = {"Nome Produto 1","Nome Produto 2","Nome Produto 3","Nome Produto 4","Nome Produto 5","Nome Produto 6","Nome Produto 7","Nome Produto 8","Nome Produto 9"};
-                lSugestoes.setListData(strings);
-                scrollList.setVisible(true);
+        cnome = new JComboBox();
+        new SuggestionsBox(pSuggestions, fnome, cnome, 200) {
+            public ArrayList<ComboItem> addElements() {
+                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                for (int i = 1; i <= 25; i++) {
+                    // TODO: implements real database results
+                    elements.add(new ComboItem(i, "Nome_"+i));
+                }
+                return elements;
             }
-        });
-        
-        lSugestoes.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                //fnome.setText(lSugestoes.getSelectedValue());
-                scrollList.setVisible(false);
-            }
-        });
-        
-        lSugestoes.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {}
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                scrollList.setVisible(false);
-            }
-        });
+        };
+        add(pSuggestions, new AbsoluteConstraints(20, 50, -1, -1));
         
         addProduto = new JLabel("<html><u>Novo Produto</u></html>");
         Styles.defaultLabel(addProduto);
