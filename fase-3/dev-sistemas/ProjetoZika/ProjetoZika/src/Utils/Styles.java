@@ -66,6 +66,16 @@ public class Styles {
     }
     
     /**
+     * Estiliza os botões default
+     * 
+     * @param btn o JButton a ser estilizado
+     */
+    public static void defaultButton(JButton btn, int width) {
+        defaultButton(btn);
+        btn.setPreferredSize(new Dimension(width, 35));
+    }
+    
+    /**
      * Estiliza os JTextField default da aplicação
      * 
      * @param field o JTextField a ser estilizado
@@ -109,6 +119,16 @@ public class Styles {
         fDate.getDateEditor().getUiComponent().setBackground(new Color(55, 57, 59));
         fDate.getDateEditor().getUiComponent().setForeground(new Color(255, 255, 255));
         fDate.setPreferredSize(new Dimension(200, 39));
+    }
+    
+    /**
+     * Estiliza os JDateChooser default da aplicação
+     * 
+     * @param fDate o JDateChooser a ser estilizado
+     */
+    public static void defaultDateChooser(JDateChooser fDate, int width) {
+        defaultDateChooser(fDate);
+        fDate.setPreferredSize(new Dimension(width, 39));
     }
     
     /**

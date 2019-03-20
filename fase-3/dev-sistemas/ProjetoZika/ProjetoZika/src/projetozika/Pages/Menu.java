@@ -38,6 +38,7 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bUsuarios);
         Styles.menuButton(bSeusPedidos);
         Styles.menuButton(bPerfil);
+        Styles.menuButton(bRelatorios);
     }
 
     /**
@@ -58,6 +59,7 @@ public class Menu extends javax.swing.JPanel {
         bProdutos = new javax.swing.JButton();
         bUsuarios = new javax.swing.JButton();
         bPerfil = new javax.swing.JButton();
+        bRelatorios = new javax.swing.JButton();
         labelEspacoLogout = new javax.swing.JLabel();
         logout = new javax.swing.JButton();
 
@@ -136,6 +138,15 @@ public class Menu extends javax.swing.JPanel {
             }
         });
         add(bPerfil);
+
+        bRelatorios.setText("Relatórios");
+        bRelatorios.setName("relatorios"); // NOI18N
+        bRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bRelatoriosActionPerformed(evt);
+            }
+        });
+        add(bRelatorios);
         add(labelEspacoLogout);
 
         logout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -203,6 +214,11 @@ public class Menu extends javax.swing.JPanel {
         Navigation.updateLayout("perfil");
     }//GEN-LAST:event_bPerfilActionPerformed
 
+    private void bRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRelatoriosActionPerformed
+        // TODO add your handling code here:
+        Navigation.updateLayout("relatorios");
+    }//GEN-LAST:event_bRelatoriosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDashboard;
@@ -211,6 +227,7 @@ public class Menu extends javax.swing.JPanel {
     private javax.swing.JButton bPedidos;
     private javax.swing.JButton bPerfil;
     private javax.swing.JButton bProdutos;
+    private javax.swing.JButton bRelatorios;
     private javax.swing.JButton bSeusPedidos;
     private javax.swing.JButton bUsuarios;
     private javax.swing.JLabel labelEspacoLogout;

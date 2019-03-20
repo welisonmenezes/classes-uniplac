@@ -24,6 +24,7 @@ import projetozika.Pages.Pedidos.Pedidos;
 import projetozika.Pages.Perfil.Perfil;
 import projetozika.Pages.Produtos.AddProduto;
 import projetozika.Pages.Produtos.Produtos;
+import projetozika.Pages.Relatorios.Relatorios;
 import projetozika.Pages.SeusPedidos.FazerPedido;
 import projetozika.Pages.SeusPedidos.SeusPedidos;
 import projetozika.Pages.Usuarios.AddUsuario;
@@ -218,6 +219,10 @@ public class Navigation {
             case "perfil":
                 updateSatusMenu("perfil");
                 tmpPanel = new Perfil();
+                break;
+            case "relatorios":
+                updateSatusMenu("relatorios");
+                tmpPanel = new Relatorios();
                 break;
             default:
                 setDefaultPage();
