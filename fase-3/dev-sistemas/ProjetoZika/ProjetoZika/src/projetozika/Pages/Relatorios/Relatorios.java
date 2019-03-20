@@ -65,7 +65,7 @@ public class Relatorios extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Relatórios");
+        //addTopContent("Relatórios");
         addCenterContent();
     }
     
@@ -74,118 +74,15 @@ public class Relatorios extends Templates.BaseLayout {
         jTabbedPane1 = new JTabbedPane();
         jTabbedPane1.setOpaque(false);
         
-        panelPedidos = new JPanel();
-        panelPedidos.setBackground(new Color(27, 28, 29));
-        panelProdutos = new JPanel();
-        panelProdutos.setBackground(new Color(27, 28, 29));
+        panelPedidos = new RelatorioPedidos();
+        panelProdutos = new RelatorioProdutos();
         
         jTabbedPane1.addTab("Pedidos", panelPedidos);
         jTabbedPane1.addTab("Produtos", panelProdutos);
-        
-        addCamposPedidos();
-        
+
         pCenter.add(jTabbedPane1, BorderLayout.CENTER);
     }
     
-    private void addCamposPedidos() {
-        panelPedidos.setLayout(new AbsoluteLayout());
-        
-        lusuario = new JLabel("Usuário");
-        Styles.defaultLabel(lusuario);
-        panelPedidos.add(lusuario, new AbsoluteConstraints(20, 20, -1, -1));
-        
-        // suggestion box
-        susuario = new JPanel();
-        fusuario = new JTextField();
-        cusuario = new JComboBox();
-        new SuggestionsBox(susuario, fusuario, cusuario, 300) {
-            public ArrayList<ComboItem> addElements() {
-                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
-                return elements;
-            }
-        };
-        panelPedidos.add(susuario, new AbsoluteConstraints(20, 50, -1, -1));
-        
-        
-        lproduto = new JLabel("Produto");
-        Styles.defaultLabel(lproduto);
-        panelPedidos.add(lproduto, new AbsoluteConstraints(340, 20, -1, -1));
-        
-        // suggestion box
-        sproduto = new JPanel();
-        fproduto = new JTextField();
-        cproduto = new JComboBox();
-        new SuggestionsBox(sproduto, fproduto, cproduto, 300) {
-            public ArrayList<ComboItem> addElements() {
-                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
-                return elements;
-            }
-        };
-        panelPedidos.add(sproduto, new AbsoluteConstraints(340, 50, -1, -1));
-        
-        
-        ldatafrom = new JLabel("De*");
-        Styles.defaultLabel(ldatafrom);
-        panelPedidos.add(ldatafrom, new AbsoluteConstraints(20, 90, -1, -1));
-        
-        fdatafrom = new JDateChooser();
-        Styles.defaultDateChooser(fdatafrom, 300);
-        panelPedidos.add(fdatafrom, new AbsoluteConstraints(20, 120, -1, -1));
-        
-        edatafrom = new JLabel("");
-        Styles.errorLabel(edatafrom);
-        panelPedidos.add(edatafrom, new AbsoluteConstraints(20, 160, -1, -1));
-        
-        ldatato = new JLabel("Até*");
-        Styles.defaultLabel(ldatato);
-        panelPedidos.add(ldatato, new AbsoluteConstraints(340, 90, -1, -1));
-        
-        fdatato = new JDateChooser();
-        Styles.defaultDateChooser(fdatato, 300);
-        panelPedidos.add(fdatato, new AbsoluteConstraints(340, 120, -1, -1));
-        
-        edatato = new JLabel("");
-        Styles.errorLabel(edatato);
-        panelPedidos.add(edatato, new AbsoluteConstraints(340, 160, -1, -1));
-        
-        
-        btnRelatorioPedido = new JButton("Gerar Relatório");
-        Styles.defaultButton(btnRelatorioPedido, 300);
-        panelPedidos.add(btnRelatorioPedido, new AbsoluteConstraints(340, 200, -1, -1));
-        btnRelatorioPedido.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
-                Dialogs.showLoadPopup(pCenter);
-                timerTest();
-                
-                
-            }
-        });
-    }
-    
-    
-    private Timer t;
-    private void timerTest() {
-        
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(pCenter);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso!");
-                t.stop();
-            }
-        });
-        t.start();
-    }
     
 
     /**
