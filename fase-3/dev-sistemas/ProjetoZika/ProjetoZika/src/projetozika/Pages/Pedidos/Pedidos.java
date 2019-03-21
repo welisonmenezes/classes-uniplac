@@ -57,7 +57,7 @@ public class Pedidos extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Pedidos");
+        addTopContent(Methods.getTranslation("Pedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
@@ -79,7 +79,14 @@ public class Pedidos extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "Data", "Status", "Ver/Editar", "Entregar"};
+        String[] colunas = {
+            Methods.getTranslation("Codigo"), 
+            Methods.getTranslation("Nome"), 
+            Methods.getTranslation("Data"), 
+            Methods.getTranslation("Status"), 
+            Methods.getTranslation("Ver/Editar"), 
+            Methods.getTranslation("Entregar")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -94,18 +101,25 @@ public class Pedidos extends Templates.BaseLayout {
         for(int i = 0; i < 25; i++) {
             Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            String btnValue = "Entregar";
+            String btnValue = Methods.getTranslation("Entregar");
             if ( i % 2 == 0 ) {
                 btnValue = "";
             } 
-            Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver/Editar", btnValue};
+            Object[] data = {
+                p.getCodigo(), 
+                p.getSolicitante().getNome(),
+                p.getData(),
+                p.getStatus(),
+                Methods.getTranslation("Ver/Editar"), 
+                btnValue
+            };
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn("Entregar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Entregar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Entregar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Entregar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -119,8 +133,8 @@ public class Pedidos extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn("Ver/Editar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Ver/Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Ver/Editar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Ver/Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -137,20 +151,20 @@ public class Pedidos extends Templates.BaseLayout {
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
         
-        lNome = new JLabel("Nome:");
+        lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
         
-        lData = new JLabel("Data:");
+        lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);
         
         fStatus = new JComboBox();
         fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
         Styles.defaultComboBox(fStatus);
         
-        lStatus = new JLabel("Status:");
+        lStatus = new JLabel(Methods.getTranslation("Status"));
         Styles.defaultLabel(lStatus, false);
         
         bSearch = new JButton("");
@@ -213,11 +227,18 @@ public class Pedidos extends Templates.BaseLayout {
                 for(int i = 0; i < 8; i++) {
                     Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
                     Pedido p = new Pedido("10/11/2019", "Pendente", u);
-                    String btnValue = "Finalizar";
+                    String btnValue = Methods.getTranslation("Finalizar");
                     if ( i % 2 == 0 ) {
                         btnValue = "";
                     } 
-                    Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver", btnValue};
+                    Object[] data = {
+                        p.getCodigo(), 
+                        p.getSolicitante().getNome(),
+                        p.getData(),
+                        p.getStatus(),
+                        Methods.getTranslation("Ver/Editar"), 
+                        btnValue
+                    };
                     tableModel.addRow(data);
                 }
                 

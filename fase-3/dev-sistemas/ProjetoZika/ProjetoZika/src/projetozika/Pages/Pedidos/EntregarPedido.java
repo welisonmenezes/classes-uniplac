@@ -61,7 +61,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         
-        initPage("Confirmação de Entrega");
+        initPage(Methods.getTranslation("ConfirmacaoDeRetirada"));
     }
     
     private void initPage(String title) {
@@ -89,7 +89,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         ptable.setOpaque(false);
         ptable.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 0));
         
-        title = new JLabel("Detalhes do pedido");
+        title = new JLabel(Methods.getTranslation("DetalhesDoPedido"));
         Styles.defaultLabel(title);
         ptable.add(title, BorderLayout.NORTH);
         
@@ -105,13 +105,13 @@ public class EntregarPedido extends Templates.BaseFrame {
         pform.setBackground(new Color(24,24,24));
         pform.setPreferredSize(new Dimension(400, 350));
         
-        ltitle = new JLabel("Usuário e senha do solicitante");
+        ltitle = new JLabel(Methods.getTranslation("UsuarioESenhaDoSolicitante"));
         Styles.defaultLabel(ltitle);
         ltitle.setFont(new Font("Tahoma", 0, 14));
         ltitle.setPreferredSize(new Dimension(200, 35));
         pform.add(ltitle, new AbsoluteConstraints(100, 50, -1, -1));
         
-        llogin = new JLabel("Login");
+        llogin = new JLabel(Methods.getTranslation("Login"));
         Styles.defaultLabel(llogin);
         pform.add(llogin, new AbsoluteConstraints(100, 90, -1, -1));
 
@@ -123,7 +123,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         Styles.errorLabel(elogin);
         pform.add(elogin, new AbsoluteConstraints(100, 165, -1, -1));
         
-        lsenha = new JLabel("Senha");
+        lsenha = new JLabel(Methods.getTranslation("Senha"));
         Styles.defaultLabel(lsenha);
         pform.add(lsenha, new AbsoluteConstraints(100, 180, -1, -1));
 
@@ -135,7 +135,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         Styles.errorLabel(esenha);
         pform.add(esenha, new AbsoluteConstraints(100, 255, -1, -1));
         
-        btnConfirm = new JButton("Confirmar Recebimento");
+        btnConfirm = new JButton(Methods.getTranslation("ConfirmarRetirada"));
         Styles.defaultButton(btnConfirm);
         btnConfirm.setPreferredSize(new Dimension(200, 35));
         pform.add(btnConfirm, new AbsoluteConstraints(100, 290, -1, -1));
@@ -162,7 +162,11 @@ public class EntregarPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Produto", "Quantidade solicitada", "Quantidade aprovada"};
+        String[] colunas = {
+            Methods.getTranslation("Produto"), 
+            Methods.getTranslation("QuantidadeSolicitada"), 
+            Methods.getTranslation("QuantidadeAprovada")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -189,7 +193,7 @@ public class EntregarPedido extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(pCenter);
                 self.dispose();
-                JOptionPane.showMessageDialog(null, "Item entregue com sucesso!");
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("RetiradaRealizadaComSucesso"));
                 t.stop();
             }
         });

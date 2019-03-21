@@ -55,7 +55,7 @@ public class EditarPedido extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         
-        initPage("Pedido xxx - Usuário Fulano - 12/12/2018");
+        initPage(Methods.getTranslation("Pedido"));
     }
     
     private void initPage(String title) {
@@ -83,7 +83,7 @@ public class EditarPedido extends Templates.BaseFrame {
         bg.setLayout(new BorderLayout());
         bg.setOpaque(false);
         
-        title = new JLabel("Itens");
+        title = new JLabel(Methods.getTranslation("Itens"));
         Styles.defaultLabel(title);
         bg.add(title, BorderLayout.NORTH);
         
@@ -96,7 +96,7 @@ public class EditarPedido extends Templates.BaseFrame {
     }
     
     public void addBottomContent() {
-        btnFinalizar = new JButton("Finalizar Pedido");
+        btnFinalizar = new JButton(Methods.getTranslation("FinalizarPedido"));
         Styles.defaultButton(btnFinalizar);
         
         btnFinalizar.addActionListener(new ActionListener(){
@@ -123,7 +123,12 @@ public class EditarPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Produto", "Quantidade solicitada", "Quantidade aprovada", "Gerenciar"};
+        String[] colunas = {
+            Methods.getTranslation("Produto"), 
+            Methods.getTranslation("QuantidadeSolicitada"), 
+            Methods.getTranslation("QuantidadeAprovada"), 
+            Methods.getTranslation("Gerenciar")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -173,7 +178,7 @@ public class EditarPedido extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
                 self.dispose();
-                JOptionPane.showMessageDialog(null, "Ok! Item aguardando retirada.");
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
                 t.stop();
             }
         });
