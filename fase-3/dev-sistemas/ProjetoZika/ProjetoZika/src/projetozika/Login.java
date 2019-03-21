@@ -60,9 +60,9 @@ public class Login extends javax.swing.JFrame {
         llogin = new javax.swing.JLabel();
         flogin = new javax.swing.JTextField();
         lsenha = new javax.swing.JLabel();
-        fsenha = new javax.swing.JTextField();
         bentrar = new javax.swing.JButton();
         lInfo = new javax.swing.JLabel();
+        fsenha = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(37, 38, 39));
@@ -91,9 +91,6 @@ public class Login extends javax.swing.JFrame {
         lsenha.setText("Senha");
         jBg.add(lsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, 20));
 
-        fsenha.setText("123456");
-        jBg.add(fsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 240, -1));
-
         bentrar.setText("Entrar");
         bentrar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         bentrar.addActionListener(new java.awt.event.ActionListener() {
@@ -106,6 +103,9 @@ public class Login extends javax.swing.JFrame {
         lInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lInfo.setForeground(new java.awt.Color(255, 0, 0));
         jBg.add(lInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 160, 30));
+
+        fsenha.setText("123456");
+        jBg.add(fsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 240, -1));
 
         getContentPane().add(jBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
@@ -171,7 +171,7 @@ public class Login extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bentrar;
     private javax.swing.JTextField flogin;
-    private javax.swing.JTextField fsenha;
+    private javax.swing.JPasswordField fsenha;
     private javax.swing.JPanel jBg;
     private javax.swing.JLabel lInfo;
     private javax.swing.JLabel llogin;

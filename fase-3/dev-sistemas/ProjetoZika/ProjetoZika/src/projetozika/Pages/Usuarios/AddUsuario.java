@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -78,6 +79,14 @@ public class AddUsuario extends Templates.BaseFrame {
     private JLabel lpermissao;
     private JLabel epermissao;
     
+    private JTextField flogin;
+    private JLabel llogin;
+    private JLabel elogin;
+    
+    private JPasswordField fsenha;
+    private JLabel lsenha;
+    private JLabel esenha;
+    
     private JButton bSave;
     private JPanel panelCaller;
     
@@ -106,7 +115,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private void initPage(String title) {
         
         initComponents();
-        Styles.internalFrame(this, 670, 500);
+        Styles.internalFrame(this, 670, 550);
         Methods.setAccessibility(this);
         
         createBaseLayout();
@@ -245,10 +254,34 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(epermissao);
         bg.add(epermissao, new AbsoluteConstraints(440, 255, -1, -1));
         
+        llogin = new JLabel(Methods.getTranslation("Login"));
+        Styles.defaultLabel(llogin);
+        bg.add(llogin, new AbsoluteConstraints(0, 270, -1, -1));
+
+        flogin = new JTextField();
+        Styles.defaultField(flogin);
+        bg.add(flogin, new AbsoluteConstraints(0, 310, -1, -1));
+        
+        elogin = new JLabel("");
+        Styles.errorLabel(elogin);
+        bg.add(elogin, new AbsoluteConstraints(0, 345, -1, -1));
+        
+        lsenha = new JLabel(Methods.getTranslation("Senha"));
+        Styles.defaultLabel(lsenha);
+        bg.add(lsenha, new AbsoluteConstraints(220, 270, -1, -1));
+
+        fsenha = new JPasswordField();
+        Styles.defaultField(fsenha);
+        bg.add(fsenha, new AbsoluteConstraints(220, 310, -1, -1));
+        
+        esenha = new JLabel("");
+        Styles.errorLabel(esenha);
+        bg.add(esenha, new AbsoluteConstraints(220, 345, -1, -1));
+        
         bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
-        bg.add(bSave, new AbsoluteConstraints(440, 290, -1, -1));
+        bg.add(bSave, new AbsoluteConstraints(440, 313, -1, -1));
         
         bSave.addActionListener(new ActionListener(){
             @Override

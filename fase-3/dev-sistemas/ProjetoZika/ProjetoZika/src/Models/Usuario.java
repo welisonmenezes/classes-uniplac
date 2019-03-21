@@ -21,6 +21,8 @@ public class Usuario {
     private String Permissao;
     private String Status;
     private String Data;
+    private String Login;
+    private String Senha;
     
     public Usuario() {}
     
@@ -123,6 +125,21 @@ public class Usuario {
     public void setStatus(String Status) {
         this.Status = Status;
     }
-    
+
+    public String getLogin() {
+        return Login;
+    }
+
+    public void setLogin(String Login) {
+        this.Login = Login;
+    }
+
+    public String getSenha() {
+        return Senha;
+    }
+
+    public void setSenha(String Senha) {
+        this.Senha = Senha;
+    }
     
 }

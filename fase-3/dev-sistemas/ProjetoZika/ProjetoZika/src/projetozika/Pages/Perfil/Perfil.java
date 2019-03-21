@@ -61,6 +61,8 @@ public class Perfil extends Templates.BaseLayout {
         String[] colunas = {"", Methods.getTranslation("SeusDados")};
        // seta modelo
         Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
+        u.setLogin("welison");
+        u.setSenha("123456");
         Object[][] data = {
             {Methods.getTranslation("CPF"),u.getCpf()},
             {Methods.getTranslation("Nome"), u.getNome()},
@@ -70,7 +72,9 @@ public class Perfil extends Templates.BaseLayout {
             {Methods.getTranslation("Setor"), u.getSetor()},
             {Methods.getTranslation("Sexo"), u.getSexo()},
             {Methods.getTranslation("Permissao"), u.getPermissao()},
-            {Methods.getTranslation("DataDeNascimento"), u.getData()}
+            {Methods.getTranslation("DataDeNascimento"), u.getData()},
+            {Methods.getTranslation("Login"), u.getLogin()},
+            {Methods.getTranslation("Senha"), u.getSenha()}
         };
         tableModel = new DefaultTableModel(data, colunas) {
             @Override
