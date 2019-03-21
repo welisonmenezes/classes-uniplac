@@ -5,6 +5,8 @@
  */
 package projetozika.Pages;
 
+import Utils.Methods;
+
 /**
  *
  * @author Welison
@@ -17,7 +19,12 @@ public class NotFound extends Templates.BaseLayout {
     public NotFound() {
         initComponents();
         createBaseLayout();
-        addTopContent("Page Not Found");
+        
+        translation();
+    }
+    
+    private void translation() {
+        addTopContent(Methods.getTranslation("PaginaNaoEncontrada"));
     }
 
     /**

@@ -33,6 +33,12 @@ public class Main extends javax.swing.JFrame {
         //rootComponent = this.jBG;
         
         Methods.setAccessibility(this);
+        
+        translation();
+    }
+    
+    private void translation() {
+        setTitle(Methods.getTranslation("ProjetoZika"));
     }
     
     /**

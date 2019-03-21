@@ -5,6 +5,8 @@
  */
 package projetozika.Pages;
 
+import Utils.Methods;
+
 /**
  *
  * @author Welison
@@ -17,9 +19,15 @@ public class Dashboard extends Templates.BaseLayout {
     public Dashboard() {
         initComponents();
         createBaseLayout();
-        addTopContent("Dashboard");
+        
+        // tradução
+        translation();
     }
-
+    
+    private void translation() {
+        addTopContent(Methods.getTranslation("Dashboard"));
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

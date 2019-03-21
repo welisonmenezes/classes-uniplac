@@ -27,12 +27,23 @@ public class Login extends javax.swing.JFrame {
         Methods.positionFrameInCenter(this);
         
         // seta estilos aos elementos
-        Styles.defaultButton(jButton1);
-        Styles.defaultField(fEmail);
-        Styles.defaultField(fSenha);
+        Styles.defaultButton(bentrar);
+        Styles.defaultField(flogin);
+        Styles.defaultField(fsenha);
         
         // seta a acessibilidade
         Methods.setAccessibility(this);
+        
+        // Tradução
+        translation();
+    }
+    
+    private void translation() {
+        ltitulo.setText(Methods.getTranslation("FacaSeuLogin"));
+        lsenha.setText(Methods.getTranslation("Senha"));
+        llogin.setText(Methods.getTranslation("Login"));
+        bentrar.setText(Methods.getTranslation("Entrar"));
+        setTitle(Methods.getTranslation("ProjetoZika"));
     }
 
     /**
@@ -45,12 +56,12 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jBg = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        fEmail = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        fSenha = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        ltitulo = new javax.swing.JLabel();
+        llogin = new javax.swing.JLabel();
+        flogin = new javax.swing.JTextField();
+        lsenha = new javax.swing.JLabel();
+        fsenha = new javax.swing.JTextField();
+        bentrar = new javax.swing.JButton();
         lInfo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,35 +73,35 @@ public class Login extends javax.swing.JFrame {
         jBg.setPreferredSize(new java.awt.Dimension(400, 300));
         jBg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Faça seu login");
-        jBg.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
+        ltitulo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        ltitulo.setForeground(new java.awt.Color(255, 255, 255));
+        ltitulo.setText("Faça seu login");
+        jBg.add(ltitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, -1, -1));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Login");
-        jBg.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
+        llogin.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        llogin.setForeground(new java.awt.Color(255, 255, 255));
+        llogin.setText("Login");
+        jBg.add(llogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
 
-        fEmail.setText("welison");
-        jBg.add(fEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
+        flogin.setText("welison");
+        jBg.add(flogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Senha");
-        jBg.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, 20));
+        lsenha.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lsenha.setForeground(new java.awt.Color(255, 255, 255));
+        lsenha.setText("Senha");
+        jBg.add(lsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, 20));
 
-        fSenha.setText("123456");
-        jBg.add(fSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 240, -1));
+        fsenha.setText("123456");
+        jBg.add(fsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 240, -1));
 
-        jButton1.setText("Entrar");
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        bentrar.setText("Entrar");
+        bentrar.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        bentrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                bentrarActionPerformed(evt);
             }
         });
-        jBg.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 70, 30));
+        jBg.add(bentrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, 70, 30));
 
         lInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lInfo.setForeground(new java.awt.Color(255, 0, 0));
@@ -106,11 +117,11 @@ public class Login extends javax.swing.JFrame {
      * 
      * @param evt o ActionEvent
      */
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
         // login
-        lInfo.setText("Login ou senha inválidos");
-        String login = fEmail.getText();
-        String password = fSenha.getText();
+        //lInfo.setText("Login ou senha inválidos");
+        String login = flogin.getText();
+        String password = fsenha.getText();
         if (login.equals("welison") && password.equals("123456")) {
             this.setVisible(false);
             JFrame main = new Main();
@@ -118,9 +129,9 @@ public class Login extends javax.swing.JFrame {
             Navigation.updateLayout("");
             Navigation.updateLayout("dashboard");
         } else {
-            lInfo.setText("Login ou senha inválidos");
+            lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_bentrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -158,14 +169,14 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField fEmail;
-    private javax.swing.JTextField fSenha;
+    private javax.swing.JButton bentrar;
+    private javax.swing.JTextField flogin;
+    private javax.swing.JTextField fsenha;
     private javax.swing.JPanel jBg;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lInfo;
+    private javax.swing.JLabel llogin;
+    private javax.swing.JLabel lsenha;
+    private javax.swing.JLabel ltitulo;
     // End of variables declaration//GEN-END:variables
 
 }

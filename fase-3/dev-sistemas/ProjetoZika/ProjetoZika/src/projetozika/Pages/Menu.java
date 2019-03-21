@@ -27,10 +27,11 @@ public class Menu extends javax.swing.JPanel {
         initComponents();
         this.main = main;
         
-        
+        // Espaçamentos entre os elementos
         labelEspacoTopo.setPreferredSize(new Dimension(200, 45));
         labelEspacoLogout.setPreferredSize(new Dimension(200, 100));
         
+        // Estilos customizados
         Styles.menuButton(bDashboard);
         Styles.menuButton(bPedidos);
         Styles.menuButton(bFornecedores);
@@ -41,6 +42,11 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bPerfil);
         Styles.menuButton(bRelatorios);
         
+        // Tradução dos textos
+        translation();
+    }
+    
+    private void translation() {
         bDashboard.setText(Methods.getTranslation("Dashboard"));
         bPedidos.setText(Methods.getTranslation("Pedidos"));
         bFornecedores.setText(Methods.getTranslation("Fornecedores"));
