@@ -8,6 +8,7 @@ package projetozika.Pages.Relatorios;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
 import Utils.Dialogs;
+import Utils.Methods;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
@@ -63,10 +64,10 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         title = new JLabel();
         title.setFont(new java.awt.Font("Tahoma", 1, 24));
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText("Relatório de Produtos");
+        title.setText(Methods.getTranslation("RelatorioDeProdutos"));
         add(title, new AbsoluteConstraints(20, 20, -1, -1));
         
-        lfornecedor = new JLabel("Fornecedor");
+        lfornecedor = new JLabel(Methods.getTranslation("Fornecedor"));
         Styles.defaultLabel(lfornecedor);
         add(lfornecedor, new AbsoluteConstraints(20, 60, -1, -1));
         
@@ -87,7 +88,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         add(sfornecedor, new AbsoluteConstraints(20, 90, -1, -1));
         
         
-        lproduto = new JLabel("Produto");
+        lproduto = new JLabel(Methods.getTranslation("Produto"));
         Styles.defaultLabel(lproduto);
         add(lproduto, new AbsoluteConstraints(340, 60, -1, -1));
         
@@ -108,7 +109,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         add(sproduto, new AbsoluteConstraints(340, 90, -1, -1));
         
         
-        ldatafrom = new JLabel("De*");
+        ldatafrom = new JLabel(Methods.getTranslation("De"));
         Styles.defaultLabel(ldatafrom);
         add(ldatafrom, new AbsoluteConstraints(20, 140, -1, -1));
         
@@ -120,7 +121,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         Styles.errorLabel(edatafrom);
         add(edatafrom, new AbsoluteConstraints(20, 210, -1, -1));
         
-        ldatato = new JLabel("Até*");
+        ldatato = new JLabel(Methods.getTranslation("Ate"));
         Styles.defaultLabel(ldatato);
         add(ldatato, new AbsoluteConstraints(340, 140, -1, -1));
         
@@ -133,7 +134,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
         
         
-        btnRelatorioPedido = new JButton("Gerar Relatório");
+        btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
         btnRelatorioPedido.addActionListener(new ActionListener(){
@@ -155,7 +156,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(self);
-                JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso!");
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
                 t.stop();
             }
         });

@@ -6,28 +6,17 @@
 package projetozika.Pages.Relatorios;
 
 import Templates.BaseLayout;
-import Templates.ComboItem;
-import Templates.SuggestionsBox;
-import Utils.Dialogs;
-import Utils.Styles;
+import Utils.Methods;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
-import org.netbeans.lib.awtextra.AbsoluteLayout;
 /**
  * Tela de listagem do fornecedores
  * 
@@ -41,21 +30,6 @@ public class Relatorios extends Templates.BaseLayout {
     private JTabbedPane jTabbedPane1;
     private JPanel panelPedidos;
     private JPanel panelProdutos;
-    private JTextField fproduto;
-    private JComboBox cproduto;
-    private JLabel lproduto;
-    private JPanel sproduto;
-    private JLabel ldatafrom;
-    private JDateChooser fdatafrom;
-    private JLabel ldatato;
-    private JDateChooser fdatato;
-    private JLabel lusuario;
-    private JTextField fusuario;
-    private JPanel susuario;
-    private JComboBox cusuario;
-    private JButton btnRelatorioPedido;
-    private JLabel edatafrom;
-    private JLabel edatato;
 
     /**
      * Cria a tela de fornecedores
@@ -77,8 +51,8 @@ public class Relatorios extends Templates.BaseLayout {
         panelPedidos = new RelatorioPedidos();
         panelProdutos = new RelatorioProdutos();
         
-        jTabbedPane1.addTab("Pedidos", panelPedidos);
-        jTabbedPane1.addTab("Produtos", panelProdutos);
+        jTabbedPane1.addTab(Methods.getTranslation("Pedidos"), panelPedidos);
+        jTabbedPane1.addTab(Methods.getTranslation("Produtos"), panelProdutos);
 
         pCenter.add(jTabbedPane1, BorderLayout.CENTER);
     }
