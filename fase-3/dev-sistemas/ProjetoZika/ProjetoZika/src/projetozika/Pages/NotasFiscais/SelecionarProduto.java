@@ -8,6 +8,7 @@ package projetozika.Pages.NotasFiscais;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
 import Utils.Dialogs;
+import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Cursor;
@@ -55,13 +56,13 @@ public class SelecionarProduto extends javax.swing.JPanel {
     public SelecionarProduto() {
         initComponents();
         self = this;
-        Styles.setBorderTitle(this, "Adicionar/Selecionar Produto");
+        Styles.setBorderTitle(this, Methods.getTranslation("Adicionar/SelecionarProduto"));
         
         addElements();
     }
     
     private void addElements() {
-        lnome = new JLabel("Nome");
+        lnome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lnome);
         add(lnome, new AbsoluteConstraints(20, 20, -1, -1));
         
@@ -81,7 +82,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         };
         add(pSuggestions, new AbsoluteConstraints(20, 50, -1, -1));
         
-        addProduto = new JLabel("<html><u>Novo Produto</u></html>");
+        addProduto = new JLabel("<html><u>"+ Methods.getTranslation("AdicionarNovo") +"</u></html>");
         Styles.defaultLabel(addProduto);
         addProduto.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(addProduto, new AbsoluteConstraints(230, 45, -1, -1));
@@ -97,7 +98,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.errorLabel(enome);
         add(enome, new AbsoluteConstraints(20, 85, -1, -1));
         
-        lunidade = new JLabel("Unidade");
+        lunidade = new JLabel(Methods.getTranslation("Unidade"));
         Styles.defaultLabel(lunidade);
         add(lunidade, new AbsoluteConstraints(20, 100, -1, -1));
         
@@ -110,7 +111,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.errorLabel(eunidade);
         add(eunidade, new AbsoluteConstraints(20, 165, -1, -1));
         
-        lquantidade = new JLabel("Quantidade");
+        lquantidade = new JLabel(Methods.getTranslation("Quantidade"));
         Styles.defaultLabel(lquantidade);
         add(lquantidade, new AbsoluteConstraints(20, 180, -1, -1));
         
@@ -122,7 +123,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.errorLabel(equantidade);
         add(equantidade, new AbsoluteConstraints(20, 245, -1, -1));
         
-        lvalor = new JLabel("Quantidade");
+        lvalor = new JLabel(Methods.getTranslation("Valor"));
         Styles.defaultLabel(lvalor);
         add(lvalor, new AbsoluteConstraints(20, 260, -1, -1));
         
@@ -134,7 +135,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.errorLabel(evalor);
         add(evalor, new AbsoluteConstraints(20, 325, -1, -1));
         
-        selProd = new JButton("Adicionar");
+        selProd = new JButton(Methods.getTranslation("Adicionar"));
         Styles.defaultButton(selProd);
         selProd.setPreferredSize(new Dimension(100, 34));
         add(selProd, new AbsoluteConstraints(240, 293, -1, -1));

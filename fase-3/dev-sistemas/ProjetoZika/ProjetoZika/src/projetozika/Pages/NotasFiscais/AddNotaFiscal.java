@@ -70,18 +70,18 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     public AddNotaFiscal() {
         this.self = this;
         this.mode = "add";
-        initPage("Adicionar Nota Fiscal");
+        initPage(Methods.getTranslation("AdicionarNotaFiscal"));
     }
     
     public AddNotaFiscal(String id, String mode) {
         this.self = this;
         this.mode = mode;
         if(this.mode.equals("view")){
-            initPage("Ver Nota Fiscal");
+            initPage(Methods.getTranslation("VerNotaFiscal"));
             Methods.disabledFields(bg);
             Methods.disabledFields(panelAddProduto);
         } else if (this.mode.equals("edit")){
-            initPage("Editar Nota Fiscal");
+            initPage(Methods.getTranslation("EditarNotaFiscal"));
         }
     }
     
@@ -126,7 +126,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
         
-        lnumero = new JLabel("Número");
+        lnumero = new JLabel(Methods.getTranslation("Numero"));
         Styles.defaultLabel(lnumero);
         bg.add(lnumero, new AbsoluteConstraints(0, 0, -1, -1));
         
@@ -138,7 +138,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.errorLabel(enumero);
         bg.add(enumero, new AbsoluteConstraints(0, 75, -1, -1));
         
-        lcnpj = new JLabel("CNPJ");
+        lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(220, 0, -1, -1));
         
@@ -158,7 +158,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         };
         bg.add(pSuggestions, new AbsoluteConstraints(220, 40, -1, -1));
         
-        addFornecedor = new JLabel("<html><u>Novo Fornecedor</u></html>");
+        addFornecedor = new JLabel("<html><u>"+ Methods.getTranslation("AdicionarFornecedor") +"</u></html>");
         Styles.defaultLabel(addFornecedor);
         addFornecedor.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bg.add(addFornecedor, new AbsoluteConstraints(430, 40, -1, -1));
@@ -174,7 +174,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.errorLabel(ecnpj);
         bg.add(ecnpj, new AbsoluteConstraints(220, 75, -1, -1));
         
-        lserie = new JLabel("Nº de série");
+        lserie = new JLabel(Methods.getTranslation("NumeroDeSerie"));
         Styles.defaultLabel(lserie);
         bg.add(lserie, new AbsoluteConstraints(0, 90, -1, -1));
 
@@ -186,7 +186,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.errorLabel(eserie);
         bg.add(eserie, new AbsoluteConstraints(0, 165, -1, -1));
         
-        lvalor = new JLabel("Valor");
+        lvalor = new JLabel(Methods.getTranslation("Valor"));
         Styles.defaultLabel(lvalor);
         bg.add(lvalor, new AbsoluteConstraints(220, 90, -1, -1));
 
@@ -198,7 +198,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.errorLabel(evalor);
         bg.add(evalor, new AbsoluteConstraints(220, 165, -1, -1));
         
-        ldata = new JLabel("Data");
+        ldata = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(ldata);
         bg.add(ldata, new AbsoluteConstraints(0, 180, -1, -1));
 
@@ -210,7 +210,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.errorLabel(edata);
         bg.add(edata, new AbsoluteConstraints(0, 255, -1, -1));
         
-        bSave = new JButton("Salvar");
+        bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 222, -1, -1));
@@ -248,7 +248,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                 Dialogs.hideLoadPopup(bg);
                 
                 self.dispose();
-                JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                 
                 
                 t.stop();

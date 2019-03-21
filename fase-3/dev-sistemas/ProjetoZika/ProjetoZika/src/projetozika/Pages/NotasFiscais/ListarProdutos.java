@@ -31,7 +31,7 @@ public class ListarProdutos extends javax.swing.JPanel {
      */
     public ListarProdutos(String mode) {
         initComponents();
-        Styles.setBorderTitle(this, "Produtos da Nota Fiscal");
+        Styles.setBorderTitle(this, Methods.getTranslation("ProdutosDaNotaFiscal"));
         setLayout(new BorderLayout());
         this.mode = mode;
         
@@ -39,9 +39,14 @@ public class ListarProdutos extends javax.swing.JPanel {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "Unidade", ""};
+        String[] colunas = {
+            Methods.getTranslation("Codigo"),
+            Methods.getTranslation("Nome"),
+            Methods.getTranslation("Unidade"),
+            ""
+        };
         if(! mode.equals("view")) {
-            colunas[3] = "Excluir";
+            colunas[3] = Methods.getTranslation("Excluir");
         } 
         
        // seta modelo
@@ -63,7 +68,7 @@ public class ListarProdutos extends javax.swing.JPanel {
             Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
             Object[] data = {p.getId(),p.getNome(),p.getUnidade(),""};
             if (! mode.equals("view")) {
-                data[3] = "Excluir";
+                data[3] = Methods.getTranslation("Excluir");
             }
             tableModel.addRow(data);
         }
@@ -75,8 +80,8 @@ public class ListarProdutos extends javax.swing.JPanel {
         add(barraRolagem, BorderLayout.CENTER);
         
         if (! mode.equals("view")) {
-            tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
-            tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+            tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
+            tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
                     //String id = Methods.selectedTableItemId(tabela);

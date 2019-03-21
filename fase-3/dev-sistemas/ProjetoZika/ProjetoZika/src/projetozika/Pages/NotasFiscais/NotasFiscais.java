@@ -54,7 +54,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Notas Fiscais");
+        addTopContent(Methods.getTranslation("NotasFiscais"));
         addFilterContent();
         addCenterContent();
         addBottomContent();
@@ -65,7 +65,15 @@ public class NotasFiscais extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Valor", "CNPJ", "Data", "Editar", "Excluir", "Ver"};
+        String[] colunas = {
+            Methods.getTranslation("Codigo"),
+            Methods.getTranslation("Valor"),
+            Methods.getTranslation("CNPJ"),
+            Methods.getTranslation("Data"),
+            Methods.getTranslation("Editar"),
+            Methods.getTranslation("Excluir"),
+            Methods.getTranslation("Ver")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -79,14 +87,22 @@ public class NotasFiscais extends Templates.BaseLayout {
         // adiciona linhas
         for(int i = 0; i < 25; i++) {
             NotaFiscal n = new NotaFiscal(32323, 222, "232323-33", 20.4f, "10/10/2019");
-            Object[] data = {n.getId(),n.getValor(),n.getCnpj(),n.getData(),"Editar","Excluir","Ver"};
+            Object[] data = {
+                n.getId(),
+                n.getValor(),
+                n.getCnpj(),
+                n.getData(),
+                Methods.getTranslation("Editar"),
+                Methods.getTranslation("Excluir"),
+                Methods.getTranslation("Ver")
+            };
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn("Editar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -94,22 +110,22 @@ public class NotasFiscais extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
 
-                int opcion = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o item " + id + "?", "Aviso", JOptionPane.YES_NO_OPTION);
+                int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
                     Methods.removeSelectedTableRow(tabela, tableModel);
-                   JOptionPane.showMessageDialog(null, "Item " + id + " deletado com sucesso!");
+                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
         });
         
-        tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -123,19 +139,19 @@ public class NotasFiscais extends Templates.BaseLayout {
     }
     
     public void addFilterContent() {
-        addMore = new JButton("Criar Novo");
+        addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
         
         fcnpj = new JTextField();
         Styles.defaultField(fcnpj, 150);
         
-        lcnpj = new JLabel("Cnpj:");
+        lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj, false);
         
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
         
-        ldata = new JLabel("Data:");
+        ldata = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(ldata, false);
         
         bSearch = new JButton("");
