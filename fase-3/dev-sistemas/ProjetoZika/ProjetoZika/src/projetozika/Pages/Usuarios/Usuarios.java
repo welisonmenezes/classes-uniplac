@@ -59,7 +59,7 @@ public class Usuarios extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Usuários");
+        addTopContent(Methods.getTranslation("Usuarios"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
@@ -83,7 +83,15 @@ public class Usuarios extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"CPF", "Nome", "Email", "Setor", "Editar", "Excluir", "Ver"};
+        String[] colunas = {
+            Methods.getTranslation("CPF"), 
+            Methods.getTranslation("Nome"), 
+            Methods.getTranslation("Email"), 
+            Methods.getTranslation("Setor"), 
+            Methods.getTranslation("Editar"), 
+            Methods.getTranslation("Excluir"), 
+            Methods.getTranslation("Ver")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -97,14 +105,22 @@ public class Usuarios extends Templates.BaseLayout {
         // adiciona linhas
         for(int i = 0; i < 25; i++) {
             Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Object[] data = {u.getCpf(),u.getNome(),u.getEmail(),u.getSetor(),"Editar","Excluir","Ver"};
+            Object[] data = {
+                u.getCpf(),
+                u.getNome(),
+                u.getEmail(),
+                u.getSetor(),
+                Methods.getTranslation("Editar"),
+                Methods.getTranslation("Excluir"),
+                Methods.getTranslation("Ver")
+            };
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn("Editar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -112,22 +128,22 @@ public class Usuarios extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
 
-                int opcion = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o item " + id + "?", "Aviso", JOptionPane.YES_NO_OPTION);
+                int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
                     Methods.removeSelectedTableRow(tabela, tableModel);
-                   JOptionPane.showMessageDialog(null, "Item " + id + " deletado com sucesso!");
+                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
         });
         
-        tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -144,13 +160,13 @@ public class Usuarios extends Templates.BaseLayout {
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
         
-        lNome = new JLabel("Nome:");
+        lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fEmail = new JTextField();
         Styles.defaultField(fEmail, 150);
         
-        lEmail = new JLabel("Email:");
+        lEmail = new JLabel(Methods.getTranslation("Email"));
         Styles.defaultLabel(lEmail, false);
         
         fSetor = new JComboBox();
@@ -164,7 +180,7 @@ public class Usuarios extends Templates.BaseLayout {
         */
         Styles.defaultComboBox(fSetor);
         
-        lSetor = new JLabel("Setor:");
+        lSetor = new JLabel(Methods.getTranslation("Setor"));
         Styles.defaultLabel(lSetor, false);
         
         bSearch = new JButton("");
@@ -173,7 +189,7 @@ public class Usuarios extends Templates.BaseLayout {
         hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
-        addMore = new JButton("Criar Novo");
+        addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
         
         pFilter.add(lNome);
@@ -239,9 +255,17 @@ public class Usuarios extends Templates.BaseLayout {
                 tableModel.getDataVector().removeAllElements();
                 tableModel.fireTableDataChanged();
                 // adiciona novas linhas
-                for(int i = 26; i < 35; i++) {
-                    Usuario u = new Usuario("222222-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Object[] data = {u.getCpf(),u.getNome(),u.getEmail(),u.getSetor(),"Editar","Excluir","Ver"};
+                for(int i = 0; i < 10; i++) {
+                    Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+                    Object[] data = {
+                        u.getCpf(),
+                        u.getNome(),
+                        u.getEmail(),
+                        u.getSetor(),
+                        Methods.getTranslation("Editar"),
+                        Methods.getTranslation("Excluir"),
+                        Methods.getTranslation("Ver")
+                    };
                     tableModel.addRow(data);
                 }
                 

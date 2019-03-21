@@ -27,7 +27,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -86,19 +85,19 @@ public class AddUsuario extends Templates.BaseFrame {
     public AddUsuario() {
         this.self = this;
         this.mode = "add";
-        initPage("Adicionar Usuario");
+        initPage(Methods.getTranslation("AdicionarUsuario"));
     }
     
     public AddUsuario(String id, String mode) {
         this.self = this;
         this.mode = mode;
         if(this.mode.equals("view")){
-            initPage("Ver Usuario");
+            initPage(Methods.getTranslation("VerUsuario"));
             Methods.disabledFields(bg);
         } else if (this.mode.equals("edit")){
-            initPage("Editar Usuario");
+            initPage(Methods.getTranslation("EditarUsuario"));
         } else if (this.mode.equals("perfil")){
-            initPage("Editar Perfil");
+            initPage(Methods.getTranslation("EditarPerfil"));
         }
         
         fillFields(id);
@@ -130,7 +129,7 @@ public class AddUsuario extends Templates.BaseFrame {
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
 
-        lnome = new JLabel("Nome");
+        lnome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lnome);
         bg.add(lnome, new AbsoluteConstraints(0, 0, -1, -1));
 
@@ -142,7 +141,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(enome);
         bg.add(enome, new AbsoluteConstraints(0, 75, -1, -1));
         
-        lcpf = new JLabel("CPF");
+        lcpf = new JLabel(Methods.getTranslation("CPF"));
         Styles.defaultLabel(lcpf);
         bg.add(lcpf, new AbsoluteConstraints(220, 0, -1, -1));
 
@@ -154,13 +153,13 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(ecpf);
         bg.add(ecpf, new AbsoluteConstraints(220, 75, -1, -1));
         
-        lsexo = new JLabel("Sexo");
+        lsexo = new JLabel(Methods.getTranslation("Sexo"));
         Styles.defaultLabel(lsexo);
         bg.add(lsexo, new AbsoluteConstraints(440, 0, -1, -1));
         
         gsexo = new ButtonGroup();
-        fhomem = new JRadioButton("Masculino");
-        fmulher = new JRadioButton("Feminino");
+        fhomem = new JRadioButton(Methods.getTranslation("Masculino"));
+        fmulher = new JRadioButton(Methods.getTranslation("Feminino"));
         fhomem.setForeground(new Color(255, 255, 255));
         fmulher.setForeground(new Color(255, 255, 255));
         gsexo.add(fhomem);
@@ -172,7 +171,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(esexo);
         bg.add(esexo, new AbsoluteConstraints(440, 75, -1, -1));
         
-        ldata = new JLabel("Data de Nascimento");
+        ldata = new JLabel(Methods.getTranslation("DataDeNascimento"));
         Styles.defaultLabel(ldata);
         bg.add(ldata, new AbsoluteConstraints(0, 90, -1, -1));
 
@@ -184,7 +183,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(edata);
         bg.add(edata, new AbsoluteConstraints(0, 165, -1, -1));
         
-        lcelular = new JLabel("Celular");
+        lcelular = new JLabel(Methods.getTranslation("Celular"));
         Styles.defaultLabel(lcelular);
         bg.add(lcelular, new AbsoluteConstraints(220, 90, -1, -1));
 
@@ -196,7 +195,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(ecelular);
         bg.add(ecelular, new AbsoluteConstraints(220, 165, -1, -1));
         
-        ltelefone = new JLabel("Telefone");
+        ltelefone = new JLabel(Methods.getTranslation("Telefone"));
         Styles.defaultLabel(ltelefone);
         bg.add(ltelefone, new AbsoluteConstraints(440, 90, -1, -1));
 
@@ -208,7 +207,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(etelefone);
         bg.add(etelefone, new AbsoluteConstraints(440, 165, -1, -1));
         
-        lemail = new JLabel("Email");
+        lemail = new JLabel(Methods.getTranslation("Email"));
         Styles.defaultLabel(lemail);
         bg.add(lemail, new AbsoluteConstraints(0, 180, -1, -1));
 
@@ -220,7 +219,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(eemail);
         bg.add(eemail, new AbsoluteConstraints(0, 255, -1, -1));
         
-        lsetor = new JLabel("Setor");
+        lsetor = new JLabel(Methods.getTranslation("Setor"));
         Styles.defaultLabel(lsetor);
         bg.add(lsetor, new AbsoluteConstraints(220, 180, -1, -1));
 
@@ -233,7 +232,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(esetor);
         bg.add(esetor, new AbsoluteConstraints(220, 255, -1, -1));
         
-        lpermissao = new JLabel("Permissão");
+        lpermissao = new JLabel(Methods.getTranslation("Permissao"));
         Styles.defaultLabel(lpermissao);
         bg.add(lpermissao, new AbsoluteConstraints(440, 180, -1, -1));
 
@@ -246,7 +245,7 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.errorLabel(epermissao);
         bg.add(epermissao, new AbsoluteConstraints(440, 255, -1, -1));
         
-        bSave = new JButton("Salvar");
+        bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(440, 290, -1, -1));
@@ -277,16 +276,16 @@ public class AddUsuario extends Templates.BaseFrame {
                     JTable tabela = Usuarios.tabela;
                     int row = tabela.getSelectedRow();
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
 
                 } else if(mode.equals("add")) {
                     // TODO: save here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                 } else if(mode.equals("perfil")) {
                     // TODO: save here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Perfil editado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                 } else {
                     self.dispose();
                 }
