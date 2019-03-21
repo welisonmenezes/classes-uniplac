@@ -54,7 +54,7 @@ public class Fornecedores extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Fornecedores");
+        addTopContent(Methods.getTranslation("Fornecedores"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
@@ -76,7 +76,15 @@ public class Fornecedores extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Nome", "CNPJ", "Telefone", "Editar", "Excluir", "Ver"};
+        String[] colunas = {
+            Methods.getTranslation("Codigo"),
+            Methods.getTranslation("Nome"),
+            Methods.getTranslation("CNPJ"),
+            Methods.getTranslation("Telefone"),
+            Methods.getTranslation("Editar"),
+            Methods.getTranslation("Excluir"),
+            Methods.getTranslation("Ver")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -90,14 +98,22 @@ public class Fornecedores extends Templates.BaseLayout {
         // adiciona linhas
         for(int i = 0; i < 25; i++) {
             Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-            Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
+            Object[] data = {
+                f.getID(),
+                f.getNome(),
+                f.getCnpj(),
+                f.getTelefone(),
+                Methods.getTranslation("Editar"),
+                Methods.getTranslation("Excluir"),
+                Methods.getTranslation("Ver")
+            };
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn("Editar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -105,22 +121,22 @@ public class Fornecedores extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn("Excluir").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Excluir").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
 
-                int opcion = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir o item " + id + "?", "Aviso", JOptionPane.YES_NO_OPTION);
+                int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
                     Methods.removeSelectedTableRow(tabela, tableModel);
-                   JOptionPane.showMessageDialog(null, "Item " + id + " deletado com sucesso!");
+                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
         });
         
-        tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -137,19 +153,19 @@ public class Fornecedores extends Templates.BaseLayout {
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
         
-        lNome = new JLabel("Nome:");
+        lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fCnpj = new JTextField();
         Styles.defaultField(fCnpj, 150);
         
-        lCnpj = new JLabel("CNPJ:");
+        lCnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lCnpj, false);
         
         fTelefone = new JTextField();
         Styles.defaultField(fTelefone, 150);
         
-        lTelefone = new JLabel("Telefone:");
+        lTelefone = new JLabel(Methods.getTranslation("Telefone"));
         Styles.defaultLabel(lTelefone, false);
         
         bSearch = new JButton("");
@@ -158,7 +174,7 @@ public class Fornecedores extends Templates.BaseLayout {
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
-        addMore = new JButton("Criar Novo");
+        addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
         
         pFilter.add(lNome);
@@ -226,7 +242,15 @@ public class Fornecedores extends Templates.BaseLayout {
                 // adiciona novas linhas
                 for(int i = 26; i < 35; i++) {
                     Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-                    Object[] data = {f.getID(),f.getNome(),f.getCnpj(),f.getTelefone(),"Editar","Excluir","Ver"};
+                    Object[] data = {
+                        f.getID(),
+                        f.getNome(),
+                        f.getCnpj(),
+                        f.getTelefone(),
+                        Methods.getTranslation("Editar"),
+                        Methods.getTranslation("Excluir"),
+                        Methods.getTranslation("Ver")
+                    };
                     tableModel.addRow(data);
                 }
                 

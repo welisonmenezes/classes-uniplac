@@ -50,12 +50,12 @@ public class AddFornecedor extends Templates.BaseFrame {
     public AddFornecedor() {
         this.self = this;
         this.mode = "add";
-        initPage("Adicionar Fornecedor");
+        initPage(Methods.getTranslation("AdicionarFornecedor"));
     }
     
     public AddFornecedor(JPanel panelCaller) {
         this.self = this;
-        initPage("Adicionar Fornecedor pela Nota");
+        initPage(Methods.getTranslation("AdicionarFornecedorPelaNota"));
         this.mode = "nota";
         this.panelCaller = panelCaller;
     }
@@ -64,13 +64,17 @@ public class AddFornecedor extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         if(this.mode.equals("view")){
-            initPage("Ver Fornecedor");
+            initPage(Methods.getTranslation("VerFornecedor"));
             Methods.disabledFields(bg);
         } else if (this.mode.equals("edit")){
-            initPage("Editar Fornecedor");
+            initPage(Methods.getTranslation("EditarFornecedor"));
         }
         
         fillFields(id);
+    }
+    
+    private void translation() {
+        
     }
     
     private void initPage(String title) {
@@ -105,7 +109,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         bg.setOpaque(false);
 
         
-        lname = new JLabel("Nome");
+        lname = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lname);
         bg.add(lname, new AbsoluteConstraints(0, 0, -1, -1));
 
@@ -117,7 +121,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.errorLabel(ename);
         bg.add(ename, new AbsoluteConstraints(0, 75, -1, -1));
         
-        ltel = new JLabel("Telefone");
+        ltel = new JLabel(Methods.getTranslation("Telefone"));
         Styles.defaultLabel(ltel);
         bg.add(ltel, new AbsoluteConstraints(220, 0, -1, -1));
 
@@ -129,7 +133,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.errorLabel(etel);
         bg.add(etel, new AbsoluteConstraints(220, 75, -1, -1));
         
-        lcnpj = new JLabel("CNPJ");
+        lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(0, 90, -1, -1));
 
@@ -141,7 +145,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.errorLabel(ecnpj);
         bg.add(ecnpj, new AbsoluteConstraints(0, 165, -1, -1));
         
-        bSave = new JButton("Salvar");
+        bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
@@ -152,13 +156,13 @@ public class AddFornecedor extends Templates.BaseFrame {
                     
                 if(fname.getText().equals("") || ftel.getText().equals("") || fcnpj.getText().equals("")){
                     if(fname.getText().equals("")){
-                        ename.setText("Campo obrigatório");
+                        ename.setText(Methods.getTranslation("CampoObrigatorio"));
                     }
                     if(ftel.getText().equals("")) {
-                        etel.setText("Campo obrigatório");
+                        etel.setText(Methods.getTranslation("CampoObrigatorio"));
                     }
                     if(fcnpj.getText().equals("")) {
-                        ecnpj.setText("Campo obrigatório");
+                        ecnpj.setText(Methods.getTranslation("CampoObrigatorio"));
                     }
                 } else {
                     Dialogs.showLoadPopup(bg);
@@ -188,13 +192,21 @@ public class AddFornecedor extends Templates.BaseFrame {
                     tableModel.setValueAt(fcnpj.getText() , row, 2);
                     tableModel.setValueAt(ftel.getText() , row, 3);
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
 
                 } else if(mode.equals("add")) {
                     DefaultTableModel tableModel = Fornecedores.tableModel;
-                    tableModel.addRow(new Object[]{"5454",fname.getText(),fcnpj.getText(),ftel.getText(),"Editar","Excluir","Ver"});
+                    tableModel.addRow(new Object[]{
+                        "5454",
+                        fname.getText(),
+                        fcnpj.getText(),
+                        ftel.getText(),
+                        Methods.getTranslation("Editar"),
+                        Methods.getTranslation("Excluir"),
+                        Methods.getTranslation("Ver")
+                    });
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                 } else if(mode.equals("nota")){
                     AddNotaFiscal.fcnpj.setText(fcnpj.getText());
                     self.dispose();
