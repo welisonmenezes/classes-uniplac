@@ -56,7 +56,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Seus Pedidos");
+        addTopContent(Methods.getTranslation("SeusPedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
@@ -78,7 +78,14 @@ public class SeusPedidos extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Data", "Status", "Editar", "Cancelar", "Ver"};
+        String[] colunas = {
+            Methods.getTranslation("Codigo"), 
+            Methods.getTranslation("Data"), 
+            Methods.getTranslation("Status"), 
+            Methods.getTranslation("Editar"), 
+            Methods.getTranslation("Cancelar"), 
+            Methods.getTranslation("Ver")
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -93,20 +100,27 @@ public class SeusPedidos extends Templates.BaseLayout {
         for(int i = 0; i < 25; i++) {
             Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            String btnEditar = "Editar";
-            String btnCancelar = "Cancelar";
+            String btnEditar = Methods.getTranslation("Editar");
+            String btnCancelar = Methods.getTranslation("Cancelar");
             if ( i % 2 == 0 ) {
                 btnEditar = "";
                 btnCancelar = "";
             } 
-            Object[] data = {p.getCodigo(),p.getData(),p.getStatus(),btnEditar,btnCancelar,"Ver"};
+            Object[] data = {
+                p.getCodigo(),
+                p.getData(),
+                p.getStatus(),
+                btnEditar,
+                btnCancelar,
+                Methods.getTranslation("Ver")
+            };
             tableModel.addRow(data);
         }
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn("Editar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Editar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -118,8 +132,8 @@ public class SeusPedidos extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn("Cancelar").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Cancelar").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Cancelar")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Cancelar")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 // TODO: real database delete
@@ -131,8 +145,8 @@ public class SeusPedidos extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn("Ver").setCellRenderer(new ButtonRenderer());
-        tabela.getColumn("Ver").setCellEditor(new ButtonEditor(new JCheckBox()){
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellRenderer(new ButtonRenderer());
+        tabela.getColumn(Methods.getTranslation("Ver")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -148,20 +162,20 @@ public class SeusPedidos extends Templates.BaseLayout {
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
         
-        lData = new JLabel("Data:");
+        lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);
         
         fStatus = new JComboBox();
         fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
         Styles.defaultComboBox(fStatus);
         
-        lStatus = new JLabel("Status:");
+        lStatus = new JLabel(Methods.getTranslation("Status"));
         Styles.defaultLabel(lStatus, false);
         
         bSearch = new JButton("");
         Styles.searchButton(bSearch);
         
-        btnAddPedido = new JButton("Fazer Novo Pedido");
+        btnAddPedido = new JButton(Methods.getTranslation("FazerNovoPedido"));
         Styles.defaultButton(btnAddPedido);
         btnAddPedido.setPreferredSize(new Dimension(200, 35));
         
@@ -226,14 +240,23 @@ public class SeusPedidos extends Templates.BaseLayout {
                 tableModel.getDataVector().removeAllElements();
                 tableModel.fireTableDataChanged();
                 // adiciona novas linhas
-                for(int i = 0; i < 8; i++) {
+                for(int i = 0; i < 10; i++) {
                     Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
                     Pedido p = new Pedido("10/11/2019", "Pendente", u);
-                    String btnValue = "Finalizar";
+                    String btnEditar = Methods.getTranslation("Editar");
+                    String btnCancelar = Methods.getTranslation("Cancelar");
                     if ( i % 2 == 0 ) {
-                        btnValue = "";
+                        btnEditar = "";
+                        btnCancelar = "";
                     } 
-                    Object[] data = {p.getCodigo(), p.getSolicitante().getNome(),p.getData(),p.getStatus(),"Ver", btnValue};
+                    Object[] data = {
+                        p.getCodigo(),
+                        p.getData(),
+                        p.getStatus(),
+                        btnEditar,
+                        btnCancelar,
+                        Methods.getTranslation("Ver")
+                    };
                     tableModel.addRow(data);
                 }
                 

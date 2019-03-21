@@ -60,7 +60,7 @@ public class FazerPedido extends Templates.BaseFrame {
    public FazerPedido() {
        this.self = this;
        this.mode = "add";
-       initPage("Fazer Pedido (requisição de produtos)");
+       initPage(Methods.getTranslation("FazerPedido"));
    }
    
    public FazerPedido(String id, String mode) {
@@ -68,11 +68,11 @@ public class FazerPedido extends Templates.BaseFrame {
        this.mode = mode;
        
         if(this.mode.equals("view")){
-            initPage("Seu Pedido XXX");
+            initPage(Methods.getTranslation("SeuPedido"));
             pFilter.setVisible(false);
             pBottom.setVisible(false);
         } else if(this.mode.equals("edit")) {
-            initPage("Editar Seu Pedido XXX");
+            initPage(Methods.getTranslation("EditarSeuPedido"));
         }
    }
    
@@ -116,7 +116,7 @@ public class FazerPedido extends Templates.BaseFrame {
     public void addFilterContent() {
         pFilter = new JPanel();
         
-        lproduto = new JLabel("Buscar Produto:");
+        lproduto = new JLabel(Methods.getTranslation("BuscarProduto"));
         Styles.defaultLabel(lproduto, false);
         
         // suggestion box
@@ -134,7 +134,7 @@ public class FazerPedido extends Templates.BaseFrame {
             }
         };
         
-        btnAddProduto = new JButton("Adicionar");
+        btnAddProduto = new JButton(Methods.getTranslation("Adicionar"));
         Styles.defaultButton(btnAddProduto);
        
         pFilter.add(lproduto);
@@ -151,7 +151,13 @@ public class FazerPedido extends Templates.BaseFrame {
                     // TODO: implement real database add product
                     System.out.println(selectedProd.getId());
                     Produto p = new Produto(selectedProd.getId(), selectedProd.getDescription(), "Caixa", "Descrição Produto", "1/12/2009");
-                    Object[] data = {p.getId(),p.getNome(),p.getUnidade(),1,"Remover" };
+                    Object[] data = {
+                        p.getId(),
+                        p.getNome(),
+                        p.getUnidade(),
+                        1,
+                        Methods.getTranslation("Remover")
+                    };
                     tableModel.addRow(data);
                 }
                 
@@ -165,7 +171,7 @@ public class FazerPedido extends Templates.BaseFrame {
     }
     
     public void addBottomContent() {
-        btnFinalizar = new JButton("Salvar Pedido");
+        btnFinalizar = new JButton(Methods.getTranslation("SalvarPedido"));
         Styles.defaultButton(btnFinalizar);
         
         btnFinalizar.addActionListener(new ActionListener(){
@@ -192,9 +198,15 @@ public class FazerPedido extends Templates.BaseFrame {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"Código", "Produto", "Unidade", "Quantidade", ""};
+        String[] colunas = {
+            Methods.getTranslation("Codigo"), 
+            Methods.getTranslation("Produto"), 
+            Methods.getTranslation("Unidade"), 
+            Methods.getTranslation("Quantidade"), 
+            ""
+        };
         if (! mode.equals("view")) {
-            colunas[4] = "Remover";
+            colunas[4] = Methods.getTranslation("Remover");
         } 
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
@@ -216,7 +228,7 @@ public class FazerPedido extends Templates.BaseFrame {
             
             Object[] data = {p.getId(),p.getNome(),p.getUnidade(),1,""};
             if (! mode.equals("view")) {
-                data[4] = "Remover";
+                data[4] = Methods.getTranslation("Remover");
             }
             tableModel.addRow(data);
         }
@@ -238,8 +250,8 @@ public class FazerPedido extends Templates.BaseFrame {
         });
         
         if(! mode.equals("view")) {
-            tabela.getColumn("Remover").setCellRenderer(new ButtonRenderer());
-            tabela.getColumn("Remover").setCellEditor(new ButtonEditor(new JCheckBox()){
+            tabela.getColumn(Methods.getTranslation("Remover")).setCellRenderer(new ButtonRenderer());
+            tabela.getColumn(Methods.getTranslation("Remover")).setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
                     //if (!addFornecedor.isEnabled()) return;
@@ -258,7 +270,7 @@ public class FazerPedido extends Templates.BaseFrame {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(bg);
                 self.dispose();
-                JOptionPane.showMessageDialog(null, "Pedido enviado com sucesso!");
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoEnviadoComSucesso"));
                 t.stop();
             }
         });
