@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -264,5 +265,11 @@ public class Methods {
                 comps[i].setEnabled(false);
             }
         }
+    }
+    
+    
+    public static String getTranslation(String text) {
+        ResourceBundle bundle = ResourceBundle.getBundle("sources/Bundle");
+        return bundle.getString(text);
     }
 }

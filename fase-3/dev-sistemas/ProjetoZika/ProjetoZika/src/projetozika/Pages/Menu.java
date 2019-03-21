@@ -5,6 +5,7 @@
  */
 package projetozika.Pages;
 
+import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
@@ -39,6 +40,17 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bSeusPedidos);
         Styles.menuButton(bPerfil);
         Styles.menuButton(bRelatorios);
+        
+        bDashboard.setText(Methods.getTranslation("Dashboard"));
+        bPedidos.setText(Methods.getTranslation("Pedidos"));
+        bFornecedores.setText(Methods.getTranslation("Fornecedores"));
+        bNotasFiscais.setText(Methods.getTranslation("NotasFiscais"));
+        bProdutos.setText(Methods.getTranslation("Produtos"));
+        bUsuarios.setText(Methods.getTranslation("Usuarios"));
+        bSeusPedidos.setText(Methods.getTranslation("SeusPedidos"));
+        bPerfil.setText(Methods.getTranslation("Perfil"));
+        bRelatorios.setText(Methods.getTranslation("Relatorios"));
+        logout.setText(Methods.getTranslation("Sair"));
     }
 
     /**
