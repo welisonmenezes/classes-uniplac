@@ -44,8 +44,8 @@ public class Pagination {
      * Gera os botões da aplicação, com seus respectivos eventos, e os insere na tela
      */
     private void makePagination() {
-        JButton next = new JButton("Next");
-        JButton prev = new JButton("Previous");
+        JButton next = new JButton(Methods.getTranslation("Proximo"));
+        JButton prev = new JButton(Methods.getTranslation("Anterior"));
         Styles.defaultButton(next);
         Styles.defaultButton(prev);
         

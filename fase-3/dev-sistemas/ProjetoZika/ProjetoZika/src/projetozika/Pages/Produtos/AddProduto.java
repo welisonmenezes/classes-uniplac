@@ -54,12 +54,12 @@ public class AddProduto extends Templates.BaseFrame {
     public AddProduto() {
         this.self = this;
         this.mode = "add";
-        initPage("Adicionar Produto");
+        initPage(Methods.getTranslation("AdicionarProduto"));
     }
     
     public AddProduto(JPanel panelCaller) {
         this.self = this;
-        initPage("Adicionar Produto pela Nota");
+        initPage(Methods.getTranslation("AdicionarProdutoPelaNota"));
         this.mode = "nota";
         this.panelCaller = panelCaller;
     }
@@ -68,10 +68,10 @@ public class AddProduto extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         if(this.mode.equals("view")){
-            initPage("Ver Produto");
+            initPage(Methods.getTranslation("VerProduto"));
             Methods.disabledFields(bg);
         } else if (this.mode.equals("edit")){
-            initPage("Editar Produto");
+            initPage(Methods.getTranslation("EditarProduto"));
         }
         
         fillFields(id);
@@ -99,7 +99,7 @@ public class AddProduto extends Templates.BaseFrame {
     private void fillFields(String id) {
         Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
         fnome.setText(p.getNome());
-        funidade.setSelectedItem("Unidade");
+        //funidade.setSelectedItem("Unidade");
         fdescricao.setText(p.getDescricao());
     }
     
@@ -108,7 +108,7 @@ public class AddProduto extends Templates.BaseFrame {
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
 
-        lnome = new JLabel("Nome");
+        lnome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lnome);
         bg.add(lnome, new AbsoluteConstraints(0, 0, -1, -1));
 
@@ -120,7 +120,7 @@ public class AddProduto extends Templates.BaseFrame {
         Styles.errorLabel(enome);
         bg.add(enome, new AbsoluteConstraints(0, 75, -1, -1));
         
-        lunidade = new JLabel("Unidade");
+        lunidade = new JLabel(Methods.getTranslation("Unidade"));
         Styles.defaultLabel(lunidade);
         bg.add(lunidade, new AbsoluteConstraints(220, 0, -1, -1));
 
@@ -133,7 +133,7 @@ public class AddProduto extends Templates.BaseFrame {
         Styles.errorLabel(eunidade);
         bg.add(eunidade, new AbsoluteConstraints(220, 75, -1, -1));
         
-        ldescricao = new JLabel("Descrição");
+        ldescricao = new JLabel(Methods.getTranslation("Descricao"));
         Styles.defaultLabel(ldescricao);
         bg.add(ldescricao, new AbsoluteConstraints(0, 90, -1, -1));
 
@@ -146,7 +146,7 @@ public class AddProduto extends Templates.BaseFrame {
         Styles.errorLabel(edescricao);
         bg.add(edescricao, new AbsoluteConstraints(0, 205, -1, -1));
         
-        bSave = new JButton("Salvar");
+        bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
@@ -157,13 +157,13 @@ public class AddProduto extends Templates.BaseFrame {
                     
                 if(fnome.getText().equals("") || funidade.getSelectedItem().equals("") || fdescricao.getText().equals("")){
                     if(fnome.getText().equals("")){
-                        enome.setText("Campo obrigatório");
+                        enome.setText(Methods.getTranslation("CampoObrigatorio"));
                     }
                     if(funidade.getSelectedItem().equals("")) {
-                        eunidade.setText("Campo obrigatório");
+                        eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
                     }
                     if(fdescricao.getText().equals("")) {
-                        edescricao.setText("Campo obrigatório");
+                        edescricao.setText(Methods.getTranslation("CampoObrigatorio"));
                     }
                 } else {
                     Dialogs.showLoadPopup(bg);
@@ -192,13 +192,21 @@ public class AddProduto extends Templates.BaseFrame {
                     tableModel.setValueAt(fnome.getText() , row, 1);
                     tableModel.setValueAt(funidade.getSelectedItem() , row, 2);
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Item editado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
 
                 } else if(mode.equals("add")) {
                     DefaultTableModel tableModel = Produtos.tableModel;
-                    tableModel.addRow(new Object[]{"5454",fnome.getText(),funidade.getSelectedItem(),"10/10/2000","Editar","Excluir","Ver"});
+                    tableModel.addRow(new Object[]{
+                        "5454",
+                        fnome.getText(),
+                        funidade.getSelectedItem(),
+                        "10/10/2000",
+                        Methods.getTranslation("Editar"),
+                        Methods.getTranslation("Excluir"),
+                        Methods.getTranslation("Ver")
+                    });
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, "Item adicionado com sucesso!");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                 } else if(mode.equals("nota")){
                     // TODO
                     self.dispose();
