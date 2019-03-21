@@ -7,6 +7,7 @@ package projetozika.Pages.Perfil;
 
 import Models.Usuario;
 import Templates.BaseLayout;
+import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.BorderLayout;
@@ -36,7 +37,7 @@ public class Perfil extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
-        addTopContent("Perfil");
+        addTopContent(Methods.getTranslation("Perfil"));
         addCenterContent();
         addBottomContent();
     }
@@ -57,19 +58,19 @@ public class Perfil extends Templates.BaseLayout {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
-        String[] colunas = {"", "Seus Dados"};
+        String[] colunas = {"", Methods.getTranslation("SeusDados")};
        // seta modelo
         Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
         Object[][] data = {
-            {"Cpf",u.getCpf()},
-            {"Nome", u.getNome()},
-            {"Email", u.getEmail()},
-            {"Celular", u.getCelular()},
-            {"Telefone", u.getTelefone()},
-            {"Setor", u.getSetor()},
-            {"Sexo", u.getSexo()},
-            {"Permissão", u.getPermissao()},
-            {"Data de Nascimento", u.getData()}
+            {Methods.getTranslation("CPF"),u.getCpf()},
+            {Methods.getTranslation("Nome"), u.getNome()},
+            {Methods.getTranslation("Email"), u.getEmail()},
+            {Methods.getTranslation("Celular"), u.getCelular()},
+            {Methods.getTranslation("Telefone"), u.getTelefone()},
+            {Methods.getTranslation("Setor"), u.getSetor()},
+            {Methods.getTranslation("Sexo"), u.getSexo()},
+            {Methods.getTranslation("Permissao"), u.getPermissao()},
+            {Methods.getTranslation("DataDeNascimento"), u.getData()}
         };
         tableModel = new DefaultTableModel(data, colunas) {
             @Override
@@ -88,7 +89,7 @@ public class Perfil extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     public void addBottomContent() {
-        btnEditar = new JButton("Editar Perfil");
+        btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
         Styles.defaultButton(btnEditar);
         pBottom.add(btnEditar);
         btnEditar.addActionListener(new ActionListener(){
