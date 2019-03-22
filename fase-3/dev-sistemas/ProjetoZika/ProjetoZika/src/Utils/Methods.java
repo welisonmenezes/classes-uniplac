@@ -179,6 +179,19 @@ public class Methods {
     }
     
     /**
+     * Retorna o valor de uma dada coluna da linha selecionda de um dado JTable
+     * 
+     * @param table o JTable cuja valor será retornado
+     * @param col o Index da coluna desejada
+     * @return o valor da primeira coluna da linha selecionada
+     */
+    public static String selectedTableItemValue(JTable table, int col) {
+        int row = table.getSelectedRow();
+        Object value = table.getValueAt(row, col);
+        return value.toString();
+    }
+    
+    /**
      * Remove a linha selecionada de um dado JTable
      * 
      * @param table o JTable cuja linha selecionada será removida
