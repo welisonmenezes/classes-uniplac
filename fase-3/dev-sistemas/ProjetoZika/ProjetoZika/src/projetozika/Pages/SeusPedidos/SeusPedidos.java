@@ -20,8 +20,10 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -31,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -41,8 +44,8 @@ import javax.swing.table.DefaultTableModel;
 public class SeusPedidos extends Templates.BaseLayout {
     
     private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+    private JTable tabela;
+    private DefaultTableModel tableModel;
     private JButton btnAddPedido;
     private JDateChooser fData;
     private JComboBox<String> fStatus;
@@ -55,14 +58,21 @@ public class SeusPedidos extends Templates.BaseLayout {
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public SeusPedidos() {
+    public SeusPedidos(Properties params) {
         super();
         self = this;
+        this.params = params;
+        
+        initPage();
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
         
-        pedidos = new ArrayList<Pedido>();
+        pedidos = new ArrayList<>();
         Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
         for (int i = 0; i < 15; i++) {
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
@@ -74,10 +84,19 @@ public class SeusPedidos extends Templates.BaseLayout {
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        updateParams();
+    }
+    
+    private void updateParams() {
+        String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params = new Properties();
+        params.setProperty("page", "1");
+        params.setProperty("data", date);
+        params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
+    private void addCenterContent() {
         makeTable();
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -190,8 +209,14 @@ public class SeusPedidos extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo
      */
-    public void addFilterContent() {
+    private void addFilterContent() {
         fData = new JDateChooser();
+        //*
+        try {
+            Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse("06/03/2019");
+            //fData.setDate(newDate);
+        } catch (ParseException ex) {}
+        //*/
         Styles.defaultDateChooser(fData);
         
         lData = new JLabel(Methods.getTranslation("Data"));
@@ -220,27 +245,24 @@ public class SeusPedidos extends Templates.BaseLayout {
         
 
         // click do buscar
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
         
         // click do add pedido
-        btnAddPedido.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("fazerPedido", params); 
-            }
+        btnAddPedido.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("fazerPedido", params);
         });
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
+    private void addBottomContent() {
         this.pagination(5);
     }
     
@@ -253,6 +275,9 @@ public class SeusPedidos extends Templates.BaseLayout {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
@@ -262,23 +287,20 @@ public class SeusPedidos extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                // apenas teste
-                for (int i = 0; i < pedidos.size(); i++) {
-                    Pedido p = pedidos.get(i);
-                    if (p.getCodigo() > 10) {
-                        pedidos.remove(p);
-                    }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            // apenas teste
+            for (int i = 0; i < pedidos.size(); i++) {
+                Pedido p = pedidos.get(i);
+                if (p.getCodigo() > 10) {
+                    pedidos.remove(p);
                 }
-                updateCenterContent();
-                pagination(3);
-                
-                t.stop();
             }
+            updateCenterContent();
+            pagination(3);
+            
+            t.stop();
         });
         t.start();
     }

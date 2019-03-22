@@ -130,12 +130,12 @@ public class Navigation {
                 break;
             case "verSeuPedido":
                 updateSatusMenu("seusPedidos");
-                tmpFrame = new FazerPedido(id, "view");
+                tmpFrame = new FazerPedido(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarSeuPedido":
                 updateSatusMenu("seusPedidos");
-                tmpFrame = new FazerPedido(id, "edit");
+                tmpFrame = new FazerPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             default:
@@ -210,11 +210,11 @@ public class Navigation {
                 break;
             case "seusPedidos":
                 updateSatusMenu("seusPedidos");
-                tmpPanel = new SeusPedidos();
+                tmpPanel = new SeusPedidos(params);
                 break;
             case "fazerPedido":
                 updateSatusMenu("seusPedidos");
-                tmpFrame = new FazerPedido();
+                tmpFrame = new FazerPedido(params);
                 tmpFrame.setVisible(true);
                 break;
             case "perfil":
