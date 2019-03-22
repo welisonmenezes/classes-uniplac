@@ -206,7 +206,7 @@ public class Navigation {
                 break;
             case "pedidos":
                 updateSatusMenu("pedidos");
-                tmpPanel = new Pedidos();
+                tmpPanel = new Pedidos(params);
                 break;
             case "seusPedidos":
                 updateSatusMenu("seusPedidos");

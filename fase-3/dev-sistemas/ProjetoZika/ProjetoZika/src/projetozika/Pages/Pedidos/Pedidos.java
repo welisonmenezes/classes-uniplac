@@ -39,9 +39,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Pedidos extends Templates.BaseLayout {
     
-    public static BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+    private BaseLayout self;
+    private JTable tabela;
+    private DefaultTableModel tableModel;
     private JDateChooser fData;
     private JTextField fNome;
     private JComboBox<String> fStatus;
@@ -55,22 +55,20 @@ public class Pedidos extends Templates.BaseLayout {
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public Pedidos() {
+    public Pedidos(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params; 
         initPage();
-    }
-    
-    public  Pedidos(ArrayList<Properties> params) {
-        
     }
     
     private void initPage() {
         initComponents();
         createBaseLayout();
         
-        pedidos = new ArrayList<Pedido>();
+        pedidos = new ArrayList<>();
         Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
         for (int i = 0; i < 15; i++) {
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
@@ -83,15 +81,16 @@ public class Pedidos extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
-        startParams();
+        params = new Properties();
+        updateParams();
     }
     
-    private void startParams() {
-        params = new Properties();
+    private void updateParams() {
+        String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
         params.setProperty("page", "1");
-        params.setProperty("nome", "");
-        params.setProperty("data", "");
-        params.setProperty("status", "");
+        params.setProperty("nome", fNome.getText());
+        params.setProperty("data", date);
+        params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
@@ -103,7 +102,7 @@ public class Pedidos extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
-    public void updateCenterContent() {
+    private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
     }
@@ -181,7 +180,7 @@ public class Pedidos extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo
      */
-    public void addFilterContent() {
+    private void addFilterContent() {
         
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
@@ -215,19 +214,19 @@ public class Pedidos extends Templates.BaseLayout {
         
 
         // click do buscar
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
+    private void addBottomContent() {
         this.pagination(5);
     }
     
@@ -236,7 +235,7 @@ public class Pedidos extends Templates.BaseLayout {
      * 
      * @param total o total de páginas
      */
-    public void pagination(int total) {
+    private void pagination(int total) {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
@@ -252,23 +251,20 @@ public class Pedidos extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                // reseta tabela
-                for (int i = 0; i < pedidos.size(); i++) {
-                    Pedido p = pedidos.get(i);
-                    if (p.getCodigo() > 10) {
-                        pedidos.remove(p);
-                    }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            // reseta tabela
+            for (int i = 0; i < pedidos.size(); i++) {
+                Pedido p = pedidos.get(i);
+                if (p.getCodigo() > 10) {
+                    pedidos.remove(p);
                 }
-                updateCenterContent();
-                pagination(3);
-                
-                t.stop();
             }
+            updateCenterContent();
+            pagination(3);
+            
+            t.stop();
         });
         t.start();
     }

@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -53,14 +55,13 @@ public class EntregarPedido extends Templates.BaseFrame {
     private JTextField fsenha;
     private JLabel esenha;
     private JButton btnConfirm;
-    
-   public EntregarPedido() {
-       this.self = this;
-   }
-    
+    private ArrayList<PedidoProduto> pedidosProdutos;
+    private final Properties params;
+   
     public EntregarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
+        this.params = params;
         
         initPage(Methods.getTranslation("ConfirmacaoDeRetirada"));
     }
@@ -70,6 +71,14 @@ public class EntregarPedido extends Templates.BaseFrame {
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
+        
+        pedidosProdutos = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
+            PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
+            pp.setId(i);
+            pedidosProdutos.add(pp);
+        }
         
         createBaseLayout();
         addTopContent(title);
@@ -84,7 +93,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         addCenterContent();
     }
     
-    public void addCenterContent() {
+    private void addCenterContent() {
         ptable = new JPanel();
         ptable.setLayout(new BorderLayout());
         ptable.setOpaque(false);
@@ -128,7 +137,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         Styles.defaultLabel(lsenha);
         pform.add(lsenha, new AbsoluteConstraints(100, 180, -1, -1));
 
-        fsenha = new JTextField();
+        fsenha = new JPasswordField();
         Styles.defaultField(fsenha);
         pform.add(fsenha, new AbsoluteConstraints(100, 220, -1, -1));
         
@@ -141,14 +150,9 @@ public class EntregarPedido extends Templates.BaseFrame {
         btnConfirm.setPreferredSize(new Dimension(200, 35));
         pform.add(btnConfirm, new AbsoluteConstraints(100, 290, -1, -1));
         
-        btnConfirm.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
-                Dialogs.showLoadPopup(pCenter);
-                timerTest();
-                
-            }
+        btnConfirm.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(pCenter);
+            timerTest();
         });
         
         pCenter.add(pform, BorderLayout.WEST);
@@ -164,7 +168,8 @@ public class EntregarPedido extends Templates.BaseFrame {
         tabela.setRowHeight(35);
         // seta colunas
         String[] colunas = {
-            Methods.getTranslation("Produto"), 
+            Methods.getTranslation("Produto"),
+            Methods.getTranslation("Unidade"),
             Methods.getTranslation("QuantidadeSolicitada"), 
             Methods.getTranslation("QuantidadeAprovada")
         };
@@ -176,12 +181,10 @@ public class EntregarPedido extends Templates.BaseFrame {
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Produto p = new Produto(212, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 5, "Pendente");
-            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada()};
+        pedidosProdutos.forEach(pp -> {
+            Object[] data = {pp.getProduto().getNome(),pp.getProduto().getUnidade(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
     }
@@ -189,14 +192,15 @@ public class EntregarPedido extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(pCenter);
-                self.dispose();
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("RetiradaRealizadaComSucesso"));
-                t.stop();
-            }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(pCenter);
+            self.dispose();
+            JOptionPane.showMessageDialog(null, Methods.getTranslation("RetiradaRealizadaComSucesso"));
+            
+            Navigation.updateLayout("", new Properties());
+            Navigation.updateLayout("pedidos", params);
+            
+            t.stop();
         });
         t.start();
     }
@@ -215,44 +219,6 @@ public class EntregarPedido extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EntregarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EntregarPedido().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

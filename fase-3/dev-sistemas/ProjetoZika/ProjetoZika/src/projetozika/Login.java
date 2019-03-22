@@ -127,7 +127,6 @@ public class Login extends javax.swing.JFrame {
         String login = flogin.getText();
         char[] password = fsenha.getPassword();
         String userPassword = "123456";
-        System.out.println(password);
         if (login.equals("welison") && Arrays.equals(password, userPassword.toCharArray())) {
             this.setVisible(false);
             JFrame main = new Main();

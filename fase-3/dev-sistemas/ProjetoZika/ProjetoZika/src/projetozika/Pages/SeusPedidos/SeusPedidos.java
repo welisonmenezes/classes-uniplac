@@ -84,12 +84,13 @@ public class SeusPedidos extends Templates.BaseLayout {
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        
+        params = new Properties();
         updateParams();
     }
     
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
-        params = new Properties();
         params.setProperty("page", "1");
         params.setProperty("data", date);
         params.setProperty("status", fStatus.getSelectedItem().toString());

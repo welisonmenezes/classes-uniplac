@@ -15,7 +15,6 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.DefaultCellEditor;
@@ -30,7 +29,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -42,24 +40,24 @@ public class EditarPedido extends Templates.BaseFrame {
     private final JFrame self;
     private String mode;
     private JPanel bg;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+    private JTable tabela;
+    private DefaultTableModel tableModel;
     private JLabel title;
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
     private JPanel paction;
     private ArrayList<PedidoProduto> pedidosProdutos;
-    private Properties params;
+    private final Properties params;
     
-   public EditarPedido() {
+   public EditarPedido(Properties params) {
        this.self = this;
+       this.params = params;
    }
     
     public EditarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
         this.params = params;
-        
         
         initPage(Methods.getTranslation("Pedido"));
     }
@@ -71,7 +69,7 @@ public class EditarPedido extends Templates.BaseFrame {
         Methods.setAccessibility(this);
         
         
-        pedidosProdutos = new ArrayList<PedidoProduto>();
+        pedidosProdutos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
             PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
@@ -93,7 +91,7 @@ public class EditarPedido extends Templates.BaseFrame {
         addBottomContent();
     }
     
-    public void addCenterContent() {
+    private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new BorderLayout());
         bg.setOpaque(false);
@@ -110,22 +108,19 @@ public class EditarPedido extends Templates.BaseFrame {
         pCenter.add(bg);
     }
     
-    public void addBottomContent() {
+    private void addBottomContent() {
         btnFinalizar = new JButton(Methods.getTranslation("FinalizarPedido"));
         Styles.defaultButton(btnFinalizar);
         
-        btnFinalizar.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO: finalizar pedido aqui
-                
-                pedidosProdutos.forEach(pp -> {
-                    System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade() + " " + pp.getStatus());
-                });
-                
-                Dialogs.showLoadPopup(bg);
-                timerTest();
-            }
+        btnFinalizar.addActionListener((ActionEvent e) -> {
+            // TODO: finalizar pedido aqui
+            
+            pedidosProdutos.forEach(pp -> {
+                System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade() + " " + pp.getStatus());
+            });
+            
+            Dialogs.showLoadPopup(bg);
+            timerTest();
         });
         
         paction = new JPanel();
@@ -154,7 +149,7 @@ public class EditarPedido extends Templates.BaseFrame {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 3 && column != 4){
+               if (column != 3 && column != 4){
                    return false;
                }
                return true;
@@ -182,26 +177,22 @@ public class EditarPedido extends Templates.BaseFrame {
         cstatus.removeItemAt(0);
         statusCol.setCellEditor(new DefaultCellEditor(cstatus));
         
-        tabela.getModel().addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                // TODO: editar produto do pedido
-                
-                if (!tabela.getSelectionModel().isSelectionEmpty()) {
-                    String newQtd = Methods.selectedTableItemValue(tabela, 3);
-                    String newStatus = Methods.selectedTableItemValue(tabela, 4);
-                    String idTable = Methods.selectedTableItemId(tabela);
-                    for (int i = 0; i < pedidosProdutos.size(); i++) {
-                        PedidoProduto pp = pedidosProdutos.get(i);
-                        int idModel = pp.getProduto().getId();
-                        if (idTable.equals(""+idModel)) {
-                            pp.setQuantidade(Integer.parseInt(newQtd));
-                            pp.setStatus(newStatus);
-                            break;
-                        }
+        tabela.getModel().addTableModelListener((TableModelEvent e) -> {
+            // TODO: editar produto do pedido
+            
+            if (!tabela.getSelectionModel().isSelectionEmpty()) {
+                String newQtd = Methods.selectedTableItemValue(tabela, 3);
+                String newStatus = Methods.selectedTableItemValue(tabela, 4);
+                String idTable = Methods.selectedTableItemId(tabela);
+                for (int i = 0; i < pedidosProdutos.size(); i++) {
+                    PedidoProduto pp = pedidosProdutos.get(i);
+                    int idModel = pp.getProduto().getId();
+                    if (idTable.equals(""+idModel)) {
+                        pp.setQuantidade(Integer.parseInt(newQtd));
+                        pp.setStatus(newStatus);
+                        break;
                     }
                 }
-                
             }
         });
     }
@@ -209,18 +200,15 @@ public class EditarPedido extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
-                self.dispose();
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
-                
-                Navigation.updateLayout("", new Properties());
-                Navigation.updateLayout("pedidos", params);
-                
-                t.stop();
-            }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(bg);
+            self.dispose();
+            JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+            
+            Navigation.updateLayout("", new Properties());
+            Navigation.updateLayout("pedidos", params);
+            
+            t.stop();
         });
         t.start();
     }
@@ -239,42 +227,6 @@ public class EditarPedido extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditarPedido.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditarPedido().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
