@@ -21,11 +21,13 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.Timer;
@@ -47,6 +49,7 @@ public class SeusPedidos extends Templates.BaseLayout {
     private JLabel lStatus;
     private JButton bSearch;
     private JScrollPane barraRolagem;
+    private ArrayList<Pedido> pedidos;
 
     /**
      * Cria a tela de fornecedores
@@ -56,6 +59,15 @@ public class SeusPedidos extends Templates.BaseLayout {
         self = this;
         initComponents();
         createBaseLayout();
+        
+        pedidos = new ArrayList<Pedido>();
+        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+        for (int i = 0; i < 15; i++) {
+            Pedido p = new Pedido("10/11/2019", "Pendente", u);
+            p.setCodigo(i);
+            pedidos.add(p);
+        }
+        
         addTopContent(Methods.getTranslation("SeusPedidos"));
         addCenterContent();
         addBottomContent();
@@ -65,9 +77,15 @@ public class SeusPedidos extends Templates.BaseLayout {
     // Adiciona conteúdo ao centro da area de conteúdo
     public void addCenterContent() {
         makeTable();
-        barraRolagem = new JScrollPane(tabela);
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -97,12 +115,10 @@ public class SeusPedidos extends Templates.BaseLayout {
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
+        pedidos.forEach(p -> {
             String btnEditar = Methods.getTranslation("Editar");
             String btnCancelar = Methods.getTranslation("Cancelar");
-            if ( i % 2 == 0 ) {
+            if ( p.getCodigo() % 2 == 0 ) {
                 btnEditar = "";
                 btnCancelar = "";
             } 
@@ -115,7 +131,7 @@ public class SeusPedidos extends Templates.BaseLayout {
                 Methods.getTranslation("Ver")
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -140,7 +156,21 @@ public class SeusPedidos extends Templates.BaseLayout {
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, 4);
                 if (!actionValue.equals("")) {
-                    Methods.removeSelectedTableRow(tabela, tableModel);
+                    
+                    int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
+                    if (opcion == 0) {
+                        
+                        String idTabel = Methods.selectedTableItemId(tabela);
+                        for (int i = 0; i < pedidos.size(); i++) {
+                            Pedido p = pedidos.get(i);
+                            if (idTabel.equals(""+p.getCodigo())) {
+                                pedidos.remove(p);
+                            }
+                        }
+                        updateCenterContent();
+                       JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                       
+                    }
                 }
             }
         });
@@ -193,7 +223,6 @@ public class SeusPedidos extends Templates.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.showLoadPopup(self);
                 timerTest();
-                pagination(3);
             }
         });
         
@@ -236,29 +265,14 @@ public class SeusPedidos extends Templates.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(self);
                 
-                // reseta tabela
-                tableModel.getDataVector().removeAllElements();
-                tableModel.fireTableDataChanged();
-                // adiciona novas linhas
-                for(int i = 0; i < 10; i++) {
-                    Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Pedido p = new Pedido("10/11/2019", "Pendente", u);
-                    String btnEditar = Methods.getTranslation("Editar");
-                    String btnCancelar = Methods.getTranslation("Cancelar");
-                    if ( i % 2 == 0 ) {
-                        btnEditar = "";
-                        btnCancelar = "";
-                    } 
-                    Object[] data = {
-                        p.getCodigo(),
-                        p.getData(),
-                        p.getStatus(),
-                        btnEditar,
-                        btnCancelar,
-                        Methods.getTranslation("Ver")
-                    };
-                    tableModel.addRow(data);
+                for (int i = 0; i < pedidos.size(); i++) {
+                    Pedido p = pedidos.get(i);
+                    if (p.getCodigo() > 10) {
+                        pedidos.remove(p);
+                    }
                 }
+                updateCenterContent();
+                pagination(3);
                 
                 t.stop();
             }
