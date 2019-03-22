@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -46,6 +47,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
     private JPanel paction;
+    private ArrayList<PedidoProduto> pedidosProdutos;
     
    public EditarPedido() {
        this.self = this;
@@ -63,6 +65,15 @@ public class EditarPedido extends Templates.BaseFrame {
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
+        
+        
+        pedidosProdutos = new ArrayList<PedidoProduto>();
+        for (int i = 0; i < 5; i++) {
+            Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
+            PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
+            pp.setId(i);
+            pedidosProdutos.add(pp);
+        }
         
         createBaseLayout();
         addTopContent(title);
@@ -103,6 +114,11 @@ public class EditarPedido extends Templates.BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: finalizar pedido aqui
+                
+                pedidosProdutos.forEach(pp -> {
+                    System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade() + " " + pp.getStatus());
+                });
+                
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
@@ -124,6 +140,7 @@ public class EditarPedido extends Templates.BaseFrame {
         tabela.setRowHeight(35);
         // seta colunas
         String[] colunas = {
+            Methods.getTranslation("Codigo"),
             Methods.getTranslation("Produto"), 
             Methods.getTranslation("QuantidadeSolicitada"), 
             Methods.getTranslation("QuantidadeAprovada"), 
@@ -133,30 +150,29 @@ public class EditarPedido extends Templates.BaseFrame {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 2 && column != 3){
+               if(column != 3 && column != 4){
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Produto p = new Produto(212, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 5,  "Pendente");
-            Object[] data = {pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
+        pedidosProdutos.forEach(pp -> {
+            Object[] data = {pp.getId(), pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
             tableModel.addRow(data);
-        }
+        });
+
         // inicializa
         tabela.setModel(tableModel);
         
-        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(2);
+        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
         JComboBox cquantidade = new JComboBox();
         for(int i = 1; i <= 5; i++) {
             cquantidade.addItem(i);
         }
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
         
-        TableColumn statusCol = tabela.getColumnModel().getColumn(3);
+        TableColumn statusCol = tabela.getColumnModel().getColumn(4);
         JComboBox cstatus = new JComboBox();
         cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
         cstatus.removeItemAt(0);
@@ -166,6 +182,22 @@ public class EditarPedido extends Templates.BaseFrame {
             @Override
             public void tableChanged(TableModelEvent e) {
                 // TODO: editar produto do pedido
+                
+                if (!tabela.getSelectionModel().isSelectionEmpty()) {
+                    String newQtd = Methods.selectedTableItemValue(tabela, 3);
+                    String newStatus = Methods.selectedTableItemValue(tabela, 4);
+                    String idTable = Methods.selectedTableItemId(tabela);
+                    for (int i = 0; i < pedidosProdutos.size(); i++) {
+                        PedidoProduto pp = pedidosProdutos.get(i);
+                        int idModel = pp.getProduto().getId();
+                        if (idTable.equals(""+idModel)) {
+                            pp.setQuantidade(Integer.parseInt(newQtd));
+                            pp.setStatus(newStatus);
+                            break;
+                        }
+                    }
+                }
+                
             }
         });
     }

@@ -265,6 +265,7 @@ public class SeusPedidos extends Templates.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.hideLoadPopup(self);
                 
+                // apenas teste
                 for (int i = 0; i < pedidos.size(); i++) {
                     Pedido p = pedidos.get(i);
                     if (p.getCodigo() > 10) {

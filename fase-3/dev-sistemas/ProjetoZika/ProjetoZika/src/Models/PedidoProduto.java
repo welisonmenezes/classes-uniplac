@@ -15,6 +15,7 @@ public class PedidoProduto {
     private int Quantidade;
     private int QuantidadeAprovada;
     private String Status;
+    private int PedidoId;
     
     public PedidoProduto() {}
     
@@ -64,6 +65,13 @@ public class PedidoProduto {
     public void setStatus(String Status) {
         this.Status = Status;
     }
-    
+
+    public int getPedidoId() {
+        return PedidoId;
+    }
+
+    public void setPedidoId(int PedidoId) {
+        this.PedidoId = PedidoId;
+    }
     
 }

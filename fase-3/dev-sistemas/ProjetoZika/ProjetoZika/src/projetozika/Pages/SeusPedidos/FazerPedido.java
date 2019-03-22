@@ -58,7 +58,7 @@ public class FazerPedido extends Templates.BaseFrame {
     private JLabel lproduto;
     private JButton btnAddProduto;
     private JPanel pSuggestions;
-    ArrayList<PedidoProduto> pedidoProdutos;
+    ArrayList<PedidoProduto> pedidosProdutos;
     private JLabel efinalizar;
     
    public FazerPedido() {
@@ -82,11 +82,11 @@ public class FazerPedido extends Templates.BaseFrame {
    
     private void initPage(String title) {
         
-        pedidoProdutos = new ArrayList<PedidoProduto>();
+        pedidosProdutos = new ArrayList<PedidoProduto>();
         for (int i = 0; i < 5; i++) {
             Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
             PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
-            pedidoProdutos.add(pp);
+            pedidosProdutos.add(pp);
         }
         
         initComponents();
@@ -167,7 +167,7 @@ public class FazerPedido extends Templates.BaseFrame {
                     if (!hasProduct(selectedProd.getId())) {
                         Produto p = new Produto(selectedProd.getId(), selectedProd.getDescription(), "Caixa", "Descrição Produto", "1/12/2009");
                         PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
-                        pedidoProdutos.add(pp);
+                        pedidosProdutos.add(pp);
                         updateCenterContent();
                     }
                 }
@@ -182,8 +182,8 @@ public class FazerPedido extends Templates.BaseFrame {
     }
     
     private boolean hasProduct(int id) {
-        for (int i = 0; i < pedidoProdutos.size(); i++) {
-            PedidoProduto pp = pedidoProdutos.get(i);
+        for (int i = 0; i < pedidosProdutos.size(); i++) {
+            PedidoProduto pp = pedidosProdutos.get(i);
             if (id == pp.getProduto().getId()) {
                 return true;
             }
@@ -199,8 +199,8 @@ public class FazerPedido extends Templates.BaseFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: finalizar pedido aqui
-                if (pedidoProdutos.size() > 0) {
-                    pedidoProdutos.forEach(pp -> {
+                if (pedidosProdutos.size() > 0) {
+                    pedidosProdutos.forEach(pp -> {
                         System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade());
                     });
                     Dialogs.showLoadPopup(bg);
@@ -257,7 +257,7 @@ public class FazerPedido extends Templates.BaseFrame {
             }
         };
         // adiciona linhas
-        pedidoProdutos.forEach(pp -> {
+        pedidosProdutos.forEach(pp -> {
             Object[] data = {pp.getProduto().getId(),pp.getProduto().getNome(),pp.getProduto().getUnidade(),pp.getQuantidade(),""};
             if (! mode.equals("view")) {
                 data[4] = Methods.getTranslation("Remover");
@@ -282,8 +282,8 @@ public class FazerPedido extends Templates.BaseFrame {
                 if (!tabela.getSelectionModel().isSelectionEmpty()) {
                     String newQtd = Methods.selectedTableItemValue(tabela, 3);
                     String idTable = Methods.selectedTableItemId(tabela);
-                    for (int i = 0; i < pedidoProdutos.size(); i++) {
-                        PedidoProduto pp = pedidoProdutos.get(i);
+                    for (int i = 0; i < pedidosProdutos.size(); i++) {
+                        PedidoProduto pp = pedidosProdutos.get(i);
                         int idModel = pp.getProduto().getId();
                         if (idTable.equals(""+idModel)) {
                             pp.setQuantidade(Integer.parseInt(newQtd));
@@ -301,11 +301,11 @@ public class FazerPedido extends Templates.BaseFrame {
                 @Override
                 public void buttonAction() {
                     String idTable = Methods.selectedTableItemId(tabela);
-                    for (int i = 0; i < pedidoProdutos.size(); i++) {
-                        PedidoProduto pp = pedidoProdutos.get(i);
+                    for (int i = 0; i < pedidosProdutos.size(); i++) {
+                        PedidoProduto pp = pedidosProdutos.get(i);
                         int idModel = pp.getProduto().getId();
                         if (idTable.equals(""+idModel)) {
-                            pedidoProdutos.remove(pp);
+                            pedidosProdutos.remove(pp);
                         }
                     }
                     updateCenterContent();
