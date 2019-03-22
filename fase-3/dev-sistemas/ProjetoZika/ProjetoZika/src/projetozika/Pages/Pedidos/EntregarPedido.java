@@ -16,7 +16,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.BorderFactory;
@@ -107,8 +106,6 @@ public class EntregarPedido extends Templates.BaseFrame {
         barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
         ptable.add(barraRolagem, BorderLayout.CENTER);
-        
-        
         
         pform = new JPanel();
         pform.setLayout(new AbsoluteLayout());

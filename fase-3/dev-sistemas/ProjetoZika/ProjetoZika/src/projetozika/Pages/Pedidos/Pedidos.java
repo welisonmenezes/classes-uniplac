@@ -19,7 +19,6 @@ import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
@@ -95,7 +94,6 @@ public class Pedidos extends Templates.BaseLayout {
     
     // Adiciona conteúdo ao centro da area de conteúdo
     private void addCenterContent() {
-        makeTable();
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
         updateCenterContent();
@@ -127,7 +125,7 @@ public class Pedidos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5){
+               if (column != 4 && column != 5) {
                    return false;
                }
                return true;

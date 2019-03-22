@@ -17,7 +17,7 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,8 +36,8 @@ import javax.swing.table.DefaultTableModel;
 public class Fornecedores extends Templates.BaseLayout {
     
     private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+    private JTable tabela;
+    private DefaultTableModel tableModel;
     private JButton addMore;
     private JTextField fCnpj;
     private JTextField fNome;
@@ -47,27 +47,58 @@ public class Fornecedores extends Templates.BaseLayout {
     private JLabel lTelefone;
     private JButton bSearch;
     private Properties params;
+    private ArrayList<Fornecedor> fornecedores;
+    private JScrollPane barraRolagem;
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public Fornecedores() {
+    public Fornecedores(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params;
+        
+        initPage();
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
+        
+        fornecedores = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+            fornecedores.add(f);
+        }
+        
         addTopContent(Methods.getTranslation("Fornecedores"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        
+        //params = new Properties();
+        updateParams();
+    }
+    
+    private void updateParams() {
+        params.setProperty("page", "1");
+        params.setProperty("nome", fNome.getText());
+        params.setProperty("cnpj", fCnpj.getText());
+        params.setProperty("telefone", fTelefone.getText());
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
-        makeTable();
-        JScrollPane barraRolagem = new JScrollPane(tabela);
+    private void addCenterContent() {
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -91,15 +122,14 @@ public class Fornecedores extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5 && column != 6){
+               if (column != 4 && column != 5 && column != 6) {
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+        fornecedores.forEach(f -> {
             Object[] data = {
                 f.getID(),
                 f.getNome(),
@@ -110,7 +140,7 @@ public class Fornecedores extends Templates.BaseLayout {
                 Methods.getTranslation("Ver")
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -131,8 +161,16 @@ public class Fornecedores extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    Methods.removeSelectedTableRow(tabela, tableModel);
-                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    //Methods.removeSelectedTableRow(tabela, tableModel);
+                    String idTabel = Methods.selectedTableItemId(tabela);
+                    for (int i = 0; i < fornecedores.size(); i++) {
+                        Fornecedor f = fornecedores.get(i);
+                        if (idTabel.equals(""+f.getID())) {
+                            fornecedores.remove(f);
+                        }
+                    }
+                    updateCenterContent();
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
         });
@@ -150,22 +188,25 @@ public class Fornecedores extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo
      */
-    public void addFilterContent() {
+    private void addFilterContent() {
         
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
+        fNome.setText(params.getProperty("nome", ""));
         
         lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fCnpj = new JTextField();
         Styles.defaultField(fCnpj, 150);
+        fCnpj.setText(params.getProperty("cnpj", ""));
         
         lCnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lCnpj, false);
         
         fTelefone = new JTextField();
         Styles.defaultField(fTelefone, 150);
+        fTelefone.setText(params.getProperty("telefone", ""));
         
         lTelefone = new JLabel(Methods.getTranslation("Telefone"));
         Styles.defaultLabel(lTelefone, false);
@@ -190,28 +231,24 @@ public class Fornecedores extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        addMore.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addFornecedor", params);
-            }
+        addMore.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("addFornecedor", params);
         });
         
         // click do buscar
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-                pagination(3);
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
+    private void addBottomContent() {
         this.pagination(5);
     }
     
@@ -220,10 +257,13 @@ public class Fornecedores extends Templates.BaseLayout {
      * 
      * @param total o total de páginas
      */
-    public void pagination(int total) {
+    private void pagination(int total) {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
@@ -233,31 +273,20 @@ public class Fornecedores extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                // reseta tabela
-                tableModel.getDataVector().removeAllElements();
-                tableModel.fireTableDataChanged();
-                // adiciona novas linhas
-                for(int i = 26; i < 35; i++) {
-                    Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-                    Object[] data = {
-                        f.getID(),
-                        f.getNome(),
-                        f.getCnpj(),
-                        f.getTelefone(),
-                        Methods.getTranslation("Editar"),
-                        Methods.getTranslation("Excluir"),
-                        Methods.getTranslation("Ver")
-                    };
-                    tableModel.addRow(data);
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            // reseta tabela
+            for (int i = 0; i < fornecedores.size(); i++) {
+                Fornecedor f = fornecedores.get(i);
+                if (f.getID()> 10) {
+                    fornecedores.remove(f);
                 }
-                
-                t.stop();
             }
+            updateCenterContent();
+            pagination(3);
+            
+            t.stop();
         });
         t.start();
     }

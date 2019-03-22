@@ -29,6 +29,8 @@ public class Menu extends javax.swing.JPanel {
         initComponents();
         this.main = main;
         
+        this.params = new Properties();
+        
         // Espaçamentos entre os elementos
         labelEspacoTopo.setPreferredSize(new Dimension(200, 45));
         labelEspacoLogout.setPreferredSize(new Dimension(200, 100));
@@ -195,47 +197,55 @@ public class Menu extends javax.swing.JPanel {
 
     private void bNotasFiscaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNotasFiscaisActionPerformed
         // TODO add your handling code here:
-        //if (!evt.getComponent().isEnabled()) return;
+        params.clear();
         Navigation.updateLayout("notasFiscais", params);
     }//GEN-LAST:event_bNotasFiscaisActionPerformed
 
     private void bFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFornecedoresActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("fornecedores", params);
     }//GEN-LAST:event_bFornecedoresActionPerformed
 
     private void bDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDashboardActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("dashboard", params);
     }//GEN-LAST:event_bDashboardActionPerformed
 
     private void bProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bProdutosActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("produtos", params);
     }//GEN-LAST:event_bProdutosActionPerformed
 
     private void bUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUsuariosActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("usuarios", params);
     }//GEN-LAST:event_bUsuariosActionPerformed
 
     private void bPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPedidosActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("pedidos", params);
     }//GEN-LAST:event_bPedidosActionPerformed
 
     private void bSeusPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSeusPedidosActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("seusPedidos", params);
     }//GEN-LAST:event_bSeusPedidosActionPerformed
 
     private void bPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPerfilActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("perfil", params);
     }//GEN-LAST:event_bPerfilActionPerformed
 
     private void bRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRelatoriosActionPerformed
         // TODO add your handling code here:
+        params.clear();
         Navigation.updateLayout("relatorios", params);
     }//GEN-LAST:event_bRelatoriosActionPerformed
 

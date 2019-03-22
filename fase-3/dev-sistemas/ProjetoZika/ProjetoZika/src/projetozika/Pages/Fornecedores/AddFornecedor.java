@@ -13,15 +13,14 @@ import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
@@ -45,36 +44,40 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JLabel ecnpj;
     private JButton bSave;
     private JPanel panelCaller;
+    private final Properties params;
     
    
-    public AddFornecedor() {
+    public AddFornecedor(Properties params) {
         this.self = this;
         this.mode = "add";
+        this.params = params;
         initPage(Methods.getTranslation("AdicionarFornecedor"));
     }
     
-    public AddFornecedor(JPanel panelCaller) {
+    public AddFornecedor(JPanel panelCaller, Properties params) {
         this.self = this;
-        initPage(Methods.getTranslation("AdicionarFornecedorPelaNota"));
         this.mode = "nota";
+        this.params = params;
         this.panelCaller = panelCaller;
+        initPage(Methods.getTranslation("AdicionarFornecedorPelaNota"));
     }
     
-    public AddFornecedor(String id, String mode) {
+    public AddFornecedor(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
-        if(this.mode.equals("view")){
-            initPage(Methods.getTranslation("VerFornecedor"));
-            Methods.disabledFields(bg);
-        } else if (this.mode.equals("edit")){
-            initPage(Methods.getTranslation("EditarFornecedor"));
+        this.params = params;
+        
+        switch (this.mode) {
+            case "view":
+                initPage(Methods.getTranslation("VerFornecedor"));
+                Methods.disabledFields(bg);
+                break;
+            case "edit":
+                initPage(Methods.getTranslation("EditarFornecedor"));
+                break;
         }
         
         fillFields(id);
-    }
-    
-    private void translation() {
-        
     }
     
     private void initPage(String title) {
@@ -103,7 +106,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         fcnpj.setText(f.getCnpj());
     }
     
-    public void addCenterContent() {
+    private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
@@ -185,33 +188,33 @@ public class AddFornecedor extends Templates.BaseFrame {
                 Dialogs.hideLoadPopup(bg);
                  
                 if (mode.equals("edit")) {
-                    JTable tabela = Fornecedores.tabela;
-                    DefaultTableModel tableModel = Fornecedores.tableModel;
-                    int row = tabela.getSelectedRow();
-                    tableModel.setValueAt(fname.getText() , row, 1);
-                    tableModel.setValueAt(fcnpj.getText() , row, 2);
-                    tableModel.setValueAt(ftel.getText() , row, 3);
+
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
 
                 } else if(mode.equals("add")) {
-                    DefaultTableModel tableModel = Fornecedores.tableModel;
-                    tableModel.addRow(new Object[]{
-                        "5454",
-                        fname.getText(),
-                        fcnpj.getText(),
-                        ftel.getText(),
-                        Methods.getTranslation("Editar"),
-                        Methods.getTranslation("Excluir"),
-                        Methods.getTranslation("Ver")
-                    });
+
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
+                    
                 } else if(mode.equals("nota")){
                     AddNotaFiscal.fcnpj.setText(fcnpj.getText());
                     self.dispose();
+                    
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notas", params);
+                    
                 } else {
                     self.dispose();
+                    
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
                 }
                 
                 
@@ -236,40 +239,6 @@ public class AddFornecedor extends Templates.BaseFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddFornecedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddFornecedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddFornecedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddFornecedor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddFornecedor().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

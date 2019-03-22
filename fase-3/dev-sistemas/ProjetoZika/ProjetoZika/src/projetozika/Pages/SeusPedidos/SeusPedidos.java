@@ -98,7 +98,6 @@ public class SeusPedidos extends Templates.BaseLayout {
     
     // Adiciona conteúdo ao centro da area de conteúdo
     private void addCenterContent() {
-        makeTable();
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
         updateCenterContent();

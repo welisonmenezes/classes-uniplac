@@ -75,12 +75,12 @@ public class Navigation {
         switch (pageName) {
             case "editarFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpFrame = new AddFornecedor(id, "edit");
+                tmpFrame = new AddFornecedor(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpFrame = new AddFornecedor(id, "view");
+                tmpFrame = new AddFornecedor(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarNotaFiscal":
@@ -160,11 +160,11 @@ public class Navigation {
                 break;
             case "fornecedores":
                 updateSatusMenu("fornecedores");
-                tmpPanel = new Fornecedores();
+                tmpPanel = new Fornecedores(params);
                 break;
             case "addFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpFrame = new AddFornecedor();
+                tmpFrame = new AddFornecedor(params);
                 tmpFrame.setVisible(true);
                 break;
             case "notasFiscais":
@@ -178,7 +178,7 @@ public class Navigation {
                 break;
             case "addFornecedorNota":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddFornecedor(tmpPanel);
+                tmpFrame = new AddFornecedor(tmpPanel, params);
                 tmpFrame.setVisible(true);
                 break;
             case "produtos":
