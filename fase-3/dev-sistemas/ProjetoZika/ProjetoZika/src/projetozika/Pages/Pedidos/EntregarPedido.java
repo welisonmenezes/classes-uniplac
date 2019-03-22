@@ -40,8 +40,8 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class EntregarPedido extends Templates.BaseFrame {
     private final JFrame self;
     private String mode;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+    private JTable tabela;
+    private DefaultTableModel tableModel;
     private JLabel title;
     private JScrollPane barraRolagem;
     private JPanel ptable;

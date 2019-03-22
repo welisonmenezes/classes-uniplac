@@ -169,7 +169,7 @@ public class Navigation {
                 break;
             case "notasFiscais":
                 updateSatusMenu("notasFiscais");
-                tmpPanel = new NotasFiscais();
+                tmpPanel = new NotasFiscais(params);
                 break;
             case "addNotaFiscal":
                 updateSatusMenu("notasFiscais");

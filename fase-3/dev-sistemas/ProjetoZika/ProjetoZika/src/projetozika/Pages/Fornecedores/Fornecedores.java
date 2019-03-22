@@ -157,12 +157,11 @@ public class Fornecedores extends Templates.BaseLayout {
         tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
+                String idTabel = Methods.selectedTableItemId(tabela);
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
                     //Methods.removeSelectedTableRow(tabela, tableModel);
-                    String idTabel = Methods.selectedTableItemId(tabela);
                     for (int i = 0; i < fornecedores.size(); i++) {
                         Fornecedor f = fornecedores.get(i);
                         if (idTabel.equals(""+f.getID())) {

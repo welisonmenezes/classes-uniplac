@@ -270,7 +270,7 @@ public class SeusPedidos extends Templates.BaseLayout {
      * 
      * @param total o total de páginas
      */
-    public void pagination(int total) {
+    private void pagination(int total) {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
