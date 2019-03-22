@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -45,6 +46,7 @@ public class NotasFiscais extends Templates.BaseLayout {
     private JLabel ldata;
     private JLabel lcnpj;
     private JButton bSearch;
+    private Properties params;
     
     /**
      * Creates new form NotasFiscais
@@ -106,7 +108,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarNotaFiscal", id);
+                Navigation.updateLayout("editarNotaFiscal", id, params);
             }
         });
         
@@ -129,7 +131,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verNotaFiscal", id);
+                Navigation.updateLayout("verNotaFiscal", id, params);
             }
         });
         
@@ -171,7 +173,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         addMore.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addNotaFiscal");
+                Navigation.updateLayout("addNotaFiscal", params);
             }
         });
         

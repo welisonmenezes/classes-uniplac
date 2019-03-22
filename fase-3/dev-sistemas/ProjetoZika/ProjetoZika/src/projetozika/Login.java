@@ -8,6 +8,8 @@ package projetozika;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
+import java.util.Arrays;
+import java.util.Properties;
 import javax.swing.JFrame;
 
 /**
@@ -16,6 +18,8 @@ import javax.swing.JFrame;
  * @author Welison
  */
 public class Login extends javax.swing.JFrame {
+    
+    private Properties params;
 
     /**
      * Creates new form Login
@@ -121,13 +125,15 @@ public class Login extends javax.swing.JFrame {
         // login
         //lInfo.setText("Login ou senha inválidos");
         String login = flogin.getText();
-        String password = fsenha.getText();
-        if (login.equals("welison") && password.equals("123456")) {
+        char[] password = fsenha.getPassword();
+        String userPassword = "123456";
+        System.out.println(password);
+        if (login.equals("welison") && Arrays.equals(password, userPassword.toCharArray())) {
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
-            Navigation.updateLayout("");
-            Navigation.updateLayout("dashboard");
+            Navigation.updateLayout("", params);
+            Navigation.updateLayout("dashboard", params);
         } else {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }

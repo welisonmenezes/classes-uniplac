@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,7 +58,7 @@ public class EntregarPedido extends Templates.BaseFrame {
        this.self = this;
    }
     
-    public EntregarPedido(String id, String mode) {
+    public EntregarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
         

@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -51,6 +52,7 @@ public class Produtos extends Templates.BaseLayout {
     private JButton bSearch;
     private JScrollPane barraRolagem;
     private JLabel hideL;
+    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -123,7 +125,7 @@ public class Produtos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarProduto", id);
+                Navigation.updateLayout("editarProduto", id, params);
             }
         });
         
@@ -146,7 +148,7 @@ public class Produtos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verProduto", id);
+                Navigation.updateLayout("verProduto", id, params);
             }
         });
     }
@@ -198,7 +200,7 @@ public class Produtos extends Templates.BaseLayout {
         addMore.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addProduto");
+                Navigation.updateLayout("addProduto", params);
             }
         });
         

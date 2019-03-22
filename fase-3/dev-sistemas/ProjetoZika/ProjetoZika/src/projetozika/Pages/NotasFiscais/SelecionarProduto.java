@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -49,6 +50,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private JButton selProd;
     private JPanel pSuggestions;
     private JComboBox cnome;
+    private Properties params;
 
     /**
      * Creates new form SelecionarProduto
@@ -90,7 +92,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         addProduto.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (!addProduto.isEnabled()) return;
-                Navigation.updateLayout("addProdutoNota");
+                Navigation.updateLayout("addProdutoNota", params);
             }
         });
         

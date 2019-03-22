@@ -18,6 +18,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -45,6 +46,7 @@ public class Fornecedores extends Templates.BaseLayout {
     private JLabel lCnpj;
     private JLabel lTelefone;
     private JButton bSearch;
+    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -117,7 +119,7 @@ public class Fornecedores extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarFornecedor", id);
+                Navigation.updateLayout("editarFornecedor", id, params);
             }
         });
         
@@ -140,7 +142,7 @@ public class Fornecedores extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verFornecedor", id);
+                Navigation.updateLayout("verFornecedor", id, params);
             }
         });
     }
@@ -191,7 +193,7 @@ public class Fornecedores extends Templates.BaseLayout {
         addMore.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addFornecedor");
+                Navigation.updateLayout("addFornecedor", params);
             }
         });
         

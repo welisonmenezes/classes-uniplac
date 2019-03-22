@@ -13,6 +13,7 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +29,7 @@ public class Perfil extends Templates.BaseLayout {
     public static JTable tabela;
     public static DefaultTableModel tableModel;
     private JButton btnEditar;
+    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -99,7 +101,7 @@ public class Perfil extends Templates.BaseLayout {
         btnEditar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("editarPerfil", "11");
+                Navigation.updateLayout("editarPerfil", "11", params);
             }
         });
     }

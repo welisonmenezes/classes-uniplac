@@ -8,6 +8,7 @@ package Utils;
 import static Utils.Methods.getJBody;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -68,7 +69,7 @@ public class Navigation {
      * @param pageName o nome do modulo desejado
      * @param id o id para consulta ao banco de dados
      */
-    public static void updateLayout(String pageName, String id) {
+    public static void updateLayout(String pageName, String id, Properties params) {
         if (currentPage.equals(pageName)) return;
         resetLayout(pageName);
         switch (pageName) {
@@ -119,12 +120,12 @@ public class Navigation {
                 break;
             case "editarPedido":
                 updateSatusMenu("pedidos");
-                tmpFrame = new EditarPedido(id, "edit");
+                tmpFrame = new EditarPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "entregarPedido":
                 updateSatusMenu("pedidos");
-                tmpFrame = new EntregarPedido(id, "edit");
+                tmpFrame = new EntregarPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verSeuPedido":
@@ -149,7 +150,7 @@ public class Navigation {
      * 
      * @param pageName o nome do modulo desejado
      */
-    public static void updateLayout(String pageName) {
+    public static void updateLayout(String pageName, Properties params) {
         if (currentPage.equals(pageName)) return;
         resetLayout(pageName);
         switch (pageName) {

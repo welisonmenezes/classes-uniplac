@@ -19,6 +19,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -50,6 +51,7 @@ public class Usuarios extends Templates.BaseLayout {
     private JButton bSearch;
     private JScrollPane barraRolagem;
     private JLabel hideL;
+    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -124,7 +126,7 @@ public class Usuarios extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarUsuario", id);
+                Navigation.updateLayout("editarUsuario", id, params);
             }
         });
         
@@ -147,7 +149,7 @@ public class Usuarios extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verUsuario", id);
+                Navigation.updateLayout("verUsuario", id, params);
             }
         });
     }
@@ -206,7 +208,7 @@ public class Usuarios extends Templates.BaseLayout {
         addMore.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addUsuario");
+                Navigation.updateLayout("addUsuario", params);
             }
         });
         

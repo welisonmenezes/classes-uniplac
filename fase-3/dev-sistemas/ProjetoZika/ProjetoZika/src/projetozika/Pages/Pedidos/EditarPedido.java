@@ -17,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -48,14 +49,17 @@ public class EditarPedido extends Templates.BaseFrame {
     private JButton btnFinalizar;
     private JPanel paction;
     private ArrayList<PedidoProduto> pedidosProdutos;
+    private Properties params;
     
    public EditarPedido() {
        this.self = this;
    }
     
-    public EditarPedido(String id, String mode) {
+    public EditarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
+        this.params = params;
+        
         
         initPage(Methods.getTranslation("Pedido"));
     }
@@ -211,6 +215,10 @@ public class EditarPedido extends Templates.BaseFrame {
                 Dialogs.hideLoadPopup(bg);
                 self.dispose();
                 JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                
+                Navigation.updateLayout("", new Properties());
+                Navigation.updateLayout("pedidos", params);
+                
                 t.stop();
             }
         });

@@ -20,6 +20,8 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -37,7 +39,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Pedidos extends Templates.BaseLayout {
     
-    private BaseLayout self;
+    public static BaseLayout self;
     public static JTable tabela;
     public static DefaultTableModel tableModel;
     private JDateChooser fData;
@@ -48,6 +50,8 @@ public class Pedidos extends Templates.BaseLayout {
     private JLabel lStatus;
     private JButton bSearch;
     private JScrollPane barraRolagem;
+    private ArrayList<Pedido> pedidos;
+    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -55,20 +59,53 @@ public class Pedidos extends Templates.BaseLayout {
     public Pedidos() {
         super();
         self = this;
+        initPage();
+    }
+    
+    public  Pedidos(ArrayList<Properties> params) {
+        
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
+        
+        pedidos = new ArrayList<Pedido>();
+        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+        for (int i = 0; i < 15; i++) {
+            Pedido p = new Pedido("10/11/2019", "Pendente", u);
+            p.setCodigo(i);
+            pedidos.add(p);
+        }
+        
         addTopContent(Methods.getTranslation("Pedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        
+        startParams();
+    }
+    
+    private void startParams() {
+        params = new Properties();
+        params.setProperty("page", "1");
+        params.setProperty("nome", "");
+        params.setProperty("data", "");
+        params.setProperty("status", "");
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
+    private void addCenterContent() {
         makeTable();
-        barraRolagem = new JScrollPane(tabela);
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    public void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -98,15 +135,13 @@ public class Pedidos extends Templates.BaseLayout {
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
+        pedidos.forEach(p -> {
             String btnValue = Methods.getTranslation("Entregar");
-            if ( i % 2 == 0 ) {
+            if ( p.getCodigo() % 2 == 0 ) {
                 btnValue = "";
             } 
             Object[] data = {
-                p.getCodigo(), 
+                p.getCodigo(),
                 p.getSolicitante().getNome(),
                 p.getData(),
                 p.getStatus(),
@@ -114,7 +149,7 @@ public class Pedidos extends Templates.BaseLayout {
                 btnValue
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -128,7 +163,7 @@ public class Pedidos extends Templates.BaseLayout {
                 String actionValue = (String)tabela.getModel().getValueAt(row, col);
                 if (!actionValue.equals("")) {
                     // TODO : tela de finalizar
-                    Navigation.updateLayout("entregarPedido", id);
+                    Navigation.updateLayout("entregarPedido", id, params);
                 }
             }
         });
@@ -138,7 +173,7 @@ public class Pedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarPedido", id);
+                Navigation.updateLayout("editarPedido", id, params);
             }
         });
     }
@@ -185,7 +220,6 @@ public class Pedidos extends Templates.BaseLayout {
             public void actionPerformed(ActionEvent e) {
                 Dialogs.showLoadPopup(self);
                 timerTest();
-                pagination(3);
             }
         });
     }
@@ -206,6 +240,9 @@ public class Pedidos extends Templates.BaseLayout {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
@@ -221,26 +258,14 @@ public class Pedidos extends Templates.BaseLayout {
                 Dialogs.hideLoadPopup(self);
                 
                 // reseta tabela
-                tableModel.getDataVector().removeAllElements();
-                tableModel.fireTableDataChanged();
-                // adiciona novas linhas
-                for(int i = 0; i < 8; i++) {
-                    Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Pedido p = new Pedido("10/11/2019", "Pendente", u);
-                    String btnValue = Methods.getTranslation("Finalizar");
-                    if ( i % 2 == 0 ) {
-                        btnValue = "";
-                    } 
-                    Object[] data = {
-                        p.getCodigo(), 
-                        p.getSolicitante().getNome(),
-                        p.getData(),
-                        p.getStatus(),
-                        Methods.getTranslation("Ver/Editar"), 
-                        btnValue
-                    };
-                    tableModel.addRow(data);
+                for (int i = 0; i < pedidos.size(); i++) {
+                    Pedido p = pedidos.get(i);
+                    if (p.getCodigo() > 10) {
+                        pedidos.remove(p);
+                    }
                 }
+                updateCenterContent();
+                pagination(3);
                 
                 t.stop();
             }

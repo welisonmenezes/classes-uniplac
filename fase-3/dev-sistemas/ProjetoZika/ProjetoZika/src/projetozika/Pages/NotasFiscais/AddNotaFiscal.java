@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -43,6 +44,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private String mode;
     private JScrollPane bgScroll;
     private JPanel bg;
+    private Properties params;
     private JLabel lnumero;
     private JTextField fnumero;
     private JLabel  enumero;
@@ -166,7 +168,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         addFornecedor.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (!addFornecedor.isEnabled()) return;
-                Navigation.updateLayout("addFornecedorNota");
+                Navigation.updateLayout("addFornecedorNota", params);
             }
         });
         

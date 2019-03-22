@@ -21,7 +21,7 @@ import javax.swing.JPanel;
  */
 public class Pagination {
     
-    private int page;
+    public int page;
     private JPanel context;
     private int total;
     

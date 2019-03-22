@@ -22,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -50,6 +51,7 @@ public class SeusPedidos extends Templates.BaseLayout {
     private JButton bSearch;
     private JScrollPane barraRolagem;
     private ArrayList<Pedido> pedidos;
+    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -143,7 +145,7 @@ public class SeusPedidos extends Templates.BaseLayout {
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, 4);
                 if (!actionValue.equals("")) {
-                    Navigation.updateLayout("editarSeuPedido", id);
+                    Navigation.updateLayout("editarSeuPedido", id, params);
                 }
             }
         });
@@ -180,7 +182,7 @@ public class SeusPedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verSeuPedido", id);
+                Navigation.updateLayout("verSeuPedido", id, params);
             }
         });
     }
@@ -230,7 +232,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         btnAddPedido.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("fazerPedido"); 
+                Navigation.updateLayout("fazerPedido", params); 
             }
         });
     }
