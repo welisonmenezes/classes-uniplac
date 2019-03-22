@@ -26,7 +26,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -43,8 +42,6 @@ import javax.swing.table.TableColumn;
  * @author Welison
  */
 public class FazerPedido extends Templates.BaseFrame {
-    private final JFrame self;
-    private final String mode;
     private JPanel bg;
     private JTable tabela;
     private DefaultTableModel tableModel;
@@ -58,7 +55,6 @@ public class FazerPedido extends Templates.BaseFrame {
     private JPanel pSuggestions;
     private ArrayList<PedidoProduto> pedidosProdutos;
     private JLabel efinalizar;
-    private final Properties params;
     
    public FazerPedido(Properties params) {
        this.self = this;

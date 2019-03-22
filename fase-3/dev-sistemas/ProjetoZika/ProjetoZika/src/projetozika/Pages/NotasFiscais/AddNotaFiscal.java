@@ -21,10 +21,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,12 +37,8 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * @author Welison
  */
 public class AddNotaFiscal extends Templates.BaseFrame {
-    
-    private final JFrame self;
-    private String mode;
     private JScrollPane bgScroll;
     private JPanel bg;
-    private Properties params;
     private JLabel lnumero;
     private JTextField fnumero;
     private JLabel  enumero;
@@ -63,7 +57,6 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JButton bSave;
     private JScrollPane scrollList;
     private JLabel addFornecedor;
-    
     private JPanel panelAddProduto;
     private JPanel panelListarProdutos;
     private JPanel pSuggestions;

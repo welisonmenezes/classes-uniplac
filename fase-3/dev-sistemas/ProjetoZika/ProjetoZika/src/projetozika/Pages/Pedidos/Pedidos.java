@@ -40,10 +40,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Welison
  */
 public class Pedidos extends Templates.BaseLayout {
-    
-    private BaseLayout self;
-    private JTable tabela;
-    private DefaultTableModel tableModel;
+
     private JDateChooser fData;
     private JTextField fNome;
     private JComboBox<String> fStatus;
@@ -51,9 +48,7 @@ public class Pedidos extends Templates.BaseLayout {
     private JLabel lData;
     private JLabel lStatus;
     private JButton bSearch;
-    private JScrollPane barraRolagem;
     private ArrayList<Pedido> pedidos;
-    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -83,7 +78,6 @@ public class Pedidos extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
-        params = new Properties();
         updateParams();
     }
     

@@ -22,8 +22,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ListarProdutos extends javax.swing.JPanel {
     
-    public static DefaultTableModel tableModel;
-    public static JTable tabela;
+    private DefaultTableModel tableModel;
+    private JTable tabela;
     private String mode;
 
     /**

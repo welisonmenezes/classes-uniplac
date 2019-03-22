@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -30,8 +29,6 @@ import projetozika.Pages.NotasFiscais.AddNotaFiscal;
  * @author Welison
  */
 public class AddFornecedor extends Templates.BaseFrame {
-    private final JFrame self;
-    private String mode;
     private JPanel bg;
     private JTextField fname;
     private JLabel lname;
@@ -44,7 +41,6 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JLabel ecnpj;
     private JButton bSave;
     private JPanel panelCaller;
-    private final Properties params;
     
    
     public AddFornecedor(Properties params) {

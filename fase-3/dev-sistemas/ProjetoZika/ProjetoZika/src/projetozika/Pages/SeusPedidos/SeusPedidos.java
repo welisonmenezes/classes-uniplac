@@ -42,19 +42,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Welison
  */
 public class SeusPedidos extends Templates.BaseLayout {
-    
-    private BaseLayout self;
-    private JTable tabela;
-    private DefaultTableModel tableModel;
+
     private JButton btnAddPedido;
     private JDateChooser fData;
     private JComboBox<String> fStatus;
     private JLabel lData;
     private JLabel lStatus;
     private JButton bSearch;
-    private JScrollPane barraRolagem;
     private ArrayList<Pedido> pedidos;
-    private Properties params;
 
     /**
      * Cria a tela de fornecedores
@@ -85,7 +80,6 @@ public class SeusPedidos extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
-        params = new Properties();
         updateParams();
     }
     

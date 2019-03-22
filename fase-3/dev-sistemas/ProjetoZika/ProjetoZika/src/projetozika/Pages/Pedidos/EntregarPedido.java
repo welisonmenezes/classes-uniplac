@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,8 +37,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * @author Welison
  */
 public class EntregarPedido extends Templates.BaseFrame {
-    private final JFrame self;
-    private String mode;
+
     private JTable tabela;
     private DefaultTableModel tableModel;
     private JLabel title;
@@ -55,7 +53,6 @@ public class EntregarPedido extends Templates.BaseFrame {
     private JLabel esenha;
     private JButton btnConfirm;
     private ArrayList<PedidoProduto> pedidosProdutos;
-    private final Properties params;
    
     public EntregarPedido(String id, String mode, Properties params) {
         this.self = this;

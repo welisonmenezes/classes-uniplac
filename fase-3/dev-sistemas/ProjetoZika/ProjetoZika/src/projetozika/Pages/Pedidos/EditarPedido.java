@@ -21,7 +21,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -37,8 +36,6 @@ import javax.swing.table.TableColumn;
  * @author Welison
  */
 public class EditarPedido extends Templates.BaseFrame {
-    private final JFrame self;
-    private String mode;
     private JPanel bg;
     private JTable tabela;
     private DefaultTableModel tableModel;
@@ -47,7 +44,6 @@ public class EditarPedido extends Templates.BaseFrame {
     private JButton btnFinalizar;
     private JPanel paction;
     private ArrayList<PedidoProduto> pedidosProdutos;
-    private final Properties params;
     
    public EditarPedido(Properties params) {
        this.self = this;

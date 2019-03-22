@@ -35,9 +35,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Fornecedores extends Templates.BaseLayout {
     
-    private BaseLayout self;
-    private JTable tabela;
-    private DefaultTableModel tableModel;
     private JButton addMore;
     private JTextField fCnpj;
     private JTextField fNome;
@@ -46,9 +43,7 @@ public class Fornecedores extends Templates.BaseLayout {
     private JLabel lCnpj;
     private JLabel lTelefone;
     private JButton bSearch;
-    private Properties params;
     private ArrayList<Fornecedor> fornecedores;
-    private JScrollPane barraRolagem;
 
     /**
      * Cria a tela de fornecedores
@@ -77,7 +72,6 @@ public class Fornecedores extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
-        //params = new Properties();
         updateParams();
     }
     

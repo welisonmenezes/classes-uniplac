@@ -3,9 +3,13 @@ package Templates;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,12 +19,17 @@ import javax.swing.JPanel;
  * @author Welison
  */
 public class BaseLayout extends javax.swing.JPanel {
-    public JPanel pTop;
-    public JPanel pCenter;
-    public JPanel pFilter;
-    public JPanel pBottom;
+    protected JPanel pTop;
+    protected JPanel pCenter;
+    protected JPanel pFilter;
+    protected JPanel pBottom;
+    protected BaseLayout self;
+    protected Properties params;
+    protected JTable tabela;
+    protected DefaultTableModel tableModel;
+    protected JScrollPane barraRolagem;
     
-    public BaseLayout() {
+    protected BaseLayout() {
         pTop = new JPanel();
         pCenter = new JPanel();
         pFilter = new JPanel();
@@ -36,7 +45,7 @@ public class BaseLayout extends javax.swing.JPanel {
      * 
      * @param title o título da pagina adicionado no topo do grid
      */
-    public void addTopContent(String title) {
+    protected void addTopContent(String title) {
         JLabel label = new JLabel();
         label.setFont(new java.awt.Font("Tahoma", 1, 24));
         label.setForeground(new java.awt.Color(255, 255, 255));
@@ -47,7 +56,7 @@ public class BaseLayout extends javax.swing.JPanel {
     /**
      * Adiciona os paineis aos seus respectivos lugares no border layout
      */
-    public void createBaseLayout() {
+    protected void createBaseLayout() {
         
         // topo do grid
         this.pTop.setLayout(new FlowLayout(FlowLayout.LEFT));
