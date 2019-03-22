@@ -173,7 +173,7 @@ public class EditarPedido extends Templates.BaseFrame {
         
         TableColumn statusCol = tabela.getColumnModel().getColumn(4);
         JComboBox cstatus = new JComboBox();
-        cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
+        cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS));
         cstatus.removeItemAt(0);
         statusCol.setCellEditor(new DefaultCellEditor(cstatus));
         

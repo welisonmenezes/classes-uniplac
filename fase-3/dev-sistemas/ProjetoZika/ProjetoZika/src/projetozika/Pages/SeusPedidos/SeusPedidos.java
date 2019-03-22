@@ -211,20 +211,19 @@ public class SeusPedidos extends Templates.BaseLayout {
      */
     private void addFilterContent() {
         fData = new JDateChooser();
-        //*
-        try {
-            Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse("06/03/2019");
-            //fData.setDate(newDate);
-        } catch (ParseException ex) {}
-        //*/
         Styles.defaultDateChooser(fData);
+        try {
+            Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse(params.getProperty("data", ""));
+            fData.setDate(newDate);
+        } catch (ParseException ex) {}
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);
         
         fStatus = new JComboBox();
-        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
+        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS));
         Styles.defaultComboBox(fStatus);
+        fStatus.setSelectedItem(params.getProperty("status", ""));
         
         lStatus = new JLabel(Methods.getTranslation("Status"));
         Styles.defaultLabel(lStatus, false);

@@ -172,7 +172,7 @@ public class Usuarios extends Templates.BaseLayout {
         Styles.defaultLabel(lEmail, false);
         
         fSetor = new JComboBox();
-        fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES.toArray()));
+        fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES));
         /* example
         fSetor.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {

@@ -165,7 +165,7 @@ public class Produtos extends Templates.BaseLayout {
         Styles.defaultLabel(lNome, false);
         
         funidade = new JComboBox();
-        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES.toArray()));
+        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES));
         Styles.defaultComboBox(funidade);
         
         lUnidade = new JLabel(Methods.getTranslation("Unidade"));

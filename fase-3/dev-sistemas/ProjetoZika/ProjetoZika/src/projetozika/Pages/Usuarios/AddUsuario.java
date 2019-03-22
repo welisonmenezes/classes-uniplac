@@ -233,7 +233,7 @@ public class AddUsuario extends Templates.BaseFrame {
         bg.add(lsetor, new AbsoluteConstraints(220, 180, -1, -1));
 
         fsetor = new JComboBox();
-        fsetor.setModel(new DefaultComboBoxModel(Environment.SETORES.toArray()));
+        fsetor.setModel(new DefaultComboBoxModel(Environment.SETORES));
         Styles.defaultComboBox(fsetor, 200, 39);
         bg.add(fsetor, new AbsoluteConstraints(220, 220, -1, -1));
         
@@ -246,7 +246,7 @@ public class AddUsuario extends Templates.BaseFrame {
         bg.add(lpermissao, new AbsoluteConstraints(440, 180, -1, -1));
 
         fpermissao = new JComboBox();
-        fpermissao.setModel(new DefaultComboBoxModel(Environment.PERMISSOES.toArray()));
+        fpermissao.setModel(new DefaultComboBoxModel(Environment.PERMISSOES));
         Styles.defaultComboBox(fpermissao, 200, 39);
         bg.add(fpermissao, new AbsoluteConstraints(440, 220, -1, -1));
         

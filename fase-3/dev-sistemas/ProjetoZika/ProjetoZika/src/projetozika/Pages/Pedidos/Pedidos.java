@@ -19,7 +19,10 @@ import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -182,19 +185,25 @@ public class Pedidos extends Templates.BaseLayout {
         
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
+        fNome.setText(params.getProperty("nome", ""));
         
         lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
+        try {
+            Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse(params.getProperty("data", ""));
+            fData.setDate(newDate);
+        } catch (ParseException ex) {}
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);
         
         fStatus = new JComboBox();
-        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
+        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS));
         Styles.defaultComboBox(fStatus);
+        fStatus.setSelectedItem(params.getProperty("status", ""));
         
         lStatus = new JLabel(Methods.getTranslation("Status"));
         Styles.defaultLabel(lStatus, false);

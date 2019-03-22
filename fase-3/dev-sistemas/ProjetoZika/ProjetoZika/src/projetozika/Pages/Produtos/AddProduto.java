@@ -125,7 +125,7 @@ public class AddProduto extends Templates.BaseFrame {
         bg.add(lunidade, new AbsoluteConstraints(220, 0, -1, -1));
 
         funidade = new JComboBox();
-        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES.toArray()));
+        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES));
         Styles.defaultComboBox(funidade, 200, 39);
         bg.add(funidade, new AbsoluteConstraints(220, 40, -1, -1));
         
