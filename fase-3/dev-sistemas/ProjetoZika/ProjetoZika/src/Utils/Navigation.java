@@ -156,7 +156,7 @@ public class Navigation {
         switch (pageName) {
             case "dashboard":
                 updateSatusMenu("dashboard");
-                tmpPanel = new Dashboard();
+                tmpPanel = new Dashboard(params);
                 break;
             case "fornecedores":
                 updateSatusMenu("fornecedores");
@@ -219,7 +219,7 @@ public class Navigation {
                 break;
             case "perfil":
                 updateSatusMenu("perfil");
-                tmpPanel = new Perfil();
+                tmpPanel = new Perfil(params);
                 break;
             case "relatorios":
                 updateSatusMenu("relatorios");

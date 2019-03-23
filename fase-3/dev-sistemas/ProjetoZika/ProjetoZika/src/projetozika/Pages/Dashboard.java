@@ -6,6 +6,7 @@
 package projetozika.Pages;
 
 import Utils.Methods;
+import java.util.Properties;
 
 /**
  *
@@ -16,11 +17,14 @@ public class Dashboard extends Templates.BaseLayout {
     /**
      * Creates new form Dashboard
      */
-    public Dashboard() {
+    public Dashboard(Properties params) {
+        super();
+        this.self = this;
+        this.params = params;
+        
         initComponents();
         createBaseLayout();
         
-        // tradução
         translation();
     }
     
@@ -41,8 +45,6 @@ public class Dashboard extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

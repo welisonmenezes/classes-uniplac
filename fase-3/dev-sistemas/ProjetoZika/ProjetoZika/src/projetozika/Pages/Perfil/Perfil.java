@@ -6,13 +6,11 @@
 package projetozika.Pages.Perfil;
 
 import Models.Usuario;
-import Templates.BaseLayout;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -25,31 +23,44 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Perfil extends Templates.BaseLayout {
     
-    private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
     private JButton btnEditar;
-    private Properties params;
+    private Usuario usuario;
 
     /**
      * Cria a tela de fornecedores
      */
-    public Perfil() {
+    public Perfil(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params;
+        
+        initPage();
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
+        
+        usuario = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
+        usuario.setLogin("welison");
+        usuario.setSenha("123456");
+        
         addTopContent(Methods.getTranslation("Perfil"));
         addCenterContent();
         addBottomContent();
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
-        makeTable();
-        JScrollPane barraRolagem = new JScrollPane(tabela);
+    private void addCenterContent() {
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -62,21 +73,18 @@ public class Perfil extends Templates.BaseLayout {
         // seta colunas
         String[] colunas = {"", Methods.getTranslation("SeusDados")};
        // seta modelo
-        Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
-        u.setLogin("welison");
-        u.setSenha("123456");
         Object[][] data = {
-            {Methods.getTranslation("CPF"),u.getCpf()},
-            {Methods.getTranslation("Nome"), u.getNome()},
-            {Methods.getTranslation("Email"), u.getEmail()},
-            {Methods.getTranslation("Celular"), u.getCelular()},
-            {Methods.getTranslation("Telefone"), u.getTelefone()},
-            {Methods.getTranslation("Setor"), u.getSetor()},
-            {Methods.getTranslation("Sexo"), u.getSexo()},
-            {Methods.getTranslation("Permissao"), u.getPermissao()},
-            {Methods.getTranslation("DataDeNascimento"), u.getData()},
-            {Methods.getTranslation("Login"), u.getLogin()},
-            {Methods.getTranslation("Senha"), u.getSenha()}
+            {Methods.getTranslation("CPF"),usuario.getCpf()},
+            {Methods.getTranslation("Nome"), usuario.getNome()},
+            {Methods.getTranslation("Email"), usuario.getEmail()},
+            {Methods.getTranslation("Celular"), usuario.getCelular()},
+            {Methods.getTranslation("Telefone"), usuario.getTelefone()},
+            {Methods.getTranslation("Setor"), usuario.getSetor()},
+            {Methods.getTranslation("Sexo"), usuario.getSexo()},
+            {Methods.getTranslation("Permissao"), usuario.getPermissao()},
+            {Methods.getTranslation("DataDeNascimento"), usuario.getData()},
+            {Methods.getTranslation("Login"), usuario.getLogin()},
+            {Methods.getTranslation("Senha"), usuario.getSenha()}
         };
         tableModel = new DefaultTableModel(data, colunas) {
             @Override
@@ -94,15 +102,12 @@ public class Perfil extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
+    private void addBottomContent() {
         btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
         Styles.defaultButton(btnEditar);
         pBottom.add(btnEditar);
-        btnEditar.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("editarPerfil", "11", params);
-            }
+        btnEditar.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("editarPerfil", "11", params);
         });
     }
     
