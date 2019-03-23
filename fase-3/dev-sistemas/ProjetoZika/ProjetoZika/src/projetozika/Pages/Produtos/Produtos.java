@@ -265,6 +265,9 @@ public class Produtos extends Templates.BaseLayout {
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }

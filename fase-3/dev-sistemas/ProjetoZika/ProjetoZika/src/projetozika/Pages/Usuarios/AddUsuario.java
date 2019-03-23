@@ -14,18 +14,16 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
@@ -36,77 +34,68 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * @author Welison
  */
 public class AddUsuario extends Templates.BaseFrame {
-    private final JFrame self;
-    private String mode;
+
     private JPanel bg;
-    
-    
     private JTextField fnome;
     private JLabel lnome;
     private JLabel enome;
-    
     private JTextField fcpf;
     private JLabel lcpf;
     private JLabel ecpf;
-    
     private ButtonGroup gsexo;
     private JRadioButton fhomem;
     private JRadioButton fmulher;
     private JLabel lsexo;
     private JLabel esexo;
-    
     private JDateChooser fdata;
     private JLabel ldata;
     private JLabel edata;
-    
     private JTextField fcelular;
     private JLabel lcelular;
     private JLabel ecelular;
-    
     private JTextField ftelefone;
     private JLabel ltelefone;
     private JLabel etelefone;
-    
     private JTextField femail;
     private JLabel lemail;
     private JLabel eemail;
-    
     private JComboBox<String> fsetor;
     private JLabel lsetor;
     private JLabel esetor;
-    
     private JComboBox<String> fpermissao;
     private JLabel lpermissao;
     private JLabel epermissao;
-    
     private JTextField flogin;
     private JLabel llogin;
     private JLabel elogin;
-    
     private JPasswordField fsenha;
     private JLabel lsenha;
     private JLabel esenha;
-    
     private JButton bSave;
-    private JPanel panelCaller;
     
    
-    public AddUsuario() {
+    public AddUsuario(Properties params) {
         this.self = this;
         this.mode = "add";
+        this.params = params;
         initPage(Methods.getTranslation("AdicionarUsuario"));
     }
     
-    public AddUsuario(String id, String mode) {
+    public AddUsuario(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
-        if(this.mode.equals("view")){
-            initPage(Methods.getTranslation("VerUsuario"));
-            Methods.disabledFields(bg);
-        } else if (this.mode.equals("edit")){
-            initPage(Methods.getTranslation("EditarUsuario"));
-        } else if (this.mode.equals("perfil")){
-            initPage(Methods.getTranslation("EditarPerfil"));
+        this.params = params;
+        switch (this.mode) {
+            case "view":
+                initPage(Methods.getTranslation("VerUsuario"));
+                Methods.disabledFields(bg);
+                break;
+            case "edit":
+                initPage(Methods.getTranslation("EditarUsuario"));
+                break;
+            case "perfil":
+                initPage(Methods.getTranslation("EditarPerfil"));
+                break;
         }
         
         fillFields(id);
@@ -124,7 +113,7 @@ public class AddUsuario extends Templates.BaseFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                Navigation.currentPage = "fornecedores";
+                Navigation.currentPage = "usuarios";
             }
         });
         
@@ -133,7 +122,7 @@ public class AddUsuario extends Templates.BaseFrame {
     
     private void fillFields(String id) {}
     
-    public void addCenterContent() {
+    private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
@@ -283,14 +272,9 @@ public class AddUsuario extends Templates.BaseFrame {
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(440, 313, -1, -1));
         
-        bSave.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
-                Dialogs.showLoadPopup(bg);
-                timerTest();
-                
-            }
+        bSave.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(bg);
+            timerTest();
         });
         
         pCenter.add(bg);
@@ -299,33 +283,40 @@ public class AddUsuario extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
-                  
-                if (mode.equals("edit")) {
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(bg);
+            
+            switch (mode) {
+                case "edit":
                     // TODO: edit here
-                    JTable tabela = Usuarios.tabela;
-                    int row = tabela.getSelectedRow();
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-
-                } else if(mode.equals("add")) {
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("usuarios", params);
+                    break;
+                case "add":
                     // TODO: save here
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                } else if(mode.equals("perfil")) {
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("usuarios", params);
+                    break;
+                case "perfil":
                     // TODO: save here
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                } else {
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("perfil", params);
+                    break;
+                default:
                     self.dispose();
-                }
-                
-                
-                t.stop();
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("usuarios", params);
+                    break;
             }
+            
+            
+            t.stop();
         });
         t.start();
     }
@@ -344,42 +335,6 @@ public class AddUsuario extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddUsuario().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

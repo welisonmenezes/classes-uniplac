@@ -105,17 +105,17 @@ public class Navigation {
                 break;
             case "editarUsuario":
                 updateSatusMenu("usuarios");
-                tmpFrame = new AddUsuario(id, "edit");
+                tmpFrame = new AddUsuario(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarPerfil":
                 updateSatusMenu("perfil");
-                tmpFrame = new AddUsuario(id, "perfil");
+                tmpFrame = new AddUsuario(id, "perfil", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verUsuario":
                 updateSatusMenu("usuarios");
-                tmpFrame = new AddUsuario(id, "view");
+                tmpFrame = new AddUsuario(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarPedido":
@@ -197,11 +197,11 @@ public class Navigation {
                 break;
             case "usuarios":
                 updateSatusMenu("usuarios");
-                tmpPanel = new Usuarios();
+                tmpPanel = new Usuarios(params);
                 break;
             case "addUsuario":
                 updateSatusMenu("usuarios");
-                tmpFrame = new AddUsuario();
+                tmpFrame = new AddUsuario(params);
                 tmpFrame.setVisible(true);
                 break;
             case "pedidos":
@@ -238,7 +238,7 @@ public class Navigation {
     private static void resetLayout(String pageName) {
         if (!pageName.equals("addFornecedorNota")
             && !pageName.equals("addProdutoNota")){
-            if (tmpFrame != null) {;
+            if (tmpFrame != null) {
                 tmpFrame.dispose();
                 tmpFrame = null;
             }
