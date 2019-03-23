@@ -95,12 +95,12 @@ public class Navigation {
                 break;
             case "editarProduto":
                 updateSatusMenu("produtos");
-                tmpFrame = new AddProduto(id, "edit");
+                tmpFrame = new AddProduto(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verProduto":
                 updateSatusMenu("produtos");
-                tmpFrame = new AddProduto(id, "view");
+                tmpFrame = new AddProduto(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarUsuario":
@@ -187,12 +187,12 @@ public class Navigation {
                 break;
             case "addProduto":
                 updateSatusMenu("produtos");
-                tmpFrame = new AddProduto();
+                tmpFrame = new AddProduto(params);
                 tmpFrame.setVisible(true);
                 break;
             case "addProdutoNota":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddProduto(tmpPanel);
+                tmpFrame = new AddProduto(tmpPanel, params);
                 tmpFrame.setVisible(true);
                 break;
             case "usuarios":

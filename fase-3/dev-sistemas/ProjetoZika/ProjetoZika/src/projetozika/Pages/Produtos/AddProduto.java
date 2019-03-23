@@ -14,6 +14,7 @@ import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,8 +36,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * @author Welison
  */
 public class AddProduto extends Templates.BaseFrame {
-    private final JFrame self;
-    private String mode;
+
     private JPanel bg;
     private JTextField fnome;
     private JLabel lnome;
@@ -48,30 +48,37 @@ public class AddProduto extends Templates.BaseFrame {
     private JLabel ldescricao;
     private JLabel edescricao;
     private JButton bSave;
-    private JPanel panelCaller;
     
    
-    public AddProduto() {
+    public AddProduto(Properties params) {
         this.self = this;
         this.mode = "add";
+        this.params = params;
         initPage(Methods.getTranslation("AdicionarProduto"));
     }
     
-    public AddProduto(JPanel panelCaller) {
+    public AddProduto(JPanel panelCaller, Properties params) {
         this.self = this;
-        initPage(Methods.getTranslation("AdicionarProdutoPelaNota"));
+        this.params = params;
         this.mode = "nota";
-        this.panelCaller = panelCaller;
+        
+        initPage(Methods.getTranslation("AdicionarProdutoPelaNota"));
+        
     }
     
-    public AddProduto(String id, String mode) {
+    public AddProduto(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
-        if(this.mode.equals("view")){
-            initPage(Methods.getTranslation("VerProduto"));
-            Methods.disabledFields(bg);
-        } else if (this.mode.equals("edit")){
-            initPage(Methods.getTranslation("EditarProduto"));
+        this.params = params;
+        
+        switch (this.mode) {
+            case "view":
+                initPage(Methods.getTranslation("VerProduto"));
+                Methods.disabledFields(bg);
+                break;
+            case "edit":
+                initPage(Methods.getTranslation("EditarProduto"));
+                break;
         }
         
         fillFields(id);
@@ -99,11 +106,11 @@ public class AddProduto extends Templates.BaseFrame {
     private void fillFields(String id) {
         Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
         fnome.setText(p.getNome());
-        //funidade.setSelectedItem("Unidade");
+        funidade.setSelectedItem("Unidade");
         fdescricao.setText(p.getDescricao());
     }
     
-    public void addCenterContent() {
+    private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
@@ -151,26 +158,20 @@ public class AddProduto extends Templates.BaseFrame {
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
         
-        bSave.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
-                if(fnome.getText().equals("") || funidade.getSelectedItem().equals("") || fdescricao.getText().equals("")){
-                    if(fnome.getText().equals("")){
-                        enome.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                    if(funidade.getSelectedItem().equals("")) {
-                        eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                    if(fdescricao.getText().equals("")) {
-                        edescricao.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                } else {
-                    Dialogs.showLoadPopup(bg);
-                    timerTest();
+        bSave.addActionListener((ActionEvent e) -> {
+            if(fnome.getText().equals("") || funidade.getSelectedItem().equals("") || fdescricao.getText().equals("")){
+                if(fnome.getText().equals("")){
+                    enome.setText(Methods.getTranslation("CampoObrigatorio"));
                 }
-                
-                
+                if(funidade.getSelectedItem().equals("")) {
+                    eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                if(fdescricao.getText().equals("")) {
+                    edescricao.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+            } else {
+                Dialogs.showLoadPopup(bg);
+                timerTest();
             }
         });
         
@@ -180,43 +181,37 @@ public class AddProduto extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
-                
-                if (mode.equals("edit")) {
-                    JTable tabela = Produtos.tabela;
-                    DefaultTableModel tableModel = Produtos.tableModel;
-                    int row = tabela.getSelectedRow();
-                    tableModel.setValueAt(fnome.getText() , row, 1);
-                    tableModel.setValueAt(funidade.getSelectedItem() , row, 2);
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(bg);
+            
+            switch (mode) {
+                case "edit":
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-
-                } else if(mode.equals("add")) {
-                    DefaultTableModel tableModel = Produtos.tableModel;
-                    tableModel.addRow(new Object[]{
-                        "5454",
-                        fnome.getText(),
-                        funidade.getSelectedItem(),
-                        "10/10/2000",
-                        Methods.getTranslation("Editar"),
-                        Methods.getTranslation("Excluir"),
-                        Methods.getTranslation("Ver")
-                    });
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+                    break;
+                case "add":
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                } else if(mode.equals("nota")){
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+                    break;
+                case "nota":
                     // TODO
                     self.dispose();
-                } else {
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notasFiscais", params);
+                    break;
+                default:
                     self.dispose();
-                }
-                
-                
-                t.stop();
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+                    break;
             }
+            
+            
+            t.stop();
         });
         t.start();
     }
@@ -235,42 +230,6 @@ public class AddProduto extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddProduto().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

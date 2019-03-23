@@ -12,7 +12,6 @@ import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -173,34 +172,30 @@ public class AddFornecedor extends Templates.BaseFrame {
         t = new Timer(2000, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             
-            if (mode.equals("edit")) {
-                
-                self.dispose();
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                
-                Navigation.updateLayout("", new Properties());
-                Navigation.updateLayout("fornecedores", params);
-                
-            } else if(mode.equals("add")) {
-                
-                self.dispose();
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                
-                Navigation.updateLayout("", new Properties());
-                Navigation.updateLayout("fornecedores", params);
-                
-            } else if(mode.equals("nota")){
-                AddNotaFiscal.fcnpj.setText(fcnpj.getText());
-                self.dispose();
-                
-                Navigation.updateLayout("", new Properties());
-                Navigation.updateLayout("notas", params);
-                
-            } else {
-                self.dispose();
-                
-                Navigation.updateLayout("", new Properties());
-                Navigation.updateLayout("fornecedores", params);
+            switch (mode) {
+                case "edit":
+                    self.dispose();
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
+                    break;
+                case "add":
+                    self.dispose();
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
+                    break;
+                case "nota":
+                    AddNotaFiscal.fcnpj.setText(fcnpj.getText());
+                    self.dispose();
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notas", params);
+                    break;
+                default:
+                    self.dispose();
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
+                    break;
             }
             
             
