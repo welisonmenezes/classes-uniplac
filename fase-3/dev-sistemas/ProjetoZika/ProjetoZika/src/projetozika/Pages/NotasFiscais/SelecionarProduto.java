@@ -78,6 +78,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         fnome = new JTextField();
         cnome = new JComboBox();
         new SuggestionsBox(pSuggestions, fnome, cnome, 200) {
+            @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
                 for (int i = 1; i <= 25; i++) {
@@ -85,6 +86,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
                     elements.add(new ComboItem(i, "Nome_"+i));
                 }
                 return elements;
+            }
+            @Override
+            public void afterSelectItem() {
+                funidade.setText("Caixa");
             }
         };
         add(pSuggestions, new AbsoluteConstraints(20, 50, -1, -1));
@@ -185,6 +190,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         t = new Timer(2000, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
+            funidade.setEnabled(false);
             caller.addProduto(new Produto(333,"Prod Teste","Caixa","Desc teste","12/11/2008"));
             
             t.stop();

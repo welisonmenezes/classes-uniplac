@@ -63,6 +63,7 @@ public class SuggestionsBox {
                 String selected = cb.getSelectedItem().toString();
                 if (!selected.equals("")) {
                     Field.setText(selected);
+                    afterSelectItem();
                 }
             }
         });
@@ -117,5 +118,9 @@ public class SuggestionsBox {
     public ArrayList<ComboItem> addElements() {
         System.out.println("Override it!");
         return new ArrayList<>();
+    }
+    
+    public void afterSelectItem() {
+        System.out.println("Override it!");
     }
 }
