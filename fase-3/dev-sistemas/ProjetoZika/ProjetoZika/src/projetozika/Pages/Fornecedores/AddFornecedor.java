@@ -6,6 +6,7 @@
 package projetozika.Pages.Fornecedores;
 
 import Models.Fornecedor;
+import Templates.ComboItem;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -186,10 +187,14 @@ public class AddFornecedor extends Templates.BaseFrame {
                     Navigation.updateLayout("fornecedores", params);
                     break;
                 case "nota":
+                    
+                    // example add cnpj
                     AddNotaFiscal.fcnpj.setText(fcnpj.getText());
+                    ComboItem ci = new ComboItem(1, fcnpj.getText());
+                    AddNotaFiscal.ccnpj.addItem(ci);
+                    AddNotaFiscal.ccnpj.setSelectedItem(ci);
+                    
                     self.dispose();
-                    Navigation.updateLayout("", new Properties());
-                    Navigation.updateLayout("notas", params);
                     break;
                 default:
                     self.dispose();

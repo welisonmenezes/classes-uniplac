@@ -7,6 +7,7 @@ package projetozika.Pages.Produtos;
 
 import Config.Environment;
 import Models.Produto;
+import Templates.ComboItem;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -26,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+import projetozika.Pages.NotasFiscais.SelecionarProduto;
 
 /**
  *
@@ -194,10 +196,15 @@ public class AddProduto extends Templates.BaseFrame {
                     Navigation.updateLayout("produtos", params);
                     break;
                 case "nota":
-                    // TODO
+                    
+                    // exemplo add produto
+                    SelecionarProduto.fnome.setText(fnome.getText());
+                    ComboItem ci = new ComboItem(1, fnome.getText());
+                    SelecionarProduto.cnome.addItem(ci);
+                    SelecionarProduto.cnome.setSelectedItem(ci);
+                    SelecionarProduto.funidade.setText(funidade.getSelectedItem().toString());
+                    
                     self.dispose();
-                    Navigation.updateLayout("", new Properties());
-                    Navigation.updateLayout("notasFiscais", params);
                     break;
                 default:
                     self.dispose();

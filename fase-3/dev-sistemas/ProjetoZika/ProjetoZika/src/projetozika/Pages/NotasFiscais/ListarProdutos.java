@@ -27,7 +27,7 @@ public class ListarProdutos extends javax.swing.JPanel {
     private JTable tabela;
     private String mode;
     private JScrollPane barraRolagem;
-    private ArrayList<Produto> produtos;
+    public ArrayList<Produto> produtos;
 
     /**
      * Creates new form ListarProdutos

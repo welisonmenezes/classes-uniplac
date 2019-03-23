@@ -36,11 +36,11 @@ public class SelecionarProduto extends javax.swing.JPanel {
     
     private JPanel self;
     private JLabel lnome;
-    private JTextField fnome;
+    public static JTextField fnome;
     private JLabel addProduto;
     private JLabel enome;
     private JLabel lunidade;
-    private JTextField funidade;
+    public static JTextField funidade;
     private JLabel eunidade;
     private JLabel lquantidade;
     private JTextField fquantidade;
@@ -50,7 +50,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private JLabel evalor;
     private JButton selProd;
     private JPanel pSuggestions;
-    private JComboBox cnome;
+    public static JComboBox cnome;
     private Properties params;
     private final AddNotaFiscal caller;
 
@@ -148,8 +148,34 @@ public class SelecionarProduto extends javax.swing.JPanel {
         selProd.setPreferredSize(new Dimension(100, 34));
         add(selProd, new AbsoluteConstraints(240, 293, -1, -1));
         selProd.addActionListener((ActionEvent e) -> {
-            Dialogs.showLoadPopup(self);
-            timerTest();
+            
+            if(cnome.getSelectedItem() == null
+                || funidade.getText().equals("")
+                || fquantidade.getText().equals("")
+                || fvalor.getText().equals("")) {
+                
+                if (cnome.getSelectedItem() == null) {
+                    enome.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if (funidade.getText().equals("")) {
+                    eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if (fquantidade.getText().equals("")) {
+                    equantidade.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if (fvalor.getText().equals("")) {
+                    evalor.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+            } else {
+                Dialogs.showLoadPopup(self);
+                timerTest();
+            }
+            
+            
         });
     }
     

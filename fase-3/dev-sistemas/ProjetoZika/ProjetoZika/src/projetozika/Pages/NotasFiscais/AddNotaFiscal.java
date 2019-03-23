@@ -59,7 +59,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JPanel panelAddProduto;
     private ListarProdutos panelListarProdutos;
     private JPanel pSuggestions;
-    private JComboBox ccnpj;
+    public static JComboBox ccnpj;
+    private JLabel linfo;
     
     public AddNotaFiscal(Properties params) {
         this.self = this;
@@ -217,13 +218,54 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.errorLabel(edata);
         bg.add(edata, new AbsoluteConstraints(0, 255, -1, -1));
         
+        linfo = new JLabel("");
+        Styles.errorLabel(linfo);
+        linfo.setPreferredSize( new Dimension( 220, 20 ) );
+        bg.add(linfo, new AbsoluteConstraints(220, 255, -1, -1));
+        
         bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 222, -1, -1));
         bSave.addActionListener((ActionEvent e) -> {
-            Dialogs.showLoadPopup(bg);
-            timerTest();
+            
+            // validation
+            if(panelListarProdutos.produtos.size() < 1
+                || fnumero.getText().equals("")
+                || ccnpj.getSelectedItem() == null
+                || fserie.getText().equals("")
+                || fvalor.getText().equals("")
+                || ((JTextField)fdata.getDateEditor().getUiComponent()).getText().isEmpty()) {
+                
+                if (panelListarProdutos.produtos.size() < 1) {
+                    linfo.setText(Methods.getTranslation("AdicioneUmProduto"));
+                }
+                
+                if (fnumero.getText().equals("")){
+                    enumero.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if (ccnpj.getSelectedItem() == null) {
+                    ecnpj.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if (fserie.getText().equals("")){
+                    eserie.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if (fvalor.getText().equals("")){
+                    evalor.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+                if( ((JTextField)fdata.getDateEditor().getUiComponent()).getText().isEmpty() ) {
+                    edata.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                
+            } else {
+                Dialogs.showLoadPopup(bg);
+                timerTest();
+            }
+            
         });
         
         panelAddProduto = new SelecionarProduto(self);
