@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -47,11 +48,10 @@ public class EntregarPedido extends Templates.BaseFrame {
     private JLabel ltitle;
     private JLabel llogin;
     private JTextField flogin;
-    private JLabel elogin;
     private JLabel lsenha;
-    private JTextField fsenha;
-    private JLabel esenha;
+    private JPasswordField fsenha;
     private JButton btnConfirm;
+    private JLabel linfo;
     private ArrayList<PedidoProduto> pedidosProdutos;
    
     public EntregarPedido(String id, String mode, Properties params) {
@@ -123,10 +123,6 @@ public class EntregarPedido extends Templates.BaseFrame {
         Styles.defaultField(flogin);
         pform.add(flogin, new AbsoluteConstraints(100, 130, -1, -1));
         
-        elogin = new JLabel("");
-        Styles.errorLabel(elogin);
-        pform.add(elogin, new AbsoluteConstraints(100, 165, -1, -1));
-        
         lsenha = new JLabel(Methods.getTranslation("Senha"));
         Styles.defaultLabel(lsenha);
         pform.add(lsenha, new AbsoluteConstraints(100, 180, -1, -1));
@@ -135,9 +131,9 @@ public class EntregarPedido extends Templates.BaseFrame {
         Styles.defaultField(fsenha);
         pform.add(fsenha, new AbsoluteConstraints(100, 220, -1, -1));
         
-        esenha = new JLabel("");
-        Styles.errorLabel(esenha);
-        pform.add(esenha, new AbsoluteConstraints(100, 255, -1, -1));
+        linfo = new JLabel();
+        Styles.errorLabel(linfo);
+        pform.add(linfo, new AbsoluteConstraints(100, 260, -1, -1));
         
         btnConfirm = new JButton(Methods.getTranslation("ConfirmarRetirada"));
         Styles.defaultButton(btnConfirm);
@@ -145,8 +141,17 @@ public class EntregarPedido extends Templates.BaseFrame {
         pform.add(btnConfirm, new AbsoluteConstraints(100, 290, -1, -1));
         
         btnConfirm.addActionListener((ActionEvent e) -> {
-            Dialogs.showLoadPopup(pCenter);
-            timerTest();
+            
+            String login = flogin.getText();
+            char[] password = fsenha.getPassword();
+            String userPassword = "123456";
+            if (login.equals("welison") && Arrays.equals(password, userPassword.toCharArray())) {
+                Dialogs.showLoadPopup(pCenter);
+                timerTest();
+            } else {
+                linfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
+            }
+            
         });
         
         pCenter.add(pform, BorderLayout.WEST);

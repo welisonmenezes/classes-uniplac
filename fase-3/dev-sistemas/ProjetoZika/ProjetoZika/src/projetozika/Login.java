@@ -123,7 +123,6 @@ public class Login extends javax.swing.JFrame {
      */
     private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
         // login
-        //lInfo.setText("Login ou senha inválidos");
         String login = flogin.getText();
         char[] password = fsenha.getPassword();
         String userPassword = "123456";
