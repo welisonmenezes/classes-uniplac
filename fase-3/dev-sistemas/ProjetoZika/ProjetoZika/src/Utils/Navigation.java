@@ -183,7 +183,7 @@ public class Navigation {
                 break;
             case "produtos":
                 updateSatusMenu("produtos");
-                tmpPanel = new Produtos();
+                tmpPanel = new Produtos(params);
                 break;
             case "addProduto":
                 updateSatusMenu("produtos");
