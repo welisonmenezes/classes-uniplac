@@ -213,6 +213,7 @@ public class Methods {
         // add listener para o VK_ESCAPE. Quando acionado fecha o frame
         meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESCAPE");
         meurootpane.getRootPane().getActionMap().put("ESCAPE", new AbstractAction("ESCAPE") {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
@@ -222,6 +223,7 @@ public class Methods {
         // Quando acionado simula o tab. Se o elemento focado for um botão, simula o click
         meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ENTER");
         meurootpane.getRootPane().getActionMap().put("ENTER", new AbstractAction("ENTER") {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if(frame.getFocusOwner() instanceof JButton) {
                     JButton btn = (JButton) frame.getFocusOwner();
@@ -234,15 +236,18 @@ public class Methods {
     }
     
     /**
-     * Habilita o desabilita os componetes do JBody e JMenu no abrie e fecha deste frame
+     * Habilita o desabilita os componetes d
+     * @param frame o JBody e JMenu no abrir e fecha deste frame
      */
     public static void disableEnableRootAndMenuPanel(JFrame frame) {
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowOpened(WindowEvent we) {
                 Methods.setEnableRecursively(Methods.getJBody(), false);
                 Methods.setEnableRecursively(Methods.getJMenu(), false);
             }
             
+            @Override
             public void windowClosed(WindowEvent we) {
                 Methods.setEnableRecursively(Methods.getJBody(), true);
                 Methods.setEnableRecursively(Methods.getJMenu(), true);

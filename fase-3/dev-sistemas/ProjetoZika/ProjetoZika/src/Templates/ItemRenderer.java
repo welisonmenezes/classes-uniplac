@@ -14,6 +14,7 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
  * @author welis
  */
 public class ItemRenderer extends BasicComboBoxRenderer {
+    @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         
         super.getListCellRendererComponent(list, value, index,
@@ -26,7 +27,7 @@ public class ItemRenderer extends BasicComboBoxRenderer {
 
         if (index == -1) {
             ComboItem item = (ComboItem)value;
-            setText( "" + item.getId());
+            setText(item.getId() + "");
         }
         
         return this;

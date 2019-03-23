@@ -9,7 +9,6 @@ import static Utils.Styles.defaultComboBox;
 import static Utils.Styles.defaultField;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -26,11 +25,11 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  */
 public class SuggestionsBox {
     
-    private JPanel Panel;
-    private JTextField Field;
-    private JComboBox Combo;
-    private int Width;
-    private ArrayList<ComboItem> Model;
+    private final JPanel Panel;
+    private final JTextField Field;
+    private final JComboBox Combo;
+    private final int Width;
+    private final ArrayList<ComboItem> Model;
     
     public SuggestionsBox(JPanel panel, JTextField field, JComboBox combo, int width) {
         Panel = panel;
@@ -56,17 +55,14 @@ public class SuggestionsBox {
     }
     
     private void addComboboxEvent() {
-        Combo.addActionListener (new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                
-                JComboBox cb = (JComboBox) e.getSource();
-                Object item = e.getActionCommand();
-
-                if (item.equals("comboBoxChanged") && cb.getItemCount() > 0) {
-                    String selected = cb.getSelectedItem().toString();
-                    if (!selected.equals("")) {
-                        Field.setText(selected);
-                    }
+        Combo.addActionListener ((ActionEvent e) -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            Object item = e.getActionCommand();
+            
+            if (item.equals("comboBoxChanged") && cb.getItemCount() > 0) {
+                String selected = cb.getSelectedItem().toString();
+                if (!selected.equals("")) {
+                    Field.setText(selected);
                 }
             }
         });
@@ -120,6 +116,6 @@ public class SuggestionsBox {
     
     public ArrayList<ComboItem> addElements() {
         System.out.println("Override it!");
-        return new ArrayList<ComboItem>();
+        return new ArrayList<>();
     }
 }

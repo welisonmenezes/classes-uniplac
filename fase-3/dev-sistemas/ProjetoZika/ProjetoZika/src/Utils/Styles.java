@@ -54,10 +54,12 @@ public class Styles {
         btn.setBackground(new Color(8, 253, 216));
         // hover event
         btn.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseEntered(MouseEvent evt) {
                 btn.setForeground(new Color(0, 0, 0));
                 btn.setContentAreaFilled(true);
             }
+            @Override
             public void mouseExited(MouseEvent evt) {
                 btn.setForeground(new Color(8, 253, 216));
                 btn.setContentAreaFilled(false);
@@ -125,6 +127,7 @@ public class Styles {
      * Estiliza os JDateChooser default da aplicação
      * 
      * @param fDate o JDateChooser a ser estilizado
+     * @param width a largura desejada
      */
     public static void defaultDateChooser(JDateChooser fDate, int width) {
         defaultDateChooser(fDate);
@@ -143,8 +146,10 @@ public class Styles {
     
     /**
      * Estiliza os JCombobox default da aplicação
-     * 
      * @param field o JCombobox a ser estilizado
+     * @param width a largura desejada
+     * @param height a altura desejada
+     * 
      */
     public static void defaultComboBox(JComboBox field, int width, int height) {
         field.setOpaque(false);
@@ -296,7 +301,9 @@ public class Styles {
     public static void defaultSuggestions(JScrollPane panel, JList list, String[] model) {
         list.setModel(new AbstractListModel<String>() {
             String[] strings = model;
+            @Override
             public int getSize() { return strings.length; }
+            @Override
             public String getElementAt(int i) { return strings[i]; }
             });
         panel.setPreferredSize( new Dimension( 200, 200 ) );

@@ -8,7 +8,6 @@ package projetozika;
 import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.BorderLayout;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -21,7 +20,6 @@ public class Main extends javax.swing.JFrame {
     private JPanel jBG; // container geral
     private JPanel jBODY; // container do conteúdo
     private JPanel jSIDE; // container do menu
-    //public static JComponent rootComponent; // acesso estático ao container geral
     public static JPanel menu; // o menu
     /**
      * Creates new form Main
@@ -30,7 +28,6 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         menu = new Menu(this);
         initLayout();
-        //rootComponent = this.jBG;
         
         Methods.setAccessibility(this);
         
@@ -99,7 +96,7 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /**
      * @param args the command line arguments
      */
@@ -134,7 +131,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

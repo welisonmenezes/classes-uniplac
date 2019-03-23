@@ -10,8 +10,8 @@ package Templates;
  * @author welis
  */
 public class ComboItem {
-    private int id;
-    private String description;
+    private final int id;
+    private final String description;
 
     public ComboItem(int id, String description) {
         this.id = id;
@@ -26,6 +26,7 @@ public class ComboItem {
         return description;
     }
 
+    @Override
     public String toString() {
         return description;
     }

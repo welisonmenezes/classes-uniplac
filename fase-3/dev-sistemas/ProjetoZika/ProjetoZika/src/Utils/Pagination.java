@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -22,8 +21,8 @@ import javax.swing.JPanel;
 public class Pagination {
     
     public int page;
-    private JPanel context;
-    private int total;
+    private final JPanel context;
+    private final int total;
     
     /**
      * Construtor. Ao ser instanciada, a classe gera os botões e adiciona no Footer da aplicação
@@ -60,15 +59,12 @@ public class Pagination {
                 pBtn.setForeground(new Color(255, 255, 255));
             }
             
-            pBtn.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(e.getSource() instanceof JButton){
-                        JButton tmp = (JButton) e.getSource();
-                        page = Integer.parseInt(tmp.getText());
-                        updateActivePage();
-                        callbackPagination();
-                    }
+            pBtn.addActionListener((ActionEvent e) -> {
+                if(e.getSource() instanceof JButton){
+                    JButton tmp = (JButton) e.getSource();
+                    page = Integer.parseInt(tmp.getText());
+                    updateActivePage();
+                    callbackPagination();
                 }
             });
             
@@ -76,28 +72,22 @@ public class Pagination {
         }
         context.add(next);
         
-        prev.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() instanceof JButton){
-                    if(page > 1) {
-                        page--;
-                        updateActivePage();
-                        callbackPagination();
-                    }
+        prev.addActionListener((ActionEvent e) -> {
+            if(e.getSource() instanceof JButton){
+                if(page > 1) {
+                    page--;
+                    updateActivePage();
+                    callbackPagination();
                 }
             }
         });
         
-        next.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() instanceof JButton){
-                    if(page < total) {
-                        page++;
-                        updateActivePage();
-                        callbackPagination();
-                    }
+        next.addActionListener((ActionEvent e) -> {
+            if(e.getSource() instanceof JButton){
+                if(page < total) {
+                    page++;
+                    updateActivePage();
+                    callbackPagination();
                 }
             }
         });

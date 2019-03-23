@@ -137,7 +137,7 @@ public class Login extends javax.swing.JFrame {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
     }//GEN-LAST:event_bentrarActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -172,7 +172,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bentrar;
     private javax.swing.JTextField flogin;

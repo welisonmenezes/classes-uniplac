@@ -68,6 +68,7 @@ public class Navigation {
      * 
      * @param pageName o nome do modulo desejado
      * @param id o id para consulta ao banco de dados
+     * @param params Parâmetros para filtro e paginação
      */
     public static void updateLayout(String pageName, String id, Properties params) {
         if (currentPage.equals(pageName)) return;
@@ -149,6 +150,7 @@ public class Navigation {
      * Este metodo cuida das listagens e adições
      * 
      * @param pageName o nome do modulo desejado
+     * @param params Parâmetros para filtro e paginação
      */
     public static void updateLayout(String pageName, Properties params) {
         if (currentPage.equals(pageName)) return;
@@ -223,7 +225,7 @@ public class Navigation {
                 break;
             case "relatorios":
                 updateSatusMenu("relatorios");
-                tmpPanel = new Relatorios();
+                tmpPanel = new Relatorios(params);
                 break;
             default:
                 setDefaultPage();
