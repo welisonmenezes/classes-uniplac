@@ -85,12 +85,12 @@ public class Navigation {
                 break;
             case "editarNotaFiscal":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddNotaFiscal(id, "edit");
+                tmpFrame = new AddNotaFiscal(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verNotaFiscal":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddNotaFiscal(id, "view");
+                tmpFrame = new AddNotaFiscal(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarProduto":
@@ -173,7 +173,7 @@ public class Navigation {
                 break;
             case "addNotaFiscal":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddNotaFiscal();
+                tmpFrame = new AddNotaFiscal(params);
                 tmpFrame.setVisible(true);
                 break;
             case "addFornecedorNota":

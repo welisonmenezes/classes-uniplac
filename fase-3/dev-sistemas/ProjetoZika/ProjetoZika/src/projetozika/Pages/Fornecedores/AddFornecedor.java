@@ -40,7 +40,6 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JLabel lcnpj;
     private JLabel ecnpj;
     private JButton bSave;
-    private JPanel panelCaller;
     
    
     public AddFornecedor(Properties params) {
@@ -54,7 +53,6 @@ public class AddFornecedor extends Templates.BaseFrame {
         this.self = this;
         this.mode = "nota";
         this.params = params;
-        this.panelCaller = panelCaller;
         initPage(Methods.getTranslation("AdicionarFornecedorPelaNota"));
     }
     
@@ -149,26 +147,20 @@ public class AddFornecedor extends Templates.BaseFrame {
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
         
-        bSave.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
-                if(fname.getText().equals("") || ftel.getText().equals("") || fcnpj.getText().equals("")){
-                    if(fname.getText().equals("")){
-                        ename.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                    if(ftel.getText().equals("")) {
-                        etel.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                    if(fcnpj.getText().equals("")) {
-                        ecnpj.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                } else {
-                    Dialogs.showLoadPopup(bg);
-                    timerTest();
+        bSave.addActionListener((ActionEvent e) -> {
+            if(fname.getText().equals("") || ftel.getText().equals("") || fcnpj.getText().equals("")){
+                if(fname.getText().equals("")){
+                    ename.setText(Methods.getTranslation("CampoObrigatorio"));
                 }
-                
-                
+                if(ftel.getText().equals("")) {
+                    etel.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+                if(fcnpj.getText().equals("")) {
+                    ecnpj.setText(Methods.getTranslation("CampoObrigatorio"));
+                }
+            } else {
+                Dialogs.showLoadPopup(bg);
+                timerTest();
             }
         });
         
@@ -178,44 +170,41 @@ public class AddFornecedor extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
-                 
-                if (mode.equals("edit")) {
-
-                    self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                    
-                    Navigation.updateLayout("", new Properties());
-                    Navigation.updateLayout("fornecedores", params);
-
-                } else if(mode.equals("add")) {
-
-                    self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                    
-                    Navigation.updateLayout("", new Properties());
-                    Navigation.updateLayout("fornecedores", params);
-                    
-                } else if(mode.equals("nota")){
-                    AddNotaFiscal.fcnpj.setText(fcnpj.getText());
-                    self.dispose();
-                    
-                    Navigation.updateLayout("", new Properties());
-                    Navigation.updateLayout("notas", params);
-                    
-                } else {
-                    self.dispose();
-                    
-                    Navigation.updateLayout("", new Properties());
-                    Navigation.updateLayout("fornecedores", params);
-                }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(bg);
+            
+            if (mode.equals("edit")) {
                 
+                self.dispose();
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                 
-                t.stop();
+                Navigation.updateLayout("", new Properties());
+                Navigation.updateLayout("fornecedores", params);
+                
+            } else if(mode.equals("add")) {
+                
+                self.dispose();
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                
+                Navigation.updateLayout("", new Properties());
+                Navigation.updateLayout("fornecedores", params);
+                
+            } else if(mode.equals("nota")){
+                AddNotaFiscal.fcnpj.setText(fcnpj.getText());
+                self.dispose();
+                
+                Navigation.updateLayout("", new Properties());
+                Navigation.updateLayout("notas", params);
+                
+            } else {
+                self.dispose();
+                
+                Navigation.updateLayout("", new Properties());
+                Navigation.updateLayout("fornecedores", params);
             }
+            
+            
+            t.stop();
         });
         t.start();
     }

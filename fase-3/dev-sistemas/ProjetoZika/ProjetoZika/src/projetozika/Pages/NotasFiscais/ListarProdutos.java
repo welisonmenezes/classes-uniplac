@@ -11,6 +11,7 @@ import Templates.ButtonRenderer;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,9 +26,12 @@ public class ListarProdutos extends javax.swing.JPanel {
     private DefaultTableModel tableModel;
     private JTable tabela;
     private String mode;
+    private JScrollPane barraRolagem;
+    private ArrayList<Produto> produtos;
 
     /**
      * Creates new form ListarProdutos
+     * @param mode Mostra como o painel foi chamado, se como edição ou como visualização
      */
     public ListarProdutos(String mode) {
         initComponents();
@@ -35,7 +39,29 @@ public class ListarProdutos extends javax.swing.JPanel {
         setLayout(new BorderLayout());
         this.mode = mode;
         
+        initPage();
+    }
+    
+    private void initPage() {
         
+        produtos = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+            produtos.add(p);
+        }
+        
+        barraRolagem = new JScrollPane();
+        Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
+        add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
+    }
+    
+    private void makeTable() {
         tabela = new JTable();
         tabela.setRowHeight(35);
         // seta colunas
@@ -64,31 +90,37 @@ public class ListarProdutos extends javax.swing.JPanel {
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 5; i++) {
-            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+        produtos.forEach(p -> {
             Object[] data = {p.getId(),p.getNome(),p.getUnidade(),""};
             if (! mode.equals("view")) {
                 data[3] = Methods.getTranslation("Excluir");
             }
             tableModel.addRow(data);
-        }
-    
+        });
         // inicializa
         tabela.setModel(tableModel);
-        JScrollPane barraRolagem = new JScrollPane(tabela);
-        Styles.defaultScroll(barraRolagem);
-        add(barraRolagem, BorderLayout.CENTER);
         
         if (! mode.equals("view")) {
             tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
             tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
-                    //String id = Methods.selectedTableItemId(tabela);
-                    Methods.removeSelectedTableRow(tabela, tableModel);
+                    String idTabel = Methods.selectedTableItemId(tabela);
+                    for (int i = 0; i < produtos.size(); i++) {
+                        Produto p = produtos.get(i);
+                        if (idTabel.equals(""+p.getId())) {
+                            produtos.remove(p);
+                        }
+                    }
+                    updateCenterContent();
                 }
             });
         }
+    }
+    
+    public void addProduto(Produto produto) {
+        produtos.add(produto);
+        updateCenterContent();
     }
 
     /**
