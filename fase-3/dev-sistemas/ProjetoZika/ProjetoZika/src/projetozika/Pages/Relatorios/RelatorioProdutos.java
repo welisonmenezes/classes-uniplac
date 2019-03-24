@@ -10,6 +10,7 @@ import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Styles;
+import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -141,8 +142,16 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
         btnRelatorioPedido.addActionListener((ActionEvent e) -> {
-            Dialogs.showLoadPopup(self);
-            timerTest();
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
+            if (! Validator.validaData(fdatato, edatato)) isValid = false;
+            if (isValid) {
+                Dialogs.showLoadPopup(self);
+                timerTest();
+            }
+            
         });
     }
     

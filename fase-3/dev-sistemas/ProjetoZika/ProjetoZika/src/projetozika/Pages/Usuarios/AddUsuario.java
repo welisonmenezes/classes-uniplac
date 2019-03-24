@@ -114,7 +114,11 @@ public class AddUsuario extends Templates.BaseFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-                Navigation.currentPage = "usuarios";
+                if (mode.equals("perfil")) {
+                    Navigation.currentPage = "perfil";
+                } else {
+                    Navigation.currentPage = "usuarios";
+                }
             }
         });
         
