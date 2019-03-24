@@ -231,6 +231,10 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         bg.add(bSave, new AbsoluteConstraints(220, 222, -1, -1));
         bSave.addActionListener((ActionEvent e) -> {
             
+            // limpa erros
+            clearErrors();
+            
+            // validação
             boolean isValid = true;
             if (! Validator.validaData(fdata, edata)) isValid = false;
             if (! Validator.validaNumero(fnumero, enumero)) isValid = false;
@@ -264,6 +268,15 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     
     public void addProduto(Produto produto) {
         panelListarProdutos.addProduto(produto);
+    }
+    
+    private void clearErrors() {
+        enumero.setText("");
+        ecnpj.setText("");
+        eserie.setText("");
+        evalor.setText("");
+        edata.setText("");
+        linfo.setText("");
     }
     
     private Timer t;

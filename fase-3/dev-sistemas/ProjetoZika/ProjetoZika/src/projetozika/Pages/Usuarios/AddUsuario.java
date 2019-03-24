@@ -280,6 +280,10 @@ public class AddUsuario extends Templates.BaseFrame {
         
         bSave.addActionListener((ActionEvent e) -> {
             
+            // limpa erros
+            clearErrors();
+            
+            // validação
             boolean isValid = true;
             if (! Validator.validaCampo(fnome, enome)) isValid = false;
             if (! Validator.validaCpf(fcpf, ecpf)) isValid = false;
@@ -301,6 +305,20 @@ public class AddUsuario extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+    }
+    
+    private void clearErrors() {
+        enome.setText("");
+        ecpf.setText("");
+        esexo.setText("");
+        edata.setText("");
+        ecelular.setText("");
+        etelefone.setText("");
+        eemail.setText("");
+        esetor.setText("");
+        epermissao.setText("");
+        elogin.setText("");
+        esenha.setText("");
     }
     
     private Timer t;

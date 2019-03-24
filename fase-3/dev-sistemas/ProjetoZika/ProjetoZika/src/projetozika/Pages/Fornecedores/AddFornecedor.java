@@ -150,6 +150,9 @@ public class AddFornecedor extends Templates.BaseFrame {
         
         bSave.addActionListener((ActionEvent e) -> {
             
+            // limpa erros
+            clearErrors();
+            
             // validação
             boolean isValid = true;
             if (! Validator.validaCnpj(fcnpj, ecnpj)) isValid = false;
@@ -164,6 +167,12 @@ public class AddFornecedor extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+    }
+    
+    private void clearErrors() {
+        ename.setText("");
+        ecnpj.setText("");
+        etel.setText("");
     }
     
     private Timer t;

@@ -122,7 +122,11 @@ public class Login extends javax.swing.JFrame {
      * @param evt o ActionEvent
      */
     private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
-        // login
+        
+        // reseta erro
+        lInfo.setText("");
+        
+        // validação
         String login = flogin.getText();
         char[] password = fsenha.getPassword();
         String userPassword = "123456";
@@ -135,6 +139,7 @@ public class Login extends javax.swing.JFrame {
         } else {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
+        
     }//GEN-LAST:event_bentrarActionPerformed
     
     /**

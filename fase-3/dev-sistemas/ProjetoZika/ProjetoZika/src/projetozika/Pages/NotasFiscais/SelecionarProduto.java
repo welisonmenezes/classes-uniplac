@@ -155,6 +155,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
         add(selProd, new AbsoluteConstraints(240, 293, -1, -1));
         selProd.addActionListener((ActionEvent e) -> {
             
+            // limpa erros
+            clearErrors();
+            
+            // validação
             boolean isValid = true;
             if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
             if (! Validator.validaNumero(fquantidade, equantidade)) isValid = false;
@@ -166,6 +170,13 @@ public class SelecionarProduto extends javax.swing.JPanel {
             }
             
         });
+    }
+    
+    private void clearErrors() {
+        eunidade.setText("");
+        equantidade.setText("");
+        evalor.setText("");
+        enome.setText("");
     }
     
     private Timer t;

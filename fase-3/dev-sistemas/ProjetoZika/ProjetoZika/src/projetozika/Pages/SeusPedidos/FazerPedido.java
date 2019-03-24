@@ -193,7 +193,11 @@ public class FazerPedido extends Templates.BaseFrame {
         Styles.defaultButton(btnFinalizar);
         
         btnFinalizar.addActionListener((ActionEvent e) -> {
-            // TODO: finalizar pedido aqui
+            
+            // limpa erro
+            efinalizar.setText("");
+            
+            // validação
             if (pedidosProdutos.size() > 0) {
                 pedidosProdutos.forEach(pp -> {
                     System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade());

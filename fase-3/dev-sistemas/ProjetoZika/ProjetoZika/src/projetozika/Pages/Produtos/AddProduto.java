@@ -159,6 +159,9 @@ public class AddProduto extends Templates.BaseFrame {
         
         bSave.addActionListener((ActionEvent e) -> {
             
+            // limpa erros
+            clearErrors();
+            
             // validação
             boolean isValid = true;
             if (! Validator.validaCampo(fnome, enome)) isValid = false;
@@ -172,6 +175,12 @@ public class AddProduto extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+    }
+    
+    private void clearErrors() {
+        enome.setText("");
+        eunidade.setText("");
+        edescricao.setText("");
     }
     
     private Timer t;

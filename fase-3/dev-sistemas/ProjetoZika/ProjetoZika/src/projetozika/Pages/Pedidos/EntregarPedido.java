@@ -142,6 +142,10 @@ public class EntregarPedido extends Templates.BaseFrame {
         
         btnConfirm.addActionListener((ActionEvent e) -> {
             
+            // reseta erro
+            linfo.setText("");
+            
+            // validação
             String login = flogin.getText();
             char[] password = fsenha.getPassword();
             String userPassword = "123456";

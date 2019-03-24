@@ -143,6 +143,9 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
         btnRelatorioPedido.addActionListener((ActionEvent e) -> {
             
+            // limpa erros
+            clearErrors();
+            
             // validação
             boolean isValid = true;
             if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
@@ -153,6 +156,11 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             }
             
         });
+    }
+    
+    private void clearErrors() {
+        edatafrom.setText("");
+        edatato.setText("");
     }
     
     private Timer t;
