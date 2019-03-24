@@ -6,12 +6,18 @@
 package Config;
 
 import Utils.Methods;
+import java.util.Locale;
 
 /**
  *
  * @author Welison
  */
 public class Environment {
+    
+    public static String getCurrentLang() {
+        Locale currentLocale = Locale.getDefault();
+        return currentLocale.getLanguage();
+    }
     
     public static final String[] UNIDADES = {
         "",

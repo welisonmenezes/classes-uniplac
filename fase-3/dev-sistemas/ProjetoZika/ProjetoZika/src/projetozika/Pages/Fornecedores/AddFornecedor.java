@@ -11,6 +11,7 @@ import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
@@ -148,20 +149,18 @@ public class AddFornecedor extends Templates.BaseFrame {
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
         
         bSave.addActionListener((ActionEvent e) -> {
-            if(fname.getText().equals("") || ftel.getText().equals("") || fcnpj.getText().equals("")){
-                if(fname.getText().equals("")){
-                    ename.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                if(ftel.getText().equals("")) {
-                    etel.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                if(fcnpj.getText().equals("")) {
-                    ecnpj.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-            } else {
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaCnpj(fcnpj, ecnpj)) isValid = false;
+            if (! Validator.validaCampo(fname, ename)) isValid = false;
+            if (! Validator.validaTelefone(ftel, etel)) isValid = false;
+            if (isValid) {
                 Dialogs.showLoadPopup(bg);
                 timerTest();
+                
             }
+
         });
         
         pCenter.add(bg);

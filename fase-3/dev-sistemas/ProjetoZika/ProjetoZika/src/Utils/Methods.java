@@ -5,6 +5,8 @@
  */
 package Utils;
 
+import Config.Environment;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -12,6 +14,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -289,5 +295,26 @@ public class Methods {
     public static String getTranslation(String text) {
         ResourceBundle bundle = ResourceBundle.getBundle("sources/Bundle");
         return bundle.getString(text);
+    }
+    
+    public static void setParamsToDateChooser(JDateChooser field, Properties params) {
+        SimpleDateFormat sdf;
+        if (Environment.getCurrentLang().equals("en")) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        try {
+            Date newDate = sdf.parse(params.getProperty("data", ""));
+            field.setDate(newDate);
+        } catch (ParseException ex) {}
+    }
+    
+    public static void setDateChooserFormat(JDateChooser field) {
+        if (Environment.getCurrentLang().equals("en")) {
+            field.setDateFormatString("yyyy-MM-dd");
+        } else {
+            field.setDateFormatString("dd/MM/yyyy");
+        }
     }
 }

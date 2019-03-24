@@ -12,6 +12,7 @@ import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -154,32 +155,15 @@ public class SelecionarProduto extends javax.swing.JPanel {
         add(selProd, new AbsoluteConstraints(240, 293, -1, -1));
         selProd.addActionListener((ActionEvent e) -> {
             
-            if(cnome.getSelectedItem() == null
-                || funidade.getText().equals("")
-                || fquantidade.getText().equals("")
-                || fvalor.getText().equals("")) {
-                
-                if (cnome.getSelectedItem() == null) {
-                    enome.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if (funidade.getText().equals("")) {
-                    eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if (fquantidade.getText().equals("")) {
-                    equantidade.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if (fvalor.getText().equals("")) {
-                    evalor.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-            } else {
+            boolean isValid = true;
+            if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
+            if (! Validator.validaNumero(fquantidade, equantidade)) isValid = false;
+            if (! Validator.validaValor(fvalor, evalor)) isValid = false;
+            if (! Validator.validaComboBox(cnome, enome)) isValid = false;
+            if (isValid) {
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
-            
             
         });
     }

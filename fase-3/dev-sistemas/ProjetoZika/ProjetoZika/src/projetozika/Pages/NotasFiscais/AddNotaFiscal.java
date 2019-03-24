@@ -12,6 +12,7 @@ import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -212,6 +213,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
+        Methods.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 220, -1, -1));
         
         edata = new JLabel("");
@@ -229,43 +231,21 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         bg.add(bSave, new AbsoluteConstraints(220, 222, -1, -1));
         bSave.addActionListener((ActionEvent e) -> {
             
-            // validation
-            if(panelListarProdutos.produtos.size() < 1
-                || fnumero.getText().equals("")
-                || ccnpj.getSelectedItem() == null
-                || fserie.getText().equals("")
-                || fvalor.getText().equals("")
-                || ((JTextField)fdata.getDateEditor().getUiComponent()).getText().isEmpty()) {
-                
-                if (panelListarProdutos.produtos.size() < 1) {
-                    linfo.setText(Methods.getTranslation("AdicioneUmProduto"));
-                }
-                
-                if (fnumero.getText().equals("")){
-                    enumero.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if (ccnpj.getSelectedItem() == null) {
-                    ecnpj.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if (fserie.getText().equals("")){
-                    eserie.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if (fvalor.getText().equals("")){
-                    evalor.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-                if( ((JTextField)fdata.getDateEditor().getUiComponent()).getText().isEmpty() ) {
-                    edata.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                
-            } else {
+            boolean isValid = true;
+            if (! Validator.validaData(fdata, edata)) isValid = false;
+            if (! Validator.validaNumero(fnumero, enumero)) isValid = false;
+            if (! Validator.validaNumero(fserie, eserie)) isValid = false;
+            if (! Validator.validaCnpj(fcnpj, ecnpj)) isValid = false;
+            if (! Validator.validaComboBox(ccnpj, ecnpj)) isValid = false;
+            if (! Validator.validaValor(fvalor, evalor)) isValid = false;
+            if (panelListarProdutos.produtos.size() < 1) {
+                linfo.setText(Methods.getTranslation("AdicioneUmProduto"));
+                isValid = false;
+            }
+            if (isValid) {
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
-            
         });
         
         panelAddProduto = new SelecionarProduto(self);

@@ -106,6 +106,7 @@ public class SuggestionsBox {
     }
     
     private void setSelectedItem(String value) {
+        Combo.setSelectedIndex(0);
         for (int i = 0; i < Model.size(); i++) {
             ComboItem item = (ComboItem) Model.get(i);
             if (value.equals(item.getDescription())) {

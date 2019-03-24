@@ -7,7 +7,6 @@ package projetozika.Pages.NotasFiscais;
 
 
 import Models.NotaFiscal;
-import Templates.BaseLayout;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -179,12 +178,15 @@ public class NotasFiscais extends Templates.BaseLayout {
         
         fcnpj = new JTextField();
         Styles.defaultField(fcnpj, 150);
+        fcnpj.setText(params.getProperty("cnpj", ""));
         
         lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj, false);
         
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
+        Methods.setDateChooserFormat(fdata);
+        Methods.setParamsToDateChooser(fdata, params);
         
         ldata = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(ldata, false);
@@ -209,8 +211,10 @@ public class NotasFiscais extends Templates.BaseLayout {
         
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
             timerTest();
-            pagination(3);
         });
     }
     

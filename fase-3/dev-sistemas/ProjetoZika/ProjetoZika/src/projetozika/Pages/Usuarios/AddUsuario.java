@@ -175,6 +175,7 @@ public class AddUsuario extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
+        Methods.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 130, -1, -1));
         
         edata = new JLabel("");

@@ -8,7 +8,6 @@ package projetozika.Pages.SeusPedidos;
 import Config.Environment;
 import Models.Pedido;
 import Models.Usuario;
-import Templates.BaseLayout;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -20,10 +19,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -206,10 +202,8 @@ public class SeusPedidos extends Templates.BaseLayout {
     private void addFilterContent() {
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
-        try {
-            Date newDate = new SimpleDateFormat("dd/MM/yyyy").parse(params.getProperty("data", ""));
-            fData.setDate(newDate);
-        } catch (ParseException ex) {}
+        Methods.setDateChooserFormat(fData);
+        Methods.setParamsToDateChooser(fData, params);
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);

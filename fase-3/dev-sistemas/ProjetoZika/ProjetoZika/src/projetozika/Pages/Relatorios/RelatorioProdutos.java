@@ -116,6 +116,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         
         fdatafrom = new JDateChooser();
         Styles.defaultDateChooser(fdatafrom, 300);
+        Methods.setDateChooserFormat(fdatafrom);
         add(fdatafrom, new AbsoluteConstraints(20, 170, -1, -1));
         
         edatafrom = new JLabel("");
@@ -128,6 +129,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         
         fdatato = new JDateChooser();
         Styles.defaultDateChooser(fdatato, 300);
+        Methods.setDateChooserFormat(fdatato);
         add(fdatato, new AbsoluteConstraints(340, 170, -1, -1));
         
         edatato = new JLabel("");
