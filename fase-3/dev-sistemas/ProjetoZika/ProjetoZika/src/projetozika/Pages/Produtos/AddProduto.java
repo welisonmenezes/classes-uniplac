@@ -12,6 +12,7 @@ import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
@@ -157,20 +158,17 @@ public class AddProduto extends Templates.BaseFrame {
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
         
         bSave.addActionListener((ActionEvent e) -> {
-            if(fnome.getText().equals("") || funidade.getSelectedItem().equals("") || fdescricao.getText().equals("")){
-                if(fnome.getText().equals("")){
-                    enome.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                if(funidade.getSelectedItem().equals("")) {
-                    eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-                if(fdescricao.getText().equals("")) {
-                    edescricao.setText(Methods.getTranslation("CampoObrigatorio"));
-                }
-            } else {
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaCampo(fnome, enome)) isValid = false;
+            if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
+            if (! Validator.validaCampo(fdescricao, edescricao)) isValid = false;
+            if (isValid) {
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
+
         });
         
         pCenter.add(bg);

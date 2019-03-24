@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
@@ -22,6 +23,14 @@ public class Validator {
     
     public static boolean isEmpty(JTextField field) {
         return field.getText().equals("");
+    }
+    
+    public static boolean isEmpty(JTextArea field) {
+        return field.getText().equals("");
+    }
+    
+    public static boolean isEmpty(JComboBox combo) {
+        return combo.getSelectedItem().toString().equals("");
     }
     
     public static boolean isInteger(JTextField field) {
@@ -76,6 +85,22 @@ public class Validator {
     
     
     public static boolean validaCampo(JTextField field, JLabel errorLabel) {
+        if (isEmpty(field)) {
+            errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean validaCampo(JTextArea field, JLabel errorLabel) {
+        if (isEmpty(field)) {
+            errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean validaCampo(JComboBox field, JLabel errorLabel) {
         if (isEmpty(field)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
             return false;
