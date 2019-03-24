@@ -10,6 +10,7 @@ import Templates.ComboItem;
 import com.toedter.calendar.JDateChooser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
@@ -81,6 +82,10 @@ public class Validator {
         return true;
     }
     
+    public static boolean isButtonGroupSelected(ButtonGroup group) {
+        return group.getSelection() != null;
+    }
+    
     
     
     
@@ -132,6 +137,14 @@ public class Validator {
         return true;
     }
     
+    public static boolean validaCpf(JTextField field, JLabel errorLabel) {
+        if (isEmpty(field) || !isValidSize(field, 20)) {
+            errorLabel.setText(Methods.getTranslation("CpfInvalido"));
+            return false;
+        }
+        return true;
+    }
+    
     public static boolean validaData(JDateChooser field, JLabel errorLabel) {
         String data = ((JTextField)field.getDateEditor().getUiComponent()).getText();
         if (data.isEmpty() || !isValidDate(data)) {
@@ -152,6 +165,14 @@ public class Validator {
     public static boolean validaValor(JTextField field, JLabel errorLabel) {
         if (isEmpty(field)|| !isDouble(field)) {
             errorLabel.setText(Methods.getTranslation("ValorInvalido"));
+            return false;
+        }
+        return true;
+    }
+    
+    public static boolean validaButtonGroup(ButtonGroup group, JLabel errorLabel) {
+        if (! isButtonGroupSelected(group)) {
+            errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
             return false;
         }
         return true;

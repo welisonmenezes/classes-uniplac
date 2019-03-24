@@ -10,6 +10,7 @@ import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -274,8 +275,25 @@ public class AddUsuario extends Templates.BaseFrame {
         bg.add(bSave, new AbsoluteConstraints(440, 313, -1, -1));
         
         bSave.addActionListener((ActionEvent e) -> {
-            Dialogs.showLoadPopup(bg);
-            timerTest();
+            
+            boolean isValid = true;
+            if (! Validator.validaCampo(fnome, enome)) isValid = false;
+            if (! Validator.validaCpf(fcpf, ecpf)) isValid = false;
+            if (! Validator.validaButtonGroup(gsexo, esexo)) isValid = false;
+            if (! Validator.validaData(fdata, edata)) isValid = false;
+            if (! Validator.validaTelefone(fcelular, ecelular)) isValid = false;
+            if (! Validator.validaTelefone(ftelefone, etelefone)) isValid = false;
+            if (! Validator.validaCampo(femail, eemail)) isValid = false;
+            if (! Validator.validaCampo(fsetor, esetor)) isValid = false;
+            if (! Validator.validaCampo(fpermissao, epermissao)) isValid = false;
+            if (! Validator.validaCampo(flogin, elogin)) isValid = false;
+            if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
+            if (isValid) {
+                Dialogs.showLoadPopup(bg);
+                timerTest();
+            }
+            
+            
         });
         
         pCenter.add(bg);
