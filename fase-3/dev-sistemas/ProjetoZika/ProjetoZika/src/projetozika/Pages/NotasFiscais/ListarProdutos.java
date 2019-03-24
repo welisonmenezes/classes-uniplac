@@ -34,21 +34,34 @@ public class ListarProdutos extends javax.swing.JPanel {
      * @param mode Mostra como o painel foi chamado, se como edição ou como visualização
      */
     public ListarProdutos(String mode) {
-        initComponents();
-        Styles.setBorderTitle(this, Methods.getTranslation("ProdutosDaNotaFiscal"));
-        setLayout(new BorderLayout());
         this.mode = mode;
+        this.produtos = new ArrayList<>();
+        
+        initPage();
+    }
+    
+    /**
+     * Creates new form ListarProdutos
+     * @param mode Mostra como o painel foi chamado, se como edição ou como visualização
+     */
+    public ListarProdutos(String id, String mode) {
+        this.mode = mode;
+        this.produtos = new ArrayList<>();
+        
+        for (int i = 0; i < 5; i++) {
+            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+            produtos.add(p);
+        }
         
         initPage();
     }
     
     private void initPage() {
         
-        produtos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-            produtos.add(p);
-        }
+        initComponents();
+        Styles.setBorderTitle(this, Methods.getTranslation("ProdutosDaNotaFiscal"));
+        setLayout(new BorderLayout());
+        
         
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);

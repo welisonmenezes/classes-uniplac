@@ -102,13 +102,6 @@ public class AddProduto extends Templates.BaseFrame {
         addCenterContent();
     }
     
-    private void fillFields(String id) {
-        Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-        fnome.setText(p.getNome());
-        funidade.setSelectedItem("Unidade");
-        fdescricao.setText(p.getDescricao());
-    }
-    
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
@@ -175,6 +168,13 @@ public class AddProduto extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+    }
+    
+    private void fillFields(String id) {
+        Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+        fnome.setText(p.getNome());
+        funidade.setSelectedItem("Unidade");
+        fdescricao.setText(p.getDescricao());
     }
     
     private void clearErrors() {

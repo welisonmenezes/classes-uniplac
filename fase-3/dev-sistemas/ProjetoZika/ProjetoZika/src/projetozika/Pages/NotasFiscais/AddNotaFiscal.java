@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Models.NotaFiscal;
 import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
@@ -62,6 +63,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JPanel pSuggestions;
     public static JComboBox ccnpj;
     private JLabel linfo;
+    private String id;
     
     public AddNotaFiscal(Properties params) {
         this.self = this;
@@ -75,17 +77,21 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         this.params = params;
+        this.id = id;
         
         switch (this.mode) {
             case "view":
                 initPage(Methods.getTranslation("VerNotaFiscal"));
                 Methods.disabledFields(bg);
-                Methods.disabledFields(panelAddProduto);
+                panelAddProduto.setVisible(false);
+                addFornecedor.setVisible(false);
                 break;
             case "edit":
                 initPage(Methods.getTranslation("EditarNotaFiscal"));
                 break;
         }
+        
+        fillFields(id);
     }
     
     
@@ -257,7 +263,11 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         panelAddProduto.setPreferredSize(new Dimension(375, 360));
         bg.add(panelAddProduto, new AbsoluteConstraints(570, 10, -1, -1));
         
-        panelListarProdutos = new ListarProdutos(this.mode);
+        if (this.mode.equals("edit") || this.mode.equals("view")) {
+            panelListarProdutos = new ListarProdutos(this.id, this.mode);
+        } else {
+            panelListarProdutos = new ListarProdutos(this.mode);
+        }
         panelListarProdutos.setVisible(true);
         panelListarProdutos.setPreferredSize(new Dimension(945, 300));
         bg.add(panelListarProdutos, new AbsoluteConstraints(0, 400, -1, -1));
@@ -268,6 +278,16 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     
     public void addProduto(Produto produto) {
         panelListarProdutos.addProduto(produto);
+    }
+    
+    private void fillFields(String id) {
+        NotaFiscal nf = new NotaFiscal(444,222,"222333-33",34.4f,"12/05/2009");
+        fnumero.setText(nf.getNumero() + "");
+        fserie.setText(nf.getSerie() + "");
+        ccnpj.addItem(new ComboItem(0, nf.getCnpj()));
+        fcnpj.setText(nf.getCnpj());
+        fvalor.setText(nf.getValor() + "");
+        Methods.setDateToDateChooser(fdata, nf.getData());
     }
     
     private void clearErrors() {

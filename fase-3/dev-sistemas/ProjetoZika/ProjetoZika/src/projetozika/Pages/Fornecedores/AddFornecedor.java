@@ -94,13 +94,6 @@ public class AddFornecedor extends Templates.BaseFrame {
         addCenterContent();
     }
     
-    private void fillFields(String id) {
-        Fornecedor f = new Fornecedor(111, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-        fname.setText(f.getNome());
-        ftel.setText(f.getTelefone());
-        fcnpj.setText(f.getCnpj());
-    }
-    
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
@@ -167,6 +160,13 @@ public class AddFornecedor extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+    }
+    
+    private void fillFields(String id) {
+        Fornecedor f = new Fornecedor(111, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
+        fname.setText(f.getNome());
+        ftel.setText(f.getTelefone());
+        fcnpj.setText(f.getCnpj());
     }
     
     private void clearErrors() {

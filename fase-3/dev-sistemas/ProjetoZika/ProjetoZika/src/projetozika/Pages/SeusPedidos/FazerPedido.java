@@ -60,6 +60,8 @@ public class FazerPedido extends Templates.BaseFrame {
        this.self = this;
        this.mode = "add";
        this.params = params;
+       pedidosProdutos = new ArrayList<>();
+       
        initPage(Methods.getTranslation("FazerPedido"));
    }
    
@@ -67,6 +69,9 @@ public class FazerPedido extends Templates.BaseFrame {
        this.self = this;
        this.mode = mode;
        this.params = params;
+       pedidosProdutos = new ArrayList<>();
+       
+       fillFields();
        
         switch (this.mode) {
             case "view":
@@ -81,13 +86,6 @@ public class FazerPedido extends Templates.BaseFrame {
    }
    
     private void initPage(String title) {
-        
-        pedidosProdutos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
-            pedidosProdutos.add(pp);
-        }
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
@@ -304,6 +302,14 @@ public class FazerPedido extends Templates.BaseFrame {
                     updateCenterContent();
                 }
             });
+        }
+    }
+    
+    private void fillFields() {
+        for (int i = 0; i < 5; i++) {
+            Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
+            PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
+            pedidosProdutos.add(pp);
         }
     }
     

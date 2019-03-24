@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -124,8 +125,6 @@ public class AddUsuario extends Templates.BaseFrame {
         
         addCenterContent();
     }
-    
-    private void fillFields(String id) {}
     
     private void addCenterContent() {
         bg = new JPanel();
@@ -305,6 +304,24 @@ public class AddUsuario extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+    }
+    
+    private void fillFields(String id) {
+        Usuario u = new Usuario("3344334","Welison Menezes","email@teste","999999","222222","Recursos Humanos","Masculino","Administrador","11/10/1990");
+        u.setLogin("welison");
+        u.setSenha("123456");
+        
+        fnome.setText(u.getNome());
+        fcpf.setText(u.getCpf());
+        Methods.setButtonGroup(u.getSexo(), gsexo.getElements());
+        Methods.setDateToDateChooser(fdata, u.getData());
+        fcelular.setText(u.getCelular());
+        ftelefone.setText(u.getTelefone());
+        femail.setText(u.getEmail());
+        fsetor.setSelectedItem(u.getSetor());
+        fpermissao.setSelectedItem(u.getPermissao());
+        flogin.setText(u.getLogin());
+        fsenha.setText(u.getSenha());
     }
     
     private void clearErrors() {

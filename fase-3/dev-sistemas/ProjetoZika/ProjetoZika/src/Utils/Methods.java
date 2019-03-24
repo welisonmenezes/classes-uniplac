@@ -17,9 +17,11 @@ import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -310,11 +312,33 @@ public class Methods {
         } catch (ParseException ex) {}
     }
     
+    public static void setDateToDateChooser(JDateChooser field, String date) {
+        SimpleDateFormat sdf;
+        if (Environment.getCurrentLang().equals("en")) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        try {
+            Date newDate = sdf.parse(date);
+            field.setDate(newDate);
+        } catch (ParseException ex) {}
+    }
+    
     public static void setDateChooserFormat(JDateChooser field) {
         if (Environment.getCurrentLang().equals("en")) {
             field.setDateFormatString("yyyy-MM-dd");
         } else {
             field.setDateFormatString("dd/MM/yyyy");
+        }
+    }
+    
+    public static void setButtonGroup(String rdValue, Enumeration elements ){
+        while (elements.hasMoreElements()){
+            AbstractButton button = (AbstractButton)elements.nextElement();
+            if(button.getActionCommand().equals(rdValue)){
+                button.setSelected(true);
+            }
         }
     }
 }
