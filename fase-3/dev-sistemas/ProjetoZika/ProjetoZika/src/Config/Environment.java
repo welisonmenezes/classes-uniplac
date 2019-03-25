@@ -5,6 +5,7 @@
  */
 package Config;
 
+import Models.Usuario;
 import Utils.Methods;
 import java.util.Locale;
 
@@ -13,6 +14,16 @@ import java.util.Locale;
  * @author Welison
  */
 public class Environment {
+    
+    private static Usuario user;
+    
+    public static void setLoggedUser(Usuario u) {
+        user = u;
+    }
+    
+    public static Usuario getLoggedUser() {
+        return user;
+    }
     
     public static String getCurrentLang() {
         Locale currentLocale = Locale.getDefault();

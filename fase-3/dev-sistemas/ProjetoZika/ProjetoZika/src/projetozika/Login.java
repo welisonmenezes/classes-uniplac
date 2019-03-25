@@ -5,6 +5,8 @@
  */
 package projetozika;
 
+import Config.Environment;
+import Models.Usuario;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
@@ -131,6 +133,13 @@ public class Login extends javax.swing.JFrame {
         char[] password = fsenha.getPassword();
         String userPassword = "123456";
         if (login.equals("welison") && Arrays.equals(password, userPassword.toCharArray())) {
+            
+            // seta usuario logado
+            Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
+            u.setLogin("welison");
+            u.setSenha("123456");
+            Environment.setLoggedUser(u);
+            
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);

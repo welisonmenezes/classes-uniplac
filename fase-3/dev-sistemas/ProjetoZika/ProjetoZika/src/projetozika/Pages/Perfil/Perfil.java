@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Perfil;
 
+import Config.Environment;
 import Models.Usuario;
 import Utils.Methods;
 import Utils.Navigation;
@@ -41,9 +42,7 @@ public class Perfil extends Templates.BaseLayout {
         initComponents();
         createBaseLayout();
         
-        usuario = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
-        usuario.setLogin("welison");
-        usuario.setSenha("123456");
+        usuario = Environment.getLoggedUser();
         
         addTopContent(Methods.getTranslation("Perfil"));
         addCenterContent();
@@ -107,7 +106,7 @@ public class Perfil extends Templates.BaseLayout {
         Styles.defaultButton(btnEditar);
         pBottom.add(btnEditar);
         btnEditar.addActionListener((ActionEvent e) -> {
-            Navigation.updateLayout("editarPerfil", "11", params);
+            Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
         });
     }
     
