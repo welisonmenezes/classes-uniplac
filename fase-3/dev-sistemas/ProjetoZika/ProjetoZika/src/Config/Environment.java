@@ -10,26 +10,41 @@ import Utils.Methods;
 import java.util.Locale;
 
 /**
- *
+ * Guarda usuário logado e opções de combobox
  * @author Welison
  */
 public class Environment {
     
     private static Usuario user;
     
+    /**
+     * seta o usuario logado no sistema
+     * @param u O usuário logado
+     */
     public static void setLoggedUser(Usuario u) {
         user = u;
     }
     
+    /**
+     * retorna o usuário logado no sistema
+     * @return  o usuário logado no sistema
+     */
     public static Usuario getLoggedUser() {
         return user;
     }
     
+    /**
+     * retorna o idioma corrente da aplicação
+     * @return o idioma corrente
+     */
     public static String getCurrentLang() {
         Locale currentLocale = Locale.getDefault();
         return currentLocale.getLanguage();
     }
     
+    /**
+     * constante com as unidades usadas na aplicação
+     */
     public static final String[] UNIDADES = {
         "",
         Methods.getTranslation("Quilo"),
@@ -39,6 +54,9 @@ public class Environment {
         Methods.getTranslation("Unidade")
     };
     
+    /**
+     * constante com as permissões usadas na aplicação
+     */
     public static final String[] PERMISSOES =  {
         "",
         Methods.getTranslation("Usuario"),
@@ -46,6 +64,9 @@ public class Environment {
         Methods.getTranslation("Administrador")
     };
     
+    /**
+     * constante com os setores usados na aplicação
+     */
     public static final String[] SETORES = {
         "",
         Methods.getTranslation("RecursosHumanos"),
@@ -55,6 +76,9 @@ public class Environment {
         Methods.getTranslation("Almoxarifado"),
     };
     
+    /**
+     * constante com os status usados na aplicação
+     */
     public static final String [] STATUS = {
         "",
         Methods.getTranslation("Pendente"),

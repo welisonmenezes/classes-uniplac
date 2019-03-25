@@ -23,7 +23,6 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
         
-        
         if (value.equals("")) {
             setEnabled(false);
             setVisible(false);
@@ -39,6 +38,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
             setForeground(table.getForeground());
             setBackground(UIManager.getColor("Button.background"));
         }
+        
         setText(value.toString());
         return this;
     }

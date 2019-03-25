@@ -22,18 +22,38 @@ import javax.swing.JTextField;
  */
 public class Validator {
     
+    /**
+     * Checa se o valor do campo é vazio
+     * @param field o campo a ser verificado
+     * @return true se vazio
+     */
     public static boolean isEmpty(JTextField field) {
         return field.getText().equals("");
     }
     
+    /**
+     * Checa se o valor do campo é vazio
+     * @param field o campo a ser verificado
+     * @return true se vazio
+     */
     public static boolean isEmpty(JTextArea field) {
         return field.getText().equals("");
     }
     
+    /**
+     * Checa se o valor do campo é vazio
+     * @param field o campo a ser verificado
+     * @return true se vazio
+     */
     public static boolean isEmpty(JComboBox combo) {
         return combo.getSelectedItem().toString().equals("");
     }
     
+    /**
+     * Checa se o valor do campo é um inteiro
+     * @param field o campo a ser verificado
+     * @return true se é inteiro
+     */
     public static boolean isInteger(JTextField field) {
         String s = field.getText();
         try { 
@@ -44,6 +64,11 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Checa se o valor do campo é um double
+     * @param field o campo a ser verificado
+     * @return true se é um double
+     */
     public static boolean isDouble(JTextField field) {
         String s = field.getText();
         try { 
@@ -54,10 +79,20 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Checa se o tamanho do valor do campo é menor ou igual a um dado tamanho
+     * @param field o campo a ser verificado
+     * @return true se é menor ou igual
+     */
     public static boolean isValidSize(JTextField field, int size) {
         return (field.getText().length() <= size);
     }
     
+    /**
+     * Checa se a data respeita o formato de data do idioma da aplicação
+     * @param data a data a ser validada
+     * @return true se é uma data válida
+     */
     public static boolean isValidDate(String data) {
         try {
             SimpleDateFormat sdf;
@@ -74,6 +109,11 @@ public class Validator {
         }
     }
     
+    /**
+     * Checa se o combobox do campo de sugestão tem um item selecionado
+     * @param combo o combobox do campo de sugestão
+     * @return true se tem um item selecionado
+     */
     public static boolean isComboBoxSelected(JComboBox combo) {
         ComboItem ci = (ComboItem) combo.getSelectedItem();
         if (combo.getSelectedItem() == null || ci.getId() == 0) {
@@ -82,13 +122,21 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Checa se um dado ButtonGroup tem um item marcado
+     * @param group o ButtonGroup a ser verificado
+     * @return true se tiver um item marcado
+     */
     public static boolean isButtonGroupSelected(ButtonGroup group) {
         return group.getSelection() != null;
     }
     
-    
-    
-    
+    /**
+     * Valida o se o campo está vazio e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se não é vazio
+     */
     public static boolean validaCampo(JTextField field, JLabel errorLabel) {
         if (isEmpty(field)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
@@ -97,6 +145,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo está vazio e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se não é vazio
+     */
     public static boolean validaCampo(JTextArea field, JLabel errorLabel) {
         if (isEmpty(field)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
@@ -105,6 +159,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo tem item selecionado e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se tem item selecionado
+     */
     public static boolean validaCampo(JComboBox field, JLabel errorLabel) {
         if (isEmpty(field)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
@@ -113,6 +173,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo recebeou um número válido e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se recebeu número válido
+     */
     public static boolean validaNumero(JTextField field, JLabel errorLabel) {
         if (isEmpty(field)|| !isInteger(field)) {
             errorLabel.setText(Methods.getTranslation("NumeroInvalido"));
@@ -121,6 +187,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo recebeu telefone válido e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se recebeu telefone válido
+     */
     public static boolean validaTelefone(JTextField field, JLabel errorLabel) {
         if (isEmpty(field)|| !isValidSize(field, 20)) {
             errorLabel.setText(Methods.getTranslation("TelefoneInvalido"));
@@ -129,6 +201,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo recebeu cnpj válido e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se recebeu cnpj válido
+     */
     public static boolean validaCnpj(JTextField field, JLabel errorLabel) {
         if (isEmpty(field) || !isValidSize(field, 20)) {
             errorLabel.setText(Methods.getTranslation("CnpjInvalido"));
@@ -137,6 +215,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo recebeu cpf válido e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se recebeu cpf válido
+     */
     public static boolean validaCpf(JTextField field, JLabel errorLabel) {
         if (isEmpty(field) || !isValidSize(field, 20)) {
             errorLabel.setText(Methods.getTranslation("CpfInvalido"));
@@ -145,6 +229,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo data válida e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se recebeu data válida
+     */
     public static boolean validaData(JDateChooser field, JLabel errorLabel) {
         String data = ((JTextField)field.getDateEditor().getUiComponent()).getText();
         if (data.isEmpty() || !isValidDate(data)) {
@@ -154,6 +244,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o combobox de sugestão foi tem item selecionado e adiciona a mensagem de erro no seu respectivo label
+     * @param combo o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se tem item selecionado
+     */
     public static boolean validaComboBox(JComboBox combo, JLabel errorLabel) {
         if (!isComboBoxSelected(combo)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
@@ -162,6 +258,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o campo recebeu valor válido e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se recebou valor válido
+     */
     public static boolean validaValor(JTextField field, JLabel errorLabel) {
         if (isEmpty(field)|| !isDouble(field)) {
             errorLabel.setText(Methods.getTranslation("ValorInvalido"));
@@ -170,6 +272,12 @@ public class Validator {
         return true;
     }
     
+    /**
+     * Valida o se o group tem item marcado e adiciona a mensagem de erro no seu respectivo label
+     * @param group o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @return true se tem item marcado
+     */
     public static boolean validaButtonGroup(ButtonGroup group, JLabel errorLabel) {
         if (! isButtonGroupSelected(group)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));

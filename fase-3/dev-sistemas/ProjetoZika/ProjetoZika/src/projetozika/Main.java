@@ -35,6 +35,9 @@ public class Main extends javax.swing.JFrame {
         translation();
     }
     
+    /**
+     * Resolva as traduções
+     */
     private void translation() {
         setTitle(Methods.getTranslation("ProjetoZika"));
     }

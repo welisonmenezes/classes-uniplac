@@ -20,8 +20,8 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
- * @author welis
+ * Comobobox de sugestão
+ * @author welison
  */
 public class SuggestionsBox {
     
@@ -31,6 +31,13 @@ public class SuggestionsBox {
     private final int Width;
     private final ArrayList<ComboItem> Model;
     
+    /**
+     * Inicializa o combobox de sugestão
+     * @param panel o JPanel onde os elementos serão inseridos
+     * @param field o JTextField onde será digitado a busca
+     * @param combo o JComboBox onde será adicionado as sugestões
+     * @param width a largura do elemento
+     */
     public SuggestionsBox(JPanel panel, JTextField field, JComboBox combo, int width) {
         Panel = panel;
         Field = field;
@@ -42,6 +49,9 @@ public class SuggestionsBox {
         addTextFieldEvent();
     }
     
+    /**
+     * Adiciona estilos aos elementos e os posiciona no painel container
+     */
     private void addStyles() {
         Panel.setLayout(new AbsoluteLayout());
         Panel.setPreferredSize(new Dimension(Width, 39));
@@ -54,6 +64,9 @@ public class SuggestionsBox {
         Panel.add(Combo, new AbsoluteConstraints(0, 0, -1, -1));
     }
     
+    /**
+     * Respondo à seleção de um item do combobox e adicona o texto no campo de busca
+     */
     private void addComboboxEvent() {
         Combo.addActionListener ((ActionEvent e) -> {
             JComboBox cb = (JComboBox) e.getSource();
@@ -69,6 +82,9 @@ public class SuggestionsBox {
         });
     }
     
+    /**
+     * Responde aos KeyKvents do campo de busca
+     */
     private void addTextFieldEvent() {
         Field.addKeyListener(new KeyAdapter() {
             @Override
@@ -88,6 +104,10 @@ public class SuggestionsBox {
         });
     }
     
+    /**
+     * Reseta o combobox e adiciona novos elementos retornados por addElements()
+     * @param e o KeyEvent disparado pelo camopo de busca
+     */
     private void handleKeyEvents(KeyEvent e) {
         JTextField tf = (JTextField) e.getSource();
         Combo.removeAll();
@@ -105,6 +125,10 @@ public class SuggestionsBox {
         setSelectedItem(tf.getText());
     }
     
+    /**
+     * Seta como selecionado o texto do campo de busca que coincide com algum item do combobox
+     * @param value o texto digitado no campo de busca
+     */
     private void setSelectedItem(String value) {
         Combo.setSelectedIndex(0);
         for (int i = 0; i < Model.size(); i++) {
@@ -116,12 +140,19 @@ public class SuggestionsBox {
         }
     }
     
+    /**
+     * Adiciona novos elementos no comobobox. (Método a ser sobreescrito)
+     * @return um ArrayList com os novos elementos a serem adicionados no combobox
+     */
     public ArrayList<ComboItem> addElements() {
-        System.out.println("Override it!");
+        //Override it!
         return new ArrayList<>();
     }
     
+    /**
+     * Método chamado como callback após a seleção de algum item do combobox (Método a ser sobreescrito)
+     */
     public void afterSelectItem() {
-        System.out.println("Override it!");
+        //Override it!
     }
 }

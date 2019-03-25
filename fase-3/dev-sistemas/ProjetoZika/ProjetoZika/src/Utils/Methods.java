@@ -293,12 +293,21 @@ public class Methods {
         }
     }
     
-    
+    /**
+     * Retorna o texto correspondente a uma dada chave e ao idioma da aplicação
+     * @param text a chave do texto do arquivo bundle a ser traduzido
+     * @return o texto traduzido
+     */
     public static String getTranslation(String text) {
         ResourceBundle bundle = ResourceBundle.getBundle("sources/Bundle");
         return bundle.getString(text);
     }
     
+    /**
+     * Seta o parâmetro correspondente ao campo de data no formato do idioma da aplicação
+     * @param field o campo de data
+     * @param params os parâmetros correntes da aplicação 
+     */
     public static void setParamsToDateChooser(JDateChooser field, Properties params) {
         SimpleDateFormat sdf;
         if (Environment.getCurrentLang().equals("en")) {
@@ -312,6 +321,11 @@ public class Methods {
         } catch (ParseException ex) {}
     }
     
+    /**
+     * Seta uma data default para um campo de data no formato do idiomma da aplicação
+     * @param field o campo de data
+     * @param date a data a ser inserida no campo
+     */
     public static void setDateToDateChooser(JDateChooser field, String date) {
         SimpleDateFormat sdf;
         if (Environment.getCurrentLang().equals("en")) {
@@ -325,6 +339,10 @@ public class Methods {
         } catch (ParseException ex) {}
     }
     
+    /**
+     * Seta o formato do campo de data conforme o idioma da aplicação
+     * @param field o campo de data
+     */
     public static void setDateChooserFormat(JDateChooser field) {
         if (Environment.getCurrentLang().equals("en")) {
             field.setDateFormatString("yyyy-MM-dd");
@@ -333,6 +351,11 @@ public class Methods {
         }
     }
     
+    /**
+     * Seta como marcado o elemento cujo valor coincide com um dado valor
+     * @param rdValue o valor a ser marcado
+     * @param elements o elementos do ButtonGroup
+     */
     public static void setButtonGroup(String rdValue, Enumeration elements ){
         while (elements.hasMoreElements()){
             AbstractButton button = (AbstractButton)elements.nextElement();

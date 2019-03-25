@@ -10,8 +10,8 @@ import javax.swing.JList;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 /**
- *
- * @author welis
+ * Renderer usado pelo combobox de sugestão
+ * @author welison
  */
 public class ItemRenderer extends BasicComboBoxRenderer {
     @Override

@@ -49,6 +49,9 @@ public class Login extends javax.swing.JFrame {
         translation();
     }
     
+    /**
+     * Resolve as traduções
+     */
     private void translation() {
         ltitulo.setText(Methods.getTranslation("FacaSeuLogin"));
         lsenha.setText(Methods.getTranslation("Senha"));

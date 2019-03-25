@@ -37,6 +37,7 @@ public class BaseFrame extends javax.swing.JFrame{
         // set icon
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
+        // desabilita menu e componentes da tela principal
         Methods.disableEnableRootAndMenuPanel(this);
     }
     

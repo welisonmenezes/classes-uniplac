@@ -6,8 +6,8 @@
 package Templates;
 
 /**
- *
- * @author welis
+ * Modelo usado pelo combobox de sugestões
+ * @author welison
  */
 public class ComboItem {
     private final int id;

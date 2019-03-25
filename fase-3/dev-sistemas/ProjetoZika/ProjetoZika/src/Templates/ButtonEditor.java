@@ -50,7 +50,6 @@ public class ButtonEditor extends DefaultCellEditor {
     @Override
     public Object getCellEditorValue() {
         if (isPushed) {
-            //JOptionPane.showMessageDialog(button, label + ": Ouch!");
             this.buttonAction();
         }
         isPushed = false;
@@ -67,6 +66,6 @@ public class ButtonEditor extends DefaultCellEditor {
      * Metodo a ser sobreescrito, agindo como um callback do evento click do botão
      */
     public void buttonAction(){
-        System.out.println("Overrde it");
+        //Override it
     }
 }
