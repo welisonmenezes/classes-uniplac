@@ -10,6 +10,7 @@ import Models.Usuario;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
+import java.awt.Toolkit;
 import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JFrame;
@@ -28,6 +29,9 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        
+        // add icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
         // posiciona o frame na tela
         Methods.positionFrameInCenter(this);

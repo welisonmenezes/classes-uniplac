@@ -8,6 +8,7 @@ package projetozika;
 import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 /**
@@ -43,6 +44,10 @@ public class Main extends javax.swing.JFrame {
      * a aplicação recebera um conteiner geral, um container para o menu e um para o conteúdo
      */
     private void initLayout() {
+        
+        // add icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
+        
         // seta o tamanho do frame
         Methods.makeFrameFullSize(this);
         

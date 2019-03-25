@@ -4,6 +4,7 @@ import Utils.Methods;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -32,6 +33,9 @@ public class BaseFrame extends javax.swing.JFrame{
         pCenter = new JPanel();
         pFilter = new JPanel();
         pBottom = new JPanel();
+        
+        // set icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
         Methods.disableEnableRootAndMenuPanel(this);
     }
