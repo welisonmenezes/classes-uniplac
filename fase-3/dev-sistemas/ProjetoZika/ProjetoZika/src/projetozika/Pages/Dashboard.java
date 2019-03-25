@@ -96,6 +96,7 @@ public class Dashboard extends Templates.BaseLayout {
         CategoryPlot plot = chartPedidos.getCategoryPlot();
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
         renderer.setSeriesPaint(0, color);
+        renderer.setBaseSeriesVisibleInLegend(false);
         bg.add(chartPanel, new AbsoluteConstraints(x, y, -1, -1));
     }
     
