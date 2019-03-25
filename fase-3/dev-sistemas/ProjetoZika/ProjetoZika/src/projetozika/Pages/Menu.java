@@ -5,6 +5,7 @@
  */
 package projetozika.Pages;
 
+import Config.Environment;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -49,6 +50,20 @@ public class Menu extends javax.swing.JPanel {
         
         // Tradução dos textos
         translation();
+        
+        // controle de acesso
+        if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Almoxarife"))) {
+            bRelatorios.setVisible(false);
+            bUsuarios.setVisible(false);
+        } else if(Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Usuario"))) {
+            bRelatorios.setVisible(false);
+            bUsuarios.setVisible(false);
+            bDashboard.setVisible(false);
+            bPedidos.setVisible(false);
+            bFornecedores.setVisible(false);
+            bNotasFiscais.setVisible(false);
+            bProdutos.setVisible(false);
+        }
     }
     
     private void translation() {

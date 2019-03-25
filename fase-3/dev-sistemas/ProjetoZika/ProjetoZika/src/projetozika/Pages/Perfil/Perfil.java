@@ -102,12 +102,14 @@ public class Perfil extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
-        Styles.defaultButton(btnEditar);
-        pBottom.add(btnEditar);
-        btnEditar.addActionListener((ActionEvent e) -> {
-            Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
-        });
+        if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
+            btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
+            Styles.defaultButton(btnEditar);
+            pBottom.add(btnEditar);
+            btnEditar.addActionListener((ActionEvent e) -> {
+                Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
+            });
+        }
     }
     
     /**
