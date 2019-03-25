@@ -45,6 +45,7 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bSeusPedidos);
         Styles.menuButton(bPerfil);
         Styles.menuButton(bRelatorios);
+        Styles.redButton(logout);
         
         // Tradução dos textos
         translation();

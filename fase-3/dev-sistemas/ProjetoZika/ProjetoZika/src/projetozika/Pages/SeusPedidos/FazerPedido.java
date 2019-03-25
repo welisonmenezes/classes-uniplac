@@ -236,7 +236,9 @@ public class FazerPedido extends Templates.BaseFrame {
         };
         if (! mode.equals("view")) {
             colunas[4] = Methods.getTranslation("Remover");
-        } 
+        } else {
+            colunas[4] = Methods.getTranslation("QuantidadeAprovada");
+        }
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -256,6 +258,8 @@ public class FazerPedido extends Templates.BaseFrame {
             Object[] data = {pp.getProduto().getId(),pp.getProduto().getNome(),pp.getProduto().getUnidade(),pp.getQuantidade(),""};
             if (! mode.equals("view")) {
                 data[4] = Methods.getTranslation("Remover");
+            } else {
+                data[4] = pp.getQuantidadeAprovada();
             }
             tableModel.addRow(data);
         });

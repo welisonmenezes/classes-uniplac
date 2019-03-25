@@ -44,6 +44,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private JButton btnFinalizar;
     private JPanel paction;
     private ArrayList<PedidoProduto> pedidosProdutos;
+    private JButton btnNegar;
     
    public EditarPedido(Properties params) {
        this.self = this;
@@ -110,11 +111,17 @@ public class EditarPedido extends Templates.BaseFrame {
         
         btnFinalizar.addActionListener((ActionEvent e) -> {
             // TODO: finalizar pedido aqui
-            
-            pedidosProdutos.forEach(pp -> {
-                System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade() + " " + pp.getStatus());
-            });
-            
+   
+            Dialogs.showLoadPopup(bg);
+            timerTest();
+        });
+        
+        btnNegar = new JButton(Methods.getTranslation("NegarPedido"));
+        Styles.redButton(btnNegar);
+        
+        btnNegar.addActionListener((ActionEvent e) -> {
+            // TODO: negar pedido aqui
+
             Dialogs.showLoadPopup(bg);
             timerTest();
         });
@@ -122,6 +129,7 @@ public class EditarPedido extends Templates.BaseFrame {
         paction = new JPanel();
         paction.setLayout(new FlowLayout(FlowLayout.RIGHT));
         paction.setOpaque(false);
+        paction.add(btnNegar);
         paction.add(btnFinalizar);
         pBottom.add(paction, BorderLayout.SOUTH);
     }
@@ -138,8 +146,7 @@ public class EditarPedido extends Templates.BaseFrame {
             Methods.getTranslation("Codigo"),
             Methods.getTranslation("Produto"), 
             Methods.getTranslation("QuantidadeSolicitada"), 
-            Methods.getTranslation("QuantidadeAprovada"), 
-            Methods.getTranslation("Gerenciar")
+            Methods.getTranslation("QuantidadeAprovada")
         };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
@@ -153,7 +160,7 @@ public class EditarPedido extends Templates.BaseFrame {
         };
         // adiciona linhas
         pedidosProdutos.forEach(pp -> {
-            Object[] data = {pp.getId(), pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
+            Object[] data = {pp.getId(), pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada()};
             tableModel.addRow(data);
         });
 
@@ -166,26 +173,18 @@ public class EditarPedido extends Templates.BaseFrame {
             cquantidade.addItem(i);
         }
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
-        
-        TableColumn statusCol = tabela.getColumnModel().getColumn(4);
-        JComboBox cstatus = new JComboBox();
-        cstatus.setModel(new DefaultComboBoxModel(Environment.STATUS));
-        cstatus.removeItemAt(0);
-        statusCol.setCellEditor(new DefaultCellEditor(cstatus));
-        
+      
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
             // TODO: editar produto do pedido
             
             if (!tabela.getSelectionModel().isSelectionEmpty()) {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
-                String newStatus = Methods.selectedTableItemValue(tabela, 4);
                 String idTable = Methods.selectedTableItemId(tabela);
                 for (int i = 0; i < pedidosProdutos.size(); i++) {
                     PedidoProduto pp = pedidosProdutos.get(i);
                     int idModel = pp.getProduto().getId();
                     if (idTable.equals(""+idModel)) {
                         pp.setQuantidade(Integer.parseInt(newQtd));
-                        pp.setStatus(newStatus);
                         break;
                     }
                 }

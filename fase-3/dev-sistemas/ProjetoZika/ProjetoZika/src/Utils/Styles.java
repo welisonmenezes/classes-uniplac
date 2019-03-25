@@ -78,6 +78,31 @@ public class Styles {
     }
     
     /**
+     * Estiliza os botões com layout vermelho
+     * 
+     * @param btn o JButton a ser estilizado
+     */
+    public static void redButton(JButton btn) {
+        defaultButton(btn);
+        btn.setForeground(new Color(255, 0, 0));
+        btn.setBackground(new Color(255, 0, 0));
+        btn.setBorder(BorderFactory.createLineBorder(new Color(255, 0, 0)));
+        
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                btn.setForeground(new Color(0, 0, 0));
+                btn.setContentAreaFilled(true);
+            }
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                btn.setForeground(new Color(255, 0, 0));
+                btn.setContentAreaFilled(false);
+            }
+        });
+    }
+    
+    /**
      * Estiliza os JTextField default da aplicação
      * 
      * @param field o JTextField a ser estilizado
