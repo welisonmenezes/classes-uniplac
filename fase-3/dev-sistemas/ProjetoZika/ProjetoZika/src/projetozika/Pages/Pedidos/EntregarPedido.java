@@ -5,8 +5,10 @@
  */
 package projetozika.Pages.Pedidos;
 
+import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
+import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -70,8 +72,10 @@ public class EntregarPedido extends Templates.BaseFrame {
         
         pedidosProdutos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
+            Produto produto = new Produto(111, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
+            Usuario u = new Usuario(""+1122, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+            Pedido pedido = new Pedido("10/10/2009","Pendente",u);
+            PedidoProduto pp = new PedidoProduto(produto,pedido,3);
             pp.setId(i);
             pedidosProdutos.add(pp);
         }
@@ -185,7 +189,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         };
         // adiciona linhas
         pedidosProdutos.forEach(pp -> {
-            Object[] data = {pp.getProduto().getNome(),pp.getProduto().getUnidade(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getStatus()};
+            Object[] data = {pp.getProduto().getNome(),pp.getProduto().getUnidade(), pp.getQuantidade(), pp.getQuantidadeAprovada(), pp.getPedido().getStatus()};
             tableModel.addRow(data);
         });
         // inicializa

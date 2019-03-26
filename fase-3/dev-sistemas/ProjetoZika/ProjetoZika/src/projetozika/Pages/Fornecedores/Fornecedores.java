@@ -124,7 +124,7 @@ public class Fornecedores extends Templates.BaseLayout {
         // adiciona linhas
         fornecedores.forEach(f -> {
             Object[] data = {
-                f.getID(),
+                f.getId(),
                 f.getNome(),
                 f.getCnpj(),
                 f.getTelefone(),
@@ -157,7 +157,7 @@ public class Fornecedores extends Templates.BaseLayout {
                     //Methods.removeSelectedTableRow(tabela, tableModel);
                     for (int i = 0; i < fornecedores.size(); i++) {
                         Fornecedor f = fornecedores.get(i);
-                        if (idTabel.equals(""+f.getID())) {
+                        if (idTabel.equals(""+f.getId())) {
                             fornecedores.remove(f);
                         }
                     }
@@ -271,7 +271,7 @@ public class Fornecedores extends Templates.BaseLayout {
             // reseta tabela
             for (int i = 0; i < fornecedores.size(); i++) {
                 Fornecedor f = fornecedores.get(i);
-                if (f.getID()> 10) {
+                if (f.getId()> 10) {
                     fornecedores.remove(f);
                 }
             }

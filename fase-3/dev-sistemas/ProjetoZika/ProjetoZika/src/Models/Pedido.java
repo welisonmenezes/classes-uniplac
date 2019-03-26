@@ -12,34 +12,32 @@ import java.util.ArrayList;
  * @author Welison
  */
 public class Pedido {
-    private int Codigo;
-    private String Data;
+    private int Id;
+    private String Created;
     private String Status;
     private Usuario Solicitante;
     private ArrayList<PedidoProduto> Produtos;
     
-    public Pedido(String data, String status, Usuario solicitante) {
-        Data = data;
+    public Pedido(String created, String status, Usuario solicitante) {
+        Created = created;
         Status  = status;
         Solicitante = solicitante;
     }
 
-    public int getCodigo() {
-        return Codigo;
+    public int getId() {
+        return Id;
     }
 
-    public void setCodigo(int Codigo) {
-        this.Codigo = Codigo;
+    public void setId(int Codigo) {
+        this.Id = Codigo;
     }
     
-    
-
-    public String getData() {
-        return Data;
+    public String getCreated() {
+        return Created;
     }
 
-    public void setData(String Data) {
-        this.Data = Data;
+    public void setCreated(String Created) {
+        this.Created = Created;
     }
 
     public String getStatus() {

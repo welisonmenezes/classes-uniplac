@@ -6,6 +6,7 @@
 package projetozika.Pages.NotasFiscais;
 
 
+import Models.Fornecedor;
 import Models.NotaFiscal;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -62,7 +63,8 @@ public class NotasFiscais extends Templates.BaseLayout {
         
         notasFiscais = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
-            NotaFiscal n = new NotaFiscal(i, 222, "232323-33", 20.4f, "10/10/2019");
+            Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
+            NotaFiscal n = new NotaFiscal(i, 222, 20.4f, "10/10/2019", f);
             notasFiscais.add(n);
         }
         
@@ -122,7 +124,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             Object[] data = {
                 n.getNumero(),
                 n.getValor(),
-                n.getCnpj(),
+                n.getFornecedor().getCnpj(),
                 n.getData(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),

@@ -65,7 +65,7 @@ public class Pedidos extends Templates.BaseLayout {
         Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
         for (int i = 0; i < 15; i++) {
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            p.setCodigo(i);
+            p.setId(i);
             pedidos.add(p);
         }
         
@@ -127,13 +127,13 @@ public class Pedidos extends Templates.BaseLayout {
         // adiciona linhas
         pedidos.forEach(p -> {
             String btnValue = Methods.getTranslation("Entregar");
-            if ( p.getCodigo() % 2 == 0 ) {
+            if ( p.getId() % 2 == 0 ) {
                 btnValue = "";
             } 
             Object[] data = {
-                p.getCodigo(),
+                p.getId(),
                 p.getSolicitante().getNome(),
-                p.getData(),
+                p.getCreated(),
                 p.getStatus(),
                 Methods.getTranslation("Ver/Editar"), 
                 btnValue
@@ -252,7 +252,7 @@ public class Pedidos extends Templates.BaseLayout {
             // reseta tabela
             for (int i = 0; i < pedidos.size(); i++) {
                 Pedido p = pedidos.get(i);
-                if (p.getCodigo() > 10) {
+                if (p.getId() > 10) {
                     pedidos.remove(p);
                 }
             }

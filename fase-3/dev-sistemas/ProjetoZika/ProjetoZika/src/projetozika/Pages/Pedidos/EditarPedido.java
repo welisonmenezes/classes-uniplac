@@ -5,9 +5,10 @@
  */
 package projetozika.Pages.Pedidos;
 
-import Config.Environment;
+import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
+import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -18,7 +19,6 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -68,8 +68,10 @@ public class EditarPedido extends Templates.BaseFrame {
         
         pedidosProdutos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Produto p = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            PedidoProduto pp = new PedidoProduto(p, 1, Methods.getTranslation("Pendente"));
+            Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
+            Usuario u = new Usuario(""+i, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+            Pedido pedido = new Pedido("10/10/2009","Pendente",u);
+            PedidoProduto pp = new PedidoProduto(produto,pedido,3);
             pp.setId(i);
             pedidosProdutos.add(pp);
         }

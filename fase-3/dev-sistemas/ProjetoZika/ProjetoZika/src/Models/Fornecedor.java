@@ -10,24 +10,25 @@ public class Fornecedor {
     private String Nome;
     private String Cnpj;
     private String Telefone;
-    private String Data;
+    private String Created;
+    private String Status;
     
     public Fornecedor(){};
     
-    public Fornecedor(int id, String nome, String cnpj, String telefone, String data){
+    public Fornecedor(int id, String nome, String cnpj, String telefone, String created){
         this.Id = id;
         this.Nome = nome;
         this.Cnpj = cnpj;
         this.Telefone = telefone;
-        this.Data = data;
+        this.Created = created;
     }
 
-    public int getID() {
+    public int getId() {
         return Id;
     }
 
-    public void setID(int ID) {
-        this.Id = ID;
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
     public String getNome() {
@@ -54,11 +55,20 @@ public class Fornecedor {
         this.Telefone = Telefone;
     }
 
-    public String getData() {
-        return Data;
+    public String getCreated() {
+        return Created;
     }
 
-    public void setData(String Data) {
-        this.Data = Data;
+    public void setCreated(String Created) {
+        this.Created = Created;
     }
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String Status) {
+        this.Status = Status;
+    }
+    
 }

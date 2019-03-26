@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.Produto;
 import Templates.ComboItem;
@@ -281,11 +282,12 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     }
     
     private void fillFields(String id) {
-        NotaFiscal nf = new NotaFiscal(444,222,"222333-33",34.4f,"12/05/2009");
+        Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
+        NotaFiscal nf = new NotaFiscal(444,222,34.4f,"12/05/2009",f);
         fnumero.setText(nf.getNumero() + "");
         fserie.setText(nf.getSerie() + "");
-        ccnpj.addItem(new ComboItem(0, nf.getCnpj()));
-        fcnpj.setText(nf.getCnpj());
+        ccnpj.addItem(new ComboItem(0, nf.getFornecedor().getCnpj()));
+        fcnpj.setText(nf.getFornecedor().getCnpj());
         fvalor.setText(nf.getValor() + "");
         Methods.setDateToDateChooser(fdata, nf.getData());
     }

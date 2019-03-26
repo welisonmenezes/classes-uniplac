@@ -133,7 +133,7 @@ public class Produtos extends Templates.BaseLayout {
                 p.getId(),
                 p.getNome(),
                 p.getUnidade(),
-                p.getData(),
+                p.getCreated(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
                 Methods.getTranslation("Ver")

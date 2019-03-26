@@ -67,7 +67,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
         for (int i = 0; i < 15; i++) {
             Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            p.setCodigo(i);
+            p.setId(i);
             pedidos.add(p);
         }
         
@@ -129,13 +129,13 @@ public class SeusPedidos extends Templates.BaseLayout {
         pedidos.forEach(p -> {
             String btnEditar = Methods.getTranslation("Editar");
             String btnCancelar = Methods.getTranslation("Cancelar");
-            if ( p.getCodigo() % 2 == 0 ) {
+            if ( p.getId() % 2 == 0 ) {
                 btnEditar = "";
                 btnCancelar = "";
             } 
             Object[] data = {
-                p.getCodigo(),
-                p.getData(),
+                p.getId(),
+                p.getCreated(),
                 p.getStatus(),
                 btnEditar,
                 btnCancelar,
@@ -174,7 +174,7 @@ public class SeusPedidos extends Templates.BaseLayout {
                         String idTabel = Methods.selectedTableItemId(tabela);
                         for (int i = 0; i < pedidos.size(); i++) {
                             Pedido p = pedidos.get(i);
-                            if (idTabel.equals(""+p.getCodigo())) {
+                            if (idTabel.equals(""+p.getId())) {
                                 pedidos.remove(p);
                             }
                         }
@@ -280,7 +280,7 @@ public class SeusPedidos extends Templates.BaseLayout {
             // apenas teste
             for (int i = 0; i < pedidos.size(); i++) {
                 Pedido p = pedidos.get(i);
-                if (p.getCodigo() > 10) {
+                if (p.getId() > 10) {
                     pedidos.remove(p);
                 }
             }
