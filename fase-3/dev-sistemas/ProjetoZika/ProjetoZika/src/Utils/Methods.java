@@ -316,8 +316,11 @@ public class Methods {
             sdf = new SimpleDateFormat("dd/MM/yyyy");
         }
         try {
-            Date newDate = sdf.parse(params.getProperty("data", ""));
-            field.setDate(newDate);
+            String sData = params.getProperty("data", "");
+            if (!sData.equals("")) {
+                Date newDate = sdf.parse(sData);
+                field.setDate(newDate);
+            }
         } catch (ParseException error) {
             throw new RuntimeException("Methods.setParamsToDateChooser: " + error);
         }

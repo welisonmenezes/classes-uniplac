@@ -171,7 +171,6 @@ public class AddProduto extends Templates.BaseFrame {
                 produto.setNome(fnome.getText());
                 produto.setUnidade(funidade.getSelectedItem().toString());
                 produto.setDescricao(fdescricao.getText());
-                produto.setStatus(Methods.getTranslation("Pendente"));
                 
                 Dialogs.showLoadPopup(bg);
                 timerTest();

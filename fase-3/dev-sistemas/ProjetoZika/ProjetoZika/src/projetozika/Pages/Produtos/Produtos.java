@@ -6,6 +6,7 @@
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
+import DAO.ProdutoDAO;
 import Models.Produto;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -48,6 +49,7 @@ public class Produtos extends Templates.BaseLayout {
     private JButton bSearch;
     private JLabel hideL;
     private ArrayList<Produto> produtos;
+    private ProdutoDAO produtoDao;
 
     /**
      * Cria a tela de fornecedores
@@ -61,15 +63,21 @@ public class Produtos extends Templates.BaseLayout {
     }
     
     private void initPage() {
+        
+        produtoDao = new ProdutoDAO();
+        
         initComponents();
         createBaseLayout();
         
+        produtos = produtoDao.selecionar();
+        /*
         produtos = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
             p.setId(i);
             produtos.add(p);
         }
+        */
         
         addTopContent(Methods.getTranslation("Produtos"));
         addCenterContent();
