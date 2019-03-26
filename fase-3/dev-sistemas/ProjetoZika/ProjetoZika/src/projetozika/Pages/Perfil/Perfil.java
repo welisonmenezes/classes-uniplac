@@ -81,7 +81,7 @@ public class Perfil extends Templates.BaseLayout {
             {Methods.getTranslation("Setor"), usuario.getSetor()},
             {Methods.getTranslation("Sexo"), usuario.getSexo()},
             {Methods.getTranslation("Permissao"), usuario.getPermissao()},
-            {Methods.getTranslation("DataDeNascimento"), usuario.getData()},
+            {Methods.getTranslation("DataDeNascimento"), usuario.getDataNascimento()},
             {Methods.getTranslation("Login"), usuario.getLogin()},
             {Methods.getTranslation("Senha"), usuario.getSenha()}
         };

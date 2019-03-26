@@ -20,7 +20,7 @@ public class Usuario {
     private String Sexo;
     private String Permissao;
     private String Status;
-    private String Data;
+    private String DataNascimento;
     private String Login;
     private String Senha;
     private String Created;
@@ -36,7 +36,7 @@ public class Usuario {
         Setor = setor;
         Sexo = sexo;
         Permissao = permissao;
-        Data = dataNascimento;
+        DataNascimento = dataNascimento;
     }
 
     public int getId() {
@@ -111,12 +111,12 @@ public class Usuario {
         this.Permissao = Permissao;
     }
 
-    public String getData() {
-        return Data;
+    public String getDataNascimento() {
+        return DataNascimento;
     }
 
-    public void setData(String Data) {
-        this.Data = Data;
+    public void setDataNascimento(String DataNascimento) {
+        this.DataNascimento = DataNascimento;
     }
 
     public String getStatus() {
