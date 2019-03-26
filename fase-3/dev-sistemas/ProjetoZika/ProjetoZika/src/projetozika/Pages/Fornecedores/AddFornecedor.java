@@ -149,7 +149,7 @@ public class AddFornecedor extends Templates.BaseFrame {
             // validação
             boolean isValid = true;
             if (! Validator.validaCnpj(fcnpj, ecnpj)) isValid = false;
-            if (! Validator.validaCampo(fname, ename)) isValid = false;
+            if (! Validator.validaCampo(fname, ename, 100)) isValid = false;
             if (! Validator.validaTelefone(ftel, etel)) isValid = false;
             if (isValid) {
                 Dialogs.showLoadPopup(bg);

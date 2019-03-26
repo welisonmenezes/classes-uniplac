@@ -284,13 +284,13 @@ public class AddUsuario extends Templates.BaseFrame {
             
             // validação
             boolean isValid = true;
-            if (! Validator.validaCampo(fnome, enome)) isValid = false;
+            if (! Validator.validaCampo(fnome, enome, 100)) isValid = false;
             if (! Validator.validaCpf(fcpf, ecpf)) isValid = false;
             if (! Validator.validaButtonGroup(gsexo, esexo)) isValid = false;
             if (! Validator.validaData(fdata, edata)) isValid = false;
             if (! Validator.validaTelefone(fcelular, ecelular)) isValid = false;
             if (! Validator.validaTelefone(ftelefone, etelefone)) isValid = false;
-            if (! Validator.validaCampo(femail, eemail)) isValid = false;
+            if (! Validator.validaCampo(femail, eemail, 100)) isValid = false;
             if (! Validator.validaCampo(fsetor, esetor)) isValid = false;
             if (! Validator.validaCampo(fpermissao, epermissao)) isValid = false;
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;

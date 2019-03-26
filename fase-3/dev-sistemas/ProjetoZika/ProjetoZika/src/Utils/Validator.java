@@ -89,6 +89,15 @@ public class Validator {
     }
     
     /**
+     * Checa se o tamanho do valor do campo é menor ou igual a um dado tamanho
+     * @param field o campo a ser verificado
+     * @return true se é menor ou igual
+     */
+    public static boolean isValidSize(JTextArea field, int size) {
+        return (field.getText().length() <= size);
+    }
+    
+    /**
      * Checa se a data respeita o formato de data do idioma da aplicação
      * @param data a data a ser validada
      * @return true se é uma data válida
@@ -138,7 +147,22 @@ public class Validator {
      * @return true se não é vazio
      */
     public static boolean validaCampo(JTextField field, JLabel errorLabel) {
-        if (isEmpty(field)) {
+        if (isEmpty(field)|| !isValidSize(field, 45)) {
+            errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Valida o se o campo está vazio e adiciona a mensagem de erro no seu respectivo label
+     * @param field o campo a ser validado
+     * @param errorLabel o label que receberá a mensagem
+     * @param size o tamanho maximo permitido
+     * @return true se não é vazio
+     */
+    public static boolean validaCampo(JTextField field, JLabel errorLabel, int size) {
+        if (isEmpty(field)|| !isValidSize(field, size)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
             return false;
         }
@@ -152,7 +176,7 @@ public class Validator {
      * @return true se não é vazio
      */
     public static boolean validaCampo(JTextArea field, JLabel errorLabel) {
-        if (isEmpty(field)) {
+        if (isEmpty(field)|| !isValidSize(field, 255)) {
             errorLabel.setText(Methods.getTranslation("CampoObrigatorio"));
             return false;
         }
@@ -208,7 +232,7 @@ public class Validator {
      * @return true se recebeu cnpj válido
      */
     public static boolean validaCnpj(JTextField field, JLabel errorLabel) {
-        if (isEmpty(field) || !isValidSize(field, 20)) {
+        if (isEmpty(field) || !isValidSize(field, 18)) {
             errorLabel.setText(Methods.getTranslation("CnpjInvalido"));
             return false;
         }
@@ -222,7 +246,7 @@ public class Validator {
      * @return true se recebeu cpf válido
      */
     public static boolean validaCpf(JTextField field, JLabel errorLabel) {
-        if (isEmpty(field) || !isValidSize(field, 20)) {
+        if (isEmpty(field) || !isValidSize(field, 14)) {
             errorLabel.setText(Methods.getTranslation("CpfInvalido"));
             return false;
         }
