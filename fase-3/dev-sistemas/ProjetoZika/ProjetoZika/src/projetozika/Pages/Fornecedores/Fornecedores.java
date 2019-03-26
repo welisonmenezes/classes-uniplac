@@ -250,6 +250,7 @@ public class Fornecedores extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
+        /*
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
@@ -260,6 +261,7 @@ public class Fornecedores extends Templates.BaseLayout {
                 timerTest();
             }
         };
+        */
     }
     
     private Timer t;

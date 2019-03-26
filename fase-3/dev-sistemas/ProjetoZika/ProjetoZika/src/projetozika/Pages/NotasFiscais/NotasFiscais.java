@@ -225,6 +225,7 @@ public class NotasFiscais extends Templates.BaseLayout {
     }
     
     private void pagination(int total) {
+        /*
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
@@ -235,6 +236,7 @@ public class NotasFiscais extends Templates.BaseLayout {
                 timerTest();
             }
         };
+        */
     }
     
     private Timer t;

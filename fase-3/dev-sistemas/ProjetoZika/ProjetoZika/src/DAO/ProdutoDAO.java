@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Properties;
 
 /**
  *
@@ -48,8 +49,9 @@ public class ProdutoDAO {
         }
     }
     
-    public ArrayList<Produto> selecionar() {
-        String sql = "SELECT * FROM produtos WHERE Status != 'Deleted'";
+    public ArrayList<Produto> selecionar(Properties params) {
+        int offset = Integer.parseInt(params.getProperty("offset", "0"));
+        String sql = "SELECT * FROM produtos WHERE Status != 'Deleted' LIMIT 2 OFFSET " + (offset);
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -63,9 +65,21 @@ public class ProdutoDAO {
                 produto.setCreated(rs.getString("Created"));
                 produtos.add(produto);
             }
+            return produtos;
         } catch(Exception error) {
             throw new RuntimeException("ProdutoDAO.selecionar: " + error);
         }
-        return produtos;
+    }
+    
+    public int total(Properties params) {
+        String sql = "SELECT COUNT(Id) FROM produtos WHERE Status != 'Deleted'";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.total: " + error);
+        }
     }
 }

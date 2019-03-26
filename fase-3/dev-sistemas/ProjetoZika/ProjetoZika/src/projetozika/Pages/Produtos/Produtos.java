@@ -50,6 +50,7 @@ public class Produtos extends Templates.BaseLayout {
     private JLabel hideL;
     private ArrayList<Produto> produtos;
     private ProdutoDAO produtoDao;
+    private int totalProdutos;
 
     /**
      * Cria a tela de fornecedores
@@ -69,7 +70,8 @@ public class Produtos extends Templates.BaseLayout {
         initComponents();
         createBaseLayout();
         
-        produtos = produtoDao.selecionar();
+        produtos = produtoDao.selecionar(params);
+        totalProdutos = produtoDao.total(params);
         /*
         produtos = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
@@ -89,6 +91,7 @@ public class Produtos extends Templates.BaseLayout {
     
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("data", date);
@@ -256,7 +259,7 @@ public class Produtos extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalProdutos);
     }
     
     /**
@@ -265,11 +268,11 @@ public class Produtos extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
                 
-                params.setProperty("page", ""+this.page);
+                //params.setProperty("offset", ""+this.pages);
                 
                 Dialogs.showLoadPopup(self);
                 timerTest();
@@ -284,14 +287,10 @@ public class Produtos extends Templates.BaseLayout {
             Dialogs.hideLoadPopup(self);
             
             // reseta tabela
-            for (int i = 0; i < produtos.size(); i++) {
-                Produto p = produtos.get(i);
-                if (p.getId()> 10) {
-                    produtos.remove(p);
-                }
-            }
+            produtos.clear();
+            produtos = produtoDao.selecionar(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalProdutos);
             
             t.stop();
         });
