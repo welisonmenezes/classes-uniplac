@@ -6,6 +6,7 @@
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
+import DAO.ProdutoDAO;
 import Models.Produto;
 import Templates.ComboItem;
 import Utils.Dialogs;
@@ -47,6 +48,8 @@ public class AddProduto extends Templates.BaseFrame {
     private JLabel ldescricao;
     private JLabel edescricao;
     private JButton bSave;
+    private Produto produto;
+    private ProdutoDAO produtoDao;
     
    
     public AddProduto(Properties params) {
@@ -84,6 +87,8 @@ public class AddProduto extends Templates.BaseFrame {
     }
     
     private void initPage(String title) {
+        
+        produtoDao = new ProdutoDAO();
         
         initComponents();
         Styles.internalFrame(this, 450, 400);
@@ -161,6 +166,13 @@ public class AddProduto extends Templates.BaseFrame {
             if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
             if (! Validator.validaCampo(fdescricao, edescricao)) isValid = false;
             if (isValid) {
+                
+                produto = new Produto();
+                produto.setNome(fnome.getText());
+                produto.setUnidade(funidade.getSelectedItem().toString());
+                produto.setDescricao(fdescricao.getText());
+                produto.setStatus(Methods.getTranslation("Pendente"));
+                
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
@@ -186,7 +198,7 @@ public class AddProduto extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             
             switch (mode) {
@@ -198,7 +210,13 @@ public class AddProduto extends Templates.BaseFrame {
                     break;
                 case "add":
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    try {
+                        produtoDao.inserir(produto);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddProduto.add: " + error);
+                    }
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("produtos", params);
                     break;

@@ -318,7 +318,9 @@ public class Methods {
         try {
             Date newDate = sdf.parse(params.getProperty("data", ""));
             field.setDate(newDate);
-        } catch (ParseException ex) {}
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.setParamsToDateChooser: " + error);
+        }
     }
     
     /**
@@ -336,7 +338,9 @@ public class Methods {
         try {
             Date newDate = sdf.parse(date);
             field.setDate(newDate);
-        } catch (ParseException ex) {}
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.setDateToDateChooser: " + error);
+        }
     }
     
     /**
@@ -348,6 +352,26 @@ public class Methods {
             field.setDateFormatString("yyyy-MM-dd");
         } else {
             field.setDateFormatString("dd/MM/yyyy");
+        }
+    }
+    
+    /**
+     * Converte uma string em uma data válida
+     * @param date a data a ser convertida
+     * @return a data convertida
+     */
+    public static Date convertStringToDate(String date) {
+        SimpleDateFormat sdf;
+        if (Environment.getCurrentLang().equals("en")) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        try {
+            Date convertedDate = sdf.parse(date);
+            return convertedDate;
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.convertStringToDate: " + error);
         }
     }
     
