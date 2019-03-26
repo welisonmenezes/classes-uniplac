@@ -15,16 +15,16 @@ public class Produto {
     private String Unidade;
     private String Descricao;
     private String Status;
-    private String Data;
+    private String Created;
     
     public Produto() {}
     
-    public Produto(int id, String nome, String unidade, String descricao, String data) {
+    public Produto(int id, String nome, String unidade, String descricao, String created) {
         Id = id;
         Nome = nome;
         Unidade = unidade;
         Descricao = descricao;
-        Data = data;
+        Created = created;
     }
 
     public int getId() {
@@ -59,12 +59,12 @@ public class Produto {
         this.Descricao = Descricao;
     }
 
-    public String getData() {
-        return Data;
+    public String getCreated() {
+        return Created;
     }
 
-    public void setData(String Data) {
-        this.Data = Data;
+    public void setCreated(String Created) {
+        this.Created = Created;
     }
 
     public String getStatus() {

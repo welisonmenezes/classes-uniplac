@@ -20,13 +20,14 @@ public class Usuario {
     private String Sexo;
     private String Permissao;
     private String Status;
-    private String Data;
+    private String DataNascimento;
     private String Login;
     private String Senha;
+    private String Created;
     
     public Usuario() {}
     
-    public Usuario(String cpf, String nome, String email, String celular, String telefone, String setor, String sexo, String permissao, String data) {
+    public Usuario(String cpf, String nome, String email, String celular, String telefone, String setor, String sexo, String permissao, String dataNascimento) {
         Cpf = cpf;
         Nome = nome;
         Email = email;
@@ -35,7 +36,7 @@ public class Usuario {
         Setor = setor;
         Sexo = sexo;
         Permissao = permissao;
-        Data = data;
+        DataNascimento = dataNascimento;
     }
 
     public int getId() {
@@ -110,12 +111,12 @@ public class Usuario {
         this.Permissao = Permissao;
     }
 
-    public String getData() {
-        return Data;
+    public String getDataNascimento() {
+        return DataNascimento;
     }
 
-    public void setData(String Data) {
-        this.Data = Data;
+    public void setDataNascimento(String DataNascimento) {
+        this.DataNascimento = DataNascimento;
     }
 
     public String getStatus() {
@@ -140,6 +141,14 @@ public class Usuario {
 
     public void setSenha(String Senha) {
         this.Senha = Senha;
+    }
+
+    public String getCreated() {
+        return Created;
+    }
+
+    public void setCreated(String Created) {
+        this.Created = Created;
     }
     
 }

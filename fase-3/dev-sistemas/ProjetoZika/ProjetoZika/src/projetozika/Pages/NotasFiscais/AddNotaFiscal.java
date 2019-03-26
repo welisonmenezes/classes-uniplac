@@ -5,25 +5,27 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Models.Fornecedor;
+import Models.NotaFiscal;
+import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,9 +40,6 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * @author Welison
  */
 public class AddNotaFiscal extends Templates.BaseFrame {
-    
-    private final JFrame self;
-    private String mode;
     private JScrollPane bgScroll;
     private JPanel bg;
     private JLabel lnumero;
@@ -59,47 +58,55 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JDateChooser fdata;
     private JLabel  edata;
     private JButton bSave;
-    private JScrollPane scrollList;
     private JLabel addFornecedor;
-    
     private JPanel panelAddProduto;
-    private JPanel panelListarProdutos;
+    private ListarProdutos panelListarProdutos;
     private JPanel pSuggestions;
-    private JComboBox ccnpj;
+    public static JComboBox ccnpj;
+    private JLabel linfo;
+    private String id;
     
-    public AddNotaFiscal() {
+    public AddNotaFiscal(Properties params) {
         this.self = this;
         this.mode = "add";
+        this.params = params;
+        
         initPage(Methods.getTranslation("AdicionarNotaFiscal"));
     }
     
-    public AddNotaFiscal(String id, String mode) {
+    public AddNotaFiscal(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
-        if(this.mode.equals("view")){
-            initPage(Methods.getTranslation("VerNotaFiscal"));
-            Methods.disabledFields(bg);
-            Methods.disabledFields(panelAddProduto);
-        } else if (this.mode.equals("edit")){
-            initPage(Methods.getTranslation("EditarNotaFiscal"));
+        this.params = params;
+        this.id = id;
+        
+        switch (this.mode) {
+            case "view":
+                initPage(Methods.getTranslation("VerNotaFiscal"));
+                Methods.disabledFields(bg);
+                panelAddProduto.setVisible(false);
+                addFornecedor.setVisible(false);
+                break;
+            case "edit":
+                initPage(Methods.getTranslation("EditarNotaFiscal"));
+                break;
         }
+        
+        fillFields(id);
     }
     
     
     
     private void initPage(String title) {
         
-        this.addWindowListener(new WindowAdapter(){ 
-            public void windowOpened( WindowEvent e){ 
-              fnumero.requestFocusInWindow();
-            } 
-        }); 
-        
+  
+        /*
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 scrollList.setVisible(false);
             }
         });
+        */
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
@@ -109,16 +116,22 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         addTopContent(title);
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
+            
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 Navigation.currentPage = "notasFiscais";
             }
+            
+            @Override
+            public void windowOpened( WindowEvent e){ 
+              fnumero.requestFocusInWindow();
+            } 
         });
         
         addCenterContent();
     }
     
-    public void addCenterContent() {
+    private void addCenterContent() {
         bgScroll = new JScrollPane();
         Styles.resetScrollPanel(bgScroll);
         
@@ -147,8 +160,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fcnpj = new JTextField();
         ccnpj = new JComboBox();
         new SuggestionsBox(pSuggestions, fcnpj, ccnpj, 200) {
+            @Override
             public ArrayList<ComboItem> addElements() {
-                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                ArrayList<ComboItem> elements = new ArrayList<>();
                 for (int i = 1; i <= 25; i++) {
                     // TODO: implements real database results
                     elements.add(new ComboItem(i, "Nome_"+i));
@@ -164,9 +178,11 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         bg.add(addFornecedor, new AbsoluteConstraints(430, 40, -1, -1));
         // button click
         addFornecedor.addMouseListener(new MouseAdapter() {
+            
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 if (!addFornecedor.isEnabled()) return;
-                Navigation.updateLayout("addFornecedorNota");
+                Navigation.updateLayout("addFornecedorNota", params);
             }
         });
         
@@ -204,33 +220,55 @@ public class AddNotaFiscal extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
+        Methods.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 220, -1, -1));
         
         edata = new JLabel("");
         Styles.errorLabel(edata);
         bg.add(edata, new AbsoluteConstraints(0, 255, -1, -1));
         
+        linfo = new JLabel("");
+        Styles.errorLabel(linfo);
+        linfo.setPreferredSize( new Dimension( 220, 20 ) );
+        bg.add(linfo, new AbsoluteConstraints(220, 255, -1, -1));
+        
         bSave = new JButton(Methods.getTranslation("Salvar"));
         Styles.defaultButton(bSave);
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 222, -1, -1));
-        bSave.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
+        bSave.addActionListener((ActionEvent e) -> {
+            
+            // limpa erros
+            clearErrors();
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaData(fdata, edata)) isValid = false;
+            if (! Validator.validaNumero(fnumero, enumero)) isValid = false;
+            if (! Validator.validaNumero(fserie, eserie)) isValid = false;
+            if (! Validator.validaCnpj(fcnpj, ecnpj)) isValid = false;
+            if (! Validator.validaComboBox(ccnpj, ecnpj)) isValid = false;
+            if (! Validator.validaValor(fvalor, evalor)) isValid = false;
+            if (panelListarProdutos.produtos.size() < 1) {
+                linfo.setText(Methods.getTranslation("AdicioneUmProduto"));
+                isValid = false;
+            }
+            if (isValid) {
                 Dialogs.showLoadPopup(bg);
                 timerTest();
-                
-                
             }
         });
         
-        panelAddProduto = new SelecionarProduto();
+        panelAddProduto = new SelecionarProduto(self);
         panelAddProduto.setVisible(true);
         panelAddProduto.setPreferredSize(new Dimension(375, 360));
         bg.add(panelAddProduto, new AbsoluteConstraints(570, 10, -1, -1));
         
-        panelListarProdutos = new ListarProdutos(this.mode);
+        if (this.mode.equals("edit") || this.mode.equals("view")) {
+            panelListarProdutos = new ListarProdutos(this.id, this.mode);
+        } else {
+            panelListarProdutos = new ListarProdutos(this.mode);
+        }
         panelListarProdutos.setVisible(true);
         panelListarProdutos.setPreferredSize(new Dimension(945, 300));
         bg.add(panelListarProdutos, new AbsoluteConstraints(0, 400, -1, -1));
@@ -239,20 +277,43 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         pCenter.add(bgScroll);
     }
     
+    public void addProduto(Produto produto) {
+        panelListarProdutos.addProduto(produto);
+    }
+    
+    private void fillFields(String id) {
+        Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
+        NotaFiscal nf = new NotaFiscal(444,222,34.4f,"12/05/2009",f);
+        fnumero.setText(nf.getNumero() + "");
+        fserie.setText(nf.getSerie() + "");
+        ccnpj.addItem(new ComboItem(0, nf.getFornecedor().getCnpj()));
+        fcnpj.setText(nf.getFornecedor().getCnpj());
+        fvalor.setText(nf.getValor() + "");
+        Methods.setDateToDateChooser(fdata, nf.getData());
+    }
+    
+    private void clearErrors() {
+        enumero.setText("");
+        ecnpj.setText("");
+        eserie.setText("");
+        evalor.setText("");
+        edata.setText("");
+        linfo.setText("");
+    }
+    
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
-                
-                self.dispose();
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                
-                
-                t.stop();
-            }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(bg);
+            
+            self.dispose();
+            JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+            
+            Navigation.updateLayout("", new Properties());
+            Navigation.updateLayout("notasFiscais", params);
+            
+            t.stop();
         });
         t.start();
     }
@@ -270,41 +331,6 @@ public class AddNotaFiscal extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddNotaFiscal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddNotaFiscal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddNotaFiscal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddNotaFiscal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddNotaFiscal().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

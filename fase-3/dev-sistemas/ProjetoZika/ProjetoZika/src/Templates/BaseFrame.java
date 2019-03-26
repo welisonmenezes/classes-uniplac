@@ -4,7 +4,10 @@ import Utils.Methods;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.util.Properties;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -15,19 +18,26 @@ import javax.swing.JPanel;
  * @author Welison
  */
 public class BaseFrame extends javax.swing.JFrame{
-    public JPanel pTop;
-    public JPanel pCenter;
-    public JPanel pFilter;
-    public JPanel pBottom;
-    public JPanel pBG;
+    protected JPanel pTop;
+    protected JPanel pCenter;
+    protected JPanel pFilter;
+    protected JPanel pBottom;
+    protected JPanel pBG;
+    protected JFrame self;
+    protected String mode;
+    protected Properties params;
     
-    public BaseFrame() {
+    protected BaseFrame() {
         pBG = new JPanel();
         pTop = new JPanel();
         pCenter = new JPanel();
         pFilter = new JPanel();
         pBottom = new JPanel();
         
+        // set icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
+        
+        // desabilita menu e componentes da tela principal
         Methods.disableEnableRootAndMenuPanel(this);
     }
     
@@ -37,7 +47,7 @@ public class BaseFrame extends javax.swing.JFrame{
      * 
      * @param title o título da pagina adicionado no topo do grid
      */
-    public void addTopContent(String title) {
+    protected void addTopContent(String title) {
         JLabel label = new JLabel();
         label.setFont(new java.awt.Font("Tahoma", 1, 24));
         label.setForeground(new java.awt.Color(255, 255, 255));
@@ -48,7 +58,7 @@ public class BaseFrame extends javax.swing.JFrame{
     /**
      * Adiciona os paineis aos seus respectivos lugares no border layout
      */
-    public void createBaseLayout() {
+    protected void createBaseLayout() {
         
         // topo do grid
         this.pBG.setLayout(new BorderLayout());

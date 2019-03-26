@@ -54,10 +54,12 @@ public class Styles {
         btn.setBackground(new Color(8, 253, 216));
         // hover event
         btn.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseEntered(MouseEvent evt) {
                 btn.setForeground(new Color(0, 0, 0));
                 btn.setContentAreaFilled(true);
             }
+            @Override
             public void mouseExited(MouseEvent evt) {
                 btn.setForeground(new Color(8, 253, 216));
                 btn.setContentAreaFilled(false);
@@ -76,7 +78,32 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JTextField default da aplicação
+     * Estiliza os botões com layout vermelho
+     * 
+     * @param btn o JButton a ser estilizado
+     */
+    public static void redButton(JButton btn) {
+        defaultButton(btn);
+        btn.setForeground(new Color(255, 0, 0));
+        btn.setBackground(new Color(255, 0, 0));
+        btn.setBorder(BorderFactory.createLineBorder(new Color(255, 0, 0)));
+        
+        btn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent evt) {
+                btn.setForeground(new Color(0, 0, 0));
+                btn.setContentAreaFilled(true);
+            }
+            @Override
+            public void mouseExited(MouseEvent evt) {
+                btn.setForeground(new Color(255, 0, 0));
+                btn.setContentAreaFilled(false);
+            }
+        });
+    }
+    
+    /**
+     * Estiliza o JTextField default da aplicação
      * 
      * @param field o JTextField a ser estilizado
      */
@@ -89,7 +116,7 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JTextField default da aplicação
+     * Estiliza o JTextField default da aplicação
      * 
      * @param field o JTextField a ser estilizado
      * @param width a largura do campo
@@ -99,6 +126,11 @@ public class Styles {
         field.setPreferredSize(new Dimension(width, 39));
     }
     
+    /**
+     * Estiliza o JTextArea default da aplicação
+     * @param field o JTextArea a ser estlizado
+     * @param panel o JScrollPane container do JTextArea
+     */
     public static void defaultTextArea(JTextArea field, JScrollPane panel) {
         field.setBackground(new Color(55, 57, 59));
         field.setForeground(new Color(255, 255, 255));
@@ -109,7 +141,7 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JDateChooser default da aplicação
+     * Estiliza o JDateChooser default da aplicação
      * 
      * @param fDate o JDateChooser a ser estilizado
      */
@@ -122,9 +154,10 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JDateChooser default da aplicação
+     * Estiliza o JDateChooser default da aplicação
      * 
      * @param fDate o JDateChooser a ser estilizado
+     * @param width a largura desejada
      */
     public static void defaultDateChooser(JDateChooser fDate, int width) {
         defaultDateChooser(fDate);
@@ -132,7 +165,7 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JCombobox default da aplicação
+     * Estiliza o JCombobox default da aplicação
      * 
      * @param field o JCombobox a ser estilizado
      */
@@ -142,9 +175,11 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JCombobox default da aplicação
-     * 
+     * Estiliza o JCombobox default da aplicação
      * @param field o JCombobox a ser estilizado
+     * @param width a largura desejada
+     * @param height a altura desejada
+     * 
      */
     public static void defaultComboBox(JComboBox field, int width, int height) {
         field.setOpaque(false);
@@ -152,7 +187,7 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JLabel default da aplicação
+     * Estiliza o JLabel default da aplicação
      * 
      * @param label o JLabel a ser estilizado
      */
@@ -163,7 +198,7 @@ public class Styles {
     }
     
     /**
-     * Estiliza os JLabel default da aplicação
+     * Estiliza o JLabel default da aplicação
      * 
      * @param label o JLabel a ser estilizado
      * @param hasDimension true se setará dimensões default (150x39) ou fale se não
@@ -177,7 +212,7 @@ public class Styles {
     }
     
     /**
-     * Estliza os JLabel que exibem mensagens de erro da aplicação
+     * Estliza o JLabel que exibem mensagens de erro da aplicação
      * 
      * @param label o JLabel a ser estilizado
      */
@@ -188,7 +223,7 @@ public class Styles {
     }
     
     /**
-     * Estliza os JButtons do menu da aplicação
+     * Estliza o JButtons do menu da aplicação
      * 
      * @param btn o JButton a ser estilizado
      */
@@ -296,7 +331,9 @@ public class Styles {
     public static void defaultSuggestions(JScrollPane panel, JList list, String[] model) {
         list.setModel(new AbstractListModel<String>() {
             String[] strings = model;
+            @Override
             public int getSize() { return strings.length; }
+            @Override
             public String getElementAt(int i) { return strings[i]; }
             });
         panel.setPreferredSize( new Dimension( 200, 200 ) );
@@ -304,6 +341,11 @@ public class Styles {
         panel.setVisible(false);
     }
     
+    /**
+     * Adiciona borda e título a um dado JPanel e os estiliza
+     * @param panel o JPanel a ser estilizado
+     * @param title o título a ser inserido na borda
+     */
     public static void setBorderTitle(JPanel panel, String title) {
         TitledBorder borderTitle = BorderFactory.createTitledBorder(title);
         borderTitle.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
@@ -312,6 +354,10 @@ public class Styles {
         panel.setBackground(new Color(37, 38, 39));
     }
     
+    /**
+     * Estiliza o JScrollPane default da aplicação
+     * @param scroll JScrollPane a ser estilizado
+     */
     public static void defaultScroll(JScrollPane scroll) {
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);

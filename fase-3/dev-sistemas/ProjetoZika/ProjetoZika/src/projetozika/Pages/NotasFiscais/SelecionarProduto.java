@@ -5,21 +5,24 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -34,11 +37,11 @@ public class SelecionarProduto extends javax.swing.JPanel {
     
     private JPanel self;
     private JLabel lnome;
-    private JTextField fnome;
+    public static JTextField fnome;
     private JLabel addProduto;
     private JLabel enome;
     private JLabel lunidade;
-    private JTextField funidade;
+    public static JTextField funidade;
     private JLabel eunidade;
     private JLabel lquantidade;
     private JTextField fquantidade;
@@ -48,14 +51,19 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private JLabel evalor;
     private JButton selProd;
     private JPanel pSuggestions;
-    private JComboBox cnome;
+    public static JComboBox cnome;
+    private Properties params;
+    private final AddNotaFiscal caller;
 
     /**
      * Creates new form SelecionarProduto
+     * @param caller A tela que invocou esse panal
      */
-    public SelecionarProduto() {
+    public SelecionarProduto(JFrame caller) {
         initComponents();
-        self = this;
+        this.self = this;
+        this.caller = (AddNotaFiscal)caller;
+        
         Styles.setBorderTitle(this, Methods.getTranslation("Adicionar/SelecionarProduto"));
         
         addElements();
@@ -71,13 +79,18 @@ public class SelecionarProduto extends javax.swing.JPanel {
         fnome = new JTextField();
         cnome = new JComboBox();
         new SuggestionsBox(pSuggestions, fnome, cnome, 200) {
+            @Override
             public ArrayList<ComboItem> addElements() {
-                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                ArrayList<ComboItem> elements = new ArrayList<>();
                 for (int i = 1; i <= 25; i++) {
                     // TODO: implements real database results
                     elements.add(new ComboItem(i, "Nome_"+i));
                 }
                 return elements;
+            }
+            @Override
+            public void afterSelectItem() {
+                funidade.setText("Caixa");
             }
         };
         add(pSuggestions, new AbsoluteConstraints(20, 50, -1, -1));
@@ -88,9 +101,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
         add(addProduto, new AbsoluteConstraints(230, 45, -1, -1));
         
         addProduto.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 if (!addProduto.isEnabled()) return;
-                Navigation.updateLayout("addProdutoNota");
+                Navigation.updateLayout("addProdutoNota", params);
             }
         });
         
@@ -139,26 +153,42 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.defaultButton(selProd);
         selProd.setPreferredSize(new Dimension(100, 34));
         add(selProd, new AbsoluteConstraints(240, 293, -1, -1));
-        selProd.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
+        selProd.addActionListener((ActionEvent e) -> {
+            
+            // limpa erros
+            clearErrors();
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
+            if (! Validator.validaNumero(fquantidade, equantidade)) isValid = false;
+            if (! Validator.validaValor(fvalor, evalor)) isValid = false;
+            if (! Validator.validaComboBox(cnome, enome)) isValid = false;
+            if (isValid) {
                 Dialogs.showLoadPopup(self);
                 timerTest();
-                
             }
+            
         });
+    }
+    
+    private void clearErrors() {
+        eunidade.setText("");
+        equantidade.setText("");
+        evalor.setText("");
+        enome.setText("");
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                t.stop();
-            }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            funidade.setEnabled(false);
+            caller.addProduto(new Produto(333,"Prod Teste","Caixa","Desc teste","12/11/2008"));
+            
+            t.stop();
         });
         t.start();
     }

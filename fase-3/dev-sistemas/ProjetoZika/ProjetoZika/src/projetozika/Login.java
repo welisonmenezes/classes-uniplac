@@ -5,9 +5,14 @@
  */
 package projetozika;
 
+import Config.Environment;
+import Models.Usuario;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
+import java.awt.Toolkit;
+import java.util.Arrays;
+import java.util.Properties;
 import javax.swing.JFrame;
 
 /**
@@ -16,12 +21,18 @@ import javax.swing.JFrame;
  * @author Welison
  */
 public class Login extends javax.swing.JFrame {
+    
+    private Properties params;
 
     /**
      * Creates new form Login
      */
     public Login() {
         initComponents();
+        this.params = new Properties();
+        
+        // add icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
         // posiciona o frame na tela
         Methods.positionFrameInCenter(this);
@@ -38,6 +49,9 @@ public class Login extends javax.swing.JFrame {
         translation();
     }
     
+    /**
+     * Resolve as traduções
+     */
     private void translation() {
         ltitulo.setText(Methods.getTranslation("FacaSeuLogin"));
         lsenha.setText(Methods.getTranslation("Senha"));
@@ -83,7 +97,7 @@ public class Login extends javax.swing.JFrame {
         llogin.setText("Login");
         jBg.add(llogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
 
-        flogin.setText("welison");
+        flogin.setText("administrador");
         jBg.add(flogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
 
         lsenha.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -118,21 +132,53 @@ public class Login extends javax.swing.JFrame {
      * @param evt o ActionEvent
      */
     private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
-        // login
-        //lInfo.setText("Login ou senha inválidos");
+        
+        // reseta erro
+        lInfo.setText("");
+        
+        // validação
         String login = flogin.getText();
-        String password = fsenha.getText();
-        if (login.equals("welison") && password.equals("123456")) {
+        char[] password = fsenha.getPassword();
+        String userPassword = "123456";
+        if ((login.equals("administrador") || login.equals("almoxarife") || login.equals("usuario")) && Arrays.equals(password, userPassword.toCharArray())) {
+            
+            // seta usuario logado
+            Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
+            u.setLogin("administrador");
+            u.setSenha("123456");
+            
+            switch (login) {
+                case "administrador":
+                    u.setPermissao(Methods.getTranslation("Administrador"));
+                    break;
+                case "almoxarife":
+                    u.setPermissao(Methods.getTranslation("Almoxarife"));
+                    break;
+                case "usuario":
+                    u.setPermissao(Methods.getTranslation("Usuario"));
+                    break;
+            }
+            
+            Environment.setLoggedUser(u);
+            
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
-            Navigation.updateLayout("");
-            Navigation.updateLayout("dashboard");
+            Navigation.updateLayout("", params);
+            
+            if (login.equals("usuario")) {
+                params.clear();
+                Navigation.updateLayout("seusPedidos", params);
+            } else {
+                Navigation.updateLayout("dashboard", params);
+            }
+            
         } else {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
+        
     }//GEN-LAST:event_bentrarActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -167,7 +213,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bentrar;
     private javax.swing.JTextField flogin;

@@ -5,46 +5,38 @@
  */
 package projetozika.Pages.Relatorios;
 
-import Templates.BaseLayout;
 import Utils.Methods;
-import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
+import java.util.Properties;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 /**
  * Tela de listagem do fornecedores
  * 
  * @author Welison
  */
 public class Relatorios extends Templates.BaseLayout {
-    
-    private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+
     private JTabbedPane jTabbedPane1;
     private JPanel panelPedidos;
     private JPanel panelProdutos;
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public Relatorios() {
+    public Relatorios(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params;
+        
         initComponents();
         createBaseLayout();
-        //addTopContent("Relatórios");
         addCenterContent();
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
+    private void addCenterContent() {
         jTabbedPane1 = new JTabbedPane();
         jTabbedPane1.setOpaque(false);
         
@@ -57,8 +49,6 @@ public class Relatorios extends Templates.BaseLayout {
         pCenter.add(jTabbedPane1, BorderLayout.CENTER);
     }
     
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

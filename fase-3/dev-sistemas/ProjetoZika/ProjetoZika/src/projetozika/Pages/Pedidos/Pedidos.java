@@ -8,7 +8,6 @@ package projetozika.Pages.Pedidos;
 import Config.Environment;
 import Models.Pedido;
 import Models.Usuario;
-import Templates.BaseLayout;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -19,7 +18,8 @@ import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -36,10 +36,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Welison
  */
 public class Pedidos extends Templates.BaseLayout {
-    
-    private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+
     private JDateChooser fData;
     private JTextField fNome;
     private JComboBox<String> fStatus;
@@ -47,28 +44,58 @@ public class Pedidos extends Templates.BaseLayout {
     private JLabel lData;
     private JLabel lStatus;
     private JButton bSearch;
-    private JScrollPane barraRolagem;
+    private ArrayList<Pedido> pedidos;
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public Pedidos() {
+    public Pedidos(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params; 
+        initPage();
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
+        
+        pedidos = new ArrayList<>();
+        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+        for (int i = 0; i < 15; i++) {
+            Pedido p = new Pedido("10/11/2019", "Pendente", u);
+            p.setId(i);
+            pedidos.add(p);
+        }
+        
         addTopContent(Methods.getTranslation("Pedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        
+        updateParams();
+    }
+    
+    private void updateParams() {
+        String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params.setProperty("page", "1");
+        params.setProperty("nome", fNome.getText());
+        params.setProperty("data", date);
+        params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
-        makeTable();
-        barraRolagem = new JScrollPane(tabela);
+    private void addCenterContent() {
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -91,30 +118,28 @@ public class Pedidos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5){
+               if (column != 4 && column != 5) {
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
+        pedidos.forEach(p -> {
             String btnValue = Methods.getTranslation("Entregar");
-            if ( i % 2 == 0 ) {
+            if ( p.getId() % 2 == 0 ) {
                 btnValue = "";
             } 
             Object[] data = {
-                p.getCodigo(), 
+                p.getId(),
                 p.getSolicitante().getNome(),
-                p.getData(),
+                p.getCreated(),
                 p.getStatus(),
                 Methods.getTranslation("Ver/Editar"), 
                 btnValue
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -128,7 +153,7 @@ public class Pedidos extends Templates.BaseLayout {
                 String actionValue = (String)tabela.getModel().getValueAt(row, col);
                 if (!actionValue.equals("")) {
                     // TODO : tela de finalizar
-                    Navigation.updateLayout("entregarPedido", id);
+                    Navigation.updateLayout("entregarPedido", id, params);
                 }
             }
         });
@@ -138,7 +163,7 @@ public class Pedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarPedido", id);
+                Navigation.updateLayout("editarPedido", id, params);
             }
         });
     }
@@ -146,23 +171,27 @@ public class Pedidos extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo
      */
-    public void addFilterContent() {
+    private void addFilterContent() {
         
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
+        fNome.setText(params.getProperty("nome", ""));
         
         lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
+        Methods.setDateChooserFormat(fData);
+        Methods.setParamsToDateChooser(fData, params);
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);
         
         fStatus = new JComboBox();
-        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS.toArray()));
+        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS));
         Styles.defaultComboBox(fStatus);
+        fStatus.setSelectedItem(params.getProperty("status", ""));
         
         lStatus = new JLabel(Methods.getTranslation("Status"));
         Styles.defaultLabel(lStatus, false);
@@ -180,20 +209,19 @@ public class Pedidos extends Templates.BaseLayout {
         
 
         // click do buscar
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-                pagination(3);
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
+    private void addBottomContent() {
         this.pagination(5);
     }
     
@@ -202,48 +230,38 @@ public class Pedidos extends Templates.BaseLayout {
      * 
      * @param total o total de páginas
      */
-    public void pagination(int total) {
+    private void pagination(int total) {
+        /*
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
+        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                // reseta tabela
-                tableModel.getDataVector().removeAllElements();
-                tableModel.fireTableDataChanged();
-                // adiciona novas linhas
-                for(int i = 0; i < 8; i++) {
-                    Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Pedido p = new Pedido("10/11/2019", "Pendente", u);
-                    String btnValue = Methods.getTranslation("Finalizar");
-                    if ( i % 2 == 0 ) {
-                        btnValue = "";
-                    } 
-                    Object[] data = {
-                        p.getCodigo(), 
-                        p.getSolicitante().getNome(),
-                        p.getData(),
-                        p.getStatus(),
-                        Methods.getTranslation("Ver/Editar"), 
-                        btnValue
-                    };
-                    tableModel.addRow(data);
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            // reseta tabela
+            for (int i = 0; i < pedidos.size(); i++) {
+                Pedido p = pedidos.get(i);
+                if (p.getId() > 10) {
+                    pedidos.remove(p);
                 }
-                
-                t.stop();
             }
+            updateCenterContent();
+            pagination(3);
+            
+            t.stop();
         });
         t.start();
     }

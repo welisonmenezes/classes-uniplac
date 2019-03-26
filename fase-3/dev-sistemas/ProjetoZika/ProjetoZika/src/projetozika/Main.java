@@ -8,7 +8,7 @@ package projetozika;
 import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.BorderLayout;
-import javax.swing.JComponent;
+import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 /**
@@ -21,7 +21,6 @@ public class Main extends javax.swing.JFrame {
     private JPanel jBG; // container geral
     private JPanel jBODY; // container do conteúdo
     private JPanel jSIDE; // container do menu
-    //public static JComponent rootComponent; // acesso estático ao container geral
     public static JPanel menu; // o menu
     /**
      * Creates new form Main
@@ -30,13 +29,15 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         menu = new Menu(this);
         initLayout();
-        //rootComponent = this.jBG;
         
         Methods.setAccessibility(this);
         
         translation();
     }
     
+    /**
+     * Resolva as traduções
+     */
     private void translation() {
         setTitle(Methods.getTranslation("ProjetoZika"));
     }
@@ -46,6 +47,10 @@ public class Main extends javax.swing.JFrame {
      * a aplicação recebera um conteiner geral, um container para o menu e um para o conteúdo
      */
     private void initLayout() {
+        
+        // add icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
+        
         // seta o tamanho do frame
         Methods.makeFrameFullSize(this);
         
@@ -99,7 +104,7 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /**
      * @param args the command line arguments
      */
@@ -134,7 +139,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

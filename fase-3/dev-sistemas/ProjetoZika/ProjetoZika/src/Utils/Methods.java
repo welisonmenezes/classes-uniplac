@@ -5,6 +5,8 @@
  */
 package Utils;
 
+import Config.Environment;
+import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -12,8 +14,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -179,6 +187,19 @@ public class Methods {
     }
     
     /**
+     * Retorna o valor de uma dada coluna da linha selecionda de um dado JTable
+     * 
+     * @param table o JTable cuja valor será retornado
+     * @param col o Index da coluna desejada
+     * @return o valor da primeira coluna da linha selecionada
+     */
+    public static String selectedTableItemValue(JTable table, int col) {
+        int row = table.getSelectedRow();
+        Object value = table.getValueAt(row, col);
+        return value.toString();
+    }
+    
+    /**
      * Remove a linha selecionada de um dado JTable
      * 
      * @param table o JTable cuja linha selecionada será removida
@@ -200,6 +221,7 @@ public class Methods {
         // add listener para o VK_ESCAPE. Quando acionado fecha o frame
         meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESCAPE");
         meurootpane.getRootPane().getActionMap().put("ESCAPE", new AbstractAction("ESCAPE") {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
             }
@@ -209,6 +231,7 @@ public class Methods {
         // Quando acionado simula o tab. Se o elemento focado for um botão, simula o click
         meurootpane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ENTER");
         meurootpane.getRootPane().getActionMap().put("ENTER", new AbstractAction("ENTER") {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 if(frame.getFocusOwner() instanceof JButton) {
                     JButton btn = (JButton) frame.getFocusOwner();
@@ -221,15 +244,18 @@ public class Methods {
     }
     
     /**
-     * Habilita o desabilita os componetes do JBody e JMenu no abrie e fecha deste frame
+     * Habilita o desabilita os componetes d
+     * @param frame o JBody e JMenu no abrir e fecha deste frame
      */
     public static void disableEnableRootAndMenuPanel(JFrame frame) {
         frame.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowOpened(WindowEvent we) {
                 Methods.setEnableRecursively(Methods.getJBody(), false);
                 Methods.setEnableRecursively(Methods.getJMenu(), false);
             }
             
+            @Override
             public void windowClosed(WindowEvent we) {
                 Methods.setEnableRecursively(Methods.getJBody(), true);
                 Methods.setEnableRecursively(Methods.getJMenu(), true);
@@ -267,9 +293,102 @@ public class Methods {
         }
     }
     
-    
+    /**
+     * Retorna o texto correspondente a uma dada chave e ao idioma da aplicação
+     * @param text a chave do texto do arquivo bundle a ser traduzido
+     * @return o texto traduzido
+     */
     public static String getTranslation(String text) {
         ResourceBundle bundle = ResourceBundle.getBundle("sources/Bundle");
         return bundle.getString(text);
+    }
+    
+    /**
+     * Seta o parâmetro correspondente ao campo de data no formato do idioma da aplicação
+     * @param field o campo de data
+     * @param params os parâmetros correntes da aplicação 
+     */
+    public static void setParamsToDateChooser(JDateChooser field, Properties params) {
+        SimpleDateFormat sdf;
+        if (Environment.getCurrentLang().equals("en")) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        try {
+            String sData = params.getProperty("data", "");
+            if (!sData.equals("")) {
+                Date newDate = sdf.parse(sData);
+                field.setDate(newDate);
+            }
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.setParamsToDateChooser: " + error);
+        }
+    }
+    
+    /**
+     * Seta uma data default para um campo de data no formato do idiomma da aplicação
+     * @param field o campo de data
+     * @param date a data a ser inserida no campo
+     */
+    public static void setDateToDateChooser(JDateChooser field, String date) {
+        SimpleDateFormat sdf;
+        if (Environment.getCurrentLang().equals("en")) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        try {
+            Date newDate = sdf.parse(date);
+            field.setDate(newDate);
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.setDateToDateChooser: " + error);
+        }
+    }
+    
+    /**
+     * Seta o formato do campo de data conforme o idioma da aplicação
+     * @param field o campo de data
+     */
+    public static void setDateChooserFormat(JDateChooser field) {
+        if (Environment.getCurrentLang().equals("en")) {
+            field.setDateFormatString("yyyy-MM-dd");
+        } else {
+            field.setDateFormatString("dd/MM/yyyy");
+        }
+    }
+    
+    /**
+     * Converte uma string em uma data válida
+     * @param date a data a ser convertida
+     * @return a data convertida
+     */
+    public static Date convertStringToDate(String date) {
+        SimpleDateFormat sdf;
+        if (Environment.getCurrentLang().equals("en")) {
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            sdf = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        try {
+            Date convertedDate = sdf.parse(date);
+            return convertedDate;
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.convertStringToDate: " + error);
+        }
+    }
+    
+    /**
+     * Seta como marcado o elemento cujo valor coincide com um dado valor
+     * @param rdValue o valor a ser marcado
+     * @param elements o elementos do ButtonGroup
+     */
+    public static void setButtonGroup(String rdValue, Enumeration elements ){
+        while (elements.hasMoreElements()){
+            AbstractButton button = (AbstractButton)elements.nextElement();
+            if(button.getActionCommand().equals(rdValue)){
+                button.setSelected(true);
+            }
+        }
     }
 }

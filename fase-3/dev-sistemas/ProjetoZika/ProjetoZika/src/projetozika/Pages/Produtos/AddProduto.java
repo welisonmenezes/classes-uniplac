@@ -6,37 +6,37 @@
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
+import DAO.ProdutoDAO;
 import Models.Produto;
+import Templates.ComboItem;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import Utils.Validator;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.table.DefaultTableModel;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
+import projetozika.Pages.NotasFiscais.SelecionarProduto;
 
 /**
  *
  * @author Welison
  */
 public class AddProduto extends Templates.BaseFrame {
-    private final JFrame self;
-    private String mode;
+
     private JPanel bg;
     private JTextField fnome;
     private JLabel lnome;
@@ -48,36 +48,47 @@ public class AddProduto extends Templates.BaseFrame {
     private JLabel ldescricao;
     private JLabel edescricao;
     private JButton bSave;
-    private JPanel panelCaller;
+    private Produto produto;
+    private ProdutoDAO produtoDao;
     
    
-    public AddProduto() {
+    public AddProduto(Properties params) {
         this.self = this;
         this.mode = "add";
+        this.params = params;
         initPage(Methods.getTranslation("AdicionarProduto"));
     }
     
-    public AddProduto(JPanel panelCaller) {
+    public AddProduto(JPanel panelCaller, Properties params) {
         this.self = this;
-        initPage(Methods.getTranslation("AdicionarProdutoPelaNota"));
+        this.params = params;
         this.mode = "nota";
-        this.panelCaller = panelCaller;
+        
+        initPage(Methods.getTranslation("AdicionarProdutoPelaNota"));
+        
     }
     
-    public AddProduto(String id, String mode) {
+    public AddProduto(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
-        if(this.mode.equals("view")){
-            initPage(Methods.getTranslation("VerProduto"));
-            Methods.disabledFields(bg);
-        } else if (this.mode.equals("edit")){
-            initPage(Methods.getTranslation("EditarProduto"));
+        this.params = params;
+        
+        switch (this.mode) {
+            case "view":
+                initPage(Methods.getTranslation("VerProduto"));
+                Methods.disabledFields(bg);
+                break;
+            case "edit":
+                initPage(Methods.getTranslation("EditarProduto"));
+                break;
         }
         
         fillFields(id);
     }
     
     private void initPage(String title) {
+        
+        produtoDao = new ProdutoDAO();
         
         initComponents();
         Styles.internalFrame(this, 450, 400);
@@ -96,14 +107,7 @@ public class AddProduto extends Templates.BaseFrame {
         addCenterContent();
     }
     
-    private void fillFields(String id) {
-        Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-        fnome.setText(p.getNome());
-        //funidade.setSelectedItem("Unidade");
-        fdescricao.setText(p.getDescricao());
-    }
-    
-    public void addCenterContent() {
+    private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
@@ -125,7 +129,7 @@ public class AddProduto extends Templates.BaseFrame {
         bg.add(lunidade, new AbsoluteConstraints(220, 0, -1, -1));
 
         funidade = new JComboBox();
-        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES.toArray()));
+        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES));
         Styles.defaultComboBox(funidade, 200, 39);
         bg.add(funidade, new AbsoluteConstraints(220, 40, -1, -1));
         
@@ -151,72 +155,90 @@ public class AddProduto extends Templates.BaseFrame {
         bSave.setPreferredSize(new Dimension(196, 34));
         bg.add(bSave, new AbsoluteConstraints(220, 132, -1, -1));
         
-        bSave.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
-                if(fnome.getText().equals("") || funidade.getSelectedItem().equals("") || fdescricao.getText().equals("")){
-                    if(fnome.getText().equals("")){
-                        enome.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                    if(funidade.getSelectedItem().equals("")) {
-                        eunidade.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                    if(fdescricao.getText().equals("")) {
-                        edescricao.setText(Methods.getTranslation("CampoObrigatorio"));
-                    }
-                } else {
-                    Dialogs.showLoadPopup(bg);
-                    timerTest();
-                }
+        bSave.addActionListener((ActionEvent e) -> {
+            
+            // limpa erros
+            clearErrors();
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaCampo(fnome, enome)) isValid = false;
+            if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
+            if (! Validator.validaCampo(fdescricao, edescricao)) isValid = false;
+            if (isValid) {
                 
+                produto = new Produto();
+                produto.setNome(fnome.getText());
+                produto.setUnidade(funidade.getSelectedItem().toString());
+                produto.setDescricao(fdescricao.getText());
                 
+                Dialogs.showLoadPopup(bg);
+                timerTest();
             }
+
         });
         
         pCenter.add(bg);
     }
     
+    private void fillFields(String id) {
+        Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+        fnome.setText(p.getNome());
+        funidade.setSelectedItem("Unidade");
+        fdescricao.setText(p.getDescricao());
+    }
+    
+    private void clearErrors() {
+        enome.setText("");
+        eunidade.setText("");
+        edescricao.setText("");
+    }
+    
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(bg);
-                
-                if (mode.equals("edit")) {
-                    JTable tabela = Produtos.tabela;
-                    DefaultTableModel tableModel = Produtos.tableModel;
-                    int row = tabela.getSelectedRow();
-                    tableModel.setValueAt(fnome.getText() , row, 1);
-                    tableModel.setValueAt(funidade.getSelectedItem() , row, 2);
+        t = new Timer(500, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(bg);
+            
+            switch (mode) {
+                case "edit":
                     self.dispose();
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-
-                } else if(mode.equals("add")) {
-                    DefaultTableModel tableModel = Produtos.tableModel;
-                    tableModel.addRow(new Object[]{
-                        "5454",
-                        fnome.getText(),
-                        funidade.getSelectedItem(),
-                        "10/10/2000",
-                        Methods.getTranslation("Editar"),
-                        Methods.getTranslation("Excluir"),
-                        Methods.getTranslation("Ver")
-                    });
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+                    break;
+                case "add":
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                } else if(mode.equals("nota")){
-                    // TODO
+                    try {
+                        produtoDao.inserir(produto);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddProduto.add: " + error);
+                    }
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+                    break;
+                case "nota":
+                    
+                    // exemplo add produto
+                    SelecionarProduto.fnome.setText(fnome.getText());
+                    ComboItem ci = new ComboItem(1, fnome.getText());
+                    SelecionarProduto.cnome.addItem(ci);
+                    SelecionarProduto.cnome.setSelectedItem(ci);
+                    SelecionarProduto.funidade.setText(funidade.getSelectedItem().toString());
+                    
                     self.dispose();
-                } else {
+                    break;
+                default:
                     self.dispose();
-                }
-                
-                
-                t.stop();
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+                    break;
             }
+            
+            
+            t.stop();
         });
         t.start();
     }
@@ -235,42 +257,6 @@ public class AddProduto extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddProduto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddProduto().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

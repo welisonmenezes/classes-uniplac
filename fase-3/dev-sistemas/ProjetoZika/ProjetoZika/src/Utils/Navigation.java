@@ -8,6 +8,7 @@ package Utils;
 import static Utils.Methods.getJBody;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -67,74 +68,75 @@ public class Navigation {
      * 
      * @param pageName o nome do modulo desejado
      * @param id o id para consulta ao banco de dados
+     * @param params Parâmetros para filtro e paginação
      */
-    public static void updateLayout(String pageName, String id) {
+    public static void updateLayout(String pageName, String id, Properties params) {
         if (currentPage.equals(pageName)) return;
         resetLayout(pageName);
         switch (pageName) {
             case "editarFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpFrame = new AddFornecedor(id, "edit");
+                tmpFrame = new AddFornecedor(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpFrame = new AddFornecedor(id, "view");
+                tmpFrame = new AddFornecedor(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarNotaFiscal":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddNotaFiscal(id, "edit");
+                tmpFrame = new AddNotaFiscal(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verNotaFiscal":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddNotaFiscal(id, "view");
+                tmpFrame = new AddNotaFiscal(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarProduto":
                 updateSatusMenu("produtos");
-                tmpFrame = new AddProduto(id, "edit");
+                tmpFrame = new AddProduto(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verProduto":
                 updateSatusMenu("produtos");
-                tmpFrame = new AddProduto(id, "view");
+                tmpFrame = new AddProduto(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarUsuario":
                 updateSatusMenu("usuarios");
-                tmpFrame = new AddUsuario(id, "edit");
+                tmpFrame = new AddUsuario(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarPerfil":
                 updateSatusMenu("perfil");
-                tmpFrame = new AddUsuario(id, "perfil");
+                tmpFrame = new AddUsuario(id, "perfil", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verUsuario":
                 updateSatusMenu("usuarios");
-                tmpFrame = new AddUsuario(id, "view");
+                tmpFrame = new AddUsuario(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarPedido":
                 updateSatusMenu("pedidos");
-                tmpFrame = new EditarPedido(id, "edit");
+                tmpFrame = new EditarPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "entregarPedido":
                 updateSatusMenu("pedidos");
-                tmpFrame = new EntregarPedido(id, "edit");
+                tmpFrame = new EntregarPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             case "verSeuPedido":
                 updateSatusMenu("seusPedidos");
-                tmpFrame = new FazerPedido(id, "view");
+                tmpFrame = new FazerPedido(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
             case "editarSeuPedido":
                 updateSatusMenu("seusPedidos");
-                tmpFrame = new FazerPedido(id, "edit");
+                tmpFrame = new FazerPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             default:
@@ -148,81 +150,82 @@ public class Navigation {
      * Este metodo cuida das listagens e adições
      * 
      * @param pageName o nome do modulo desejado
+     * @param params Parâmetros para filtro e paginação
      */
-    public static void updateLayout(String pageName) {
+    public static void updateLayout(String pageName, Properties params) {
         if (currentPage.equals(pageName)) return;
         resetLayout(pageName);
         switch (pageName) {
             case "dashboard":
                 updateSatusMenu("dashboard");
-                tmpPanel = new Dashboard();
+                tmpPanel = new Dashboard(params);
                 break;
             case "fornecedores":
                 updateSatusMenu("fornecedores");
-                tmpPanel = new Fornecedores();
+                tmpPanel = new Fornecedores(params);
                 break;
             case "addFornecedor":
                 updateSatusMenu("fornecedores");
-                tmpFrame = new AddFornecedor();
+                tmpFrame = new AddFornecedor(params);
                 tmpFrame.setVisible(true);
                 break;
             case "notasFiscais":
                 updateSatusMenu("notasFiscais");
-                tmpPanel = new NotasFiscais();
+                tmpPanel = new NotasFiscais(params);
                 break;
             case "addNotaFiscal":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddNotaFiscal();
+                tmpFrame = new AddNotaFiscal(params);
                 tmpFrame.setVisible(true);
                 break;
             case "addFornecedorNota":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddFornecedor(tmpPanel);
+                tmpFrame = new AddFornecedor(tmpPanel, params);
                 tmpFrame.setVisible(true);
                 break;
             case "produtos":
                 updateSatusMenu("produtos");
-                tmpPanel = new Produtos();
+                tmpPanel = new Produtos(params);
                 break;
             case "addProduto":
                 updateSatusMenu("produtos");
-                tmpFrame = new AddProduto();
+                tmpFrame = new AddProduto(params);
                 tmpFrame.setVisible(true);
                 break;
             case "addProdutoNota":
                 updateSatusMenu("notasFiscais");
-                tmpFrame = new AddProduto(tmpPanel);
+                tmpFrame = new AddProduto(tmpPanel, params);
                 tmpFrame.setVisible(true);
                 break;
             case "usuarios":
                 updateSatusMenu("usuarios");
-                tmpPanel = new Usuarios();
+                tmpPanel = new Usuarios(params);
                 break;
             case "addUsuario":
                 updateSatusMenu("usuarios");
-                tmpFrame = new AddUsuario();
+                tmpFrame = new AddUsuario(params);
                 tmpFrame.setVisible(true);
                 break;
             case "pedidos":
                 updateSatusMenu("pedidos");
-                tmpPanel = new Pedidos();
+                tmpPanel = new Pedidos(params);
                 break;
             case "seusPedidos":
                 updateSatusMenu("seusPedidos");
-                tmpPanel = new SeusPedidos();
+                tmpPanel = new SeusPedidos(params);
                 break;
             case "fazerPedido":
                 updateSatusMenu("seusPedidos");
-                tmpFrame = new FazerPedido();
+                tmpFrame = new FazerPedido(params);
                 tmpFrame.setVisible(true);
                 break;
             case "perfil":
                 updateSatusMenu("perfil");
-                tmpPanel = new Perfil();
+                tmpPanel = new Perfil(params);
                 break;
             case "relatorios":
                 updateSatusMenu("relatorios");
-                tmpPanel = new Relatorios();
+                tmpPanel = new Relatorios(params);
                 break;
             default:
                 setDefaultPage();
@@ -237,7 +240,7 @@ public class Navigation {
     private static void resetLayout(String pageName) {
         if (!pageName.equals("addFornecedorNota")
             && !pageName.equals("addProdutoNota")){
-            if (tmpFrame != null) {;
+            if (tmpFrame != null) {
                 tmpFrame.dispose();
                 tmpFrame = null;
             }

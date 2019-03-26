@@ -6,22 +6,98 @@
 package projetozika.Pages;
 
 import Utils.Methods;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Properties;
+import javax.swing.JPanel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
  *
  * @author Welison
  */
 public class Dashboard extends Templates.BaseLayout {
+    private JPanel bg;
     
     /**
      * Creates new form Dashboard
+     * @param params Parâmetros para filtro e paginação
      */
-    public Dashboard() {
+    public Dashboard(Properties params) {
+        super();
+        this.self = this;
+        this.params = params;
+        
         initComponents();
         createBaseLayout();
         
-        // tradução
         translation();
+        
+        addCenterContent();
+    }
+    
+    private void addCenterContent() {
+        bg = new JPanel();
+        bg.setLayout(new AbsoluteLayout());
+        bg.setOpaque(false);
+        
+        chartPedidos();
+        chartProdutos();
+        
+        pCenter.add(bg);
+    }
+    
+    private void chartPedidos() {
+        DefaultCategoryDataset dataPedidos = new DefaultCategoryDataset();
+        dataPedidos.setValue(35, "", Methods.getTranslation("Janeiro"));
+        dataPedidos.setValue(15, "", Methods.getTranslation("Fevereiro"));
+        dataPedidos.setValue(45, "", Methods.getTranslation("Marco"));
+        dataPedidos.setValue(19, "", Methods.getTranslation("Abril"));
+        buildChart(
+                dataPedidos, 
+                Methods.getTranslation("PedidosRealizados"), 
+                Methods.getTranslation("Mes"), 
+                Methods.getTranslation("Media"), 
+                new Color(79, 129, 189), 
+                0, 
+                0
+        );
+    }
+    
+    private void chartProdutos() {
+        DefaultCategoryDataset dataProdutos = new DefaultCategoryDataset();
+        dataProdutos.setValue(70, "", Methods.getTranslation("Janeiro"));
+        dataProdutos.setValue(15, "", Methods.getTranslation("Fevereiro"));
+        dataProdutos.setValue(11, "", Methods.getTranslation("Marco"));
+        dataProdutos.setValue(19, "", Methods.getTranslation("Abril"));
+        dataProdutos.setValue(39, "", Methods.getTranslation("Maio"));
+        buildChart(
+                dataProdutos, 
+                Methods.getTranslation("EntradaProdutos"), 
+                Methods.getTranslation("Mes"), 
+                Methods.getTranslation("Media"), 
+                new Color(29, 129, 89), 
+                550, 
+                0
+        );
+    }
+    
+    private void buildChart(DefaultCategoryDataset dataset, String title, String titleCol, String titleRow, Color color, int x, int y) {
+        JFreeChart chartPedidos = ChartFactory.createBarChart3D(title, titleCol, titleRow, dataset);
+        ChartPanel chartPanel = new ChartPanel(chartPedidos);
+        chartPanel.setPreferredSize(new Dimension(500, 300));
+        CategoryPlot plot = chartPedidos.getCategoryPlot();
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setSeriesPaint(0, color);
+        renderer.setBaseSeriesVisibleInLegend(false);
+        bg.add(chartPanel, new AbsoluteConstraints(x, y, -1, -1));
     }
     
     private void translation() {
@@ -41,8 +117,6 @@ public class Dashboard extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

@@ -10,10 +10,10 @@ import Templates.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Styles;
+import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -45,7 +45,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     private JDateChooser fdatato;
     private JLabel edatato;
     private JButton btnRelatorioPedido;
-    private JPanel self;
+    private final JPanel self;
     private JLabel title;
 
     /**
@@ -76,8 +76,9 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         ffornecedor = new JTextField();
         cfornecedor = new JComboBox();
         new SuggestionsBox(sfornecedor, ffornecedor, cfornecedor, 300) {
+            @Override
             public ArrayList<ComboItem> addElements() {
-                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                ArrayList<ComboItem> elements = new ArrayList<>();
                 for (int i = 1; i <= 25; i++) {
                     // TODO: implements real database results
                     elements.add(new ComboItem(i, "Nome_"+i));
@@ -97,8 +98,9 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         fproduto = new JTextField();
         cproduto = new JComboBox();
         new SuggestionsBox(sproduto, fproduto, cproduto, 300) {
+            @Override
             public ArrayList<ComboItem> addElements() {
-                ArrayList<ComboItem> elements = new ArrayList<ComboItem>();
+                ArrayList<ComboItem> elements = new ArrayList<>();
                 for (int i = 1; i <= 25; i++) {
                     // TODO: implements real database results
                     elements.add(new ComboItem(i, "Nome_"+i));
@@ -115,6 +117,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         
         fdatafrom = new JDateChooser();
         Styles.defaultDateChooser(fdatafrom, 300);
+        Methods.setDateChooserFormat(fdatafrom);
         add(fdatafrom, new AbsoluteConstraints(20, 170, -1, -1));
         
         edatafrom = new JLabel("");
@@ -127,6 +130,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         
         fdatato = new JDateChooser();
         Styles.defaultDateChooser(fdatato, 300);
+        Methods.setDateChooserFormat(fdatato);
         add(fdatato, new AbsoluteConstraints(340, 170, -1, -1));
         
         edatato = new JLabel("");
@@ -137,28 +141,35 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
-        btnRelatorioPedido.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    
+        btnRelatorioPedido.addActionListener((ActionEvent e) -> {
+            
+            // limpa erros
+            clearErrors();
+            
+            // validação
+            boolean isValid = true;
+            if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
+            if (! Validator.validaData(fdatato, edatato)) isValid = false;
+            if (isValid) {
                 Dialogs.showLoadPopup(self);
                 timerTest();
-                
-                
             }
+            
         });
+    }
+    
+    private void clearErrors() {
+        edatafrom.setText("");
+        edatato.setText("");
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
-                t.stop();
-            }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
+            t.stop();
         });
         t.start();
     }

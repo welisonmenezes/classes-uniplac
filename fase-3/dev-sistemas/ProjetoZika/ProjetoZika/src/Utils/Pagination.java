@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -21,9 +21,13 @@ import javax.swing.JPanel;
  */
 public class Pagination {
     
+    public int pages;
+    private final JPanel context;
+    private final int total;
+    private final int limit;
+    private int offset;
+    private final Properties params;
     private int page;
-    private JPanel context;
-    private int total;
     
     /**
      * Construtor. Ao ser instanciada, a classe gera os botões e adiciona no Footer da aplicação
@@ -31,13 +35,21 @@ public class Pagination {
      * @param c o JPanel que receberá a paginação
      * @param total o total de páginas
      */
-    public Pagination(JComponent c, int total) {
-        this.page = 1;
+    public Pagination(JComponent c, int total, Properties params) {
         this.context = (JPanel) c;
         this.total = total;
+        this.limit = 2;
+        this.pages = (this.total / this.limit) + ((this.total / this.limit) % 2);
+        this.params = params;
+        this.offset = Integer.parseInt(params.getProperty("offset", "0"));
+        this.page = Integer.parseInt(params.getProperty("page", "1"));;
         
-        Methods.clearStage(context);
-        makePagination();
+        if (total > limit) {
+            Methods.clearStage(context);
+            makePagination();
+            updateActivePage();
+        }
+        
     }
     
     /**
@@ -50,25 +62,18 @@ public class Pagination {
         Styles.defaultButton(prev);
         
         context.add(prev);
-        for(int i = 1; i <= total; i++) {
+        for(int i = 1; i <= pages; i++) {
             JButton pBtn = new JButton("" + i);
             Styles.defaultButton(pBtn);
             pBtn.setPreferredSize(new Dimension(35, 35));
             
-            if(i == 1) {
-                pBtn.setBorder(BorderFactory.createLineBorder(new Color(255, 255, 255)));
-                pBtn.setForeground(new Color(255, 255, 255));
-            }
-            
-            pBtn.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(e.getSource() instanceof JButton){
-                        JButton tmp = (JButton) e.getSource();
-                        page = Integer.parseInt(tmp.getText());
-                        updateActivePage();
-                        callbackPagination();
-                    }
+            pBtn.addActionListener((ActionEvent e) -> {
+                if(e.getSource() instanceof JButton){
+                    JButton tmp = (JButton) e.getSource();
+                    page = Integer.parseInt(tmp.getText());
+                    params.setProperty("page", page + "");
+                    updateActivePage();
+                    callbackPagination();
                 }
             });
             
@@ -76,31 +81,29 @@ public class Pagination {
         }
         context.add(next);
         
-        prev.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() instanceof JButton){
-                    if(page > 1) {
-                        page--;
-                        updateActivePage();
-                        callbackPagination();
-                    }
+        prev.addActionListener((ActionEvent e) -> {
+            if(e.getSource() instanceof JButton){
+                if(page > 1) {
+                    page--;
+                    params.setProperty("page", page + "");
+                    updateActivePage();
+                    callbackPagination();
                 }
             }
         });
         
-        next.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() instanceof JButton){
-                    if(page < total) {
-                        page++;
-                        updateActivePage();
-                        callbackPagination();
-                    }
+        next.addActionListener((ActionEvent e) -> {
+            if(e.getSource() instanceof JButton){
+                if(page < pages) {
+                    page++;
+                    params.setProperty("page", page + "");
+                    updateActivePage();
+                    callbackPagination();
                 }
             }
         });
+        
+        
     }
     
     /**
@@ -114,6 +117,10 @@ public class Pagination {
      * Seta o estilo do link ativo da paginação
      */
     public void updateActivePage() {
+        
+        offset = (page - 1) * (limit);
+        params.setProperty("offset", offset + "");
+        
         Component[] comps = context.getComponents();
         for(int i = 0; i < comps.length; i++) {
             if (comps[i] instanceof JButton) {

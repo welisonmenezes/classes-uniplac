@@ -6,8 +6,8 @@
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
+import DAO.ProdutoDAO;
 import Models.Produto;
-import Templates.BaseLayout;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -19,7 +19,8 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -37,10 +38,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Welison
  */
 public class Produtos extends Templates.BaseLayout {
-    
-    private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
+
     private JButton addMore;
     private JTextField fNome;
     private JComboBox<String> funidade;
@@ -49,29 +47,68 @@ public class Produtos extends Templates.BaseLayout {
     private JLabel lUnidade;
     private JLabel lData;
     private JButton bSearch;
-    private JScrollPane barraRolagem;
     private JLabel hideL;
+    private ArrayList<Produto> produtos;
+    private ProdutoDAO produtoDao;
+    private int totalProdutos;
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public Produtos() {
+    public Produtos(Properties params) {
         super();
         self = this;
+        this.params = params;
+        initPage();
+    }
+    
+    private void initPage() {
+        
+        produtoDao = new ProdutoDAO();
+        
         initComponents();
         createBaseLayout();
+        
+        produtos = produtoDao.selecionar(params);
+        totalProdutos = produtoDao.total(params);
+        /*
+        produtos = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+            p.setId(i);
+            produtos.add(p);
+        }
+        */
+        
         addTopContent(Methods.getTranslation("Produtos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
+        
+        updateParams();
     }
     
+    private void updateParams() {
+        String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
+        params.setProperty("page", "1");
+        params.setProperty("nome", fNome.getText());
+        params.setProperty("data", date);
+        params.setProperty("unidade", funidade.getSelectedItem().toString());
+    }
+     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
-        makeTable();
-        barraRolagem = new JScrollPane(tabela);
+    private void addCenterContent() {
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -95,26 +132,25 @@ public class Produtos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5 && column != 6){
+               if (column != 4 && column != 5 && column != 6) {
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+        produtos.forEach(p -> {
             Object[] data = {
                 p.getId(),
                 p.getNome(),
                 p.getUnidade(),
-                p.getData(),
+                p.getCreated(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
                 Methods.getTranslation("Ver")
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -123,7 +159,7 @@ public class Produtos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarProduto", id);
+                Navigation.updateLayout("editarProduto", id, params);
             }
         });
         
@@ -131,11 +167,17 @@ public class Produtos extends Templates.BaseLayout {
         tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
+                String idTabel = Methods.selectedTableItemId(tabela);
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    Methods.removeSelectedTableRow(tabela, tableModel);
+                    for (int i = 0; i < produtos.size(); i++) {
+                        Produto p = produtos.get(i);
+                        if (idTabel.equals(""+p.getId())) {
+                            produtos.remove(p);
+                        }
+                    }
+                    updateCenterContent();
                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
@@ -146,7 +188,7 @@ public class Produtos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verProduto", id);
+                Navigation.updateLayout("verProduto", id, params);
             }
         });
     }
@@ -154,23 +196,27 @@ public class Produtos extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo
      */
-    public void addFilterContent() {
+    private void addFilterContent() {
         
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
+        fNome.setText(params.getProperty("nome", ""));
         
         lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         funidade = new JComboBox();
-        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES.toArray()));
+        funidade.setModel(new DefaultComboBoxModel(Environment.UNIDADES));
         Styles.defaultComboBox(funidade);
+        funidade.setSelectedItem(params.getProperty("unidade", ""));
         
         lUnidade = new JLabel(Methods.getTranslation("Unidade"));
         Styles.defaultLabel(lUnidade, false);
         
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
+        Methods.setDateChooserFormat(fData);
+        Methods.setParamsToDateChooser(fData, params);
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);
@@ -195,29 +241,25 @@ public class Produtos extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        addMore.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addProduto");
-            }
+        addMore.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("addProduto", params);
         });
         
         // click do buscar
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-                pagination(3);
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
-        this.pagination(5);
+    private void addBottomContent() {
+        this.pagination(totalProdutos);
     }
     
     /**
@@ -225,10 +267,13 @@ public class Produtos extends Templates.BaseLayout {
      * 
      * @param total o total de páginas
      */
-    public void pagination(int total) {
-        Pagination pag = new Pagination(pBottom, total){
+    private void pagination(int total) {
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
+                
+                //params.setProperty("offset", ""+this.pages);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
@@ -238,31 +283,16 @@ public class Produtos extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                // reseta tabela
-                tableModel.getDataVector().removeAllElements();
-                tableModel.fireTableDataChanged();
-                // adiciona novas linhas
-                for(int i = 26; i < 35; i++) {
-                    Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-                    Object[] data = {
-                        p.getId(),
-                        p.getNome(),
-                        p.getUnidade(),
-                        p.getData(),
-                        Methods.getTranslation("Editar"),
-                        Methods.getTranslation("Excluir"),
-                        Methods.getTranslation("Ver")
-                    };
-                    tableModel.addRow(data);
-                }
-                
-                t.stop();
-            }
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            // reseta tabela
+            produtos.clear();
+            produtos = produtoDao.selecionar(params);
+            updateCenterContent();
+            pagination(totalProdutos);
+            
+            t.stop();
         });
         t.start();
     }

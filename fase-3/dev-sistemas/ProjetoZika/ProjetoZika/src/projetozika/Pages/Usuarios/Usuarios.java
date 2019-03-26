@@ -7,7 +7,6 @@ package projetozika.Pages.Usuarios;
 
 import Config.Environment;
 import Models.Usuario;
-import Templates.BaseLayout;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -18,7 +17,8 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -37,9 +37,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Usuarios extends Templates.BaseLayout {
     
-    private BaseLayout self;
-    public static JTable tabela;
-    public static DefaultTableModel tableModel;
     private JButton addMore;
     private JTextField fEmail;
     private JTextField fNome;
@@ -48,31 +45,57 @@ public class Usuarios extends Templates.BaseLayout {
     private JLabel lEmail;
     private JLabel lSetor;
     private JButton bSearch;
-    private JScrollPane barraRolagem;
     private JLabel hideL;
+    private ArrayList<Usuario> usuarios;
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
-    public Usuarios() {
+    public Usuarios(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params;
+        
+        initPage();
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
+        
+        usuarios = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            Usuario u = new Usuario(""+i, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+            usuarios.add(u);
+        }
+        
         addTopContent(Methods.getTranslation("Usuarios"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
         
-        //Environment.SETORES.forEach(action);
+        updateParams();
+    }
+    
+    private void updateParams() {
+        params.setProperty("page", "1");
+        params.setProperty("nome", fNome.getText());
+        params.setProperty("email", fEmail.getText());
+        params.setProperty("setor", fSetor.getSelectedItem().toString());
     }
     
     // Adiciona conteúdo ao centro da area de conteúdo
-    public void addCenterContent() {
-        makeTable();
-        barraRolagem = new JScrollPane(tabela);
+    private void addCenterContent() {
+        barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
     }
     
     /**
@@ -96,15 +119,14 @@ public class Usuarios extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5 && column != 6){
+               if (column != 4 && column != 5 && column != 6) {
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
+        usuarios.forEach(u -> {
             Object[] data = {
                 u.getCpf(),
                 u.getNome(),
@@ -115,7 +137,7 @@ public class Usuarios extends Templates.BaseLayout {
                 Methods.getTranslation("Ver")
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -124,7 +146,7 @@ public class Usuarios extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarUsuario", id);
+                Navigation.updateLayout("editarUsuario", id, params);
             }
         });
         
@@ -132,12 +154,18 @@ public class Usuarios extends Templates.BaseLayout {
         tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
+                String idTabel = Methods.selectedTableItemId(tabela);
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    Methods.removeSelectedTableRow(tabela, tableModel);
-                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    for (int i = 0; i < usuarios.size(); i++) {
+                        Usuario u = usuarios.get(i);
+                        if (idTabel.equals(""+u.getCpf())) {
+                            usuarios.remove(u);
+                        }
+                    }
+                    updateCenterContent();
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
         });
@@ -147,7 +175,7 @@ public class Usuarios extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verUsuario", id);
+                Navigation.updateLayout("verUsuario", id, params);
             }
         });
     }
@@ -155,22 +183,25 @@ public class Usuarios extends Templates.BaseLayout {
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo
      */
-    public void addFilterContent() {
+    private void addFilterContent() {
         
         fNome = new JTextField();
         Styles.defaultField(fNome, 150);
+        fNome.setText(params.getProperty("nome", ""));
         
         lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
         fEmail = new JTextField();
         Styles.defaultField(fEmail, 150);
+        fEmail.setText(params.getProperty("email", ""));
         
         lEmail = new JLabel(Methods.getTranslation("Email"));
         Styles.defaultLabel(lEmail, false);
         
         fSetor = new JComboBox();
-        fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES.toArray()));
+        fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES));
+        fSetor.setSelectedItem(params.getProperty("setor", ""));
         /* example
         fSetor.addActionListener (new ActionListener () {
             public void actionPerformed(ActionEvent e) {
@@ -203,28 +234,24 @@ public class Usuarios extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        addMore.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addUsuario");
-            }
+        addMore.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("addUsuario", params);
         });
         
         // click do buscar
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-                pagination(3);
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
-    public void addBottomContent() {
+    private void addBottomContent() {
         this.pagination(5);
     }
     
@@ -233,44 +260,38 @@ public class Usuarios extends Templates.BaseLayout {
      * 
      * @param total o total de páginas
      */
-    public void pagination(int total) {
+    private void pagination(int total) {
+        /*
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
+        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                // reseta tabela
-                tableModel.getDataVector().removeAllElements();
-                tableModel.fireTableDataChanged();
-                // adiciona novas linhas
-                for(int i = 0; i < 10; i++) {
-                    Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Object[] data = {
-                        u.getCpf(),
-                        u.getNome(),
-                        u.getEmail(),
-                        u.getSetor(),
-                        Methods.getTranslation("Editar"),
-                        Methods.getTranslation("Excluir"),
-                        Methods.getTranslation("Ver")
-                    };
-                    tableModel.addRow(data);
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            // reseta tabela
+            for (int i = 0; i < usuarios.size(); i++) {
+                Usuario u = usuarios.get(i);
+                if (Integer.parseInt(u.getCpf()) > 10) {
+                    usuarios.remove(u);
                 }
-                
-                t.stop();
             }
+            updateCenterContent();
+            pagination(3);
+            
+            t.stop();
         });
         t.start();
     }

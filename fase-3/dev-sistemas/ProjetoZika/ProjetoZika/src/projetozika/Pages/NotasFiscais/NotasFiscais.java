@@ -6,8 +6,8 @@
 package projetozika.Pages.NotasFiscais;
 
 
+import Models.Fornecedor;
 import Models.NotaFiscal;
-import Templates.BaseLayout;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -19,7 +19,8 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -35,32 +36,66 @@ import javax.swing.table.DefaultTableModel;
  * @author Welison
  */
 public class NotasFiscais extends Templates.BaseLayout {
-    
-    private BaseLayout self;
-    public static DefaultTableModel tableModel;
-    public static JTable tabela;
+
     private JButton addMore;
     private JDateChooser fdata;
     private JTextField fcnpj;
     private JLabel ldata;
     private JLabel lcnpj;
     private JButton bSearch;
+    private ArrayList<NotaFiscal> notasFiscais;
     
     /**
      * Creates new form NotasFiscais
+     * @param params Parâmetros para filtro e paginação
      */
-    public NotasFiscais() {
+    public NotasFiscais(Properties params) {
         super();
-        self = this;
+        this.self = this;
+        this.params = params;
+        
+        initPage();
+    }
+    
+    private void initPage() {
         initComponents();
         createBaseLayout();
+        
+        notasFiscais = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
+            NotaFiscal n = new NotaFiscal(i, 222, 20.4f, "10/10/2019", f);
+            notasFiscais.add(n);
+        }
+        
         addTopContent(Methods.getTranslation("NotasFiscais"));
         addFilterContent();
         addCenterContent();
         addBottomContent();
+        
+        updateParams();
     }
     
-    public void addCenterContent() {
+    private void updateParams() {
+        String date = ((JTextField) fdata.getDateEditor().getUiComponent()).getText();
+        params.setProperty("page", "1");
+        params.setProperty("cnpj", fcnpj.getText());
+        params.setProperty("data", date);
+    }
+    
+    private void addCenterContent() {
+        barraRolagem = new JScrollPane(tabela);
+        Styles.defaultScroll(barraRolagem);
+        updateCenterContent();
+        pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void updateCenterContent() {
+        makeTable();
+        barraRolagem.getViewport().setView(tabela);
+    }
+    
+    private void makeTable() {
         // cria tabela
         tabela = new JTable();
         tabela.setRowHeight(35);
@@ -78,26 +113,25 @@ public class NotasFiscais extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if(column != 4 && column != 5 && column != 6){
+               if (column != 4 && column != 5 && column != 6) {
                    return false;
                }
                return true;
             }
         };
         // adiciona linhas
-        for(int i = 0; i < 25; i++) {
-            NotaFiscal n = new NotaFiscal(32323, 222, "232323-33", 20.4f, "10/10/2019");
+        notasFiscais.forEach(n -> {
             Object[] data = {
-                n.getId(),
+                n.getNumero(),
                 n.getValor(),
-                n.getCnpj(),
+                n.getFornecedor().getCnpj(),
                 n.getData(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
                 Methods.getTranslation("Ver")
             };
             tableModel.addRow(data);
-        }
+        });
         // inicializa
         tabela.setModel(tableModel);
         
@@ -106,7 +140,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarNotaFiscal", id);
+                Navigation.updateLayout("editarNotaFiscal", id, params);
             }
         });
         
@@ -114,11 +148,17 @@ public class NotasFiscais extends Templates.BaseLayout {
         tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
+                String idTabel = Methods.selectedTableItemId(tabela);
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    Methods.removeSelectedTableRow(tabela, tableModel);
+                    for (int i = 0; i < notasFiscais.size(); i++) {
+                        NotaFiscal n = notasFiscais.get(i);
+                        if (idTabel.equals(""+n.getNumero())) {
+                            notasFiscais.remove(n);
+                        }
+                    }
+                    updateCenterContent();
                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                 }
             }
@@ -129,27 +169,26 @@ public class NotasFiscais extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("verNotaFiscal", id);
+                Navigation.updateLayout("verNotaFiscal", id, params);
             }
         });
-        
-        JScrollPane barraRolagem = new JScrollPane(tabela);
-        Styles.defaultScroll(barraRolagem);
-        pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
-    public void addFilterContent() {
+    private void addFilterContent() {
         addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
         
         fcnpj = new JTextField();
         Styles.defaultField(fcnpj, 150);
+        fcnpj.setText(params.getProperty("cnpj", ""));
         
         lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj, false);
         
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
+        Methods.setDateChooserFormat(fdata);
+        Methods.setParamsToDateChooser(fdata, params);
         
         ldata = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(ldata, false);
@@ -168,48 +207,54 @@ public class NotasFiscais extends Templates.BaseLayout {
         pFilter.add(hideL);
         pFilter.add(addMore);
         
-        addMore.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Navigation.updateLayout("addNotaFiscal");
-            }
+        addMore.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("addNotaFiscal", params);
         });
         
-        bSearch.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
-                pagination(3);
-            }
+        bSearch.addActionListener((ActionEvent e) -> {
+            Dialogs.showLoadPopup(self);
+            
+            updateParams();
+            
+            timerTest();
         });
     }
     
-    public void addBottomContent() {
+    private void addBottomContent() {
         this.pagination(5);
     }
     
-    public void pagination(int total) {
+    private void pagination(int total) {
+        /*
         Pagination pag = new Pagination(pBottom, total){
             @Override
             public void callbackPagination() {
-                System.out.println(this.getCurrentPage());
+                
+                params.setProperty("page", ""+this.page);
+                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
+        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000,new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Dialogs.hideLoadPopup(self);
-                
-                t.stop();
+        t = new Timer(2000, (ActionEvent e) -> {
+            Dialogs.hideLoadPopup(self);
+            
+            for (int i = 0; i < notasFiscais.size(); i++) {
+                NotaFiscal n = notasFiscais.get(i);
+                if (n.getNumero()> 10) {
+                    notasFiscais.remove(n);
+                }
             }
+            updateCenterContent();
+            pagination(3);
+            
+            t.stop();
         });
         t.start();
     }
