@@ -44,8 +44,8 @@ public class Pagination {
         this.offset = Integer.parseInt(params.getProperty("offset", "0"));
         this.page = Integer.parseInt(params.getProperty("page", "1"));;
         
+        Methods.clearStage(context);
         if (total > limit) {
-            Methods.clearStage(context);
             makePagination();
             updateActivePage();
         }

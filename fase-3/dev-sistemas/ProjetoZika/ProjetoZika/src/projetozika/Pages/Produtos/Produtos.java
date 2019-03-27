@@ -283,12 +283,14 @@ public class Produtos extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
             // reseta tabela
             produtos.clear();
             produtos = produtoDao.selecionar(params);
+            totalProdutos = produtoDao.total(params);
+            System.out.println(totalProdutos);
             updateCenterContent();
             pagination(totalProdutos);
             

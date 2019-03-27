@@ -6,6 +6,7 @@
 package DAO;
 
 import Models.Produto;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,8 +51,7 @@ public class ProdutoDAO {
     }
     
     public ArrayList<Produto> selecionar(Properties params) {
-        int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String sql = "SELECT * FROM produtos WHERE Status != 'Deleted' LIMIT 2 OFFSET " + (offset);
+        String sql = buildSelectQuery(params, false);
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -62,7 +62,7 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
-                produto.setCreated(rs.getString("Created"));
+                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
                 produtos.add(produto);
             }
             return produtos;
@@ -72,7 +72,7 @@ public class ProdutoDAO {
     }
     
     public int total(Properties params) {
-        String sql = "SELECT COUNT(Id) FROM produtos WHERE Status != 'Deleted'";
+        String sql = buildSelectQuery(params, true);
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -81,5 +81,39 @@ public class ProdutoDAO {
         } catch(Exception error) {
             throw new RuntimeException("ProdutoDAO.total: " + error);
         }
+    }
+    
+    private String buildSelectQuery (Properties params, boolean isCount) {
+        int offset = Integer.parseInt(params.getProperty("offset", "0"));
+        String nome = params.getProperty("nome", "");
+        String unidade = params.getProperty("unidade", "");
+        String data = params.getProperty("data", "");
+        String sql;
+        
+        if (! isCount) {
+            sql = "SELECT * FROM produtos WHERE Status != 'Deleted'";
+        } else {
+            sql = "SELECT COUNT(Id) FROM produtos WHERE Status != 'Deleted'";
+        }
+        
+        if (! nome.equals("")) {
+            sql += " AND Nome LIKE '%" + nome + "%'";
+        }
+        
+        if (! unidade.equals("")) {
+            sql += " AND Unidade = '" + unidade + "'";
+        }
+        
+        if (! data.equals("")) {
+            String sqlDate = Methods.getSqlDate(data);
+            sql += " AND Created >= '" + sqlDate + "'";
+        }
+        
+        if (! isCount) {
+            sql += " LIMIT 2 OFFSET " + (offset);
+        }
+            
+        System.out.println(sql);
+        return sql;
     }
 }

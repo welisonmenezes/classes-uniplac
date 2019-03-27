@@ -358,23 +358,36 @@ public class Methods {
         }
     }
     
-    /**
-     * Converte uma string em uma data válida
-     * @param date a data a ser convertida
-     * @return a data convertida
-     */
-    public static Date convertStringToDate(String date) {
-        SimpleDateFormat sdf;
-        if (Environment.getCurrentLang().equals("en")) {
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            sdf = new SimpleDateFormat("dd/MM/yyyy");
-        }
+    public static String getFriendlyDate(String sqlDate) {
         try {
-            Date convertedDate = sdf.parse(date);
-            return convertedDate;
+            SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss"); 
+            Date date = dt.parse(sqlDate);
+            SimpleDateFormat sdf;
+            if (Environment.getCurrentLang().equals("en")) {
+                sdf = new SimpleDateFormat("yyyy-MM-dd");
+            } else {
+                sdf = new SimpleDateFormat("dd/MM/yyyy");
+            }
+            return sdf.format(date);
         } catch (ParseException error) {
-            throw new RuntimeException("Methods.convertStringToDate: " + error);
+            throw new RuntimeException("Methods.getFriendlyDate: " + error);
+        }
+    }
+    
+    public static String getSqlDate(String appDate) {
+        try {
+            SimpleDateFormat sdf;
+            if (Environment.getCurrentLang().equals("en")) {
+                sdf = new SimpleDateFormat("yyyy-MM-dd");
+            } else {
+                sdf = new SimpleDateFormat("dd/MM/yyyy");
+            }
+            Date date = sdf.parse(appDate);
+            SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss"); 
+            return dt.format(date);
+            
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.getFriendlyDate: " + error);
         }
     }
     
