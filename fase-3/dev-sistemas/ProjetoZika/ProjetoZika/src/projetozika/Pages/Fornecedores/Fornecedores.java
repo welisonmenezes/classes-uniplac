@@ -5,6 +5,8 @@
  */
 package projetozika.Pages.Fornecedores;
 
+import DAO.FornecedorDAO;
+import DAO.ProdutoDAO;
 import Models.Fornecedor;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -43,6 +45,8 @@ public class Fornecedores extends Templates.BaseLayout {
     private JLabel lTelefone;
     private JButton bSearch;
     private ArrayList<Fornecedor> fornecedores;
+    private FornecedorDAO fornecedorDAO;
+    private int totalFornecedores;
 
     /**
      * Cria a tela de fornecedores
@@ -57,15 +61,14 @@ public class Fornecedores extends Templates.BaseLayout {
     }
     
     private void initPage() {
+        
+        // carrega os dados
+        fornecedorDAO = new FornecedorDAO();
+        fornecedores = fornecedorDAO.selecionar(params);
+        totalFornecedores = fornecedorDAO.total(params);
+        
         initComponents();
         createBaseLayout();
-        
-        fornecedores = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Fornecedor f = new Fornecedor(i, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-            fornecedores.add(f);
-        }
-        
         addTopContent(Methods.getTranslation("Fornecedores"));
         addCenterContent();
         addBottomContent();
@@ -75,6 +78,7 @@ public class Fornecedores extends Templates.BaseLayout {
     }
     
     private void updateParams() {
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("cnpj", fCnpj.getText());
@@ -230,9 +234,7 @@ public class Fornecedores extends Templates.BaseLayout {
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
             updateParams();
-            
             timerTest();
         });
     }
@@ -241,7 +243,7 @@ public class Fornecedores extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalFornecedores);
     }
     
     /**
@@ -250,35 +252,27 @@ public class Fornecedores extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // reseta tabela
-            for (int i = 0; i < fornecedores.size(); i++) {
-                Fornecedor f = fornecedores.get(i);
-                if (f.getId()> 10) {
-                    fornecedores.remove(f);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            fornecedores.clear();
+            fornecedores = fornecedorDAO.selecionar(params);
+            totalFornecedores = fornecedorDAO.total(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalFornecedores);
             
             t.stop();
         });
