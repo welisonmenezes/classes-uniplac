@@ -202,6 +202,7 @@ public class ProdutoDAO {
         }
         
         if (! isCount) {
+            sql += " ORDER BY Id DESC";
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             

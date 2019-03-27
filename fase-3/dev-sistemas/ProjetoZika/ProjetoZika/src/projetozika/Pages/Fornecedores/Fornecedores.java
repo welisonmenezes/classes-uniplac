@@ -6,7 +6,6 @@
 package projetozika.Pages.Fornecedores;
 
 import DAO.FornecedorDAO;
-import DAO.ProdutoDAO;
 import Models.Fornecedor;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -60,6 +59,9 @@ public class Fornecedores extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
         
         // carrega os dados
@@ -67,6 +69,7 @@ public class Fornecedores extends Templates.BaseLayout {
         fornecedores = fornecedorDAO.selecionar(params);
         totalFornecedores = fornecedorDAO.total(params);
         
+        // constroi o layout
         initComponents();
         createBaseLayout();
         addTopContent(Methods.getTranslation("Fornecedores"));
@@ -74,9 +77,13 @@ public class Fornecedores extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         params.setProperty("offset", "0");
         params.setProperty("page", "1");
@@ -85,7 +92,9 @@ public class Fornecedores extends Templates.BaseLayout {
         params.setProperty("telefone", fTelefone.getText());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -93,6 +102,9 @@ public class Fornecedores extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -159,7 +171,7 @@ public class Fornecedores extends Templates.BaseLayout {
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
                     
-                    // deleta o produto da base
+                    // deleta o fornecedor da base
                     try {
                         fornecedorDAO.deletar(Integer.parseInt(idTabel));
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
@@ -251,8 +263,7 @@ public class Fornecedores extends Templates.BaseLayout {
     }
     
     /**
-     * Gera a paginação
-     * 
+     * Gera a paginação com base no total de páginas
      * @param total o total de páginas
      */
     private void pagination(int total) {
@@ -296,7 +307,6 @@ public class Fornecedores extends Templates.BaseLayout {
         setMinimumSize(new java.awt.Dimension(1, 1));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

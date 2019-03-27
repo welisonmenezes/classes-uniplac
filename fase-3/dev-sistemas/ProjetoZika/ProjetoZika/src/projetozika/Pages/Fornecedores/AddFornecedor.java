@@ -45,7 +45,10 @@ public class AddFornecedor extends Templates.BaseFrame {
     private FornecedorDAO fornecedorDao;
     private Fornecedor fornecedor;
     
-   
+   /**
+    * chama para adição
+    * @param params parâmetros de filtro e paginação
+    */
     public AddFornecedor(Properties params) {
         this.self = this;
         this.mode = "add";
@@ -53,6 +56,11 @@ public class AddFornecedor extends Templates.BaseFrame {
         initPage(Methods.getTranslation("AdicionarFornecedor"));
     }
     
+    /**
+     * chama para adição via nota fiscal
+     * @param panelCaller o JPanel da nota fiscal
+     * @param params parâmetros de filtro e paginação
+     */
     public AddFornecedor(JPanel panelCaller, Properties params) {
         this.self = this;
         this.mode = "nota";
@@ -60,6 +68,12 @@ public class AddFornecedor extends Templates.BaseFrame {
         initPage(Methods.getTranslation("AdicionarFornecedorPelaNota"));
     }
     
+    /**
+     * chama para editar ou visualizar
+     * @param id o Id do fornecedor
+     * @param mode o modo de carregamento (view|edit)
+     * @param params 
+     */
     public AddFornecedor(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
@@ -78,35 +92,41 @@ public class AddFornecedor extends Templates.BaseFrame {
         fillFields(id);
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
         // cria objetos para carregar dados posteriormente
         fornecedorDao = new FornecedorDAO();
         fornecedor = new Fornecedor();
         
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 Navigation.currentPage = "fornecedores";
             }
         });
-        
-        addCenterContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
 
-        
         lname = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lname);
         bg.add(lname, new AbsoluteConstraints(0, 0, -1, -1));
@@ -175,6 +195,10 @@ public class AddFornecedor extends Templates.BaseFrame {
         pCenter.add(bg);
     }
     
+    /**
+     * preenche os campos do formulário com o fornecedor cujo id é correspondente na base de dados
+     * @param id o id do fornecedor
+     */
     private void fillFields(String id) {
         fornecedor = fornecedorDao.selecionarPorId(id);
         if (fornecedor != null) {
@@ -184,6 +208,9 @@ public class AddFornecedor extends Templates.BaseFrame {
         }
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         ename.setText("");
         ecnpj.setText("");
@@ -200,7 +227,7 @@ public class AddFornecedor extends Templates.BaseFrame {
                 case "edit":
                     self.dispose();
                     try {
-                        // edita o produto
+                        // edita o fornecedor
                         fornecedorDao.alterar(fornecedor);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     } catch(Exception error) {
@@ -226,7 +253,7 @@ public class AddFornecedor extends Templates.BaseFrame {
                 case "nota":
                     self.dispose();
                     try {
-                        // adiciona um novo produto via nota fiscal
+                        // adiciona um novo fornecedor via nota fiscal
                         int lastInsertedId = fornecedorDao.inserir(fornecedor);
                         AddNotaFiscal.fcnpj.setText(fcnpj.getText());
                         ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getNome());

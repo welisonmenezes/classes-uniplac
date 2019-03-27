@@ -53,7 +53,7 @@ public class Produtos extends Templates.BaseLayout {
     private int totalProdutos;
 
     /**
-     * Cria a tela de fornecedores
+     * Cria a tela de produtos
      * @param params Parâmetros para filtro e paginação
      */
     public Produtos(Properties params) {
@@ -63,6 +63,9 @@ public class Produtos extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
         
         // carrega os dados
@@ -311,7 +314,6 @@ public class Produtos extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
