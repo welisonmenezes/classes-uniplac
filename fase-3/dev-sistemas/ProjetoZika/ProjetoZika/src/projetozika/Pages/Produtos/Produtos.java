@@ -65,30 +65,26 @@ public class Produtos extends Templates.BaseLayout {
     
     private void initPage() {
         
+        // carrega os dados
         produtoDao = new ProdutoDAO();
-        
-        initComponents();
-        createBaseLayout();
-        
         produtos = produtoDao.selecionar(params);
         totalProdutos = produtoDao.total(params);
-        /*
-        produtos = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-            p.setId(i);
-            produtos.add(p);
-        }
-        */
         
+        // constroi o layout
+        initComponents();
+        createBaseLayout();
         addTopContent(Methods.getTranslation("Produtos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
         params.setProperty("offset", "0");
@@ -98,7 +94,9 @@ public class Produtos extends Templates.BaseLayout {
         params.setProperty("unidade", funidade.getSelectedItem().toString());
     }
      
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -106,6 +104,9 @@ public class Produtos extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -172,6 +173,7 @@ public class Produtos extends Templates.BaseLayout {
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
                     
+                    // deleta o produto da base
                     try {
                         produtoDao.deletar(Integer.parseInt(idTabel));
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
@@ -179,6 +181,7 @@ public class Produtos extends Templates.BaseLayout {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
                         throw new RuntimeException("AddProduto.add: " + error);
                     }
+                    // 'recarrega a tela'
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("produtos", params);
 
@@ -251,9 +254,8 @@ public class Produtos extends Templates.BaseLayout {
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
@@ -266,17 +268,13 @@ public class Produtos extends Templates.BaseLayout {
     }
     
     /**
-     * Gera a paginação
-     * 
+     * Gera a paginação com base no total de páginas
      * @param total o total de páginas
      */
     private void pagination(int total) {
         Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                //params.setProperty("offset", ""+this.pages);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
@@ -289,11 +287,10 @@ public class Produtos extends Templates.BaseLayout {
         t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // reseta tabela
+            // reseta tabela e recarrega os dados
             produtos.clear();
             produtos = produtoDao.selecionar(params);
             totalProdutos = produtoDao.total(params);
-            //System.out.println(totalProdutos);
             updateCenterContent();
             pagination(totalProdutos);
             

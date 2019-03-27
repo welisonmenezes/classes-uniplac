@@ -51,7 +51,10 @@ public class AddProduto extends Templates.BaseFrame {
     private Produto produto;
     private ProdutoDAO produtoDao;
     
-   
+   /**
+    * Chamada para adição
+    * @param params parâmetros de filtro e paginação
+    */
     public AddProduto(Properties params) {
         this.self = this;
         this.mode = "add";
@@ -59,6 +62,11 @@ public class AddProduto extends Templates.BaseFrame {
         initPage(Methods.getTranslation("AdicionarProduto"));
     }
     
+    /**
+     * Chamada para adição via nota fiscal
+     * @param panelCaller o JPanel da nota fiscal
+     * @param params parâmetros de filtro e paginação
+     */
     public AddProduto(JPanel panelCaller, Properties params) {
         this.self = this;
         this.params = params;
@@ -68,6 +76,12 @@ public class AddProduto extends Templates.BaseFrame {
         
     }
     
+    /**
+     * Chamada para edição ou visualização
+     * @param id o Id do produto
+     * @param mode o modo (view|edit)
+     * @param params parâmetros de filtro e paginação
+     */
     public AddProduto(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
@@ -86,28 +100,36 @@ public class AddProduto extends Templates.BaseFrame {
         fillFields(id);
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
+        // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
         produto = new Produto();
         
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 450, 400);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 Navigation.currentPage = "produtos";
             }
         });
-        
-        addCenterContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
@@ -168,8 +190,7 @@ public class AddProduto extends Templates.BaseFrame {
             if (! Validator.validaCampo(fdescricao, edescricao)) isValid = false;
             if (isValid) {
                 
-                
-                //produto = new Produto();
+                // seta os valores do formulário ao produto corrente
                 produto.setNome(fnome.getText());
                 produto.setUnidade(funidade.getSelectedItem().toString());
                 produto.setDescricao(fdescricao.getText());
@@ -183,8 +204,12 @@ public class AddProduto extends Templates.BaseFrame {
         pCenter.add(bg);
     }
     
+    /**
+     * preenche os campos do formulário com o produto cujo id é correspondente na base de dados
+     * @param id o id do produto
+     */
     private void fillFields(String id) {
-        //Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+        // carrega os dados do produto corrente baseado no id passado
         produto = produtoDao.selecionarPorId(id);
         if (produto != null) {
             fnome.setText(produto.getNome());
@@ -194,6 +219,9 @@ public class AddProduto extends Templates.BaseFrame {
         
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         enome.setText("");
         eunidade.setText("");
@@ -210,36 +238,52 @@ public class AddProduto extends Templates.BaseFrame {
                 case "edit":
                     self.dispose();
                     try {
+                        // edita o produto
                         produtoDao.alterar(produto);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
                         throw new RuntimeException("AddProduto.add: " + error);
                     }
-                    //JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("produtos", params);
                     break;
                 case "add":
                     self.dispose();
                     try {
+                        // adiciona um novo produto
                         produtoDao.inserir(produto);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
                         throw new RuntimeException("AddProduto.add: " + error);
                     }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("produtos", params);
                     break;
                 case "nota":
                     
                     // exemplo add produto
-                    SelecionarProduto.fnome.setText(fnome.getText());
-                    ComboItem ci = new ComboItem(1, fnome.getText());
-                    SelecionarProduto.cnome.addItem(ci);
-                    SelecionarProduto.cnome.setSelectedItem(ci);
-                    SelecionarProduto.funidade.setText(funidade.getSelectedItem().toString());
+                    //SelecionarProduto.fnome.setText(fnome.getText());
+                    //ComboItem ci = new ComboItem(1, fnome.getText());
+                    //SelecionarProduto.cnome.addItem(ci);
+                    //SelecionarProduto.cnome.setSelectedItem(ci);
+                    //SelecionarProduto.funidade.setText(funidade.getSelectedItem().toString());
+                    try {
+                        // adiciona um novo produto
+                        int lastInsertedId = produtoDao.inserir(produto);
+                        SelecionarProduto.fnome.setText(produto.getNome());
+                        ComboItem ci = new ComboItem(lastInsertedId, produto.getNome()+" - "+produto.getUnidade());
+                        SelecionarProduto.cnome.addItem(ci);
+                        SelecionarProduto.cnome.setSelectedItem(ci);
+                        SelecionarProduto.funidade.setText(produto.getUnidade());
+                        //JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        //JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddProduto.add: " + error);
+                    }
                     
                     self.dispose();
                     break;

@@ -25,16 +25,23 @@ public class ProdutoDAO {
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
-    private ArrayList<Produto> produtos = new ArrayList();
+    private final ArrayList<Produto> produtos = new ArrayList();
     
+    /**
+     * método construtor, inicializa a conexão
+     */
     public ProdutoDAO() {
         conn = new ConnectionFactory().getConexao();
     }
     
-    public void inserir(Produto produto) {
+    /**
+     * insere um novo produto na base de dados
+     * @param produto o produto a ser inserido
+     */
+    public int inserir(Produto produto) {
         String sql = "INSERT INTO produtos (Nome, Unidade, Descricao, Status, Created) VALUES (?, ?, ?, ?, ?)";
         try {
-            stmt = conn.prepareStatement(sql);
+            stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getUnidade());
             stmt.setString(3, produto.getDescricao());
@@ -43,13 +50,22 @@ public class ProdutoDAO {
             //java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(5, sqlDate);
-            stmt.execute();
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            int lastInsertedId = 0;
+            if(rs.next()) {
+                lastInsertedId = rs.getInt(1);
+            }
             stmt.close();
+            return lastInsertedId;
         } catch(Exception error) {
             throw new RuntimeException("ProdutoDAO.inserir: " + error);
         }
     }
-    
+    /**
+     * altera o dado produto na base de dados
+     * @param produto o produto a ser alterado
+     */
     public void alterar(Produto produto) {
         String sql = "UPDATE produtos SET Nome=?, Unidade=?, Descricao=? WHERE Id=?";
         try {
@@ -65,6 +81,10 @@ public class ProdutoDAO {
         }
     }
     
+    /**
+     * 'deleta' o produto da visualização, na base de dados altera apenas o status para 'Deleted'
+     * @param Id o Id do produto a ser 'deletado'
+     */
     public void deletar(int Id) {
         String sql = "UPDATE produtos SET Status='Deleted' WHERE Id=?";
         try {
@@ -77,6 +97,11 @@ public class ProdutoDAO {
         }
     }
     
+    /**
+     * seleciona um produto da base de dados pelo seu Id
+     * @param Id o Id do produto a ser retornado
+     * @return o produto com Id correspondente
+     */
     public Produto selecionarPorId(String Id) {
         String sql = "SELECT * FROM produtos WHERE Id = " + Id;
         try {
@@ -98,6 +123,11 @@ public class ProdutoDAO {
         }
     }
     
+    /**
+     * seleciona os produtos correspondentes aos parâmetros de filtragem e paginação
+     * @param params os parâmetros de filtragem e paginação
+     * @return uma lista de produtos correspondentes
+     */
     public ArrayList<Produto> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
@@ -120,6 +150,11 @@ public class ProdutoDAO {
         }
     }
     
+    /**
+     * o total de produtos que correspondem aos parâmetros de filtro e paginação
+     * @param params os parâmetros de filtro e paginação
+     * @return o total de produtos
+     */
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
         try {
@@ -132,6 +167,12 @@ public class ProdutoDAO {
         }
     }
     
+    /**
+     * Auxiliza na construção da query de seleção com base nos parametros passados
+     * @param params os parâmetros de filtro e paginação
+     * @param isCount true se é pra retorna apenas o total
+     * @return a query para ser usada na seleção
+     */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
         String nome = params.getProperty("nome", "");
@@ -159,10 +200,10 @@ public class ProdutoDAO {
         }
         
         if (! isCount) {
-            sql += " LIMIT 2 OFFSET " + (offset);
+            sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        System.out.println(sql);
+        //System.out.println(sql);
         return sql;
     }
 }

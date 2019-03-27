@@ -38,7 +38,7 @@ public class Pagination {
     public Pagination(JComponent c, int total, Properties params) {
         this.context = (JPanel) c;
         this.total = total;
-        this.limit = 2;
+        this.limit = 10;
         this.pages = (this.total / this.limit) + (this.total % 2);
         this.params = params;
         this.offset = Integer.parseInt(params.getProperty("offset", "0"));

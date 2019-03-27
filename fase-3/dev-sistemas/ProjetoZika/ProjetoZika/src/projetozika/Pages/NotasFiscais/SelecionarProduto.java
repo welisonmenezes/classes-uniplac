@@ -158,6 +158,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             // limpa erros
             clearErrors();
             
+            System.out.println(cnome.getSelectedItem());
             // validação
             boolean isValid = true;
             if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
