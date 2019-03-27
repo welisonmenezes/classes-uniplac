@@ -37,6 +37,7 @@ public class FornecedorDAO {
     /**
      * insere um novo fornecedor na base de dados
      * @param fornecedor o fornecedor a ser inserido
+     * @return o id do último item inserido
      */
     public int inserir(Fornecedor fornecedor) {
         String sql = "INSERT INTO fornecedores (Nome, Telefone, Cnpj, Status, Created) VALUES (?, ?, ?, ?, ?)";
@@ -58,6 +59,67 @@ public class FornecedorDAO {
             return lastInsertedId;
         } catch(Exception error) {
             throw new RuntimeException("FornecedorDAO.inserir: " + error);
+        }
+    }
+    
+    /**
+     * altera o dado do fornecedor na base de dados
+     * @param fornecedor o fornecedor a ser alterado
+     */
+    public void alterar(Fornecedor fornecedor) {
+        String sql = "UPDATE fornecedores SET Nome=?, Telefone=?, Cnpj=? WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, fornecedor.getNome());
+            stmt.setString(2, fornecedor.getTelefone());
+            stmt.setString(3, fornecedor.getCnpj());
+            stmt.setInt(4, fornecedor.getId());
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("FornecedorDAO.alterar: " + error);
+        }
+    }
+    
+    /**
+     * 'deleta' o fornecedor da visualização, na base de dados altera apenas o status para 'Deleted'
+     * @param Id o Id do fornecedor a ser 'deletado'
+     */
+    public void deletar(int Id) {
+        String sql = "UPDATE fornecedores SET Status='Deleted' WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Id);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("FornecedorDAO.deletar: " + error);
+        }
+    }
+    
+    /**
+     * seleciona um fornecedor da base de dados pelo seu Id
+     * @param Id o Id do fornecedor a ser retornado
+     * @return o fornecedor com Id correspondente
+     */
+    public Fornecedor selecionarPorId(String Id) {
+        String sql = "SELECT * FROM fornecedores WHERE Id = " + Id;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            Fornecedor fornecedor = new Fornecedor();
+            while(rs.next()) {
+                fornecedor.setId(rs.getInt("Id"));
+                fornecedor.setCnpj(rs.getString("Cnpj"));
+                fornecedor.setNome(rs.getString("Nome"));
+                fornecedor.setStatus(rs.getString("Status"));
+                fornecedor.setTelefone(rs.getString("Telefone"));
+                fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+            }
+            st.close();
+            return fornecedor;
+        } catch (Exception error) {
+            throw new RuntimeException("FornecedorDAO.selecionarPorId: " + error);
         }
     }
     

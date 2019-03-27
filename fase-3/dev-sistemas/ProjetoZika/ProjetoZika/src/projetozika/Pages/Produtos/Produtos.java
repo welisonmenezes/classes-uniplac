@@ -179,7 +179,7 @@ public class Produtos extends Templates.BaseLayout {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
-                        throw new RuntimeException("AddProduto.add: " + error);
+                        throw new RuntimeException("Produtos.delete: " + error);
                     }
                     // 'recarrega a tela'
                     Navigation.updateLayout("", new Properties());

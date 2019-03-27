@@ -158,15 +158,19 @@ public class Fornecedores extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    //Methods.removeSelectedTableRow(tabela, tableModel);
-                    for (int i = 0; i < fornecedores.size(); i++) {
-                        Fornecedor f = fornecedores.get(i);
-                        if (idTabel.equals(""+f.getId())) {
-                            fornecedores.remove(f);
-                        }
+                    
+                    // deleta o produto da base
+                    try {
+                        fornecedorDAO.deletar(Integer.parseInt(idTabel));
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                        throw new RuntimeException("Fornecedores.delete: " + error);
                     }
-                    updateCenterContent();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    // 'recarrega a tela'
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("fornecedores", params);
+                    
                 }
             }
         });

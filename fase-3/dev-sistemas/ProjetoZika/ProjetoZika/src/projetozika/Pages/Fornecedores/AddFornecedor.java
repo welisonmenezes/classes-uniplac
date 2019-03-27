@@ -176,10 +176,12 @@ public class AddFornecedor extends Templates.BaseFrame {
     }
     
     private void fillFields(String id) {
-        Fornecedor f = new Fornecedor(111, "Nome Here", "34343354-3", "(99) 99999-9999", "12/12/2009");
-        fname.setText(f.getNome());
-        ftel.setText(f.getTelefone());
-        fcnpj.setText(f.getCnpj());
+        fornecedor = fornecedorDao.selecionarPorId(id);
+        if (fornecedor != null) {
+            fname.setText(fornecedor.getNome());
+            ftel.setText(fornecedor.getTelefone());
+            fcnpj.setText(fornecedor.getCnpj());
+        }
     }
     
     private void clearErrors() {
@@ -197,7 +199,14 @@ public class AddFornecedor extends Templates.BaseFrame {
             switch (mode) {
                 case "edit":
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    try {
+                        // edita o produto
+                        fornecedorDao.alterar(fornecedor);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddFornecedor.edit: " + error);
+                    }
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("fornecedores", params);
                     break;
@@ -209,20 +218,24 @@ public class AddFornecedor extends Templates.BaseFrame {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
-                        throw new RuntimeException("AddProduto.add: " + error);
+                        throw new RuntimeException("AddFornecedor.add: " + error);
                     }
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("fornecedores", params);
                     break;
                 case "nota":
-                    
-                    // example add cnpj
-                    AddNotaFiscal.fcnpj.setText(fcnpj.getText());
-                    ComboItem ci = new ComboItem(1, fcnpj.getText());
-                    AddNotaFiscal.ccnpj.addItem(ci);
-                    AddNotaFiscal.ccnpj.setSelectedItem(ci);
-                    
                     self.dispose();
+                    try {
+                        // adiciona um novo produto via nota fiscal
+                        int lastInsertedId = fornecedorDao.inserir(fornecedor);
+                        AddNotaFiscal.fcnpj.setText(fcnpj.getText());
+                        ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getNome());
+                        AddNotaFiscal.ccnpj.addItem(ci);
+                        AddNotaFiscal.ccnpj.setSelectedItem(ci);
+                    } catch(Exception error) {
+                        throw new RuntimeException("AddFornecedor.nota: " + error);
+                    }
+                    
                     break;
                 default:
                     self.dispose();

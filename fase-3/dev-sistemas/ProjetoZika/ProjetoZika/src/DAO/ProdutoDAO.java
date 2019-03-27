@@ -37,6 +37,7 @@ public class ProdutoDAO {
     /**
      * insere um novo produto na base de dados
      * @param produto o produto a ser inserido
+     * @return o id do último item inserido
      */
     public int inserir(Produto produto) {
         String sql = "INSERT INTO produtos (Nome, Unidade, Descricao, Status, Created) VALUES (?, ?, ?, ?, ?)";
@@ -64,7 +65,7 @@ public class ProdutoDAO {
     }
     
     /**
-     * altera o dado produto na base de dados
+     * altera o dado do produto na base de dados
      * @param produto o produto a ser alterado
      */
     public void alterar(Produto produto) {

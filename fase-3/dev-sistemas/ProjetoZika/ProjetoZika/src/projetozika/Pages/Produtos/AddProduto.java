@@ -215,8 +215,7 @@ public class AddProduto extends Templates.BaseFrame {
             fnome.setText(produto.getNome());
             funidade.setSelectedItem(produto.getUnidade());
             fdescricao.setText(produto.getDescricao());
-        }
-        
+        } 
     }
     
     /**
@@ -243,7 +242,7 @@ public class AddProduto extends Templates.BaseFrame {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
-                        throw new RuntimeException("AddProduto.add: " + error);
+                        throw new RuntimeException("AddProduto.edit: " + error);
                     }
                     // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
@@ -264,28 +263,18 @@ public class AddProduto extends Templates.BaseFrame {
                     Navigation.updateLayout("produtos", params);
                     break;
                 case "nota":
-                    
-                    // exemplo add produto
-                    //SelecionarProduto.fnome.setText(fnome.getText());
-                    //ComboItem ci = new ComboItem(1, fnome.getText());
-                    //SelecionarProduto.cnome.addItem(ci);
-                    //SelecionarProduto.cnome.setSelectedItem(ci);
-                    //SelecionarProduto.funidade.setText(funidade.getSelectedItem().toString());
+                    self.dispose();
                     try {
-                        // adiciona um novo produto
+                        // adiciona um novo produto via nota fiscal
                         int lastInsertedId = produtoDao.inserir(produto);
                         SelecionarProduto.fnome.setText(produto.getNome());
                         ComboItem ci = new ComboItem(lastInsertedId, produto.getNome()+" - "+produto.getUnidade());
                         SelecionarProduto.cnome.addItem(ci);
                         SelecionarProduto.cnome.setSelectedItem(ci);
                         SelecionarProduto.funidade.setText(produto.getUnidade());
-                        //JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                     } catch(Exception error) {
-                        //JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
-                        throw new RuntimeException("AddProduto.add: " + error);
+                        throw new RuntimeException("AddProduto.nota: " + error);
                     }
-                    
-                    self.dispose();
                     break;
                 default:
                     self.dispose();
