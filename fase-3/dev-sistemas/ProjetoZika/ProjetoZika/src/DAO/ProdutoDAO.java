@@ -62,6 +62,7 @@ public class ProdutoDAO {
             throw new RuntimeException("ProdutoDAO.inserir: " + error);
         }
     }
+    
     /**
      * altera o dado produto na base de dados
      * @param produto o produto a ser alterado

@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Fornecedores;
 
+import DAO.FornecedorDAO;
 import Models.Fornecedor;
 import Templates.ComboItem;
 import Utils.Dialogs;
@@ -41,6 +42,8 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JLabel lcnpj;
     private JLabel ecnpj;
     private JButton bSave;
+    private FornecedorDAO fornecedorDao;
+    private Fornecedor fornecedor;
     
    
     public AddFornecedor(Properties params) {
@@ -76,6 +79,10 @@ public class AddFornecedor extends Templates.BaseFrame {
     }
     
     private void initPage(String title) {
+        
+        // cria objetos para carregar dados posteriormente
+        fornecedorDao = new FornecedorDAO();
+        fornecedor = new Fornecedor();
         
         initComponents();
         Styles.internalFrame(this);
@@ -152,6 +159,12 @@ public class AddFornecedor extends Templates.BaseFrame {
             if (! Validator.validaCampo(fname, ename, 100)) isValid = false;
             if (! Validator.validaTelefone(ftel, etel)) isValid = false;
             if (isValid) {
+                
+                // seta os valores do formulário ao fornecedor corrente
+                fornecedor.setCnpj(fcnpj.getText());
+                fornecedor.setNome(fname.getText());
+                fornecedor.setTelefone(ftel.getText());
+                
                 Dialogs.showLoadPopup(bg);
                 timerTest();
                 
@@ -190,7 +203,14 @@ public class AddFornecedor extends Templates.BaseFrame {
                     break;
                 case "add":
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    try {
+                        // adiciona um novo fornecedor
+                        fornecedorDao.inserir(fornecedor);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddProduto.add: " + error);
+                    }
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("fornecedores", params);
                     break;
