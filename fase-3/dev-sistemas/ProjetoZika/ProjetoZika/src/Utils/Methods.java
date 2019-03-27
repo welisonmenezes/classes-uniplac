@@ -25,6 +25,8 @@ import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
@@ -33,7 +35,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import projetozika.Main;
 
 /**
  * Metodos e funcionalidades genéricas da aplicação
@@ -212,7 +216,16 @@ public class Methods {
         meurootpane.getRootPane().getActionMap().put("ESCAPE", new AbstractAction("ESCAPE") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                if (frame instanceof Main) {
+                    int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
+                    if (opcion != 0) {
+                        frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                    } else {
+                        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    }
+                } else {
+                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                }
             }
         });
         

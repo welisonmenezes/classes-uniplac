@@ -9,7 +9,11 @@ import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
  * A tela principal da aplicação
@@ -33,6 +37,19 @@ public class Main extends javax.swing.JFrame {
         Methods.setAccessibility(this);
         
         translation();
+        
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
+                if (opcion != 0) {
+                    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                } else {
+                    setDefaultCloseOperation(EXIT_ON_CLOSE);
+                }
+            }
+            
+        });
     }
     
     /**
