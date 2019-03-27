@@ -50,6 +50,54 @@ public class ProdutoDAO {
         }
     }
     
+    public void alterar(Produto produto) {
+        String sql = "UPDATE produtos SET Nome=?, Unidade=?, Descricao=? WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, produto.getNome());
+            stmt.setString(2, produto.getUnidade());
+            stmt.setString(3, produto.getDescricao());
+            stmt.setInt(4, produto.getId());
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.alterar: " + error);
+        }
+    }
+    
+    public void deletar(int Id) {
+        String sql = "UPDATE produtos SET Status='Deleted' WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Id);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.deletar: " + error);
+        }
+    }
+    
+    public Produto selecionarPorId(String Id) {
+        String sql = "SELECT * FROM produtos WHERE Id = " + Id;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            Produto produto = new Produto();
+            while(rs.next()) {
+                produto.setId(rs.getInt("Id"));
+                produto.setNome(rs.getString("Nome"));
+                produto.setDescricao(rs.getString("Descricao"));
+                produto.setUnidade(rs.getString("Unidade"));
+                produto.setStatus(rs.getString("Status"));
+                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+            }
+            st.close();
+            return produto;
+        } catch (Exception error) {
+            throw new RuntimeException("ProdutoDAO.selecionarPorId: " + error);
+        }
+    }
+    
     public ArrayList<Produto> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
@@ -65,6 +113,7 @@ public class ProdutoDAO {
                 produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
                 produtos.add(produto);
             }
+            st.close();
             return produtos;
         } catch(Exception error) {
             throw new RuntimeException("ProdutoDAO.selecionar: " + error);

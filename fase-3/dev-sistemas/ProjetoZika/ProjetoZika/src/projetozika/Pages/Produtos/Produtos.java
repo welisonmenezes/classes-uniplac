@@ -171,14 +171,17 @@ public class Produtos extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    for (int i = 0; i < produtos.size(); i++) {
-                        Produto p = produtos.get(i);
-                        if (idTabel.equals(""+p.getId())) {
-                            produtos.remove(p);
-                        }
+                    
+                    try {
+                        produtoDao.deletar(Integer.parseInt(idTabel));
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                        throw new RuntimeException("AddProduto.add: " + error);
                     }
-                    updateCenterContent();
-                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("produtos", params);
+
                 }
             }
         });
@@ -290,7 +293,7 @@ public class Produtos extends Templates.BaseLayout {
             produtos.clear();
             produtos = produtoDao.selecionar(params);
             totalProdutos = produtoDao.total(params);
-            System.out.println(totalProdutos);
+            //System.out.println(totalProdutos);
             updateCenterContent();
             pagination(totalProdutos);
             

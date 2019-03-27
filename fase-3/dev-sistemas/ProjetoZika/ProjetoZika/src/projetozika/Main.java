@@ -52,7 +52,7 @@ public class Main extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
         // seta o tamanho do frame
-        Methods.makeFrameFullSize(this);
+        Methods.makeComponentFullSize(this);
         
         // inicializa os panels (containers)
         jBG = new JPanel();

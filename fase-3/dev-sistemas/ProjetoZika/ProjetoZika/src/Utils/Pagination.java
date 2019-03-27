@@ -39,7 +39,7 @@ public class Pagination {
         this.context = (JPanel) c;
         this.total = total;
         this.limit = 2;
-        this.pages = (this.total / this.limit) + ((this.total / this.limit) % 2);
+        this.pages = (this.total / this.limit) + (this.total % 2);
         this.params = params;
         this.offset = Integer.parseInt(params.getProperty("offset", "0"));
         this.page = Integer.parseInt(params.getProperty("page", "1"));;
@@ -50,6 +50,7 @@ public class Pagination {
             updateActivePage();
         }
         
+        //System.out.println(pages);
     }
     
     /**
@@ -110,7 +111,7 @@ public class Pagination {
      * Metodo a ser sobreescrito. Será chamada ao click de cada botão
      */
     public void callbackPagination() {
-        System.out.println("Override it");
+        //System.out.println("Override it");
     }
     
     /**

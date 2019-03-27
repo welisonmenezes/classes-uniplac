@@ -89,6 +89,7 @@ public class AddProduto extends Templates.BaseFrame {
     private void initPage(String title) {
         
         produtoDao = new ProdutoDAO();
+        produto = new Produto();
         
         initComponents();
         Styles.internalFrame(this, 450, 400);
@@ -167,7 +168,8 @@ public class AddProduto extends Templates.BaseFrame {
             if (! Validator.validaCampo(fdescricao, edescricao)) isValid = false;
             if (isValid) {
                 
-                produto = new Produto();
+                
+                //produto = new Produto();
                 produto.setNome(fnome.getText());
                 produto.setUnidade(funidade.getSelectedItem().toString());
                 produto.setDescricao(fdescricao.getText());
@@ -182,10 +184,14 @@ public class AddProduto extends Templates.BaseFrame {
     }
     
     private void fillFields(String id) {
-        Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-        fnome.setText(p.getNome());
-        funidade.setSelectedItem("Unidade");
-        fdescricao.setText(p.getDescricao());
+        //Produto p = new Produto(Integer.parseInt(id), "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
+        produto = produtoDao.selecionarPorId(id);
+        if (produto != null) {
+            fnome.setText(produto.getNome());
+            funidade.setSelectedItem(produto.getUnidade());
+            fdescricao.setText(produto.getDescricao());
+        }
+        
     }
     
     private void clearErrors() {
@@ -203,7 +209,14 @@ public class AddProduto extends Templates.BaseFrame {
             switch (mode) {
                 case "edit":
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    try {
+                        produtoDao.alterar(produto);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddProduto.add: " + error);
+                    }
+                    //JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("produtos", params);
                     break;

@@ -47,25 +47,14 @@ public class Methods {
     private static JPanel jMenu;
     
     /**
-     * Seta altura e largura full a um dado JFrame
+     * Seta altura e largura full a um dado JFrame ou JPanel
      * 
-     * @param aFrame o JFrame que será dimensionado
+     * @param comp o Component que será dimensionado
      */
-    public static void makeFrameFullSize(JFrame aFrame)
+    public static void makeComponentFullSize(Component comp)
     {
         Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        aFrame.setSize(screenSize.width, screenSize.height);
-    }
-    
-    /**
-     * Seta altura e largura full a um dado JPanel
-     * 
-     * @param aFrame o Jpanel que será dimensionado
-     */
-    public static void makePanelfullSize(JPanel aFrame)
-    {
-        Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        aFrame.setSize(screenSize.width, screenSize.height);
+        comp.setSize(screenSize.width, screenSize.height);
     }
     
     /**
@@ -383,7 +372,7 @@ public class Methods {
                 sdf = new SimpleDateFormat("dd/MM/yyyy");
             }
             Date date = sdf.parse(appDate);
-            SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss"); 
+            SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd"); 
             return dt.format(date);
             
         } catch (ParseException error) {
