@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -114,8 +115,10 @@ public class ListarProdutos extends javax.swing.JPanel {
         tabela.setModel(tableModel);
         
         if (! mode.equals("view")) {
-            tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
-            tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
+            TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
+            colExcluir.setMaxWidth(65);
+            colExcluir.setCellRenderer(new ButtonRenderer());
+            colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
                     String idTabel = Methods.selectedTableItemId(tabela);

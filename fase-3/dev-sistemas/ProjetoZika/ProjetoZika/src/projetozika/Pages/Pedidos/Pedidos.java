@@ -30,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 /**
  * Tela de listagem do fornecedores
  * 
@@ -143,8 +144,10 @@ public class Pedidos extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn(Methods.getTranslation("Entregar")).setCellRenderer(new ButtonRenderer());
-        tabela.getColumn(Methods.getTranslation("Entregar")).setCellEditor(new ButtonEditor(new JCheckBox()){
+        TableColumn colEntregar = tabela.getColumn(Methods.getTranslation("Entregar"));
+        colEntregar.setMaxWidth(80);
+        colEntregar.setCellRenderer(new ButtonRenderer());
+        colEntregar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -158,8 +161,11 @@ public class Pedidos extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn(Methods.getTranslation("Ver/Editar")).setCellRenderer(new ButtonRenderer());
-        tabela.getColumn(Methods.getTranslation("Ver/Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
+        TableColumn colVerEditar = tabela.getColumn(Methods.getTranslation("Ver/Editar"));
+        colVerEditar.setPreferredWidth(90);
+        colVerEditar.setMaxWidth(90);
+        colVerEditar.setCellRenderer(new ButtonRenderer());
+        colVerEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);

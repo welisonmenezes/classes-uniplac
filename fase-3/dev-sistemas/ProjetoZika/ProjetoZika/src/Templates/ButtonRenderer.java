@@ -1,5 +1,6 @@
 package Templates;
 
+import Utils.Styles;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.JButton;

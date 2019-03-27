@@ -28,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 /**
  * Tela de listagem do fornecedores
  * 
@@ -153,8 +154,10 @@ public class Fornecedores extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
-        tabela.getColumn(Methods.getTranslation("Editar")).setCellRenderer(new ButtonRenderer());
-        tabela.getColumn(Methods.getTranslation("Editar")).setCellEditor(new ButtonEditor(new JCheckBox()){
+        TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
+        colEditar.setMaxWidth(65);
+        colEditar.setCellRenderer(new ButtonRenderer());
+        colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
@@ -162,8 +165,10 @@ public class Fornecedores extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn(Methods.getTranslation("Excluir")).setCellRenderer(new ButtonRenderer());
-        tabela.getColumn(Methods.getTranslation("Excluir")).setCellEditor(new ButtonEditor(new JCheckBox()){
+        TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
+        colExcluir.setMaxWidth(65);
+        colExcluir.setCellRenderer(new ButtonRenderer());
+        colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String idTabel = Methods.selectedTableItemId(tabela);
@@ -187,8 +192,10 @@ public class Fornecedores extends Templates.BaseLayout {
             }
         });
         
-        tabela.getColumn(Methods.getTranslation("Ver")).setCellRenderer(new ButtonRenderer());
-        tabela.getColumn(Methods.getTranslation("Ver")).setCellEditor(new ButtonEditor(new JCheckBox()){
+        TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
+        colVer.setMaxWidth(60);
+        colVer.setCellRenderer(new ButtonRenderer());
+        colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
