@@ -79,7 +79,10 @@ public class AddUsuario extends Templates.BaseFrame {
     private Usuario usuario;
     private UsuarioDAO usuarioDao;
     
-   
+    /**
+     * chamada para adição
+     * @param params parâmetros de filtro e paginação
+     */
     public AddUsuario(Properties params) {
         this.self = this;
         this.mode = "add";
@@ -87,6 +90,12 @@ public class AddUsuario extends Templates.BaseFrame {
         initPage(Methods.getTranslation("AdicionarUsuario"));
     }
     
+    /**
+     * chamada para visualização ou edição
+     * @param id o id do usuário
+     * @param mode o modo (view|edit|perfil)
+     * @param params parâmetros de filtro e paginação 
+     */
     public AddUsuario(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
@@ -107,18 +116,25 @@ public class AddUsuario extends Templates.BaseFrame {
         fillFields(id);
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
+        // cria objetos para carregar dados posteriormente
         usuarioDao = new UsuarioDAO();
         usuario = new Usuario();
         
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 670, 550);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -129,10 +145,11 @@ public class AddUsuario extends Templates.BaseFrame {
                 }
             }
         });
-        
-        addCenterContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
@@ -342,24 +359,28 @@ public class AddUsuario extends Templates.BaseFrame {
         pCenter.add(bg);
     }
     
-    private void fillFields(String id) {
-        Usuario u = new Usuario("3344334","Welison Menezes","email@teste","999999","222222","Recursos Humanos","Masculino","Administrador","11/10/1990");
-        u.setLogin("welison");
-        u.setSenha("123456");
-        
-        fnome.setText(u.getNome());
-        fcpf.setText(u.getCpf());
-        Methods.setButtonGroup(u.getSexo(), gsexo.getElements());
-        Methods.setDateToDateChooser(fdata, u.getDataNascimento());
-        fcelular.setText(u.getCelular());
-        ftelefone.setText(u.getTelefone());
-        femail.setText(u.getEmail());
-        fsetor.setSelectedItem(u.getSetor());
-        fpermissao.setSelectedItem(u.getPermissao());
-        flogin.setText(u.getLogin());
-        fsenha.setText(u.getSenha());
+    /**
+     * preenche os campos do formulário com o usuário cujo cpf é correspondente na base de dados
+     * @param id o id do produto
+     */
+    private void fillFields(String cpf) {
+        usuario = usuarioDao.selecionarPorCpf(cpf);
+        fnome.setText(usuario.getNome());
+        fcpf.setText(usuario.getCpf());
+        Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
+        Methods.setDateToDateChooser(fdata, usuario.getDataNascimento());
+        fcelular.setText(usuario.getCelular());
+        ftelefone.setText(usuario.getTelefone());
+        femail.setText(usuario.getEmail());
+        fsetor.setSelectedItem(usuario.getSetor());
+        fpermissao.setSelectedItem(usuario.getPermissao());
+        flogin.setText(usuario.getLogin());
+        fsenha.setText(usuario.getSenha());
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         enome.setText("");
         ecpf.setText("");
@@ -384,7 +405,15 @@ public class AddUsuario extends Templates.BaseFrame {
                 case "edit":
                     // TODO: edit here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    try {
+                        // edita o usuario
+                        usuarioDao.alterar(usuario);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddUsuario.edit: " + error);
+                    }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("usuarios", params);
                     break;
@@ -406,7 +435,15 @@ public class AddUsuario extends Templates.BaseFrame {
                 case "perfil":
                     // TODO: save here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    try {
+                        // edita o usuario
+                        usuarioDao.alterar(usuario);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddUsuario.perfil: " + error);
+                    }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("perfil", params);
                     break;

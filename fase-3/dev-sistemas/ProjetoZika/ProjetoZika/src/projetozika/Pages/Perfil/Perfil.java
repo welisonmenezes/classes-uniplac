@@ -107,7 +107,7 @@ public class Perfil extends Templates.BaseLayout {
             Styles.defaultButton(btnEditar);
             pBottom.add(btnEditar);
             btnEditar.addActionListener((ActionEvent e) -> {
-                Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
+                Navigation.updateLayout("editarPerfil", usuario.getCpf(), params);
             });
         }
     }

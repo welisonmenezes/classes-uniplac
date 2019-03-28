@@ -64,6 +64,9 @@ public class Usuarios extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
         
         // carrega os dados
@@ -79,9 +82,13 @@ public class Usuarios extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         params.setProperty("offset", "0");
         params.setProperty("page", "1");
@@ -90,7 +97,9 @@ public class Usuarios extends Templates.BaseLayout {
         params.setProperty("setor", fSetor.getSelectedItem().toString());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -98,6 +107,9 @@ public class Usuarios extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -167,14 +179,19 @@ public class Usuarios extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    for (int i = 0; i < usuarios.size(); i++) {
-                        Usuario u = usuarios.get(i);
-                        if (idTabel.equals(""+u.getCpf())) {
-                            usuarios.remove(u);
-                        }
+                    
+                    // deleta o usuário da base
+                    try {
+                        usuarioDao.deletar(idTabel);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                        throw new RuntimeException("Usuarios.delete: " + error);
                     }
-                    updateCenterContent();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    // 'recarrega a tela'
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("usuarios", params);
+                    
                 }
             }
         });
@@ -213,13 +230,6 @@ public class Usuarios extends Templates.BaseLayout {
         fSetor = new JComboBox();
         fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES));
         fSetor.setSelectedItem(params.getProperty("setor", ""));
-        /* example
-        fSetor.addActionListener (new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(fSetor.getSelectedIndex());
-            }
-        });
-        */
         Styles.defaultComboBox(fSetor);
         
         lSetor = new JLabel(Methods.getTranslation("Setor"));
@@ -266,8 +276,7 @@ public class Usuarios extends Templates.BaseLayout {
     }
     
     /**
-     * Gera a paginação
-     * 
+     * Gera a paginação com base no total de páginas
      * @param total o total de páginas
      */
     private void pagination(int total) {
@@ -310,7 +319,6 @@ public class Usuarios extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

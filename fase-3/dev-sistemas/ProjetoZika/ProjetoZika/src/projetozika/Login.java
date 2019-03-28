@@ -143,9 +143,10 @@ public class Login extends javax.swing.JFrame {
         if ((login.equals("administrador") || login.equals("almoxarife") || login.equals("usuario")) && Arrays.equals(password, userPassword.toCharArray())) {
             
             // seta usuario logado
-            Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
+            Usuario u = new Usuario("11111111111","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","1987-01-06");
             u.setLogin("administrador");
             u.setSenha("123456");
+            u.setId(5);
             
             switch (login) {
                 case "administrador":
