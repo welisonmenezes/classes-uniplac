@@ -218,13 +218,9 @@ public class Methods {
             public void actionPerformed(ActionEvent e) {
                 if (frame instanceof Main) {
                     int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
-                    if (opcion != 0) {
-                        frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                    } else {
-                        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                    if (opcion == 0) {
+                        System.exit(0);
                     }
-                } else {
-                    frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
                 }
             }
         });
