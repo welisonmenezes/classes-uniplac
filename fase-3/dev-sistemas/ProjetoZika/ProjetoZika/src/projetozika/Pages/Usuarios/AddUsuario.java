@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -16,6 +17,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -74,6 +76,8 @@ public class AddUsuario extends Templates.BaseFrame {
     private JLabel lsenha;
     private JLabel esenha;
     private JButton bSave;
+    private Usuario usuario;
+    private UsuarioDAO usuarioDao;
     
    
     public AddUsuario(Properties params) {
@@ -104,6 +108,9 @@ public class AddUsuario extends Templates.BaseFrame {
     }
     
     private void initPage(String title) {
+        
+        usuarioDao = new UsuarioDAO();
+        usuario = new Usuario();
         
         initComponents();
         Styles.internalFrame(this, 670, 550);
@@ -161,7 +168,9 @@ public class AddUsuario extends Templates.BaseFrame {
         
         gsexo = new ButtonGroup();
         fhomem = new JRadioButton(Methods.getTranslation("Masculino"));
+        fhomem.setActionCommand(Methods.getTranslation("Masculino"));
         fmulher = new JRadioButton(Methods.getTranslation("Feminino"));
+        fmulher.setActionCommand(Methods.getTranslation("Feminino"));
         fhomem.setForeground(new Color(255, 255, 255));
         fmulher.setForeground(new Color(255, 255, 255));
         gsexo.add(fhomem);
@@ -296,6 +305,33 @@ public class AddUsuario extends Templates.BaseFrame {
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;
             if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
             if (isValid) {
+                
+                // seta os valores do formulário ao usuário corrente
+                usuario.setNome(fnome.getText());
+                usuario.setCpf(fcpf.getText());
+                usuario.setSexo(gsexo.getSelection().getActionCommand());
+                
+                java.util.Date pega = fdata.getDate();
+                SimpleDateFormat sdf;
+                if (Environment.getCurrentLang().equals("en")) {
+                    sdf = new SimpleDateFormat("yyyy-MM-dd");
+                } else {
+                    sdf = new SimpleDateFormat("dd/MM/yyyy");
+                }
+                String data = sdf.format(pega);
+                usuario.setDataNascimento(Methods.getSqlDate(data));
+                
+                usuario.setCelular(fcelular.getText());
+                usuario.setTelefone(ftelefone.getText());
+                usuario.setEmail(femail.getText());
+                usuario.setSetor(fsetor.getSelectedItem().toString());
+                usuario.setPermissao(fpermissao.getSelectedItem().toString());
+                usuario.setLogin(flogin.getText());
+                String senha = new String(fsenha.getPassword());
+                usuario.setSenha(senha);
+                
+                //System.out.println("DN: " + usuario.getDataNascimento() + ", Sexo: " + usuario.getSexo() + ", senha: " + usuario.getSenha() + ", setor: " + usuario.getSetor());
+                
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
@@ -355,7 +391,15 @@ public class AddUsuario extends Templates.BaseFrame {
                 case "add":
                     // TODO: save here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    try {
+                        // adiciona um novo produto
+                        usuarioDao.inserir(usuario);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddUsuario.add: " + error);
+                    }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("usuarios", params);
                     break;

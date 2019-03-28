@@ -47,8 +47,6 @@ public class ProdutoDAO {
             stmt.setString(2, produto.getUnidade());
             stmt.setString(3, produto.getDescricao());
             stmt.setString(4, "Publish");
-            //Date date = Methods.convertStringToDate(produto.getCreated());
-            //java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(5, sqlDate);
             stmt.executeUpdate();
