@@ -390,6 +390,22 @@ public class Methods {
         }
     }
     
+    public static String getFriendlyBirthday(String sqlDate) {
+        try {
+            SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd"); 
+            Date date = dt.parse(sqlDate);
+            SimpleDateFormat sdf;
+            if (Environment.getCurrentLang().equals("en")) {
+                sdf = new SimpleDateFormat("yyyy-MM-dd");
+            } else {
+                sdf = new SimpleDateFormat("dd/MM/yyyy");
+            }
+            return sdf.format(date);
+        } catch (ParseException error) {
+            throw new RuntimeException("Methods.getFriendlyDate: " + error);
+        }
+    }
+    
     /**
      * Seta como marcado o elemento cujo valor coincide com um dado valor
      * @param rdValue o valor a ser marcado

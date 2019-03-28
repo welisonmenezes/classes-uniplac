@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -48,6 +49,8 @@ public class Usuarios extends Templates.BaseLayout {
     private JButton bSearch;
     private JLabel hideL;
     private ArrayList<Usuario> usuarios;
+    private UsuarioDAO usuarioDao;
+    private int totalUsuarios;
 
     /**
      * Cria a tela de fornecedores
@@ -62,15 +65,15 @@ public class Usuarios extends Templates.BaseLayout {
     }
     
     private void initPage() {
+        
+        // carrega os dados
+        usuarioDao = new UsuarioDAO();
+        usuarios = usuarioDao.selecionar(params);
+        totalUsuarios = usuarioDao.total(params);
+        
+        // constroi o layout
         initComponents();
         createBaseLayout();
-        
-        usuarios = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Usuario u = new Usuario(""+i, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            usuarios.add(u);
-        }
-        
         addTopContent(Methods.getTranslation("Usuarios"));
         addCenterContent();
         addBottomContent();
@@ -80,6 +83,7 @@ public class Usuarios extends Templates.BaseLayout {
     }
     
     private void updateParams() {
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("email", fEmail.getText());
@@ -248,9 +252,8 @@ public class Usuarios extends Templates.BaseLayout {
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
@@ -259,7 +262,7 @@ public class Usuarios extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalUsuarios);
     }
     
     /**
@@ -268,35 +271,27 @@ public class Usuarios extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // reseta tabela
-            for (int i = 0; i < usuarios.size(); i++) {
-                Usuario u = usuarios.get(i);
-                if (Integer.parseInt(u.getCpf()) > 10) {
-                    usuarios.remove(u);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            usuarios.clear();
+            usuarios = usuarioDao.selecionar(params);
+            totalUsuarios = usuarioDao.total(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalUsuarios);
             
             t.stop();
         });

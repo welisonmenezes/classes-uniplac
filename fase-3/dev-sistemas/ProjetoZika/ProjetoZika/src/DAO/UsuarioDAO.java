@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  *
@@ -71,5 +72,97 @@ public class UsuarioDAO {
         } catch(Exception error) {
             throw new RuntimeException("UsuarioDAO.inserir: " + error);
         }
+    }
+    
+    /**
+     * seleciona os usuários correspondentes aos parâmetros de filtragem e paginação
+     * @param params os parâmetros de filtragem e paginação
+     * @return uma lista de usuários correspondentes
+     */
+    public ArrayList<Usuario> selecionar(Properties params) {
+        String sql = buildSelectQuery(params, false);
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setId(rs.getInt("Id"));
+                usuario.setCpf(rs.getString("Cpf"));
+                usuario.setNome(rs.getString("Nome"));
+                usuario.setEmail(rs.getString("Email"));
+                usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
+                usuario.setCelular(rs.getString("Celular"));
+                usuario.setTelefone(rs.getString("Telefone"));
+                usuario.setLogin(rs.getString("Login"));
+                usuario.setSenha(rs.getString("Senha"));
+                usuario.setSetor(rs.getString("Setor"));
+                usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                usuario.setPermissao(rs.getString("Permissao"));
+                usuario.setStatus(rs.getString("Status"));
+                usuario.setSexo(rs.getString("Sexo"));
+                usuarios.add(usuario);
+            }
+            st.close();
+            return usuarios;
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.selecionar: " + error);
+        }
+    }
+    
+    /**
+     * o total de produtos que correspondem aos parâmetros de filtro e paginação
+     * @param params os parâmetros de filtro e paginação
+     * @return o total de produtos
+     */
+    public int total(Properties params) {
+        String sql = buildSelectQuery(params, true);
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.total: " + error);
+        }
+    }
+    
+    /**
+     * Auxiliza na construção da query de seleção com base nos parametros passados
+     * @param params os parâmetros de filtro e paginação
+     * @param isCount true se é pra retorna apenas o total
+     * @return a query para ser usada na seleção
+     */
+    private String buildSelectQuery (Properties params, boolean isCount) {
+        int offset = Integer.parseInt(params.getProperty("offset", "0"));
+        String nome = params.getProperty("nome", "");
+        String email = params.getProperty("email", "");
+        String setor = params.getProperty("setor", "");
+        String sql;
+        
+        if (! isCount) {
+            sql = "SELECT * FROM usuarios WHERE Status != 'Deleted'";
+        } else {
+            sql = "SELECT COUNT(Id) FROM usuarios WHERE Status != 'Deleted'";
+        }
+        
+        if (! nome.equals("")) {
+            sql += " AND Nome LIKE '%" + nome + "%'";
+        }
+        
+        if (! email.equals("")) {
+            sql += " AND Email LIKE '%" + email + "%'";
+        }
+        
+        if (! setor.equals("")) {
+            sql += " AND Setor = '" + setor + "'";
+        }
+        
+        if (! isCount) {
+            sql += " ORDER BY Id DESC";
+            sql += " LIMIT 10 OFFSET " + (offset);
+        }
+            
+        //System.out.println(sql);
+        return sql;
     }
 }
