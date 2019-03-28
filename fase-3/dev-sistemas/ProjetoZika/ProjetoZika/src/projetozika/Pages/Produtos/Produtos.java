@@ -160,7 +160,7 @@ public class Produtos extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
-        colEditar.setMaxWidth(65);
+        colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -171,7 +171,7 @@ public class Produtos extends Templates.BaseLayout {
         });
         
         TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
-        colExcluir.setMaxWidth(65);
+        colExcluir.setMaxWidth(40);
         colExcluir.setCellRenderer(new ButtonRenderer());
         colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -198,7 +198,7 @@ public class Produtos extends Templates.BaseLayout {
         });
         
         TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
-        colVer.setMaxWidth(60);
+        colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override

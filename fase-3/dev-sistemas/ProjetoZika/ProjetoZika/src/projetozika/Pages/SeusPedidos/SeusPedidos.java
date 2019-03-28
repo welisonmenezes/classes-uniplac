@@ -147,7 +147,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
-        colEditar.setMaxWidth(65);
+        colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -162,8 +162,8 @@ public class SeusPedidos extends Templates.BaseLayout {
         });
         
         TableColumn colCancelar = tabela.getColumn(Methods.getTranslation("Cancelar"));
-        colCancelar.setMaxWidth(85);
-        colCancelar.setPreferredWidth(85);
+        colCancelar.setMaxWidth(40);
+        colCancelar.setPreferredWidth(40);
         colCancelar.setCellRenderer(new ButtonRenderer());
         colCancelar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -192,7 +192,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         });
         
         TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
-        colVer.setMaxWidth(60);
+        colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override

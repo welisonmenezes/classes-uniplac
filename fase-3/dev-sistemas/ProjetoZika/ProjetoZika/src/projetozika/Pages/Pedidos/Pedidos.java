@@ -145,7 +145,7 @@ public class Pedidos extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEntregar = tabela.getColumn(Methods.getTranslation("Entregar"));
-        colEntregar.setMaxWidth(80);
+        colEntregar.setMaxWidth(40);
         colEntregar.setCellRenderer(new ButtonRenderer());
         colEntregar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -162,8 +162,8 @@ public class Pedidos extends Templates.BaseLayout {
         });
         
         TableColumn colVerEditar = tabela.getColumn(Methods.getTranslation("Ver/Editar"));
-        colVerEditar.setPreferredWidth(90);
-        colVerEditar.setMaxWidth(90);
+        colVerEditar.setPreferredWidth(40);
+        colVerEditar.setMaxWidth(40);
         colVerEditar.setCellRenderer(new ButtonRenderer());
         colVerEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override

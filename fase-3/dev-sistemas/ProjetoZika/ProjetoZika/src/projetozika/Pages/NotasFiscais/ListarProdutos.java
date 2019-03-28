@@ -116,7 +116,7 @@ public class ListarProdutos extends javax.swing.JPanel {
         
         if (! mode.equals("view")) {
             TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
-            colExcluir.setMaxWidth(65);
+            colExcluir.setMaxWidth(40);
             colExcluir.setCellRenderer(new ButtonRenderer());
             colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
