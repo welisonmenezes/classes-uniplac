@@ -80,6 +80,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private UsuarioDAO usuarioDao;
     private String oldLogin;
     private String oldCpf;
+    private String cpf;
     
     /**
      * chamada para adição
@@ -102,6 +103,7 @@ public class AddUsuario extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         this.params = params;
+        this.cpf = id;
         switch (this.mode) {
             case "view":
                 initPage(Methods.getTranslation("VerUsuario"));
@@ -350,13 +352,13 @@ public class AddUsuario extends Templates.BaseFrame {
                 usuario.setSenha(senha);
                 
                 // valida campos únicos
-                if (mode.equals("edit") && (!oldCpf.equals(fcpf.getText())) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
+                if (!mode.equals("add") && (!oldCpf.equals(fcpf.getText())) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
-                } else if (mode.equals("edit") && (!oldLogin.equals(flogin.getText())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
+                } else if (!mode.equals("add") && (!oldLogin.equals(flogin.getText())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
                     elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
-                } else if((!mode.equals("edit")) && usuarioDao.temCpf(usuario.getCpf()) > 0) {
+                } else if((mode.equals("add")) && usuarioDao.temCpf(usuario.getCpf()) > 0) {
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
-                } else if((!mode.equals("edit")) && usuarioDao.temLogin(usuario.getLogin()) > 0) {
+                } else if((mode.equals("add")) && usuarioDao.temLogin(usuario.getLogin()) > 0) {
                     elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
                 } else {
                     Dialogs.showLoadPopup(bg);
@@ -453,6 +455,8 @@ public class AddUsuario extends Templates.BaseFrame {
                     try {
                         // edita o usuario
                         usuarioDao.alterar(usuario);
+                        usuario = usuarioDao.selecionarPorCpf(cpf);
+                        Environment.setLoggedUser(usuario);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));

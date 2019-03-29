@@ -38,18 +38,25 @@ public class Perfil extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicia a tela
+     */
     private void initPage() {
-        initComponents();
-        createBaseLayout();
         
+        // cria objetos para carregar dados
         usuario = Environment.getLoggedUser();
         
+        // carrega os elementos e o design da tela
+        initComponents();
+        createBaseLayout();
         addTopContent(Methods.getTranslation("Perfil"));
         addCenterContent();
         addBottomContent();
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -57,6 +64,9 @@ public class Perfil extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -95,13 +105,13 @@ public class Perfil extends Templates.BaseLayout {
         // cria tabela
         tabela = new JTable(tableModel);
         tabela.setRowHeight(35);
-        
     }
     
     /**
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
+        // se administrador, add botão de editar perfil
         if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
             btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
             Styles.defaultButton(btnEditar);
