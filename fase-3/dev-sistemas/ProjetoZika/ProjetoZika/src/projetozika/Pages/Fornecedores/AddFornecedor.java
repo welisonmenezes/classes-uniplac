@@ -187,9 +187,9 @@ public class AddFornecedor extends Templates.BaseFrame {
                 fornecedor.setTelefone(ftel.getText());
                 
                 if (mode.equals("edit") && (!oldCnpj.equals(fcnpj.getText())) && (fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0)) {
-                    ecnpj.setText("Este CNPJ já existe");
+                    ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
                 } else if((!mode.equals("edit")) && fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0) {
-                    ecnpj.setText("Este CNPJ já existe");
+                    ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
                 } else {
                     Dialogs.showLoadPopup(bg);
                     timerTest();

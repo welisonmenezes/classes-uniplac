@@ -153,6 +153,40 @@ public class UsuarioDAO {
     }
     
     /**
+     * conta quantos usários exsitem com o dado cpf
+     * @param cpf o cpf a ser buscado
+     * @return o total de resultados
+     */
+    public int temCpf(String cpf) {
+        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Cpf = " + cpf;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.temCpf: " + error);
+        }
+    }
+    
+    /**
+     * conta quantos usários exsitem com o dado login
+     * @param login o login a ser buscado
+     * @return o total de resultados
+     */
+    public int temLogin(String login) {
+        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Login = " + login;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.temLogin: " + error);
+        }
+    }
+    
+    /**
      * seleciona os usuários correspondentes aos parâmetros de filtragem e paginação
      * @param params os parâmetros de filtragem e paginação
      * @return uma lista de usuários correspondentes

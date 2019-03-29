@@ -123,6 +123,11 @@ public class FornecedorDAO {
         }
     }
     
+    /**
+     * conta quantos fornecedores exsitem com o dado cnpj
+     * @param cnpj o cnpj a ser buscado
+     * @return o total de resultados
+     */
     public int temCnpj(String cnpj) {
         String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = " + cnpj;
         try {
