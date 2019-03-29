@@ -78,6 +78,8 @@ public class AddUsuario extends Templates.BaseFrame {
     private JButton bSave;
     private Usuario usuario;
     private UsuarioDAO usuarioDao;
+    private String oldLogin;
+    private String oldCpf;
     
     /**
      * chamada para adição
@@ -347,10 +349,19 @@ public class AddUsuario extends Templates.BaseFrame {
                 String senha = new String(fsenha.getPassword());
                 usuario.setSenha(senha);
                 
-                //System.out.println("DN: " + usuario.getDataNascimento() + ", Sexo: " + usuario.getSexo() + ", senha: " + usuario.getSenha() + ", setor: " + usuario.getSetor());
-                
-                Dialogs.showLoadPopup(bg);
-                timerTest();
+                // valida campos únicos
+                if (mode.equals("edit") && (!oldCpf.equals(fcpf.getText())) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
+                    ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
+                } else if (mode.equals("edit") && (!oldLogin.equals(flogin.getText())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
+                    elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
+                } else if((!mode.equals("edit")) && usuarioDao.temCpf(usuario.getCpf()) > 0) {
+                    ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
+                } else if((!mode.equals("edit")) && usuarioDao.temLogin(usuario.getLogin()) > 0) {
+                    elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
+                } else {
+                    Dialogs.showLoadPopup(bg);
+                    timerTest();
+                }
             }
             
             
@@ -365,17 +376,21 @@ public class AddUsuario extends Templates.BaseFrame {
      */
     private void fillFields(String cpf) {
         usuario = usuarioDao.selecionarPorCpf(cpf);
-        fnome.setText(usuario.getNome());
-        fcpf.setText(usuario.getCpf());
-        Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
-        Methods.setDateToDateChooser(fdata, usuario.getDataNascimento());
-        fcelular.setText(usuario.getCelular());
-        ftelefone.setText(usuario.getTelefone());
-        femail.setText(usuario.getEmail());
-        fsetor.setSelectedItem(usuario.getSetor());
-        fpermissao.setSelectedItem(usuario.getPermissao());
-        flogin.setText(usuario.getLogin());
-        fsenha.setText(usuario.getSenha());
+        if (usuario != null ) {
+            oldLogin = usuario.getLogin();
+            oldCpf = usuario.getCpf();
+            fnome.setText(usuario.getNome());
+            fcpf.setText(usuario.getCpf());
+            Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
+            Methods.setDateToDateChooser(fdata, usuario.getDataNascimento());
+            fcelular.setText(usuario.getCelular());
+            ftelefone.setText(usuario.getTelefone());
+            femail.setText(usuario.getEmail());
+            fsetor.setSelectedItem(usuario.getSetor());
+            fpermissao.setSelectedItem(usuario.getPermissao());
+            flogin.setText(usuario.getLogin());
+            fsenha.setText(usuario.getSenha());
+        }
     }
     
     /**

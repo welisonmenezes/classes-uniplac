@@ -129,7 +129,7 @@ public class FornecedorDAO {
      * @return o total de resultados
      */
     public int temCnpj(String cnpj) {
-        String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = " + cnpj;
+        String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = '" + cnpj + "'";
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);

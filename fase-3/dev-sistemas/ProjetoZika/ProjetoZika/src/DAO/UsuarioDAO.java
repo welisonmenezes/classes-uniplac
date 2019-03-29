@@ -124,7 +124,7 @@ public class UsuarioDAO {
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarPorCpf(String Cpf) {
-        String sql = "SELECT * FROM usuarios WHERE Cpf = " + Cpf;
+        String sql = "SELECT * FROM usuarios WHERE Cpf = '" + Cpf + "'";
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -158,7 +158,7 @@ public class UsuarioDAO {
      * @return o total de resultados
      */
     public int temCpf(String cpf) {
-        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Cpf = " + cpf;
+        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Cpf = '" + cpf + "'";
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -175,7 +175,7 @@ public class UsuarioDAO {
      * @return o total de resultados
      */
     public int temLogin(String login) {
-        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Login = " + login;
+        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Login = '" + login + "'";
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
