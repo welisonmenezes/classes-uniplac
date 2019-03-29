@@ -44,6 +44,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JButton bSave;
     private FornecedorDAO fornecedorDao;
     private Fornecedor fornecedor;
+    private String oldCnpj;
     
    /**
     * chama para adição
@@ -179,14 +180,21 @@ public class AddFornecedor extends Templates.BaseFrame {
             if (! Validator.validaCampo(fname, ename, 100)) isValid = false;
             if (! Validator.validaTelefone(ftel, etel)) isValid = false;
             if (isValid) {
-                
+              
                 // seta os valores do formulário ao fornecedor corrente
                 fornecedor.setCnpj(fcnpj.getText());
                 fornecedor.setNome(fname.getText());
                 fornecedor.setTelefone(ftel.getText());
                 
-                Dialogs.showLoadPopup(bg);
-                timerTest();
+                if (mode.equals("edit") && (!oldCnpj.equals(fcnpj.getText())) && (fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0)) {
+                    ecnpj.setText("Este CNPJ já existe");
+                } else if((!mode.equals("edit")) && fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0) {
+                    ecnpj.setText("Este CNPJ já existe");
+                } else {
+                    Dialogs.showLoadPopup(bg);
+                    timerTest();
+                }
+                
                 
             }
 
@@ -202,6 +210,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private void fillFields(String id) {
         fornecedor = fornecedorDao.selecionarPorId(id);
         if (fornecedor != null) {
+            oldCnpj = fornecedor.getCnpj();
             fname.setText(fornecedor.getNome());
             ftel.setText(fornecedor.getTelefone());
             fcnpj.setText(fornecedor.getCnpj());

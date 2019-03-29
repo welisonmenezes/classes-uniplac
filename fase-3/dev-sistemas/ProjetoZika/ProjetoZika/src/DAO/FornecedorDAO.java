@@ -123,6 +123,18 @@ public class FornecedorDAO {
         }
     }
     
+    public int temCnpj(String cnpj) {
+        String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = " + cnpj;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("FornecedorDAO.temCnpj: " + error);
+        }
+    }
+    
     /**
      * seleciona os fornecedores correspondentes aos parâmetros de filtragem e paginação
      * @param params os parâmetros de filtragem e paginação
