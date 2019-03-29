@@ -6,11 +6,13 @@
 package projetozika;
 
 import Config.Environment;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JFrame;
@@ -23,11 +25,17 @@ import javax.swing.JFrame;
 public class Login extends javax.swing.JFrame {
     
     private Properties params;
+    private final UsuarioDAO usuarioDao;
+    private Usuario usuario;
 
     /**
      * Creates new form Login
      */
     public Login() {
+        
+        // carrega os dados
+        usuarioDao = new UsuarioDAO();
+        
         initComponents();
         this.params = new Properties();
         
@@ -97,7 +105,7 @@ public class Login extends javax.swing.JFrame {
         llogin.setText("Login");
         jBg.add(llogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
 
-        flogin.setText("administrador");
+        flogin.setText("welison");
         jBg.add(flogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
 
         lsenha.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -138,45 +146,28 @@ public class Login extends javax.swing.JFrame {
         
         // validação
         String login = flogin.getText();
-        char[] password = fsenha.getPassword();
-        String userPassword = "123456";
-        if ((login.equals("administrador") || login.equals("almoxarife") || login.equals("usuario")) && Arrays.equals(password, userPassword.toCharArray())) {
-            
-            // seta usuario logado
-            Usuario u = new Usuario("11111111111","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","1987-01-06");
-            u.setLogin("administrador");
-            u.setSenha("123456");
-            u.setId(5);
-            
-            switch (login) {
-                case "administrador":
-                    u.setPermissao(Methods.getTranslation("Administrador"));
-                    break;
-                case "almoxarife":
-                    u.setPermissao(Methods.getTranslation("Almoxarife"));
-                    break;
-                case "usuario":
-                    u.setPermissao(Methods.getTranslation("Usuario"));
-                    break;
-            }
-            
-            Environment.setLoggedUser(u);
-            
+        String password = new String(fsenha.getPassword());
+        usuario = usuarioDao.selecionarAposLogin(login, password);
+        if (usuario != null && usuario.getId() > 0) {
+
+            Environment.setLoggedUser(usuario);
+
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
             Navigation.updateLayout("", params);
-            
+
             if (login.equals("usuario")) {
                 params.clear();
                 Navigation.updateLayout("seusPedidos", params);
             } else {
                 Navigation.updateLayout("dashboard", params);
             }
-            
+
         } else {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
+   
         
     }//GEN-LAST:event_bentrarActionPerformed
     

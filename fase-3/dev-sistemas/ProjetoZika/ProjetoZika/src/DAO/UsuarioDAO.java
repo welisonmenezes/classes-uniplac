@@ -130,20 +130,28 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             Usuario usuario = new Usuario();
             while(rs.next()) {
-                usuario.setId(rs.getInt("Id"));
-                usuario.setCpf(rs.getString("Cpf"));
-                usuario.setNome(rs.getString("Nome"));
-                usuario.setEmail(rs.getString("Email"));
-                usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
-                usuario.setCelular(rs.getString("Celular"));
-                usuario.setTelefone(rs.getString("Telefone"));
-                usuario.setLogin(rs.getString("Login"));
-                usuario.setSenha(rs.getString("Senha"));
-                usuario.setSetor(rs.getString("Setor"));
-                usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                usuario.setPermissao(rs.getString("Permissao"));
-                usuario.setStatus(rs.getString("Status"));
-                usuario.setSexo(rs.getString("Sexo"));
+                fillUser(usuario, rs);
+            }
+            st.close();
+            return usuario;
+        } catch (Exception error) {
+            throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
+        }
+    }
+    
+    /**
+     * seleciona um usuário da base de dados pelo seu Id
+     * @param Cpf o Cpf do usuário a ser retornado
+     * @return o usuário com Id correspondente
+     */
+    public Usuario selecionarAposLogin(String login, String senha) {
+        String sql = "SELECT * FROM usuarios WHERE Login ='" + login + "' AND Senha ='" + senha + "' AND Status != 'Deleted'";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            Usuario usuario = new Usuario();
+            while(rs.next()) {
+                fillUser(usuario, rs);
             }
             st.close();
             return usuario;
@@ -198,20 +206,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Usuario usuario = new Usuario();
-                usuario.setId(rs.getInt("Id"));
-                usuario.setCpf(rs.getString("Cpf"));
-                usuario.setNome(rs.getString("Nome"));
-                usuario.setEmail(rs.getString("Email"));
-                usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
-                usuario.setCelular(rs.getString("Celular"));
-                usuario.setTelefone(rs.getString("Telefone"));
-                usuario.setLogin(rs.getString("Login"));
-                usuario.setSenha(rs.getString("Senha"));
-                usuario.setSetor(rs.getString("Setor"));
-                usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                usuario.setPermissao(rs.getString("Permissao"));
-                usuario.setStatus(rs.getString("Status"));
-                usuario.setSexo(rs.getString("Sexo"));
+                fillUser(usuario, rs);
                 usuarios.add(usuario);
             }
             st.close();
@@ -276,5 +271,26 @@ public class UsuarioDAO {
             
         //System.out.println(sql);
         return sql;
+    }
+    
+    private void fillUser(Usuario usuario, ResultSet rs) {
+        try {
+        usuario.setId(rs.getInt("Id"));
+        usuario.setCpf(rs.getString("Cpf"));
+        usuario.setNome(rs.getString("Nome"));
+        usuario.setEmail(rs.getString("Email"));
+        usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
+        usuario.setCelular(rs.getString("Celular"));
+        usuario.setTelefone(rs.getString("Telefone"));
+        usuario.setLogin(rs.getString("Login"));
+        usuario.setSenha(rs.getString("Senha"));
+        usuario.setSetor(rs.getString("Setor"));
+        usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+        usuario.setPermissao(rs.getString("Permissao"));
+        usuario.setStatus(rs.getString("Status"));
+        usuario.setSexo(rs.getString("Sexo"));
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.fillUser: " + error);
+        }
     }
 }
