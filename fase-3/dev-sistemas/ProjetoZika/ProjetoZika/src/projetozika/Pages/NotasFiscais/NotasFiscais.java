@@ -6,6 +6,7 @@
 package projetozika.Pages.NotasFiscais;
 
 
+import DAO.NotaFiscalDAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
 import Templates.ButtonEditor;
@@ -13,6 +14,7 @@ import Templates.ButtonRenderer;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
+import Utils.Pagination;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
@@ -44,6 +46,8 @@ public class NotasFiscais extends Templates.BaseLayout {
     private JLabel lcnpj;
     private JButton bSearch;
     private ArrayList<NotaFiscal> notasFiscais;
+    private NotaFiscalDAO notaFiscalDao;
+    private int totalNotasFiscais;
     
     /**
      * Creates new form NotasFiscais
@@ -58,26 +62,27 @@ public class NotasFiscais extends Templates.BaseLayout {
     }
     
     private void initPage() {
+        
+        // carrega os dados
+        notaFiscalDao = new NotaFiscalDAO();
+        notasFiscais = notaFiscalDao.selecionar(params);
+        totalNotasFiscais = notaFiscalDao.total(params);
+        
+        // constroi o layout
         initComponents();
         createBaseLayout();
-        
-        notasFiscais = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
-            NotaFiscal n = new NotaFiscal(i, 222, 20.4f, "10/10/2019", f);
-            notasFiscais.add(n);
-        }
-        
         addTopContent(Methods.getTranslation("NotasFiscais"));
         addFilterContent();
         addCenterContent();
         addBottomContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
     private void updateParams() {
         String date = ((JTextField) fdata.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("cnpj", fcnpj.getText());
         params.setProperty("data", date);
@@ -213,52 +218,46 @@ public class NotasFiscais extends Templates.BaseLayout {
         pFilter.add(hideL);
         pFilter.add(addMore);
         
+        // click do adicionar novo
         addMore.addActionListener((ActionEvent e) -> {
             Navigation.updateLayout("addNotaFiscal", params);
         });
         
+        // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
     
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalNotasFiscais);
     }
     
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            for (int i = 0; i < notasFiscais.size(); i++) {
-                NotaFiscal n = notasFiscais.get(i);
-                if (n.getNumero()> 10) {
-                    notasFiscais.remove(n);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            notasFiscais.clear();
+            notasFiscais = notaFiscalDao.selecionar(params);
+            totalNotasFiscais = notaFiscalDao.total(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalNotasFiscais);
             
             t.stop();
         });
@@ -276,7 +275,6 @@ public class NotasFiscais extends Templates.BaseLayout {
 
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

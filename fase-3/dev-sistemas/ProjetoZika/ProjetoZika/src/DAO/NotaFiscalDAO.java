@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
 import Utils.Methods;
@@ -12,7 +13,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Properties;
 
 /**
  *
@@ -24,6 +27,7 @@ public class NotaFiscalDAO {
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
+    private final ArrayList<NotaFiscal> notasFiscais = new ArrayList();
     
     /**
      * método construtor, inicializa a conexão
@@ -97,19 +101,117 @@ public class NotaFiscalDAO {
             rs = st.executeQuery(sql);
             NotaFiscal notaFiscal = new NotaFiscal();
             while(rs.next()) {
-                notaFiscal.setId(rs.getInt("Id"));
-                notaFiscal.setNumero(rs.getLong("Numero"));
-                notaFiscal.setSerie(rs.getInt("Serie"));
-                notaFiscal.setData(Methods.getFriendlyBirthday(rs.getString("Data")));
-                notaFiscal.setValor(rs.getFloat("Valor"));
-                notaFiscal.setStatus(rs.getString("Status"));
-                notaFiscal.setFornecedor(null);
-                notaFiscal.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                fillNotas(notaFiscal, rs);
             }
             st.close();
             return notaFiscal;
         } catch (Exception error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarPorId: " + error);
+        }
+    }
+    
+    /**
+     * seleciona as notas fiscais correspondentes aos parâmetros de filtragem e paginação
+     * @param params os parâmetros de filtragem e paginação
+     * @return uma lista de notas fiscais correspondentes
+     */
+    public ArrayList<NotaFiscal> selecionar(Properties params) {
+        String sql = buildSelectQuery(params, false);
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                NotaFiscal notaFiscal = new NotaFiscal();
+                fillNotas(notaFiscal, rs);
+                notasFiscais.add(notaFiscal);
+            }
+            st.close();
+            return notasFiscais;
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.selecionar: " + error);
+        }
+    }
+    
+    /**
+     * o total de notas fiscais que correspondem aos parâmetros de filtro e paginação
+     * @param params os parâmetros de filtro e paginação
+     * @return o total de notas fiscais
+     */
+    public int total(Properties params) {
+        String sql = buildSelectQuery(params, true);
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.total: " + error);
+        }
+    }
+    
+    /**
+     * Auxiliza na construção da query de seleção com base nos parametros passados
+     * @param params os parâmetros de filtro e paginação
+     * @param isCount true se é pra retorna apenas o total
+     * @return a query para ser usada na seleção
+     */
+    private String buildSelectQuery (Properties params, boolean isCount) {
+        int offset = Integer.parseInt(params.getProperty("offset", "0"));
+        String cnpj = params.getProperty("cnpj", "");
+        String data = params.getProperty("data", "");
+        String sql;
+        
+        if (! isCount) {
+            sql = "SELECT notasFiscais.Id as nId, notasFiscais.Numero as nNumero, notasFiscais.Serie as nSerie,"
+                    + "notasFiscais.Data as nData, notasFiscais.Valor as nValor, notasFiscais.Status as nStatus,"
+                    + "notasFiscais.Created as nCreated, fornecedores.Id as fId, fornecedores.Cnpj as fCnpj,"
+                    + "fornecedores.Nome as fNome, fornecedores.Status as fStatus, fornecedores.Telefone as fTelefone,"
+                    + "fornecedores.Created as fCreated"
+                    + " FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId WHERE notasfiscais.Status != 'Deleted'";
+        } else {
+            sql = "SELECT COUNT(notasFiscais.Id) FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId WHERE notasfiscais.Status != 'Deleted'";
+        }
+        
+        if (! cnpj.equals("")) {
+            sql += " AND Cnpj LIKE '%" + cnpj + "%'";
+        }
+        
+        if (! data.equals("")) {
+            String sqlDate = Methods.getSqlDate(data);
+            sql += " AND Created >= '" + sqlDate + "'";
+        }
+        
+        if (! isCount) {
+            sql += " ORDER BY nId DESC";
+            sql += " LIMIT 10 OFFSET " + (offset);
+        }
+            
+        //System.out.println(sql);
+        return sql;
+    }
+    
+    private void fillNotas(NotaFiscal notaFiscal, ResultSet rs) {
+        try {
+            notaFiscal.setId(rs.getInt("nId"));
+            notaFiscal.setNumero(rs.getLong("nNumero"));
+            notaFiscal.setSerie(rs.getInt("nSerie"));
+            notaFiscal.setData(Methods.getFriendlyBirthday(rs.getString("nData")));
+            notaFiscal.setValor(rs.getFloat("nValor"));
+            notaFiscal.setStatus(rs.getString("nStatus"));
+            notaFiscal.setCreated(Methods.getFriendlyDate(rs.getString("nCreated")));
+            
+            Fornecedor  fornecedor = new Fornecedor();
+            fornecedor.setId(rs.getInt("fId"));
+            fornecedor.setCnpj(rs.getString("fCnpj"));
+            fornecedor.setNome(rs.getString("fNome"));
+            fornecedor.setStatus(rs.getString("fStatus"));
+            fornecedor.setTelefone(rs.getString("fTelefone"));
+            fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("fCreated")));
+            notaFiscal.setFornecedor(fornecedor);
+
+            
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.fillUser: " + error);
         }
     }
 }
