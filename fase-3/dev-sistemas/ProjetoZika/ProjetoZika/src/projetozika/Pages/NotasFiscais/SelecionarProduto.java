@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import DAO.ProdutoDAO;
 import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
@@ -54,6 +55,8 @@ public class SelecionarProduto extends javax.swing.JPanel {
     public static JComboBox cnome;
     private Properties params;
     private final AddNotaFiscal caller;
+    private final ProdutoDAO produtoDao;
+    private ArrayList<Produto> produtos;
 
     /**
      * Creates new form SelecionarProduto
@@ -67,6 +70,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.setBorderTitle(this, Methods.getTranslation("Adicionar/SelecionarProduto"));
         
         addElements();
+        
+        // carrega os dados
+        produtoDao = new ProdutoDAO();
+        produtos = new ArrayList<>();
     }
     
     private void addElements() {
@@ -82,15 +89,22 @@ public class SelecionarProduto extends javax.swing.JPanel {
             @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                produtos.clear();
+                produtos = produtoDao.selecionarPorNome(fnome.getText());
+                produtos.forEach(produto -> {
+                    elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
+                });
                 return elements;
             }
             @Override
             public void afterSelectItem() {
-                funidade.setText("Caixa");
+                ComboItem selectedProd = (ComboItem)cnome.getSelectedItem();
+                if (selectedProd != null) {
+                    Produto produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
+                    if (produto != null && produto.getId() > 0) {
+                        funidade.setText(produto.getUnidade());
+                    }
+                }
             }
         };
         add(pSuggestions, new AbsoluteConstraints(20, 50, -1, -1));
