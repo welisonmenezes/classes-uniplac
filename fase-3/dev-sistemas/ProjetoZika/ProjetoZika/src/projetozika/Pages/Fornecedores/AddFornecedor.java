@@ -266,7 +266,7 @@ public class AddFornecedor extends Templates.BaseFrame {
                         // adiciona um novo fornecedor via nota fiscal
                         int lastInsertedId = fornecedorDao.inserir(fornecedor);
                         AddNotaFiscal.fcnpj.setText(fcnpj.getText());
-                        ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getNome());
+                        ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getCnpj());
                         AddNotaFiscal.ccnpj.addItem(ci);
                         AddNotaFiscal.ccnpj.setSelectedItem(ci);
                     } catch(Exception error) {

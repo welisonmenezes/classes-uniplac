@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import DAO.FornecedorDAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.Produto;
@@ -65,6 +66,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     public static JComboBox ccnpj;
     private JLabel linfo;
     private String id;
+    private FornecedorDAO fornecedorDao;
+    private ArrayList<Fornecedor> fornecedores;
     
     public AddNotaFiscal(Properties params) {
         this.self = this;
@@ -99,14 +102,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     
     private void initPage(String title) {
         
-  
-        /*
-        this.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                scrollList.setVisible(false);
-            }
-        });
-        */
+        fornecedorDao = new FornecedorDAO();
+        fornecedores = new ArrayList();
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
@@ -163,10 +160,11 @@ public class AddNotaFiscal extends Templates.BaseFrame {
             @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                fornecedores.clear();
+                fornecedores = fornecedorDao.selecionarPorCnpj(fcnpj.getText());
+                fornecedores.forEach(fornecedor -> {
+                    elements.add(new ComboItem(fornecedor.getId(), fornecedor.getCnpj()));
+                });
                 return elements;
             }
         };
