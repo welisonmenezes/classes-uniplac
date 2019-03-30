@@ -36,7 +36,7 @@ public class UsuarioDAO {
     
     /**
      * insere um novo usuário na base de dados
-     * @param produto o usuário a ser inserido
+     * @param usuario o usuário a ser inserido
      * @return o id do último item inserido
      */
     public int inserir(Usuario usuario) {
@@ -141,7 +141,8 @@ public class UsuarioDAO {
     
     /**
      * seleciona um usuário da base de dados pelo seu Id
-     * @param Cpf o Cpf do usuário a ser retornado
+     * @param login o login
+     * @param senha a senha
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarAposLogin(String login, String senha) {

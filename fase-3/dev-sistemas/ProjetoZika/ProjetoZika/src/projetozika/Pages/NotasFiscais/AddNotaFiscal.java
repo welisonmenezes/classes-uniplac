@@ -5,7 +5,9 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Config.Environment;
 import DAO.FornecedorDAO;
+import DAO.NotaFiscalDAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
@@ -24,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
@@ -69,6 +72,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private String id;
     private FornecedorDAO fornecedorDao;
     private ArrayList<Fornecedor> fornecedores;
+    private NotaFiscalDAO notaFiscalDao;
+    private NotaFiscal notaFiscal;
+    private Fornecedor fornecedor;
     
     public AddNotaFiscal(Properties params) {
         this.self = this;
@@ -105,6 +111,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         
         fornecedorDao = new FornecedorDAO();
         fornecedores = new ArrayList();
+        notaFiscalDao = new NotaFiscalDAO();
+        notaFiscal = new NotaFiscal();
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
@@ -167,6 +175,13 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                     elements.add(new ComboItem(fornecedor.getId(), fornecedor.getCnpj()));
                 });
                 return elements;
+            }
+            @Override
+            public void afterSelectItem() {
+                ComboItem selectedProd = (ComboItem)ccnpj.getSelectedItem();
+                if (selectedProd != null) {
+                    fornecedor = fornecedorDao.selecionarPorId(selectedProd.getId()+"");
+                }
             }
         };
         bg.add(pSuggestions, new AbsoluteConstraints(220, 40, -1, -1));
@@ -253,6 +268,24 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                 isValid = false;
             }
             if (isValid) {
+                
+                // seta os valores do formulário à nota fiscal corrente
+                notaFiscal.setNumero(Long.parseLong(fnumero.getText()));
+                notaFiscal.setSerie(Integer.parseInt(fserie.getText()));
+                notaFiscal.setValor(Float.parseFloat(fvalor.getText()));
+                
+                java.util.Date pega = fdata.getDate();
+                SimpleDateFormat sdf;
+                if (Environment.getCurrentLang().equals("en")) {
+                    sdf = new SimpleDateFormat("yyyy-MM-dd");
+                } else {
+                    sdf = new SimpleDateFormat("dd/MM/yyyy");
+                }
+                String data = sdf.format(pega);
+                notaFiscal.setData(Methods.getSqlDate(data));
+                
+                notaFiscal.setFornecedor(fornecedor);
+                
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
@@ -303,12 +336,30 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             
             self.dispose();
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-            
+            try {
+                // adiciona nota fiscal
+                int notaId = notaFiscalDao.inserir(notaFiscal);
+                if (notaId > 0) {
+                    if (panelListarProdutos.notaProdutos.size() > 0) {
+                        panelListarProdutos.notaProdutos.forEach(notaProduto -> {
+                            NotaFiscal nf = notaFiscalDao.selecionarPorId(notaId+"");
+                            if (nf != null && nf.getId() > 0) {
+                                notaProduto.setNotaFiscal(nf);
+                                notaFiscalDao.inserirProduto(notaProduto);
+                            }
+                        });
+                    }
+                }
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+            } catch(Exception error) {
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                throw new RuntimeException("AddNotaFiscal.add: " + error);
+            }
+            // recarrega a tela pai
             Navigation.updateLayout("", new Properties());
             Navigation.updateLayout("notasFiscais", params);
             

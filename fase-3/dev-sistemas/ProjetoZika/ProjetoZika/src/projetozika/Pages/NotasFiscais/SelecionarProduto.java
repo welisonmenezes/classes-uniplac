@@ -10,7 +10,6 @@ import Models.NotaFiscalProduto;
 import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
-import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -28,7 +27,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 /**
