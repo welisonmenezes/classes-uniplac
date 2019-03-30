@@ -127,7 +127,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         // adiciona linhas
         notasFiscais.forEach(n -> {
             Object[] data = {
-                n.getNumero(),
+                n.getId(),
                 n.getValor(),
                 n.getFornecedor().getCnpj(),
                 n.getData(),

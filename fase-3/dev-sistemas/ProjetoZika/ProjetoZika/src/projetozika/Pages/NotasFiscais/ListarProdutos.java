@@ -50,11 +50,13 @@ public class ListarProdutos extends javax.swing.JPanel {
         this.mode = mode;
         this.notaProdutos = new ArrayList<>();
         
+        /*
         for (int i = 0; i < 5; i++) {
             Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
             NotaFiscalProduto np = new NotaFiscalProduto(null, p, 3, 4.5f, "");
             notaProdutos.add(np);
         }
+        */
         
         initPage();
     }

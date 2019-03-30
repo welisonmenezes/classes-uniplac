@@ -8,6 +8,7 @@ package DAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
+import Models.Produto;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -95,7 +96,12 @@ public class NotaFiscalDAO {
      * @return a nota fiscal com Id correspondente
      */
     public NotaFiscal selecionarPorId(String Id) {
-        String sql = "SELECT * FROM notasfiscais WHERE Id = " + Id;
+        String sql = "SELECT notasFiscais.Id as nId, notasFiscais.Numero as nNumero, notasFiscais.Serie as nSerie,"
+                    + "notasFiscais.Data as nData, notasFiscais.Valor as nValor, notasFiscais.Status as nStatus,"
+                    + "notasFiscais.Created as nCreated, fornecedores.Id as fId, fornecedores.Cnpj as fCnpj,"
+                    + "fornecedores.Nome as fNome, fornecedores.Status as fStatus, fornecedores.Telefone as fTelefone,"
+                    + "fornecedores.Created as fCreated"
+                    + " FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasFiscais.FornecedorId WHERE notasFiscais.Id = " + Id;
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -104,9 +110,50 @@ public class NotaFiscalDAO {
                 fillNotas(notaFiscal, rs);
             }
             st.close();
+            System.out.println(sql);
             return notaFiscal;
         } catch (Exception error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarPorId: " + error);
+        }
+    }
+    
+    /**
+     * seleciona os produtos da nota fiscal pelo id da nota fiscal
+     * @param Id o Id da nota fiscal
+     * @return os produtos da nota fiscal com Id correspondente
+     */
+    public ArrayList<NotaFiscalProduto> selecionarProdutos(String Id) {
+        String sql = "SELECT * FROM notasfiscaisprodutos\n" +
+                    "LEFT JOIN produtos on notasfiscaisprodutos.ProdutoId = produtos.Id\n" +
+                    "WHERE NotaFiscalId = " + Id + " AND produtos.Status != 'Deleted'";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            
+            ArrayList<NotaFiscalProduto> nfps = new ArrayList();
+            while(rs.next()) {
+                NotaFiscalProduto nfp = new NotaFiscalProduto();
+                Produto p = new Produto();
+                nfp.setQuantidade(rs.getInt("Quantidade"));
+                nfp.setValor(rs.getFloat("Valor"));
+                nfp.setCreated(Methods.getFriendlyDate(rs.getString("notasfiscaisprodutos.Created")));
+                
+                p.setId(rs.getInt("Id"));
+                p.setNome(rs.getString("Nome"));
+                p.setDescricao(rs.getString("Descricao"));
+                p.setStatus(rs.getString("Status"));
+                p.setUnidade(rs.getString("Unidade"));
+                p.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+                
+                nfp.setProduto(p);
+                
+                nfps.add(nfp);
+            }
+            st.close();
+            System.out.println(sql);
+            return nfps;
+        } catch (Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.selecionarProdutos: " + error);
         }
     }
     

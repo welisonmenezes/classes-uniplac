@@ -75,6 +75,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private NotaFiscalDAO notaFiscalDao;
     private NotaFiscal notaFiscal;
     private Fornecedor fornecedor;
+    private ArrayList<NotaFiscalProduto> notaFiscalProdutos;
     
     public AddNotaFiscal(Properties params) {
         this.self = this;
@@ -314,14 +315,20 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     }
     
     private void fillFields(String id) {
-        Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
-        NotaFiscal nf = new NotaFiscal(444,222,34.4f,"12/05/2009",f);
-        fnumero.setText(nf.getNumero() + "");
-        fserie.setText(nf.getSerie() + "");
-        ccnpj.addItem(new ComboItem(0, nf.getFornecedor().getCnpj()));
-        fcnpj.setText(nf.getFornecedor().getCnpj());
-        fvalor.setText(nf.getValor() + "");
-        Methods.setDateToDateChooser(fdata, nf.getData());
+        notaFiscal = notaFiscalDao.selecionarPorId(id);
+        fnumero.setText(notaFiscal.getNumero()+"");
+        fserie.setText(notaFiscal.getSerie()+"");
+        ccnpj.addItem(new ComboItem(notaFiscal.getFornecedor().getId(), notaFiscal.getFornecedor().getCnpj()));
+        fcnpj.setText(notaFiscal.getFornecedor().getCnpj());
+        fvalor.setText(notaFiscal.getValor()+"");
+        Methods.setDateToDateChooser(fdata, notaFiscal.getData());
+        
+        notaFiscalProdutos = notaFiscalDao.selecionarProdutos(id);
+        if (notaFiscalProdutos != null && notaFiscalProdutos.size() > 0) {
+            notaFiscalProdutos.forEach(nfp -> {
+                panelListarProdutos.addProduto(nfp);
+            });
+        }
     }
     
     private void clearErrors() {
@@ -339,29 +346,42 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             
-            self.dispose();
-            try {
-                // adiciona nota fiscal
-                int notaId = notaFiscalDao.inserir(notaFiscal);
-                if (notaId > 0) {
-                    if (panelListarProdutos.notaProdutos.size() > 0) {
-                        panelListarProdutos.notaProdutos.forEach(notaProduto -> {
-                            NotaFiscal nf = notaFiscalDao.selecionarPorId(notaId+"");
-                            if (nf != null && nf.getId() > 0) {
-                                notaProduto.setNotaFiscal(nf);
-                                notaFiscalDao.inserirProduto(notaProduto);
+            switch (mode) {
+                case "add":
+                    self.dispose();
+                    try {
+                        // adiciona nota fiscal
+                        int notaId = notaFiscalDao.inserir(notaFiscal);
+                        if (notaId > 0) {
+                            if (panelListarProdutos.notaProdutos.size() > 0) {
+                                panelListarProdutos.notaProdutos.forEach(notaProduto -> {
+                                    NotaFiscal nf = notaFiscalDao.selecionarPorId(notaId+"");
+                                    if (nf != null && nf.getId() > 0) {
+                                        notaProduto.setNotaFiscal(nf);
+                                        // adiciona produto à nota fiscal
+                                        notaFiscalDao.inserirProduto(notaProduto);
+                                    }
+                                });
                             }
-                        });
+                        }
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddNotaFiscal.add: " + error);
                     }
-                }
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-            } catch(Exception error) {
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
-                throw new RuntimeException("AddNotaFiscal.add: " + error);
+                    // recarrega a tela pai
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notasFiscais", params);
+                    break;
+                case "edit":
+                    System.out.println("Editar aqui");
+                    break;
+                default:
+                    self.dispose();
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notasFiscais", params);
+                    break;
             }
-            // recarrega a tela pai
-            Navigation.updateLayout("", new Properties());
-            Navigation.updateLayout("notasFiscais", params);
             
             t.stop();
         });
