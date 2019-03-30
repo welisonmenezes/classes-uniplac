@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import Models.NotaFiscalProduto;
 import Models.Produto;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -28,7 +29,7 @@ public class ListarProdutos extends javax.swing.JPanel {
     private JTable tabela;
     private String mode;
     private JScrollPane barraRolagem;
-    public ArrayList<Produto> produtos;
+    public ArrayList<NotaFiscalProduto> notaProdutos;
 
     /**
      * Creates new form ListarProdutos
@@ -36,7 +37,7 @@ public class ListarProdutos extends javax.swing.JPanel {
      */
     public ListarProdutos(String mode) {
         this.mode = mode;
-        this.produtos = new ArrayList<>();
+        this.notaProdutos = new ArrayList<>();
         
         initPage();
     }
@@ -47,11 +48,12 @@ public class ListarProdutos extends javax.swing.JPanel {
      */
     public ListarProdutos(String id, String mode) {
         this.mode = mode;
-        this.produtos = new ArrayList<>();
+        this.notaProdutos = new ArrayList<>();
         
         for (int i = 0; i < 5; i++) {
             Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-            produtos.add(p);
+            NotaFiscalProduto np = new NotaFiscalProduto(null, p, 3, 4.5f, "");
+            notaProdutos.add(np);
         }
         
         initPage();
@@ -83,10 +85,12 @@ public class ListarProdutos extends javax.swing.JPanel {
             Methods.getTranslation("Codigo"),
             Methods.getTranslation("Nome"),
             Methods.getTranslation("Unidade"),
+            Methods.getTranslation("Valor"),
+            Methods.getTranslation("Quantidade"),
             ""
         };
         if(! mode.equals("view")) {
-            colunas[3] = Methods.getTranslation("Excluir");
+            colunas[5] = Methods.getTranslation("Excluir");
         } 
         
        // seta modelo
@@ -96,7 +100,7 @@ public class ListarProdutos extends javax.swing.JPanel {
                 if (mode.equals("view")) {
                     return false;
                 } else {
-                    if(column != 3){
+                    if(column != 5){
                         return false;
                     }
                 }
@@ -104,10 +108,10 @@ public class ListarProdutos extends javax.swing.JPanel {
             }
         };
         // adiciona linhas
-        produtos.forEach(p -> {
-            Object[] data = {p.getId(),p.getNome(),p.getUnidade(),""};
+        notaProdutos.forEach(np -> {
+            Object[] data = {np.getProduto().getId(),np.getProduto().getNome(),np.getProduto().getUnidade(),np.getValor(),np.getQuantidade(),""};
             if (! mode.equals("view")) {
-                data[3] = Methods.getTranslation("Excluir");
+                data[5] = Methods.getTranslation("Excluir");
             }
             tableModel.addRow(data);
         });
@@ -122,10 +126,10 @@ public class ListarProdutos extends javax.swing.JPanel {
                 @Override
                 public void buttonAction() {
                     String idTabel = Methods.selectedTableItemId(tabela);
-                    for (int i = 0; i < produtos.size(); i++) {
-                        Produto p = produtos.get(i);
-                        if (idTabel.equals(""+p.getId())) {
-                            produtos.remove(p);
+                    for (int i = 0; i < notaProdutos.size(); i++) {
+                        NotaFiscalProduto np = notaProdutos.get(i);
+                        if (idTabel.equals(""+np.getProduto().getId())) {
+                            notaProdutos.remove(np);
                         }
                     }
                     updateCenterContent();
@@ -134,8 +138,8 @@ public class ListarProdutos extends javax.swing.JPanel {
         }
     }
     
-    public void addProduto(Produto produto) {
-        produtos.add(produto);
+    public void addProduto(NotaFiscalProduto notaFiscalProduto) {
+        notaProdutos.add(notaFiscalProduto);
         updateCenterContent();
     }
 

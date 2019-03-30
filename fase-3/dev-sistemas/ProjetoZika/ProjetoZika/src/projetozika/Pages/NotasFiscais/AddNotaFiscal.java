@@ -8,6 +8,7 @@ package projetozika.Pages.NotasFiscais;
 import DAO.FornecedorDAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
+import Models.NotaFiscalProduto;
 import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
@@ -247,7 +248,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
             if (! Validator.validaCnpj(fcnpj, ecnpj)) isValid = false;
             if (! Validator.validaComboBox(ccnpj, ecnpj)) isValid = false;
             if (! Validator.validaValor(fvalor, evalor)) isValid = false;
-            if (panelListarProdutos.produtos.size() < 1) {
+            if (panelListarProdutos.notaProdutos.size() < 1) {
                 linfo.setText(Methods.getTranslation("AdicioneUmProduto"));
                 isValid = false;
             }
@@ -275,8 +276,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         pCenter.add(bgScroll);
     }
     
-    public void addProduto(Produto produto) {
-        panelListarProdutos.addProduto(produto);
+    public void addProduto(NotaFiscalProduto notaProduto) {
+        panelListarProdutos.addProduto(notaProduto);
     }
     
     private void fillFields(String id) {

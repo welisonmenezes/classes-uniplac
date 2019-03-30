@@ -6,6 +6,7 @@
 package projetozika.Pages.NotasFiscais;
 
 import DAO.ProdutoDAO;
+import Models.NotaFiscalProduto;
 import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
@@ -57,6 +58,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private final AddNotaFiscal caller;
     private final ProdutoDAO produtoDao;
     private ArrayList<Produto> produtos;
+    private Produto produto;
 
     /**
      * Creates new form SelecionarProduto
@@ -100,7 +102,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             public void afterSelectItem() {
                 ComboItem selectedProd = (ComboItem)cnome.getSelectedItem();
                 if (selectedProd != null) {
-                    Produto produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
+                    produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
                     if (produto != null && produto.getId() > 0) {
                         funidade.setText(produto.getUnidade());
                     }
@@ -180,8 +182,9 @@ public class SelecionarProduto extends javax.swing.JPanel {
             if (! Validator.validaValor(fvalor, evalor)) isValid = false;
             if (! Validator.validaComboBox(cnome, enome)) isValid = false;
             if (isValid) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
+                NotaFiscalProduto notaProduto = new NotaFiscalProduto(produto, Integer.parseInt(fquantidade.getText()), Double.parseDouble(fvalor.getText()), "");
+                caller.addProduto(notaProduto);
+                clearFields();
             }
             
         });
@@ -194,18 +197,14 @@ public class SelecionarProduto extends javax.swing.JPanel {
         enome.setText("");
     }
     
-    private Timer t;
-    private void timerTest() {
-        
-        t = new Timer(2000, (ActionEvent e) -> {
-            Dialogs.hideLoadPopup(self);
-            
-            funidade.setEnabled(false);
-            caller.addProduto(new Produto(333,"Prod Teste","Caixa","Desc teste","12/11/2008"));
-            
-            t.stop();
-        });
-        t.start();
+    private void clearFields() {
+        funidade.setText("");
+        fquantidade.setText("");
+        fnome.setText("");
+        fvalor.setText("");
+        cnome.removeAll();
+        cnome.revalidate();
+        cnome.setSelectedIndex(0);
     }
 
     /**
