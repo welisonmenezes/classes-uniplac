@@ -49,6 +49,8 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
             setIcon(new ImageIcon(this.getClass().getResource("/sources/edit.png")));
         } else if (text.equals(Methods.getTranslation("Entregar"))) {
             setIcon(new ImageIcon(this.getClass().getResource("/sources/deliver.png")));
+        } else if (text.equals(Methods.getTranslation("Remover"))) {
+            setIcon(new ImageIcon(this.getClass().getResource("/sources/cancel.png")));
         }
         
         if (text.equals("")) {

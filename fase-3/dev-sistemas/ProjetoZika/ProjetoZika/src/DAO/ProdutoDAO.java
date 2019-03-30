@@ -124,6 +124,33 @@ public class ProdutoDAO {
     }
     
     /**
+     * seleciona os produtos correspondentes ao dado nome
+     * @param nome o nome desejado
+     * @return uma lista de produtos correspondentes
+     */
+    public ArrayList<Produto> selecionarPorNome(String nome) {
+        String sql = "SELECT * FROM produtos WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getInt("Id"));
+                produto.setNome(rs.getString("Nome"));
+                produto.setDescricao(rs.getString("Descricao"));
+                produto.setUnidade(rs.getString("Unidade"));
+                produto.setStatus(rs.getString("Status"));
+                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produtos.add(produto);
+            }
+            st.close();
+            return produtos;
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.selecionarPorNome: " + error);
+        }
+    }
+    
+    /**
      * seleciona os produtos correspondentes aos parâmetros de filtragem e paginação
      * @param params os parâmetros de filtragem e paginação
      * @return uma lista de produtos correspondentes

@@ -58,6 +58,8 @@ public class ButtonEditor extends DefaultCellEditor {
             button.setIcon(new ImageIcon(this.getClass().getResource("/sources/edit.png")));
         } else if (text.equals(Methods.getTranslation("Entregar"))) {
             button.setIcon(new ImageIcon(this.getClass().getResource("/sources/deliver.png")));
+        } else if (text.equals(Methods.getTranslation("Remover"))) {
+            button.setIcon(new ImageIcon(this.getClass().getResource("/sources/cancel.png")));
         }
         
         label = (value == null) ? "" : value.toString();

@@ -5,6 +5,8 @@
  */
 package projetozika.Pages.SeusPedidos;
 
+import Config.Environment;
+import DAO.ProdutoDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
@@ -57,6 +59,8 @@ public class FazerPedido extends Templates.BaseFrame {
     private JPanel pSuggestions;
     private ArrayList<PedidoProduto> pedidosProdutos;
     private JLabel efinalizar;
+    private ProdutoDAO produtoDao;
+    private ArrayList<Produto> produtos;
     
    public FazerPedido(Properties params) {
        this.self = this;
@@ -88,6 +92,10 @@ public class FazerPedido extends Templates.BaseFrame {
    }
    
     private void initPage(String title) {
+        
+        // carrega os dados
+        produtoDao = new ProdutoDAO();
+        produtos = new ArrayList<>();
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
@@ -142,10 +150,11 @@ public class FazerPedido extends Templates.BaseFrame {
             @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                produtos.clear();
+                produtos = produtoDao.selecionarPorNome(fproduto.getText());
+                produtos.forEach(produto -> {
+                    elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
+                });
                 return elements;
             }
         };
@@ -164,12 +173,19 @@ public class FazerPedido extends Templates.BaseFrame {
             if (selectedProd != null && selectedProd.getDescription().equals(typedText)) {
                 // TODO: implement real database add product
                 if (!hasProduct(selectedProd.getId())) {
-                    Produto produto = new Produto(111, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-                    Usuario u = new Usuario(""+1122, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Pedido pedido = new Pedido("10/10/2009","Pendente",u);
-                    PedidoProduto pp = new PedidoProduto(produto,pedido,3);
-                    pedidosProdutos.add(pp);
-                    updateCenterContent();
+
+                    Produto produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
+                    if (produto != null && produto.getId() > 0) {
+                        Usuario usuario = Environment.getLoggedUser();
+                        if (usuario != null && usuario.getId() > 0) {
+                            Pedido pedido = new Pedido ("", Methods.getTranslation("Pendente"), usuario);
+                            PedidoProduto pp = new PedidoProduto(produto, pedido, 1);
+                            pedidosProdutos.add(pp);
+                            updateCenterContent();
+                        }
+                    }
+                    
+                    
                 }
             }
         });
@@ -295,8 +311,10 @@ public class FazerPedido extends Templates.BaseFrame {
         });
         
         if(! mode.equals("view")) {
-            tabela.getColumn(Methods.getTranslation("Remover")).setCellRenderer(new ButtonRenderer());
-            tabela.getColumn(Methods.getTranslation("Remover")).setCellEditor(new ButtonEditor(new JCheckBox()){
+            TableColumn colRemover = tabela.getColumn(Methods.getTranslation("Remover"));
+            colRemover.setMaxWidth(40);
+            colRemover.setCellRenderer(new ButtonRenderer());
+            colRemover.setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
                     String idTable = Methods.selectedTableItemId(tabela);
