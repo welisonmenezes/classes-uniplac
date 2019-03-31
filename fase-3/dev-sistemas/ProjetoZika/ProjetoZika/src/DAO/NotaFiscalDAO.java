@@ -264,6 +264,7 @@ public class NotaFiscalDAO {
      */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
+        String numero = params.getProperty("numero", "");
         String cnpj = params.getProperty("cnpj", "");
         String data = params.getProperty("data", "");
         String sql;
@@ -277,6 +278,10 @@ public class NotaFiscalDAO {
                     + " FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId WHERE notasfiscais.Status != 'Deleted'";
         } else {
             sql = "SELECT COUNT(notasFiscais.Id) FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId WHERE notasfiscais.Status != 'Deleted'";
+        }
+        
+        if (! numero.equals("")) {
+            sql += " AND Numero LIKE '%" + numero + "%'";
         }
         
         if (! cnpj.equals("")) {

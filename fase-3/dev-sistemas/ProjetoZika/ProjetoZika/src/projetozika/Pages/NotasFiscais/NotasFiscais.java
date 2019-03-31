@@ -48,6 +48,8 @@ public class NotasFiscais extends Templates.BaseLayout {
     private ArrayList<NotaFiscal> notasFiscais;
     private NotaFiscalDAO notaFiscalDao;
     private int totalNotasFiscais;
+    private JTextField fnumero;
+    private JLabel lnumero;
     
     /**
      * Creates new form NotasFiscais
@@ -91,6 +93,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("cnpj", fcnpj.getText());
+        params.setProperty("numero", fnumero.getText());
         params.setProperty("data", date);
     }
     
@@ -122,6 +125,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         // seta colunas
         String[] colunas = {
             Methods.getTranslation("Codigo"),
+            Methods.getTranslation("Numero"),
             Methods.getTranslation("Valor"),
             Methods.getTranslation("CNPJ"),
             Methods.getTranslation("Data"),
@@ -143,6 +147,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         notasFiscais.forEach(n -> {
             Object[] data = {
                 n.getId(),
+                n.getNumero(),
                 n.getValor(),
                 n.getFornecedor().getCnpj(),
                 n.getData(),
@@ -217,6 +222,13 @@ public class NotasFiscais extends Templates.BaseLayout {
         lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj, false);
         
+        fnumero = new JTextField();
+        Styles.defaultField(fnumero, 150);
+        fnumero.setText(params.getProperty("numero", ""));
+        
+        lnumero = new JLabel(Methods.getTranslation("Numero"));
+        Styles.defaultLabel(lnumero, false);
+        
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
         Methods.setDateChooserFormat(fdata);
@@ -231,6 +243,8 @@ public class NotasFiscais extends Templates.BaseLayout {
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
+        pFilter.add(lnumero);
+        pFilter.add(fnumero);
         pFilter.add(lcnpj);
         pFilter.add(fcnpj);
         pFilter.add(ldata);
