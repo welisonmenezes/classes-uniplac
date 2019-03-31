@@ -154,6 +154,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private void addCenterContent() {
         bgScroll = new JScrollPane();
         Styles.resetScrollPanel(bgScroll);
+        bgScroll.getVerticalScrollBar().setUnitIncrement(16);
         
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());

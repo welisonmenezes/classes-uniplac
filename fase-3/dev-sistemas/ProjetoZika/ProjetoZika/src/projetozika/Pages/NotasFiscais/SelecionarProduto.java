@@ -210,6 +210,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         equantidade.setText("");
         evalor.setText("");
         enome.setText("");
+        eselProd.setText("");
     }
     
     /**
