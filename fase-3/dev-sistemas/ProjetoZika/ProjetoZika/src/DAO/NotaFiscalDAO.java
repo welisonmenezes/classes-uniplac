@@ -91,14 +91,53 @@ public class NotaFiscalDAO {
     }
     
     /**
-     * 'deleta' a nota fiscal da visualização, na base de dados altera apenas o status para 'Deleted'
-     * @param Id o Id da nota fiscal a ser 'deletado'
+     * altera os dados da nota fiscal na base de dados
+     * @param notaFiscal a nota fiscal a ser alterada
      */
-    public void deletar(int Id) {
+    public void alterar(NotaFiscal notaFiscal) {
+        String sql = "UPDATE notasfiscais SET Numero=?, Serie=?, Valor=?, "
+                + "Data=?, FornecedorId=? WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, notaFiscal.getNumero());
+            stmt.setInt(2, notaFiscal.getSerie());
+            stmt.setDouble(3, notaFiscal.getValor());
+            stmt.setString(4, notaFiscal.getData());
+            stmt.setInt(5, notaFiscal.getFornecedor().getId());
+            stmt.setInt(6, notaFiscal.getId());
+            //System.out.println(sql);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.alterar: " + error);
+        }
+    }
+    
+    /**
+     * Deleta os prdutos da nota fiscal
+     * @param notaId o Id da nota fiscal cujo produtos serão deletados
+     */
+    public void deletarProdutos(int notaId) {
+        String sql = "DELETE FROM notasfiscaisprodutos WHERE NotaFiscalId=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, notaId);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.deletarProdutos: " + error);
+        }
+    }
+    
+    /**
+     * 'deleta' a nota fiscal da visualização, na base de dados altera apenas o status para 'Deleted'
+     * @param notaId o Id da nota fiscal a ser 'deletado'
+     */
+    public void deletar(int notaId) {
         String sql = "UPDATE notasfiscais SET Status='Deleted' WHERE Id=?";
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, Id);
+            stmt.setInt(1, notaId);
             stmt.execute();
             stmt.close();
         } catch(Exception error) {
@@ -126,7 +165,7 @@ public class NotaFiscalDAO {
                 fillNotas(notaFiscal, rs);
             }
             st.close();
-            System.out.println(sql);
+            //System.out.println(sql);
             return notaFiscal;
         } catch (Exception error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarPorId: " + error);
@@ -166,7 +205,7 @@ public class NotaFiscalDAO {
                 nfps.add(nfp);
             }
             st.close();
-            System.out.println(sql);
+            //System.out.println(sql);
             return nfps;
         } catch (Exception error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarProdutos: " + error);

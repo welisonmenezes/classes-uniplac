@@ -374,7 +374,32 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                     Navigation.updateLayout("notasFiscais", params);
                     break;
                 case "edit":
-                    System.out.println("Editar aqui");
+                    self.dispose();
+                    try {
+                        // edita nota fiscal
+                        notaFiscalDao.alterar(notaFiscal);
+                        if (notaFiscal.getId() > 0) {
+                            // deleta lista de produtos antiga
+                            notaFiscalDao.deletarProdutos(notaFiscal.getId());
+                            if (panelListarProdutos.notaProdutos.size() > 0) {
+                                panelListarProdutos.notaProdutos.forEach(notaProduto -> {
+                                    NotaFiscal nf = notaFiscalDao.selecionarPorId(notaFiscal.getId()+"");
+                                    if (nf != null && nf.getId() > 0) {
+                                        notaProduto.setNotaFiscal(nf);
+                                        // adiciona nova lista de produtos
+                                        notaFiscalDao.inserirProduto(notaProduto);
+                                    }
+                                });
+                            }
+                        }
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddNotaFiscal.edit: " + error);
+                    }
+                    // recarrega a tela pai
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notasFiscais", params);
                     break;
                 default:
                     self.dispose();
