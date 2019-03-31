@@ -57,6 +57,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
     private final ProdutoDAO produtoDao;
     private ArrayList<Produto> produtos;
     private Produto produto;
+    private JLabel eselProd;
 
     /**
      * Creates new form SelecionarProduto
@@ -163,6 +164,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.errorLabel(evalor);
         add(evalor, new AbsoluteConstraints(20, 325, -1, -1));
         
+        eselProd = new JLabel("");
+        Styles.errorLabel(eselProd);
+        add(eselProd, new AbsoluteConstraints(240, 325, -1, -1));
+        
         selProd = new JButton(Methods.getTranslation("Adicionar"));
         Styles.defaultButton(selProd);
         selProd.setPreferredSize(new Dimension(100, 34));
@@ -172,7 +177,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             // limpa erros
             clearErrors();
             
-            System.out.println(cnome.getSelectedItem());
+            //System.out.println(cnome.getSelectedItem());
             // validação
             boolean isValid = true;
             if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
@@ -181,8 +186,11 @@ public class SelecionarProduto extends javax.swing.JPanel {
             if (! Validator.validaComboBox(cnome, enome)) isValid = false;
             if (isValid) {
                 NotaFiscalProduto notaProduto = new NotaFiscalProduto(produto, Integer.parseInt(fquantidade.getText()), Double.parseDouble(fvalor.getText()), "");
-                caller.addProduto(notaProduto);
-                clearFields();
+                if (caller.addProduto(notaProduto)) {
+                    clearFields();
+                } else {
+                    eselProd.setText(Methods.getTranslation("ProdutoJaAdicionado"));
+                }
             }
             
         });

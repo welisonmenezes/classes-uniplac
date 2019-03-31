@@ -310,8 +310,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         pCenter.add(bgScroll);
     }
     
-    public void addProduto(NotaFiscalProduto notaProduto) {
-        panelListarProdutos.addProduto(notaProduto);
+    public boolean addProduto(NotaFiscalProduto notaProduto) {
+        return panelListarProdutos.addProduto(notaProduto);
     }
     
     private void fillFields(String id) {

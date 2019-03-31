@@ -140,9 +140,23 @@ public class ListarProdutos extends javax.swing.JPanel {
         }
     }
     
-    public void addProduto(NotaFiscalProduto notaFiscalProduto) {
-        notaProdutos.add(notaFiscalProduto);
-        updateCenterContent();
+    public boolean addProduto(NotaFiscalProduto notaFiscalProduto) {
+        if (! hasProduct(notaFiscalProduto.getProduto().getId())) {
+            notaProdutos.add(notaFiscalProduto);
+            updateCenterContent();
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean hasProduct(int id) {
+        for (int i = 0; i < notaProdutos.size(); i++) {
+            NotaFiscalProduto nfp = notaProdutos.get(i);
+            if (id == nfp.getProduto().getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
