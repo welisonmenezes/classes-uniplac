@@ -274,6 +274,11 @@ public class UsuarioDAO {
         return sql;
     }
     
+    /**
+     * Popula o usuario corrente com o resultado da consulta
+     * @param usuario o usuario a ser populado
+     * @param rs o ResultSet da consulta
+     */
     private void fillUser(Usuario usuario, ResultSet rs) {
         try {
             usuario.setId(rs.getInt("Id"));

@@ -77,6 +77,9 @@ public class SelecionarProduto extends javax.swing.JPanel {
         produtos = new ArrayList<>();
     }
     
+    /**
+     * Adiciona os elementos na tela
+     */
     private void addElements() {
         lnome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lnome);
@@ -90,6 +93,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
+                // atualiza a lista de sugestões dos produtos
                 produtos.clear();
                 produtos = produtoDao.selecionarPorNome(fnome.getText());
                 produtos.forEach(produto -> {
@@ -99,6 +103,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             }
             @Override
             public void afterSelectItem() {
+                // adiciona o produto selecionado
                 ComboItem selectedProd = (ComboItem)cnome.getSelectedItem();
                 if (selectedProd != null) {
                     produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
@@ -115,6 +120,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         addProduto.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(addProduto, new AbsoluteConstraints(230, 45, -1, -1));
         
+        // click botão add produto
         addProduto.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -176,8 +182,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             
             // limpa erros
             clearErrors();
-            
-            //System.out.println(cnome.getSelectedItem());
+
             // validação
             boolean isValid = true;
             if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
@@ -185,6 +190,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             if (! Validator.validaValor(fvalor, evalor)) isValid = false;
             if (! Validator.validaComboBox(cnome, enome)) isValid = false;
             if (isValid) {
+                // cria NotaFiscalProduto e adiciona à lista de produtos da nota fiscal
                 NotaFiscalProduto notaProduto = new NotaFiscalProduto(produto, Integer.parseInt(fquantidade.getText()), Double.parseDouble(fvalor.getText()), "");
                 if (caller.addProduto(notaProduto)) {
                     clearFields();
@@ -196,6 +202,9 @@ public class SelecionarProduto extends javax.swing.JPanel {
         });
     }
     
+    /**
+     * Limpa os labels de erros
+     */
     private void clearErrors() {
         eunidade.setText("");
         equantidade.setText("");
@@ -203,6 +212,9 @@ public class SelecionarProduto extends javax.swing.JPanel {
         enome.setText("");
     }
     
+    /**
+     * Reseta os campos do formulário
+     */
     private void clearFields() {
         funidade.setText("");
         fquantidade.setText("");
@@ -224,7 +236,6 @@ public class SelecionarProduto extends javax.swing.JPanel {
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

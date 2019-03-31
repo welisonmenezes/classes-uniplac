@@ -61,6 +61,9 @@ public class NotasFiscais extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
         
         // carrega os dados
@@ -80,6 +83,9 @@ public class NotasFiscais extends Templates.BaseLayout {
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fdata.getDateEditor().getUiComponent()).getText();
         params.setProperty("offset", "0");
@@ -88,6 +94,9 @@ public class NotasFiscais extends Templates.BaseLayout {
         params.setProperty("data", date);
     }
     
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
@@ -95,11 +104,17 @@ public class NotasFiscais extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
     }
     
+    /**
+     * Gera a tabela com os dados
+     */
     private void makeTable() {
         // cria tabela
         tabela = new JTable();
@@ -161,7 +176,7 @@ public class NotasFiscais extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    // deleta o produto da base
+                    // deleta o a nota fiscal da base
                     try {
                         notaFiscalDao.deletar(Integer.parseInt(idTabel));
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
@@ -188,6 +203,9 @@ public class NotasFiscais extends Templates.BaseLayout {
         });
     }
     
+    /**
+     * Adiciona o conteúdo à area de filtro da tela de conteúdo
+     */
     private void addFilterContent() {
         addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
@@ -235,10 +253,17 @@ public class NotasFiscais extends Templates.BaseLayout {
         });
     }
     
+    /**
+     * Adiciona o conteúdo à area de footer do conteúdo
+     */
     private void addBottomContent() {
         this.pagination(totalNotasFiscais);
     }
     
+    /**
+     * Gera a paginação com base no total de páginas
+     * @param total o total de páginas
+     */
     private void pagination(int total) {
         Pagination pag = new Pagination(pBottom, total, params){
             @Override

@@ -11,7 +11,6 @@ import DAO.NotaFiscalDAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
-import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
 import Utils.Dialogs;
@@ -77,6 +76,10 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private Fornecedor fornecedor;
     private ArrayList<NotaFiscalProduto> notaFiscalProdutos;
     
+    /**
+     * chamada para adição
+     * @param params parâmetros de filtro e paginação
+     */
     public AddNotaFiscal(Properties params) {
         this.self = this;
         this.mode = "add";
@@ -85,6 +88,12 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         initPage(Methods.getTranslation("AdicionarNotaFiscal"));
     }
     
+    /**
+     * chamada para visualização ou edição
+     * @param id o id da nota fiscal
+     * @param mode o modo (view|edit)
+     * @param params parâmetros de filtro e paginação 
+     */
     public AddNotaFiscal(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
@@ -106,38 +115,42 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fillFields(id);
     }
     
-    
-    
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
+        // cria objetos para carregar dados posteriormente
         fornecedorDao = new FornecedorDAO();
         fornecedores = new ArrayList();
         notaFiscalDao = new NotaFiscalDAO();
         notaFiscal = new NotaFiscal();
         
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // seta a página pai como página corrente e add focus no campo numero
         this.addWindowListener(new java.awt.event.WindowAdapter() {
-            
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 Navigation.currentPage = "notasFiscais";
             }
-            
             @Override
             public void windowOpened( WindowEvent e){ 
               fnumero.requestFocusInWindow();
             } 
         });
-        
-        addCenterContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bgScroll = new JScrollPane();
         Styles.resetScrollPanel(bgScroll);
@@ -170,6 +183,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
             @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
+                // atualiza sugestão de fornecedores
                 fornecedores.clear();
                 fornecedores = fornecedorDao.selecionarPorCnpj(fcnpj.getText());
                 fornecedores.forEach(fornecedor -> {
@@ -181,6 +195,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
             public void afterSelectItem() {
                 ComboItem selectedProd = (ComboItem)ccnpj.getSelectedItem();
                 if (selectedProd != null) {
+                    // seta o fornecedor selecionado
                     fornecedor = fornecedorDao.selecionarPorId(selectedProd.getId()+"");
                 }
             }
@@ -191,9 +206,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         Styles.defaultLabel(addFornecedor);
         addFornecedor.setCursor(new Cursor(Cursor.HAND_CURSOR));
         bg.add(addFornecedor, new AbsoluteConstraints(430, 40, -1, -1));
-        // button click
+        // button click add fornecedor
         addFornecedor.addMouseListener(new MouseAdapter() {
-            
             @Override
             public void mouseClicked(MouseEvent evt) {
                 if (!addFornecedor.isEnabled()) return;
@@ -310,10 +324,19 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         pCenter.add(bgScroll);
     }
     
+    /**
+     * adiciona produto à nota
+     * @param notaProduto o objeto NotaFiscalProduto a ser adicionado
+     * @return true se produto foi adicionado, false se não
+     */
     public boolean addProduto(NotaFiscalProduto notaProduto) {
         return panelListarProdutos.addProduto(notaProduto);
     }
     
+    /**
+     * preenche os campos do formulário com o usuário cujo cpf é correspondente na base de dados
+     * @param id o id do produto
+     */
     private void fillFields(String id) {
         notaFiscal = notaFiscalDao.selecionarPorId(id);
         fnumero.setText(notaFiscal.getNumero()+"");
@@ -331,6 +354,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         }
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         enumero.setText("");
         ecnpj.setText("");

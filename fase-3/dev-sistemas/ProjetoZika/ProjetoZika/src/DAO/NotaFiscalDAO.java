@@ -67,6 +67,11 @@ public class NotaFiscalDAO {
         }
     }
     
+    /**
+     * add produto na nota fiscal
+     * @param notaProduto O objeto NotaFiscalProduto a ser adicionado
+     * @return o id do item inserido
+     */
     public int inserirProduto(NotaFiscalProduto notaProduto) {
         String sql = "INSERT INTO notasfiscaisprodutos (NotaFiscalId, ProdutoId, Valor, Quantidade, Created) VALUES (?, ?, ?, ?, ?)";
         try {
@@ -292,6 +297,11 @@ public class NotaFiscalDAO {
         return sql;
     }
     
+    /**
+     * Popula a nota fiscal corrente com o resultado da consulta
+     * @param notaFiscal a nota fiscal a ser populada
+     * @param rs o ResultSet da consulta
+     */
     private void fillNotas(NotaFiscal notaFiscal, ResultSet rs) {
         try {
             notaFiscal.setId(rs.getInt("nId"));

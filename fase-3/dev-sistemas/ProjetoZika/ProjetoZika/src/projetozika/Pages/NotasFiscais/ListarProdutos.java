@@ -49,24 +49,19 @@ public class ListarProdutos extends javax.swing.JPanel {
     public ListarProdutos(String id, String mode) {
         this.mode = mode;
         this.notaProdutos = new ArrayList<>();
-        
-        /*
-        for (int i = 0; i < 5; i++) {
-            Produto p = new Produto(i, "Nome produto", "Unidade produto", "Descrição produto", "22/10/2019");
-            NotaFiscalProduto np = new NotaFiscalProduto(null, p, 3, 4.5f, "");
-            notaProdutos.add(np);
-        }
-        */
-        
+
         initPage();
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage() {
         
         initComponents();
         Styles.setBorderTitle(this, Methods.getTranslation("ProdutosDaNotaFiscal"));
         setLayout(new BorderLayout());
-        
         
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -74,11 +69,17 @@ public class ListarProdutos extends javax.swing.JPanel {
         add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo da área central
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
     }
     
+    /**
+     * Cria e popula a tabela
+     */
     private void makeTable() {
         tabela = new JTable();
         tabela.setRowHeight(35);
@@ -128,6 +129,7 @@ public class ListarProdutos extends javax.swing.JPanel {
                 @Override
                 public void buttonAction() {
                     String idTabel = Methods.selectedTableItemId(tabela);
+                    // remove o produto da lista de produtos da nota fiscal
                     for (int i = 0; i < notaProdutos.size(); i++) {
                         NotaFiscalProduto np = notaProdutos.get(i);
                         if (idTabel.equals(""+np.getProduto().getId())) {
@@ -140,6 +142,11 @@ public class ListarProdutos extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Adiciona o produto a lista de produtos da nota fiscal
+     * @param notaFiscalProduto a NotaFiscalProduto a ser adicionada
+     * @return true se adicionado com sucesso, false se não
+     */
     public boolean addProduto(NotaFiscalProduto notaFiscalProduto) {
         if (! hasProduct(notaFiscalProduto.getProduto().getId())) {
             notaProdutos.add(notaFiscalProduto);
@@ -149,6 +156,11 @@ public class ListarProdutos extends javax.swing.JPanel {
         return false;
     }
     
+    /**
+     * Verifica se produto já existe na lista de produtos da nota fiscal
+     * @param id o id do produto a ser verificado
+     * @return true se existe, false se não
+     */
     private boolean hasProduct(int id) {
         for (int i = 0; i < notaProdutos.size(); i++) {
             NotaFiscalProduto nfp = notaProdutos.get(i);
@@ -179,7 +191,6 @@ public class ListarProdutos extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
