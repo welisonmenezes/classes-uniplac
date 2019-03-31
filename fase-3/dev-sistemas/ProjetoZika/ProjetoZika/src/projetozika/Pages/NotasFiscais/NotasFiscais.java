@@ -161,14 +161,17 @@ public class NotasFiscais extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    for (int i = 0; i < notasFiscais.size(); i++) {
-                        NotaFiscal n = notasFiscais.get(i);
-                        if (idTabel.equals(""+n.getNumero())) {
-                            notasFiscais.remove(n);
-                        }
+                    // deleta o produto da base
+                    try {
+                        notaFiscalDao.deletar(Integer.parseInt(idTabel));
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                        throw new RuntimeException("NotasFiscais.delete: " + error);
                     }
-                    updateCenterContent();
-                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    // 'recarrega a tela'
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notasFiscais", params);
                 }
             }
         });

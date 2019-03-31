@@ -91,6 +91,22 @@ public class NotaFiscalDAO {
     }
     
     /**
+     * 'deleta' a nota fiscal da visualização, na base de dados altera apenas o status para 'Deleted'
+     * @param Id o Id da nota fiscal a ser 'deletado'
+     */
+    public void deletar(int Id) {
+        String sql = "UPDATE notasfiscais SET Status='Deleted' WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Id);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.deletar: " + error);
+        }
+    }
+    
+    /**
      * seleciona uma nota fiscal da base de dados pelo seu Id
      * @param Id o Id da nota fiscal a ser retornada
      * @return a nota fiscal com Id correspondente
