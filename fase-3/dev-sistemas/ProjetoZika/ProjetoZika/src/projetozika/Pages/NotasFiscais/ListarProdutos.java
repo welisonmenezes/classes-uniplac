@@ -12,6 +12,7 @@ import Templates.ButtonRenderer;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.BorderLayout;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
@@ -30,6 +31,7 @@ public class ListarProdutos extends javax.swing.JPanel {
     private String mode;
     private JScrollPane barraRolagem;
     public ArrayList<NotaFiscalProduto> notaProdutos;
+    private static DecimalFormat df2 = new DecimalFormat(".##");
 
     /**
      * Creates new form ListarProdutos
@@ -112,7 +114,7 @@ public class ListarProdutos extends javax.swing.JPanel {
         };
         // adiciona linhas
         notaProdutos.forEach(np -> {
-            Object[] data = {np.getProduto().getId(),np.getProduto().getNome(),np.getProduto().getUnidade(),np.getValor(),np.getQuantidade(),""};
+            Object[] data = {np.getProduto().getId(),np.getProduto().getNome(),np.getProduto().getUnidade(),df2.format(np.getValor()),np.getQuantidade(),""};
             if (! mode.equals("view")) {
                 data[5] = Methods.getTranslation("Excluir");
             }

@@ -222,7 +222,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
         fvalor.setText("");
         cnome.removeAll();
         cnome.revalidate();
-        cnome.setSelectedIndex(0);
+        ComboItem ci = new ComboItem(0, "");
+        cnome.addItem(ci);
+        cnome.setSelectedItem(ci);
+        //cnome.setSelectedIndex(0);
     }
 
     /**

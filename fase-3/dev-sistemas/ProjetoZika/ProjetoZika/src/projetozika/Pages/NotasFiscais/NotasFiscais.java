@@ -7,7 +7,6 @@ package projetozika.Pages.NotasFiscais;
 
 
 import DAO.NotaFiscalDAO;
-import Models.Fornecedor;
 import Models.NotaFiscal;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -20,6 +19,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
@@ -50,6 +50,7 @@ public class NotasFiscais extends Templates.BaseLayout {
     private int totalNotasFiscais;
     private JTextField fnumero;
     private JLabel lnumero;
+    private static DecimalFormat df2 = new DecimalFormat(".##");
     
     /**
      * Creates new form NotasFiscais
@@ -137,7 +138,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 4 && column != 5 && column != 6) {
+               if (column != 5 && column != 6 && column != 7) {
                    return false;
                }
                return true;
@@ -148,7 +149,7 @@ public class NotasFiscais extends Templates.BaseLayout {
             Object[] data = {
                 n.getId(),
                 n.getNumero(),
-                n.getValor(),
+                df2.format(n.getValor()),
                 n.getFornecedor().getCnpj(),
                 n.getData(),
                 Methods.getTranslation("Editar"),
