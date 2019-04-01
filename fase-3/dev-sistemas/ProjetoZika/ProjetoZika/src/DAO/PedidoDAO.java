@@ -92,6 +92,40 @@ public class PedidoDAO {
     }
     
     /**
+     * Muda o status do pedido na base de dados
+     * @param pedido o pedido a ser alterado
+     */
+    public void mudaStatus(Pedido pedido) {
+        String sql = "UPDATE pedidos SET Status=? WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, pedido.getStatus());
+            stmt.setInt(2, pedido.getId());
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.mudaStatus: " + error);
+        }
+    }
+    
+    /**
+     * Muda a quantidade aprovada do produto do pedido na base de dados
+     * @param pedidoProduto o pedidoProduto a ser alterado
+     */
+    public void mudaQuantidadeAprovada(PedidoProduto pedidoProduto) {
+        String sql = "UPDATE pedidosprodutos SET QuantidadeAprovada=? WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, pedidoProduto.getQuantidadeAprovada());
+            stmt.setInt(2, pedidoProduto.getId());
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.mudaQuantidadeAprovada: " + error);
+        }
+    }
+    
+    /**
      * seleciona um pedido da base de dados pelo seu Id
      * @param Id o Id do pedido a ser retornado
      * @return o pedido com Id correspondente

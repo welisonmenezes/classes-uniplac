@@ -44,9 +44,10 @@ public class EditarPedido extends Templates.BaseFrame {
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
     private JPanel paction;
-    private ArrayList<PedidoProduto> pedidosProdutos;
+    private final ArrayList<PedidoProduto> pedidosProdutos;
     private JButton btnNegar;
-    private PedidoDAO pedidoDao;
+    private final PedidoDAO pedidoDao;
+    private Pedido pedido;
     
     public EditarPedido(String id, String mode, Properties params) {
         this.self = this;
@@ -57,7 +58,8 @@ public class EditarPedido extends Templates.BaseFrame {
         pedidosProdutos = pedidoDao.selecionarPorId(id);
         
         if (pedidosProdutos.size() > 0) {
-            initPage(Methods.getTranslation("Pedido") + " " + id + " - " + pedidosProdutos.get(0).getPedido().getCreated());
+            pedido = pedidosProdutos.get(0).getPedido();
+            initPage(Methods.getTranslation("Pedido") + " " + id + " - " + pedido.getCreated());
         } else {
             initPage(Methods.getTranslation("Pedido") + " " + id);
         }
@@ -65,12 +67,17 @@ public class EditarPedido extends Templates.BaseFrame {
     }
     
     private void initPage(String title) {
-        
+        // adiciona elementos na tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
+        // add botões de negar e finalizar se estiver no modo edit
+        if (this.mode.equals("edit")) {
+            addBottomContent();
+        }
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -78,12 +85,6 @@ public class EditarPedido extends Templates.BaseFrame {
                 Navigation.currentPage = "pedidos";
             }
         });
-        
-        addCenterContent();
-        
-        if (this.mode.equals("edit")) {
-            addBottomContent();
-        }
     }
     
     private void addCenterContent() {
@@ -92,7 +93,7 @@ public class EditarPedido extends Templates.BaseFrame {
         bg.setOpaque(false);
         
         if (pedidosProdutos.size() > 0) {
-            String nome = pedidosProdutos.get(0).getPedido().getSolicitante().getNome();
+            String nome = pedido.getSolicitante().getNome();
             title = new JLabel(Methods.getTranslation("PedidoDoColaborador") + ": " + nome);
             Styles.defaultLabel(title);
             bg.add(title, BorderLayout.NORTH);
@@ -201,9 +202,24 @@ public class EditarPedido extends Templates.BaseFrame {
             
             switch (action) {
                 case "finalizar": 
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                    if (pedidosProdutos.size() > 0) {
+                        pedido.setStatus(Methods.getTranslation("AguardandoEntrega"));
+                        pedidoDao.mudaStatus(pedido);
+                        pedidosProdutos.forEach(pp -> {
+                            pedidoDao.mudaQuantidadeAprovada(pp);
+                        });
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                    }
                     break;
                 case "negar":
+                    if (pedidosProdutos.size() > 0) {
+                        pedido.setStatus(Methods.getTranslation("Negado"));
+                        pedidosProdutos.forEach(pp -> {
+                            pp.setQuantidadeAprovada(0);
+                            pedidoDao.mudaQuantidadeAprovada(pp);
+                        });
+                        pedidoDao.mudaStatus(pedido);
+                    }
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("OkPedidoNegado"));
                     break;
             }
