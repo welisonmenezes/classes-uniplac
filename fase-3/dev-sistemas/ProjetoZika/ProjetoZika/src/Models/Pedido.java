@@ -18,6 +18,8 @@ public class Pedido {
     private Usuario Solicitante;
     private ArrayList<PedidoProduto> Produtos;
     
+    public Pedido() {}
+    
     public Pedido(String created, String status, Usuario solicitante) {
         Created = created;
         Status  = status;

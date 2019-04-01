@@ -6,6 +6,7 @@
 package projetozika.Pages.SeusPedidos;
 
 import Config.Environment;
+import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
@@ -61,6 +62,8 @@ public class FazerPedido extends Templates.BaseFrame {
     private JLabel efinalizar;
     private ProdutoDAO produtoDao;
     private ArrayList<Produto> produtos;
+    private PedidoDAO pedidoDao;
+    private Pedido pedido;
     
    public FazerPedido(Properties params) {
        this.self = this;
@@ -94,6 +97,8 @@ public class FazerPedido extends Templates.BaseFrame {
     private void initPage(String title) {
         
         // carrega os dados
+        pedidoDao = new PedidoDAO();
+        pedido = new Pedido();
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
         
@@ -182,6 +187,8 @@ public class FazerPedido extends Templates.BaseFrame {
                             PedidoProduto pp = new PedidoProduto(produto, pedido, 1);
                             pedidosProdutos.add(pp);
                             updateCenterContent();
+                            // limpa o campo de busca
+                            fproduto.setText("");
                         }
                     }
                     
@@ -217,8 +224,16 @@ public class FazerPedido extends Templates.BaseFrame {
             
             // validação
             if (pedidosProdutos.size() > 0) {
+                
+                // cria pedido e add no banco de dados
+                pedido.setSolicitante(Environment.getLoggedUser());
+                int pedidoId = pedidoDao.inserir(pedido);
+                pedido.setId(pedidoId);
+                // insere os produtos ao pedido
                 pedidosProdutos.forEach(pp -> {
-                    System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade());
+                    pp.setPedido(pedido);
+                    pedidoDao.inserirProduto(pp);
+                    //System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade());
                 });
                 Dialogs.showLoadPopup(bg);
                 timerTest();
