@@ -310,7 +310,6 @@ public class FazerPedido extends Templates.BaseFrame {
         
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
             // TODO: editar produto do pedido
-            
             if (!tabela.getSelectionModel().isSelectionEmpty()) {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
                 String idTable = Methods.selectedTableItemId(tabela);

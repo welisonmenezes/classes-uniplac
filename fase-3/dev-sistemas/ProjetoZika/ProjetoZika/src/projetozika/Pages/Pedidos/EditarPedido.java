@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Pedidos;
 
+import DAO.PedidoDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
@@ -45,18 +46,17 @@ public class EditarPedido extends Templates.BaseFrame {
     private JPanel paction;
     private ArrayList<PedidoProduto> pedidosProdutos;
     private JButton btnNegar;
-    
-   public EditarPedido(Properties params) {
-       this.self = this;
-       this.params = params;
-   }
+    private PedidoDAO pedidoDao;
     
     public EditarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
         this.params = params;
         
-        initPage(Methods.getTranslation("Pedido"));
+        pedidoDao = new PedidoDAO();
+        pedidosProdutos = pedidoDao.selecionarPorId(id);
+        
+        initPage(Methods.getTranslation("Pedido") + " " + id);
     }
     
     private void initPage(String title) {
@@ -64,18 +64,6 @@ public class EditarPedido extends Templates.BaseFrame {
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
-        
-        
-        pedidosProdutos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            Usuario u = new Usuario(""+i, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido pedido = new Pedido("10/10/2009","Pendente",u);
-            PedidoProduto pp = new PedidoProduto(produto,pedido,3);
-            pp.setId(i);
-            pedidosProdutos.add(pp);
-        }
-        
         createBaseLayout();
         addTopContent(title);
         
@@ -112,20 +100,16 @@ public class EditarPedido extends Templates.BaseFrame {
         Styles.defaultButton(btnFinalizar);
         
         btnFinalizar.addActionListener((ActionEvent e) -> {
-            // TODO: finalizar pedido aqui
-   
             Dialogs.showLoadPopup(bg);
-            timerTest();
+            timerTest("finalizar");
         });
         
         btnNegar = new JButton(Methods.getTranslation("NegarPedido"));
         Styles.redButton(btnNegar);
         
         btnNegar.addActionListener((ActionEvent e) -> {
-            // TODO: negar pedido aqui
-
             Dialogs.showLoadPopup(bg);
-            timerTest();
+            timerTest("negar");
         });
         
         paction = new JPanel();
@@ -171,22 +155,21 @@ public class EditarPedido extends Templates.BaseFrame {
         
         TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
         JComboBox cquantidade = new JComboBox();
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 0; i <= 15; i++) {
             cquantidade.addItem(i);
         }
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
       
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
-            // TODO: editar produto do pedido
-            
+            // edita quantidade produto do pedido
             if (!tabela.getSelectionModel().isSelectionEmpty()) {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
                 String idTable = Methods.selectedTableItemId(tabela);
                 for (int i = 0; i < pedidosProdutos.size(); i++) {
                     PedidoProduto pp = pedidosProdutos.get(i);
-                    int idModel = pp.getProduto().getId();
+                    int idModel = pp.getId();
                     if (idTable.equals(""+idModel)) {
-                        pp.setQuantidade(Integer.parseInt(newQtd));
+                        pp.setQuantidadeAprovada(Integer.parseInt(newQtd));
                         break;
                     }
                 }
@@ -195,12 +178,20 @@ public class EditarPedido extends Templates.BaseFrame {
     }
     
     private Timer t;
-    private void timerTest() {
+    private void timerTest(String action) {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+            
+            switch (action) {
+                case "finalizar": 
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                    break;
+                case "negar":
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("OkPedidoNegado"));
+                    break;
+            }
             
             Navigation.updateLayout("", new Properties());
             Navigation.updateLayout("pedidos", params);

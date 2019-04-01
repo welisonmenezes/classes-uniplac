@@ -29,7 +29,8 @@ public class PedidoDAO {
     private Statement st;
     private ResultSet rs;
     private final ArrayList<Produto> produtos = new ArrayList();
-    private ArrayList<Pedido> pedidos = new ArrayList();
+    private final ArrayList<Pedido> pedidos = new ArrayList();
+    private final ArrayList<PedidoProduto> pedidosProdutos = new ArrayList();
     
     /**
      * método construtor, inicializa a conexão
@@ -87,6 +88,49 @@ public class PedidoDAO {
             return lastInsertedId;
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.inserirProduto: " + error);
+        }
+    }
+    
+    /**
+     * seleciona um pedido da base de dados pelo seu Id
+     * @param Id o Id do pedido a ser retornado
+     * @return o pedido com Id correspondente
+     */
+    public ArrayList<PedidoProduto> selecionarPorId(String Id) {
+        String sql = "SELECT * FROM pedidos "
+                + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
+                + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "WHERE pedidos.Id = " + Id;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            Pedido pedido = new Pedido();
+            while(rs.next()) {
+                pedido.setId(rs.getInt("pedidos.Id"));
+                pedido.setStatus(rs.getString("Status"));
+                pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+                
+                Produto produto = new Produto();
+                produto.setId(rs.getInt("produtos.Id"));
+                produto.setNome(rs.getString("produtos.Nome"));
+                produto.setDescricao(rs.getString("produtos.Descricao"));
+                produto.setStatus(rs.getString("produtos.Status"));
+                produto.setUnidade(rs.getString("produtos.Unidade"));
+                produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+                
+                PedidoProduto pedidoProduto = new PedidoProduto();
+                pedidoProduto.setId(rs.getInt("pedidosprodutos.Id"));
+                pedidoProduto.setQuantidade(rs.getInt("pedidosprodutos.QuantidadeSolicitada"));
+                pedidoProduto.setQuantidadeAprovada(rs.getInt("pedidosprodutos.QuantidadeAprovada"));
+                pedidoProduto.setPedido(pedido);
+                pedidoProduto.setProduto(produto);
+                
+                pedidosProdutos.add(pedidoProduto);
+            }
+            st.close();
+            return pedidosProdutos;
+        } catch (Exception error) {
+            throw new RuntimeException("PedidoDAO.selecionarPorId: " + error);
         }
     }
     
