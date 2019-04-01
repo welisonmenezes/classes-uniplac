@@ -100,6 +100,7 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedidos "
                 + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN usuarios ON pedidos.UsuarioId = usuarios.Id "
                 + "WHERE pedidos.Id = " + Id;
         try {
             st = conn.createStatement();
@@ -109,6 +110,10 @@ public class PedidoDAO {
                 pedido.setId(rs.getInt("pedidos.Id"));
                 pedido.setStatus(rs.getString("Status"));
                 pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+                
+                Usuario usuario = new Usuario();
+                fillUser(usuario, rs);
+                pedido.setSolicitante(usuario);
                 
                 Produto produto = new Produto();
                 produto.setId(rs.getInt("produtos.Id"));

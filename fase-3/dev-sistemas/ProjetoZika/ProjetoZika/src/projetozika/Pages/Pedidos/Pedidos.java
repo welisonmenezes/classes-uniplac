@@ -69,17 +69,6 @@ public class Pedidos extends Templates.BaseLayout {
         
         initComponents();
         createBaseLayout();
-        
-        /*
-        pedidos = new ArrayList<>();
-        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-        for (int i = 0; i < 15; i++) {
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            p.setId(i);
-            pedidos.add(p);
-        }
-        */
-        
         addTopContent(Methods.getTranslation("Pedidos"));
         addCenterContent();
         addBottomContent();
@@ -139,15 +128,19 @@ public class Pedidos extends Templates.BaseLayout {
         // adiciona linhas
         pedidos.forEach(p -> {
             String btnValue = Methods.getTranslation("Entregar");
+            String btnEdit = Methods.getTranslation("Ver");
             if (! p.getStatus().equals(Methods.getTranslation("AguardandoEntrega")) ) {
                 btnValue = "";
-            } 
+            }
+            if (p.getStatus().equals(Methods.getTranslation("Pendente"))) {
+                btnEdit = Methods.getTranslation("Editar");
+            }
             Object[] data = {
                 p.getId(),
                 p.getSolicitante().getNome(),
                 p.getCreated(),
                 p.getStatus(),
-                Methods.getTranslation("Ver/Editar"), 
+                btnEdit, 
                 btnValue
             };
             tableModel.addRow(data);
@@ -180,7 +173,14 @@ public class Pedidos extends Templates.BaseLayout {
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarPedido", id, params);
+                String actionCommand = this.button.getActionCommand();
+                if (actionCommand.equals(Methods.getTranslation("Editar"))) {
+                    Navigation.updateLayout("editarPedido", id, params);
+                } else {
+                    Navigation.updateLayout("verPedido", id, params);
+                }
+                
+                
             }
         });
     }

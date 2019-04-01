@@ -56,7 +56,12 @@ public class EditarPedido extends Templates.BaseFrame {
         pedidoDao = new PedidoDAO();
         pedidosProdutos = pedidoDao.selecionarPorId(id);
         
-        initPage(Methods.getTranslation("Pedido") + " " + id);
+        if (pedidosProdutos.size() > 0) {
+            initPage(Methods.getTranslation("Pedido") + " " + id + " - " + pedidosProdutos.get(0).getPedido().getCreated());
+        } else {
+            initPage(Methods.getTranslation("Pedido") + " " + id);
+        }
+        
     }
     
     private void initPage(String title) {
@@ -75,7 +80,10 @@ public class EditarPedido extends Templates.BaseFrame {
         });
         
         addCenterContent();
-        addBottomContent();
+        
+        if (this.mode.equals("edit")) {
+            addBottomContent();
+        }
     }
     
     private void addCenterContent() {
@@ -83,9 +91,12 @@ public class EditarPedido extends Templates.BaseFrame {
         bg.setLayout(new BorderLayout());
         bg.setOpaque(false);
         
-        title = new JLabel(Methods.getTranslation("Itens"));
-        Styles.defaultLabel(title);
-        bg.add(title, BorderLayout.NORTH);
+        if (pedidosProdutos.size() > 0) {
+            String nome = pedidosProdutos.get(0).getPedido().getSolicitante().getNome();
+            title = new JLabel(Methods.getTranslation("PedidoDoColaborador") + ": " + nome);
+            Styles.defaultLabel(title);
+            bg.add(title, BorderLayout.NORTH);
+        }
         
         makeTable();
         barraRolagem = new JScrollPane(tabela);
@@ -138,10 +149,14 @@ public class EditarPedido extends Templates.BaseFrame {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 3 && column != 4){
-                   return false;
-               }
-               return true;
+                if (mode.equals("view")) {
+                    return false;
+                } else {
+                    if (column != 3 && column != 4){
+                        return false;
+                    }
+                    return true;
+                }
             }
         };
         // adiciona linhas

@@ -119,6 +119,11 @@ public class Navigation {
                 tmpFrame = new AddUsuario(id, "view", params);
                 tmpFrame.setVisible(true);
                 break;
+            case "verPedido":
+                updateSatusMenu("pedidos");
+                tmpFrame = new EditarPedido(id, "view", params);
+                tmpFrame.setVisible(true);
+                break;
             case "editarPedido":
                 updateSatusMenu("pedidos");
                 tmpFrame = new EditarPedido(id, "edit", params);
