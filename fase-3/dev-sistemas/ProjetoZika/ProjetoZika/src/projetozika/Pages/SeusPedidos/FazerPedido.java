@@ -69,7 +69,7 @@ public class FazerPedido extends Templates.BaseFrame {
        this.self = this;
        this.mode = "add";
        this.params = params;
-       pedidosProdutos = new ArrayList<>();
+       
        
        initPage(Methods.getTranslation("FazerPedido"));
    }
@@ -78,7 +78,6 @@ public class FazerPedido extends Templates.BaseFrame {
        this.self = this;
        this.mode = mode;
        this.params = params;
-       pedidosProdutos = new ArrayList<>();
        
        fillFields();
        
@@ -101,6 +100,7 @@ public class FazerPedido extends Templates.BaseFrame {
         pedido = new Pedido();
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
+        pedidosProdutos = new ArrayList<>();
         
         initComponents();
         Styles.internalFrame(this, 1000, 600);
