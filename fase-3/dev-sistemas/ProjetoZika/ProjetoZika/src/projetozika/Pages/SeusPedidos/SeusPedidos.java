@@ -6,6 +6,7 @@
 package projetozika.Pages.SeusPedidos;
 
 import Config.Environment;
+import DAO.PedidoDAO;
 import Models.Pedido;
 import Models.Usuario;
 import Templates.ButtonEditor;
@@ -13,6 +14,7 @@ import Templates.ButtonRenderer;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
+import Utils.Pagination;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
@@ -46,6 +48,8 @@ public class SeusPedidos extends Templates.BaseLayout {
     private JLabel lStatus;
     private JButton bSearch;
     private ArrayList<Pedido> pedidos;
+    private PedidoDAO pedidoDao;
+    private int totalPedidos;
 
     /**
      * Cria a tela de fornecedores
@@ -63,14 +67,10 @@ public class SeusPedidos extends Templates.BaseLayout {
         initComponents();
         createBaseLayout();
         
-        pedidos = new ArrayList<>();
-        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-        for (int i = 0; i < 15; i++) {
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            p.setId(i);
-            pedidos.add(p);
-        }
-        
+        pedidoDao = new PedidoDAO();
+        pedidos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser(), params);
+        totalPedidos = pedidoDao.totalPorUsuario(Environment.getLoggedUser(), params);
+
         addTopContent(Methods.getTranslation("SeusPedidos"));
         addCenterContent();
         addBottomContent();
@@ -81,6 +81,7 @@ public class SeusPedidos extends Templates.BaseLayout {
     
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("data", date);
         params.setProperty("status", fStatus.getSelectedItem().toString());
@@ -257,7 +258,7 @@ public class SeusPedidos extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalPedidos);
     }
     
     /**
@@ -266,35 +267,27 @@ public class SeusPedidos extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // apenas teste
-            for (int i = 0; i < pedidos.size(); i++) {
-                Pedido p = pedidos.get(i);
-                if (p.getId() > 10) {
-                    pedidos.remove(p);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            pedidos.clear();
+            pedidos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser(), params);
+            totalPedidos = pedidoDao.totalPorUsuario(Environment.getLoggedUser(), params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalPedidos);
             
             t.stop();
         });

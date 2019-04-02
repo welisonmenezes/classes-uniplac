@@ -139,30 +139,19 @@ public class PedidoDAO {
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
-            Pedido pedido = new Pedido();
             while(rs.next()) {
-                pedido.setId(rs.getInt("pedidos.Id"));
-                pedido.setStatus(rs.getString("Status"));
-                pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+                Pedido pedido = new Pedido();
+                fillPedido(pedido, rs);
                 
                 Usuario usuario = new Usuario();
                 fillUser(usuario, rs);
                 pedido.setSolicitante(usuario);
                 
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("produtos.Id"));
-                produto.setNome(rs.getString("produtos.Nome"));
-                produto.setDescricao(rs.getString("produtos.Descricao"));
-                produto.setStatus(rs.getString("produtos.Status"));
-                produto.setUnidade(rs.getString("produtos.Unidade"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+                fillProduto(produto, rs);
                 
                 PedidoProduto pedidoProduto = new PedidoProduto();
-                pedidoProduto.setId(rs.getInt("pedidosprodutos.Id"));
-                pedidoProduto.setQuantidade(rs.getInt("pedidosprodutos.QuantidadeSolicitada"));
-                pedidoProduto.setQuantidadeAprovada(rs.getInt("pedidosprodutos.QuantidadeAprovada"));
-                pedidoProduto.setPedido(pedido);
-                pedidoProduto.setProduto(produto);
+                fillPedidoProduto(pedidoProduto, pedido, produto, rs);
                 
                 pedidosProdutos.add(pedidoProduto);
             }
@@ -172,6 +161,46 @@ public class PedidoDAO {
             throw new RuntimeException("PedidoDAO.selecionarPorId: " + error);
         }
     }
+    
+    /**
+     * seleciona um pedido da base de dados pelo seu usuário
+     * @param usuario o usuário solicitante
+     * @return o pedido com usuário correspondente
+     */
+    public ArrayList<Pedido> selecionarPorUsuario(Usuario usuario, Properties params) {
+        String sql = buildSelectQueryPorUsuario(params, false, usuario);
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Pedido pedido = new Pedido();
+                fillPedido(pedido, rs);
+                pedidos.add(pedido);
+            }
+            st.close();
+            return pedidos;
+        } catch (Exception error) {
+            throw new RuntimeException("PedidoDAO.selecionarPorUsuario: " + error);
+        }
+    }
+    
+    /**
+     * o total de pedidos por usuario que correspondem aos parâmetros de filtro e paginação
+     * @param params os parâmetros de filtro e paginação
+     * @return o total de pedidos por usuário
+     */
+    public int totalPorUsuario(Usuario usuario, Properties params) {
+        String sql = buildSelectQueryPorUsuario(params, true, usuario);
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.total: " + error);
+        }
+    }
+    
     
     /**
      * seleciona os pedidos correspondentes aos parâmetros de filtragem e paginação
@@ -185,9 +214,7 @@ public class PedidoDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Pedido pedido = new Pedido();
-                pedido.setId(rs.getInt("pedidos.Id"));
-                pedido.setStatus(rs.getString("pedidos.Status"));
-                pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+                fillPedido(pedido, rs);
                 
                 Usuario usuario = new Usuario();
                 fillUser(usuario, rs);
@@ -203,9 +230,9 @@ public class PedidoDAO {
     }
     
     /**
-     * o total de produtos que correspondem aos parâmetros de filtro e paginação
+     * o total de pedidos que correspondem aos parâmetros de filtro e paginação
      * @param params os parâmetros de filtro e paginação
-     * @return o total de produtos
+     * @return o total de pedidos
      */
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
@@ -263,6 +290,44 @@ public class PedidoDAO {
     }
     
     /**
+     * Auxiliza na construção da query de seleção com base nos parametros passados
+     * @param params os parâmetros de filtro e paginação
+     * @param isCount true se é pra retorna apenas o total
+     * @return a query para ser usada na seleção
+     */
+    private String buildSelectQueryPorUsuario (Properties params, boolean isCount, Usuario usuario) {
+        int offset = Integer.parseInt(params.getProperty("offset", "0"));
+        String status = params.getProperty("status", "");
+        String data = params.getProperty("data", "");
+        String sql;
+        
+        if (! isCount) {
+            sql = "SELECT * FROM pedidos "
+                    + "WHERE pedidos.Status != 'Deleted' "
+                    + "AND pedidos.UsuarioId = " + usuario.getId();
+        } else {
+            sql = "SELECT COUNT(pedidos.Id) FROM pedidos WHERE pedidos.Status != 'Deleted' AND pedidos.UsuarioId = " + usuario.getId();
+        }
+        
+        if (! status.equals("")) {
+            sql += " AND pedidos.Status = '" + status + "'";
+        }
+        
+        if (! data.equals("")) {
+            String sqlDate = Methods.getSqlDate(data);
+            sql += " AND pedidos.Created >= '" + sqlDate + "'";
+        }
+        
+        if (! isCount) {
+            sql += " ORDER BY pedidos.Id DESC";
+            sql += " LIMIT 10 OFFSET " + (offset);
+        }
+            
+        System.out.println(sql);
+        return sql;
+    }
+    
+    /**
      * Popula o usuario corrente com o resultado da consulta
      * @param usuario o usuario a ser populado
      * @param rs o ResultSet da consulta
@@ -285,6 +350,41 @@ public class PedidoDAO {
             usuario.setSexo(rs.getString("usuarios.Sexo"));
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.fillUser: " + error);
+        }
+    }
+    
+    private void fillProduto(Produto produto, ResultSet rs) {
+        try {
+            produto.setId(rs.getInt("produtos.Id"));
+            produto.setNome(rs.getString("produtos.Nome"));
+            produto.setDescricao(rs.getString("produtos.Descricao"));
+            produto.setStatus(rs.getString("produtos.Status"));
+            produto.setUnidade(rs.getString("produtos.Unidade"));
+            produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.fillProduto: " + error);
+        }
+    }
+    
+    private void fillPedido(Pedido pedido, ResultSet rs) {
+        try {
+            pedido.setId(rs.getInt("pedidos.Id"));
+            pedido.setStatus(rs.getString("pedidos.Status"));
+            pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.fillProduto: " + error);
+        }
+    }
+    
+    private void fillPedidoProduto(PedidoProduto pedidoProduto, Pedido pedido, Produto produto, ResultSet rs) {
+        try {
+            pedidoProduto.setId(rs.getInt("pedidosprodutos.Id"));
+            pedidoProduto.setQuantidade(rs.getInt("pedidosprodutos.QuantidadeSolicitada"));
+            pedidoProduto.setQuantidadeAprovada(rs.getInt("pedidosprodutos.QuantidadeAprovada"));
+            pedidoProduto.setPedido(pedido);
+            pedidoProduto.setProduto(produto);
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.fillPedidoProduto: " + error);
         }
     }
 }

@@ -70,7 +70,6 @@ public class FazerPedido extends Templates.BaseFrame {
        this.mode = "add";
        this.params = params;
        
-       
        initPage(Methods.getTranslation("FazerPedido"));
    }
    
@@ -78,8 +77,6 @@ public class FazerPedido extends Templates.BaseFrame {
        this.self = this;
        this.mode = mode;
        this.params = params;
-       
-       fillFields();
        
         switch (this.mode) {
             case "view":
@@ -91,6 +88,8 @@ public class FazerPedido extends Templates.BaseFrame {
                 initPage(Methods.getTranslation("EditarSeuPedido"));
                 break;
         }
+        
+        fillFields();
    }
    
     private void initPage(String title) {
@@ -346,6 +345,8 @@ public class FazerPedido extends Templates.BaseFrame {
     }
     
     private void fillFields() {
+        //pedidosProdutos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser());
+        /*
         for (int i = 0; i < 5; i++) {
             Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
             Usuario u = new Usuario(""+1122, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
@@ -353,6 +354,7 @@ public class FazerPedido extends Templates.BaseFrame {
             PedidoProduto pp = new PedidoProduto(produto,pedido,3);
             pedidosProdutos.add(pp);
         }
+        */
     }
     
     private Timer t;
