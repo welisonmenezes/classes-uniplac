@@ -126,6 +126,22 @@ public class PedidoDAO {
     }
     
     /**
+     * Deleta os prdutos da do pedido
+     * @param pedidoId o Id do pedido cujo produtos serão deletados
+     */
+    public void deletarPedidoProdutos(int pedidoId) {
+        String sql = "DELETE FROM pedidosprodutos WHERE PedidoId=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, pedidoId);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.deletarPedidoProdutos: " + error);
+        }
+    }
+    
+    /**
      * 'deleta' o pedido da visualização, na base de dados altera apenas o status para 'Deleted'
      * @param Id o Id do pedido a ser 'deletado'
      */

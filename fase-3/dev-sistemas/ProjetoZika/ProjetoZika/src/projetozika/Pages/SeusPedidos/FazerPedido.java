@@ -225,22 +225,12 @@ public class FazerPedido extends Templates.BaseFrame {
             
             // validação
             if (pedidosProdutos.size() > 0) {
-                
-                // cria pedido e add no banco de dados
-                pedido.setSolicitante(Environment.getLoggedUser());
-                int pedidoId = pedidoDao.inserir(pedido);
-                pedido.setId(pedidoId);
-                // insere os produtos ao pedido
-                pedidosProdutos.forEach(pp -> {
-                    pp.setPedido(pedido);
-                    pedidoDao.inserirProduto(pp);
-                    //System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade());
-                });
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             } else {
                 efinalizar.setText(Methods.getTranslation("SelecioneUmProduto"));
             }
+            
         });
         
         efinalizar = new JLabel("");
@@ -348,24 +338,50 @@ public class FazerPedido extends Templates.BaseFrame {
     
     private void fillFields(String id) {
         pedidosProdutos = pedidoDao.selecionarPedidoProdutoPorId(id);
-        /*
-        for (int i = 0; i < 5; i++) {
-            Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            Usuario u = new Usuario(""+1122, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido pedido = new Pedido("10/10/2009","Pendente",u);
-            PedidoProduto pp = new PedidoProduto(produto,pedido,3);
-            pedidosProdutos.add(pp);
-        }
-        */
+        pedido = pedidosProdutos.get(0).getPedido();
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoEnviadoComSucesso"));
+            
+            switch (this.mode) {
+                case "add":
+                    // cria pedido e add no banco de dados
+                    try {
+                        pedido.setSolicitante(Environment.getLoggedUser());
+                        int pedidoId = pedidoDao.inserir(pedido);
+                        pedido.setId(pedidoId);
+                        // insere os produtos ao pedido
+                        pedidosProdutos.forEach(pp -> {
+                            pp.setPedido(pedido);
+                            pedidoDao.inserirProduto(pp);
+                        });
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoEnviadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEnviar"));
+                        throw new RuntimeException("FazerPedido.add: " + error);
+                    }
+                    break;
+                case "edit":
+                    try {
+                        if (pedido.getId() > 0) {
+                            pedidoDao.deletarPedidoProdutos(pedido.getId());
+                            pedidosProdutos.forEach(pp -> {
+                                pp.setPedido(pedido);
+                                pedidoDao.inserirProduto(pp);
+                            });
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoAtualizadoComSucesso"));
+                        }
+                    } catch (Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAtualizar"));
+                        throw new RuntimeException("FazerPedido.edit: " + error);
+                    }
+                    break;
+            }
             
             Navigation.updateLayout("", new Properties());
             Navigation.updateLayout("seusPedidos", params);

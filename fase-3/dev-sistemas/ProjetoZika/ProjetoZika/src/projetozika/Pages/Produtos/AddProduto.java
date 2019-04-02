@@ -232,10 +232,10 @@ public class AddProduto extends Templates.BaseFrame {
         
         t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
+            self.dispose();
             
             switch (mode) {
                 case "edit":
-                    self.dispose();
                     try {
                         // edita o produto
                         produtoDao.alterar(produto);
@@ -249,7 +249,6 @@ public class AddProduto extends Templates.BaseFrame {
                     Navigation.updateLayout("produtos", params);
                     break;
                 case "add":
-                    self.dispose();
                     try {
                         // adiciona um novo produto
                         produtoDao.inserir(produto);
@@ -263,7 +262,6 @@ public class AddProduto extends Templates.BaseFrame {
                     Navigation.updateLayout("produtos", params);
                     break;
                 case "nota":
-                    self.dispose();
                     try {
                         // adiciona um novo produto via nota fiscal
                         int lastInsertedId = produtoDao.inserir(produto);
@@ -277,7 +275,6 @@ public class AddProduto extends Templates.BaseFrame {
                     }
                     break;
                 default:
-                    self.dispose();
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("produtos", params);
                     break;
