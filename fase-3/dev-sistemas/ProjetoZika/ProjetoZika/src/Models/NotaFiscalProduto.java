@@ -6,8 +6,8 @@
 package Models;
 
 /**
- *
- * @author welis
+ * Modelo para notas fiscais produtos
+ * @author welison
  */
 public class NotaFiscalProduto {
     private NotaFiscal NotaFiscal;

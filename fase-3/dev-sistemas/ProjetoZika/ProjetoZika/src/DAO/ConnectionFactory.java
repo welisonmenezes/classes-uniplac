@@ -9,11 +9,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
- *
- * @author welis
+ * Faz a conexão com o banco de dados
+ * @author welison
  */
 public class ConnectionFactory {
     
+    /**
+     * Retorna a conexão com o banco de dados
+     * @return a conexão com o banco de dados
+     */
     public Connection getConexao() {
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost/projetozika", "root", "");

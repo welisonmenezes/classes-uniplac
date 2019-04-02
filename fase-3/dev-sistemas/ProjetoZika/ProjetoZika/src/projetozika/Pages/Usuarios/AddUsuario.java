@@ -340,7 +340,7 @@ public class AddUsuario extends Templates.BaseFrame {
                     sdf = new SimpleDateFormat("dd/MM/yyyy");
                 }
                 String data = sdf.format(pega);
-                usuario.setDataNascimento(Methods.getSqlDate(data));
+                usuario.setDataNascimento(Methods.getSqlDateTime(data));
                 
                 usuario.setCelular(fcelular.getText());
                 usuario.setTelefone(ftelefone.getText());

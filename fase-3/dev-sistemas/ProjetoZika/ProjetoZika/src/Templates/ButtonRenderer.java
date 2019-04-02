@@ -35,7 +35,7 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
             setBackground(UIManager.getColor("Button.background"));
         }
         
-        
+        // resolve os ícones
         String text = value.toString();
         if (text.equals(Methods.getTranslation("Editar"))) {
             setIcon(new ImageIcon(this.getClass().getResource("/sources/edit.png")));

@@ -32,14 +32,12 @@ import javax.swing.border.TitledBorder;
 
 /**
  *  Gerencia os estilos comuns dos elementos da aplicação
- * 
  * @author Welison
  */
 public class Styles {
     
     /**
      * Estiliza os botões default
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void defaultButton(JButton btn) {
@@ -69,7 +67,6 @@ public class Styles {
     
     /**
      * Estiliza os botões default
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void defaultButton(JButton btn, int width) {
@@ -79,7 +76,6 @@ public class Styles {
     
     /**
      * Estiliza os botões com layout vermelho
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void redButton(JButton btn) {
@@ -104,7 +100,6 @@ public class Styles {
     
     /**
      * Estiliza o JTextField default da aplicação
-     * 
      * @param field o JTextField a ser estilizado
      */
     public static void defaultField(JTextField field) {
@@ -117,7 +112,6 @@ public class Styles {
     
     /**
      * Estiliza o JTextField default da aplicação
-     * 
      * @param field o JTextField a ser estilizado
      * @param width a largura do campo
      */
@@ -142,7 +136,6 @@ public class Styles {
     
     /**
      * Estiliza o JDateChooser default da aplicação
-     * 
      * @param fDate o JDateChooser a ser estilizado
      */
     public static void defaultDateChooser(JDateChooser fDate) {
@@ -155,7 +148,6 @@ public class Styles {
     
     /**
      * Estiliza o JDateChooser default da aplicação
-     * 
      * @param fDate o JDateChooser a ser estilizado
      * @param width a largura desejada
      */
@@ -166,7 +158,6 @@ public class Styles {
     
     /**
      * Estiliza o JCombobox default da aplicação
-     * 
      * @param field o JCombobox a ser estilizado
      */
     public static void defaultComboBox(JComboBox field) {
@@ -188,7 +179,6 @@ public class Styles {
     
     /**
      * Estiliza o JLabel default da aplicação
-     * 
      * @param label o JLabel a ser estilizado
      */
     public static void defaultLabel(JLabel label) {
@@ -199,7 +189,6 @@ public class Styles {
     
     /**
      * Estiliza o JLabel default da aplicação
-     * 
      * @param label o JLabel a ser estilizado
      * @param hasDimension true se setará dimensões default (150x39) ou fale se não
      */
@@ -213,7 +202,6 @@ public class Styles {
     
     /**
      * Estliza o JLabel que exibem mensagens de erro da aplicação
-     * 
      * @param label o JLabel a ser estilizado
      */
     public static void errorLabel(JLabel label) {
@@ -224,7 +212,6 @@ public class Styles {
     
     /**
      * Estliza o JButtons do menu da aplicação
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void menuButton(JButton btn) {
@@ -239,7 +226,6 @@ public class Styles {
     
     /**
      * Estiliza o JButton do menu ativo da aplicação
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void setMenuButtonActive(JButton btn) {
@@ -249,7 +235,6 @@ public class Styles {
     
     /**
      * Estiliza o JButton do menu não ativo da aplicação
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void setMenuButtonInactive(JButton btn) {
@@ -259,7 +244,6 @@ public class Styles {
     
     /**
      * Estliza o JButton de busca da aplicação
-     * 
      * @param btn o JButton a ser estilizado
      */
     public static void searchButton(JButton btn) {
@@ -282,7 +266,6 @@ public class Styles {
     
     /**
      * Estiliza os JFrame de add/editar/vizualizar (ou outro interno qualquer)
-     * 
      * @param frame o JFrame a ser estilizado
      * @param width a largura desejada
      * @param height a altura desejada
@@ -294,7 +277,6 @@ public class Styles {
     
     /**
      * Seta os estilos base de um JFrame interno da aplicação
-     * 
      * @param frame o JFrame a ser estilizado
      */
     private static void _internalFramesBase(JFrame frame) {
@@ -310,7 +292,6 @@ public class Styles {
     
     /**
      * Estiliza os JScrollPane default da aplicação
-     * 
      * @param panel o JScrollPane a ser estilizado
      */
     public static void resetScrollPanel(JScrollPane panel) {
@@ -323,7 +304,6 @@ public class Styles {
     
     /**
      * Estiliza os componentes de sugestões da aplicação
-     * 
      * @param panel o JScrollpane onde o JList de sugestão será inserido
      * @param list o JList onde as sugestões serão inseridas
      * @param model as sugestões um uma lista de strig

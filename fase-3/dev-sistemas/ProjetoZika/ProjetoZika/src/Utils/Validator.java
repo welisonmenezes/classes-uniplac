@@ -42,7 +42,7 @@ public class Validator {
     
     /**
      * Checa se o valor do campo é vazio
-     * @param field o campo a ser verificado
+     * @param combo o combobox a ser verificado
      * @return true se vazio
      */
     public static boolean isEmpty(JComboBox combo) {
@@ -82,6 +82,7 @@ public class Validator {
     /**
      * Checa se o tamanho do valor do campo é menor ou igual a um dado tamanho
      * @param field o campo a ser verificado
+     * @param size o tamanho limite
      * @return true se é menor ou igual
      */
     public static boolean isValidSize(JTextField field, int size) {
@@ -91,6 +92,7 @@ public class Validator {
     /**
      * Checa se o tamanho do valor do campo é menor ou igual a um dado tamanho
      * @param field o campo a ser verificado
+     * @param size o tamanho limite
      * @return true se é menor ou igual
      */
     public static boolean isValidSize(JTextArea field, int size) {

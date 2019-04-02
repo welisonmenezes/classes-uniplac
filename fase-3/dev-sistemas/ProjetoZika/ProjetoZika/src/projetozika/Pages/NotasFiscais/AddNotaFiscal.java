@@ -298,7 +298,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                     sdf = new SimpleDateFormat("dd/MM/yyyy");
                 }
                 String data = sdf.format(pega);
-                notaFiscal.setData(Methods.getSqlDate(data));
+                notaFiscal.setData(Methods.getSqlDateTime(data));
                 
                 notaFiscal.setFornecedor(fornecedor);
                 

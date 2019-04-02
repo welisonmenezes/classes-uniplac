@@ -2,7 +2,6 @@ package Models;
 
 /**
  * Modelo para fornecedores
- * 
  * @author Welison
  */
 public class Fornecedor {

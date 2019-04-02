@@ -16,7 +16,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -26,7 +25,6 @@ import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -36,13 +34,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import projetozika.Main;
 
 /**
  * Metodos e funcionalidades genéricas da aplicação
- * 
  * @author Welison
  */
 public class Methods {
@@ -53,7 +49,6 @@ public class Methods {
     
     /**
      * Seta altura e largura full a um dado JFrame ou JPanel
-     * 
      * @param comp o Component que será dimensionado
      */
     public static void makeComponentFullSize(Component comp)
@@ -64,7 +59,6 @@ public class Methods {
     
     /**
      * Seta uma dada altura e uma dada largura a um dado JFrame
-     * 
      * @param aFrame o JFrame que será dimensionado
      * @param w a largura desejada
      * @param h a altura desejada
@@ -77,7 +71,6 @@ public class Methods {
     
     /**
      * Posiciona um dado JFrame no centro da tela
-     * 
      * @param aFrame o JFrame a ser posicionado
      */
     public static void positionFrameInCenter(JFrame aFrame) {
@@ -87,7 +80,6 @@ public class Methods {
     
     /**
      * Seta o container do conteúdo da apalicação
-     * 
      * @param jb o JPanel que exibirá o conteúdo root
      */
     public static void setJBody(JPanel jb) {
@@ -96,7 +88,6 @@ public class Methods {
     
     /**
      * Retorna o container que exibe o conteúdo root
-     * 
      * @return o JPanel
      */
     public static JPanel getJBody() {
@@ -105,7 +96,6 @@ public class Methods {
     
     /**
      * Seta o container geral da aplicação
-     * 
      * @param jb o JPanel que exibirá o conteúdo root
      */
     public static void setJBg(JPanel jb) {
@@ -114,7 +104,6 @@ public class Methods {
     
     /**
      * Retorna o container geral da aplicação
-     * 
      * @return o JPanel
      */
     public static JPanel getJBg() {
@@ -123,7 +112,6 @@ public class Methods {
     
     /**
      * Seta o container do menu da aplicação
-     * 
      * @param jb o JPanel que exibirá o conteúdo root
      */
     public static void setJMenu(JPanel jb) {
@@ -132,7 +120,6 @@ public class Methods {
     
     /**
      * Retorna o container do menu da aplicação
-     * 
      * @return o JPanel
      */
     public static JPanel getJMenu() {
@@ -141,7 +128,6 @@ public class Methods {
     
     /**
      * Limpa a area de um dado JPanel
-     * 
      * @param jb o JPanel a ser limpo
      */
     public static void clearStage(JPanel jb) {
@@ -152,7 +138,6 @@ public class Methods {
     
     /**
      * Seta os elementos de um dado JComponent como habilitado ou desabilitado
-     * 
      * @param el o JComponent a ser habilitado ou desabilitado
      * @param isEnable true pra habilitar ou false pra desabilitar
      */
@@ -170,7 +155,6 @@ public class Methods {
     
     /**
      * Retorna o valor da primeira coluna da linha selecionda de um dado JTable
-     * 
      * @param table o JTable cuja valor será retornado
      * @return o valor da primeira coluna da linha selecionada
      */
@@ -182,7 +166,6 @@ public class Methods {
     
     /**
      * Retorna o valor de uma dada coluna da linha selecionda de um dado JTable
-     * 
      * @param table o JTable cuja valor será retornado
      * @param col o Index da coluna desejada
      * @return o valor da primeira coluna da linha selecionada
@@ -195,7 +178,6 @@ public class Methods {
     
     /**
      * Remove a linha selecionada de um dado JTable
-     * 
      * @param table o JTable cuja linha selecionada será removida
      * @param tableModel o JTableModel cuja linha selecionada será removida
      */
@@ -206,7 +188,6 @@ public class Methods {
   
     /**
      * Seta, para um dado JFrame, a escuta dos eventos VK_ESCAPE e VK_ENTER
-     * 
      * @param frame o JFrame que receberá o listener
      */
     public static void setAccessibility(final JFrame frame) {
@@ -264,7 +245,6 @@ public class Methods {
     
     /**
      * Desabilita os campos de formulario
-     * 
      * @param wrap o container cujo filhos serão desabilitados
      */
     public static void disabledFields(JComponent wrap) {
@@ -373,7 +353,12 @@ public class Methods {
         }
     }
     
-    public static String getSqlDate(String appDate) {
+    /**
+     * Parsea e retorna a data no formato sql datetime
+     * @param appDate a data a ser parseada
+     * @return a data parseada no formato sql datetime
+     */
+    public static String getSqlDateTime(String appDate) {
         try {
             SimpleDateFormat sdf;
             if (Environment.getCurrentLang().equals("en")) {
@@ -386,10 +371,15 @@ public class Methods {
             return dt.format(date);
             
         } catch (ParseException error) {
-            throw new RuntimeException("Methods.getFriendlyDate: " + error);
+            throw new RuntimeException("Methods.getSqlDate: " + error);
         }
     }
     
+    /**
+     * Retonra uma data parseada a partir de um sql Date
+     * @param sqlDate o sql Date
+     * @return  a data parseada
+     */
     public static String getFriendlyBirthday(String sqlDate) {
         try {
             SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd"); 

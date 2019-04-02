@@ -44,7 +44,8 @@ public class ButtonEditor extends DefaultCellEditor {
             button.setForeground(table.getForeground());
             button.setBackground(table.getBackground());
         }
-
+        
+        // resolve os ícones
         String text = value.toString();
         if (text.equals(Methods.getTranslation("Editar"))) {
             button.setIcon(new ImageIcon(this.getClass().getResource("/sources/edit.png")));

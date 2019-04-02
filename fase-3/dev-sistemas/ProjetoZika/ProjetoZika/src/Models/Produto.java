@@ -6,7 +6,7 @@
 package Models;
 
 /**
- *
+ * Modelo para produto
  * @author Welison
  */
 public class Produto {

@@ -33,7 +33,6 @@ import projetozika.Pages.Usuarios.Usuarios;
 
 /**
  * Gerencia a navegação da aplicação
- * 
  * @author Welison
  */
 public class Navigation {
@@ -45,7 +44,6 @@ public class Navigation {
     /**
      * Atualiza o status do menu, indicando qual modulo está ativo.
      * Importante indicar um 'name' aos botões do menu na criação dos mesmos.
-     * 
      * @param name o nome do menu que deverá ficar ativo
      */
     public static void updateSatusMenu(String name) {
@@ -65,7 +63,6 @@ public class Navigation {
     /**
      * Atualiza o JBody, area onde o conteúdo de cada menu será exibido
      * Este metodo cuida das ediçoes e/ou visualizações de detalhe
-     * 
      * @param pageName o nome do modulo desejado
      * @param id o id para consulta ao banco de dados
      * @param params Parâmetros para filtro e paginação
@@ -153,7 +150,6 @@ public class Navigation {
     /**
      * Atualiza o JBody, area onde o conteúdo de cada menu será exibido
      * Este metodo cuida das listagens e adições
-     * 
      * @param pageName o nome do modulo desejado
      * @param params Parâmetros para filtro e paginação
      */

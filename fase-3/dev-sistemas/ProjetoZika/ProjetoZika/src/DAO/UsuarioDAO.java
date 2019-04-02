@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
- *
- * @author welis
+ * Manipula os dados de usuários
+ * @author welison
  */
 public class UsuarioDAO {
     

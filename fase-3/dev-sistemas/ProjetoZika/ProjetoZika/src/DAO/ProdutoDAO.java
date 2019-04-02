@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
- *
- * @author welis
+ * Manipula os dados de produtos
+ * @author welison
  */
 public class ProdutoDAO {
     
@@ -222,7 +222,7 @@ public class ProdutoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDate(data);
+            String sqlDate = Methods.getSqlDateTime(data);
             sql += " AND Created >= '" + sqlDate + "'";
         }
         

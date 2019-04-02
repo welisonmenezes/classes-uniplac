@@ -8,7 +8,7 @@ package Models;
 import java.util.ArrayList;
 
 /**
- *
+ * Modelo para pedido
  * @author Welison
  */
 public class Pedido {

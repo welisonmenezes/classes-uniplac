@@ -6,7 +6,7 @@
 package Models;
 
 /**
- *
+ * Modelo para usuário
  * @author Welison
  */
 public class Usuario {

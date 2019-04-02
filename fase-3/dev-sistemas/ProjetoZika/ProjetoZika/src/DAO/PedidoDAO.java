@@ -19,7 +19,7 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
- *
+ * Manipula os dados de pedidos
  * @author welison
  */
 public class PedidoDAO {
@@ -341,7 +341,7 @@ public class PedidoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDate(data);
+            String sqlDate = Methods.getSqlDateTime(data);
             sql += " AND pedidos.Created >= '" + sqlDate + "'";
         }
         
@@ -380,7 +380,7 @@ public class PedidoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDate(data);
+            String sqlDate = Methods.getSqlDateTime(data);
             sql += " AND pedidos.Created >= '" + sqlDate + "'";
         }
         

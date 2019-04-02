@@ -19,8 +19,8 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
- *
- * @author welis
+ * Manipula os dados de nota fiscal
+ * @author welison
  */
 public class NotaFiscalDAO {
     
@@ -289,7 +289,7 @@ public class NotaFiscalDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDate(data);
+            String sqlDate = Methods.getSqlDateTime(data);
             sql += " AND Created >= '" + sqlDate + "'";
         }
         
