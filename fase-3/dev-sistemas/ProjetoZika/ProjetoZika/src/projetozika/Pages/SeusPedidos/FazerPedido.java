@@ -64,6 +64,7 @@ public class FazerPedido extends Templates.BaseFrame {
     private ArrayList<Produto> produtos;
     private PedidoDAO pedidoDao;
     private Pedido pedido;
+    private String id;
     
    public FazerPedido(Properties params) {
        this.self = this;
@@ -77,6 +78,7 @@ public class FazerPedido extends Templates.BaseFrame {
        this.self = this;
        this.mode = mode;
        this.params = params;
+       this.id = id;
        
         switch (this.mode) {
             case "view":
@@ -88,8 +90,6 @@ public class FazerPedido extends Templates.BaseFrame {
                 initPage(Methods.getTranslation("EditarSeuPedido"));
                 break;
         }
-        
-        fillFields();
    }
    
     private void initPage(String title) {
@@ -101,12 +101,18 @@ public class FazerPedido extends Templates.BaseFrame {
         produtos = new ArrayList<>();
         pedidosProdutos = new ArrayList<>();
         
+        if (! mode.equals("add")) {
+            fillFields(id);
+        }
+        
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
+        addFilterContent();
+        addBottomContent();
         
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -114,10 +120,6 @@ public class FazerPedido extends Templates.BaseFrame {
                 Navigation.currentPage = "seusPedidos";
             }
         });
-        
-        addCenterContent();
-        addFilterContent();
-        addBottomContent();
     }
     
     private void addCenterContent() {
@@ -344,8 +346,8 @@ public class FazerPedido extends Templates.BaseFrame {
         }
     }
     
-    private void fillFields() {
-        //pedidosProdutos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser());
+    private void fillFields(String id) {
+        pedidosProdutos = pedidoDao.selecionarPedidoProdutoPorId(id);
         /*
         for (int i = 0; i < 5; i++) {
             Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");

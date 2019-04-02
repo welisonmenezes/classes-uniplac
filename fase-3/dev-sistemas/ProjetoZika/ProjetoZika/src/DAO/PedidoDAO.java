@@ -20,7 +20,7 @@ import java.util.Properties;
 
 /**
  *
- * @author welis
+ * @author welison
  */
 public class PedidoDAO {
     
@@ -165,6 +165,7 @@ public class PedidoDAO {
     /**
      * seleciona um pedido da base de dados pelo seu usuário
      * @param usuario o usuário solicitante
+     * @param params os parâmetros de filtro e paginação
      * @return o pedido com usuário correspondente
      */
     public ArrayList<Pedido> selecionarPorUsuario(Usuario usuario, Properties params) {
@@ -185,7 +186,41 @@ public class PedidoDAO {
     }
     
     /**
+     * seleciona os pedidosProdutos da base de dados pelo seu usuário
+     * @param usuario o usuário solicitante
+     * @return os pedidosProdutos com usuário correspondente
+     */
+    public ArrayList<PedidoProduto> selecionarPedidoProdutoPorId(String Id) {
+        String sql = "SELECT * FROM pedidosprodutos "
+                + "LEFT JOIN pedidos ON pedidosprodutos.PedidoId = pedidos.Id "
+                + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "WHERE pedidosprodutos.PedidoId = " + Id;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Pedido pedido = new Pedido();
+                fillPedido(pedido, rs);
+                
+                Produto produto = new Produto();
+                fillProduto(produto, rs);
+                
+                PedidoProduto pedidoProduto = new PedidoProduto();
+                fillPedidoProduto(pedidoProduto, pedido, produto, rs);
+                
+                pedidosProdutos.add(pedidoProduto);
+            }
+            st.close();
+            System.out.println(sql);
+            return pedidosProdutos;
+        } catch (Exception error) {
+            throw new RuntimeException("PedidoDAO.selecionarPedidoProdutoPorUsuario: " + error);
+        }
+    }
+    
+    /**
      * o total de pedidos por usuario que correspondem aos parâmetros de filtro e paginação
+     * @param usuario o usuario solicitante
      * @param params os parâmetros de filtro e paginação
      * @return o total de pedidos por usuário
      */
@@ -200,7 +235,6 @@ public class PedidoDAO {
             throw new RuntimeException("PedidoDAO.total: " + error);
         }
     }
-    
     
     /**
      * seleciona os pedidos correspondentes aos parâmetros de filtragem e paginação
@@ -293,6 +327,7 @@ public class PedidoDAO {
      * Auxiliza na construção da query de seleção com base nos parametros passados
      * @param params os parâmetros de filtro e paginação
      * @param isCount true se é pra retorna apenas o total
+     * @param usuario o usuário solicitante
      * @return a query para ser usada na seleção
      */
     private String buildSelectQueryPorUsuario (Properties params, boolean isCount, Usuario usuario) {
@@ -323,7 +358,7 @@ public class PedidoDAO {
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        System.out.println(sql);
+        //System.out.println(sql);
         return sql;
     }
     
@@ -353,6 +388,11 @@ public class PedidoDAO {
         }
     }
     
+    /**
+     * Popula o produto corrente com o resultado da consulta
+     * @param usuario o produto a ser populado
+     * @param rs o ResultSet da consulta
+     */
     private void fillProduto(Produto produto, ResultSet rs) {
         try {
             produto.setId(rs.getInt("produtos.Id"));
@@ -366,6 +406,11 @@ public class PedidoDAO {
         }
     }
     
+    /**
+     * Popula o pedido corrente com o resultado da consulta
+     * @param usuario o pedido a ser populado
+     * @param rs o ResultSet da consulta
+     */
     private void fillPedido(Pedido pedido, ResultSet rs) {
         try {
             pedido.setId(rs.getInt("pedidos.Id"));
@@ -376,6 +421,11 @@ public class PedidoDAO {
         }
     }
     
+    /**
+     * Popula o pedidoProduto corrente com o resultado da consulta
+     * @param usuario o pedidoProduto a ser populado
+     * @param rs o ResultSet da consulta
+     */
     private void fillPedidoProduto(PedidoProduto pedidoProduto, Pedido pedido, Produto produto, ResultSet rs) {
         try {
             pedidoProduto.setId(rs.getInt("pedidosprodutos.Id"));
