@@ -109,6 +109,25 @@ public class PedidoDAO {
     }
     
     /**
+     * Finaliza ou nega o pedido na base de dados
+     * @param pedido o pedido a ser alterado
+     * @param almoxarife o Almoxarife que aprovou ou negou
+     */
+    public void finalizar(Pedido pedido, Usuario almoxarife) {
+        String sql = "UPDATE pedidos SET Status=?, AlmoxarifeId=? WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, pedido.getStatus());
+            stmt.setInt(2, almoxarife.getId());
+            stmt.setInt(3, pedido.getId());
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.finalizar: " + error);
+        }
+    }
+    
+    /**
      * Muda a quantidade aprovada do produto do pedido na base de dados
      * @param pedidoProduto o pedidoProduto a ser alterado
      */
@@ -447,6 +466,7 @@ public class PedidoDAO {
             pedido.setId(rs.getInt("pedidos.Id"));
             pedido.setStatus(rs.getString("pedidos.Status"));
             pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+            pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.fillProduto: " + error);
         }

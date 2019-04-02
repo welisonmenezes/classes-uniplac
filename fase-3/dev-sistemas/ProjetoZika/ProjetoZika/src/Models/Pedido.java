@@ -16,6 +16,7 @@ public class Pedido {
     private String Created;
     private String Status;
     private Usuario Solicitante;
+    private int AlmoxarifeId;
     private ArrayList<PedidoProduto> Produtos;
     
     public Pedido() {}
@@ -65,5 +66,15 @@ public class Pedido {
     public void setProdutos(ArrayList<PedidoProduto> Produtos) {
         this.Produtos = Produtos;
     }
+
+    public int getAlmoxarifeId() {
+        return AlmoxarifeId;
+    }
+
+    public void setAlmoxarifeId(int AlmoxarifeId) {
+        this.AlmoxarifeId = AlmoxarifeId;
+    }
+    
+    
     
 }

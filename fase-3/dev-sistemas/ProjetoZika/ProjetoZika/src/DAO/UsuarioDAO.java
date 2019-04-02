@@ -135,6 +135,27 @@ public class UsuarioDAO {
             st.close();
             return usuario;
         } catch (Exception error) {
+            throw new RuntimeException("UsuarioDAO.selecionarPorCpf: " + error);
+        }
+    }
+    
+    /**
+     * seleciona um usuário da base de dados pelo seu Id
+     * @param Id o Id do usuário a ser retornado
+     * @return o usuário com Id correspondente
+     */
+    public Usuario selecionarPorId(int Id) {
+        String sql = "SELECT * FROM usuarios WHERE Id = " + Id;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            Usuario usuario = new Usuario();
+            while(rs.next()) {
+                fillUser(usuario, rs);
+            }
+            st.close();
+            return usuario;
+        } catch (Exception error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
         }
     }

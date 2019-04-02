@@ -5,9 +5,12 @@
  */
 package projetozika.Pages.Pedidos;
 
+import Config.Environment;
 import DAO.PedidoDAO;
+import DAO.UsuarioDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
+import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -46,6 +49,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private JButton btnNegar;
     private final PedidoDAO pedidoDao;
     private Pedido pedido;
+    private Usuario almoxarife;
     
     /**
      * chamada pra ver/editar pedido
@@ -63,6 +67,11 @@ public class EditarPedido extends Templates.BaseFrame {
         
         if (pedidosProdutos.size() > 0) {
             pedido = pedidosProdutos.get(0).getPedido();
+            int idAlmo = pedidosProdutos.get(0).getPedido().getAlmoxarifeId();
+            if (idAlmo > 0) {
+                UsuarioDAO usuarioDao = new UsuarioDAO();
+                almoxarife = usuarioDao.selecionarPorId(idAlmo);
+            }
             initPage(Methods.getTranslation("Pedido") + " " + id + " - " + pedido.getCreated());
         } else {
             initPage(Methods.getTranslation("Pedido") + " " + id);
@@ -107,7 +116,12 @@ public class EditarPedido extends Templates.BaseFrame {
         
         if (pedidosProdutos.size() > 0) {
             String nome = pedido.getSolicitante().getNome();
-            title = new JLabel(Methods.getTranslation("PedidoDoColaborador") + ": " + nome);
+            if (almoxarife != null && almoxarife.getId() > 0) {
+                title = new JLabel(Methods.getTranslation("PedidoDoColaborador") + ": " + nome + " | " + Methods.getTranslation("AprovadoPor") + ": " + almoxarife.getNome());
+            } else {
+                title = new JLabel(Methods.getTranslation("PedidoDoColaborador") + ": " + nome);
+            }
+            
             Styles.defaultLabel(title);
             bg.add(title, BorderLayout.NORTH);
         }
@@ -222,7 +236,7 @@ public class EditarPedido extends Templates.BaseFrame {
                     // finaliza o pedido (colocá-o no modo de Aguardando entrega)
                     if (pedidosProdutos.size() > 0) {
                         pedido.setStatus(Methods.getTranslation("AguardandoEntrega"));
-                        pedidoDao.mudaStatus(pedido);
+                        pedidoDao.finalizar(pedido, Environment.getLoggedUser());
                         pedidosProdutos.forEach(pp -> {
                             pedidoDao.mudaQuantidadeAprovada(pp);
                         });
@@ -237,7 +251,7 @@ public class EditarPedido extends Templates.BaseFrame {
                             pp.setQuantidadeAprovada(0);
                             pedidoDao.mudaQuantidadeAprovada(pp);
                         });
-                        pedidoDao.mudaStatus(pedido);
+                        pedidoDao.finalizar(pedido, Environment.getLoggedUser());
                     }
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("OkPedidoNegado"));
                     break;
