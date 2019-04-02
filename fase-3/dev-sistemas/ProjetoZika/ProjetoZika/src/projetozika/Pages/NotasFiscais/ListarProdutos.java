@@ -6,7 +6,6 @@
 package projetozika.Pages.NotasFiscais;
 
 import Models.NotaFiscalProduto;
-import Models.Produto;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Methods;

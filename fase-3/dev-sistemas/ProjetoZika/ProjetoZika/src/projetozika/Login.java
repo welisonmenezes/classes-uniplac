@@ -12,14 +12,11 @@ import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JFrame;
 
 /**
  * Tela de login
- * 
  * @author Welison
  */
 public class Login extends javax.swing.JFrame {
@@ -136,7 +133,6 @@ public class Login extends javax.swing.JFrame {
     
     /**
      * Escuta o evento de click do botão de login
-     * 
      * @param evt o ActionEvent
      */
     private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
@@ -149,14 +145,17 @@ public class Login extends javax.swing.JFrame {
         String password = new String(fsenha.getPassword());
         usuario = usuarioDao.selecionarAposLogin(login, password);
         if (usuario != null && usuario.getId() > 0) {
-
+            
+            // seta o usuário logado na aplicação
             Environment.setLoggedUser(usuario);
-
+            
+            // carrega a tela da aplicação
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
             Navigation.updateLayout("", params);
-
+            
+            // resolve permissões e navega para a tela correspondente
             if (login.equals("usuario")) {
                 params.clear();
                 Navigation.updateLayout("seusPedidos", params);

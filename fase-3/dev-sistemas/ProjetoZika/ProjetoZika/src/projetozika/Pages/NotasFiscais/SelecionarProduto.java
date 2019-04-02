@@ -30,7 +30,7 @@ import javax.swing.JTextField;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 /**
- *
+ * Tela para selecionar produto para a nota fiscal
  * @author Welison
  */
 public class SelecionarProduto extends javax.swing.JPanel {

@@ -8,7 +8,6 @@ package projetozika.Pages.Pedidos;
 import Config.Environment;
 import DAO.PedidoDAO;
 import Models.Pedido;
-import Models.Usuario;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -32,9 +31,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
- * Tela de listagem do fornecedores
- * 
+ * Tela de listagem do pedidos
  * @author Welison
  */
 public class Pedidos extends Templates.BaseLayout {
@@ -51,7 +50,7 @@ public class Pedidos extends Templates.BaseLayout {
     private int totalPedidos;
 
     /**
-     * Cria a tela de fornecedores
+     * Cria a tela de pedidos
      * @param params Parâmetros para filtro e paginação
      */
     public Pedidos(Properties params) {
@@ -61,12 +60,17 @@ public class Pedidos extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
         
+        // carrega os dados
         pedidoDao = new PedidoDAO();
         pedidos = pedidoDao.selecionar(params);
         totalPedidos = pedidoDao.total(params);
         
+        // constroi o layout
         initComponents();
         createBaseLayout();
         addTopContent(Methods.getTranslation("Pedidos"));
@@ -74,9 +78,13 @@ public class Pedidos extends Templates.BaseLayout {
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
         params.setProperty("offset", "0");
@@ -86,7 +94,9 @@ public class Pedidos extends Templates.BaseLayout {
         params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -94,6 +104,9 @@ public class Pedidos extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -159,7 +172,6 @@ public class Pedidos extends Templates.BaseLayout {
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, col);
                 if (!actionValue.equals("")) {
-                    // TODO : tela de finalizar
                     Navigation.updateLayout("entregarPedido", id, params);
                 }
             }
@@ -228,9 +240,8 @@ public class Pedidos extends Templates.BaseLayout {
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
@@ -287,7 +298,6 @@ public class Pedidos extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

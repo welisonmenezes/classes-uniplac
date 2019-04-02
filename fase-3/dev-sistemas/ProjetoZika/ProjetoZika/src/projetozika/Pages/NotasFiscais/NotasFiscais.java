@@ -34,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ * Tela de listagem das notas fiscais
  * @author Welison
  */
 public class NotasFiscais extends Templates.BaseLayout {

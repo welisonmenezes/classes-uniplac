@@ -8,7 +8,6 @@ package projetozika.Pages.SeusPedidos;
 import Config.Environment;
 import DAO.PedidoDAO;
 import Models.Pedido;
-import Models.Usuario;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -34,9 +33,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
  * Tela de listagem do fornecedores
- * 
  * @author Welison
  */
 public class SeusPedidos extends Templates.BaseLayout {
@@ -63,22 +62,31 @@ public class SeusPedidos extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
-        initComponents();
-        createBaseLayout();
         
+        // carrega os dados
         pedidoDao = new PedidoDAO();
         pedidos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser(), params);
         totalPedidos = pedidoDao.totalPorUsuario(Environment.getLoggedUser(), params);
-
+        
+        // constroi o layout
+        initComponents();
+        createBaseLayout();
         addTopContent(Methods.getTranslation("SeusPedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
         params.setProperty("offset", "0");
@@ -87,7 +95,9 @@ public class SeusPedidos extends Templates.BaseLayout {
         params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -95,6 +105,9 @@ public class SeusPedidos extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -241,13 +254,11 @@ public class SeusPedidos extends Templates.BaseLayout {
         pFilter.add(bSearch);
         pFilter.add(btnAddPedido);
         
-
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
         
@@ -266,7 +277,6 @@ public class SeusPedidos extends Templates.BaseLayout {
     
     /**
      * Gera a paginação
-     * 
      * @param total o total de páginas
      */
     private void pagination(int total) {
@@ -309,7 +319,6 @@ public class SeusPedidos extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

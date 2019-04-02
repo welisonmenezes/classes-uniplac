@@ -27,7 +27,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 
 /**
- *
+ * Tela de add/ver/editar fornecedor
  * @author Welison
  */
 public class AddFornecedor extends Templates.BaseFrame {
@@ -301,7 +301,6 @@ public class AddFornecedor extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

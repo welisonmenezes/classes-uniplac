@@ -8,8 +8,6 @@ package projetozika.Pages.Pedidos;
 import DAO.PedidoDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
-import Models.Produto;
-import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -33,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ *  Tela de editar/ver pedido
  * @author Welison
  */
 public class EditarPedido extends Templates.BaseFrame {
@@ -49,6 +47,12 @@ public class EditarPedido extends Templates.BaseFrame {
     private final PedidoDAO pedidoDao;
     private Pedido pedido;
     
+    /**
+     * chamada pra ver/editar pedido
+     * @param id o id do pedido
+     * @param mode o modo de visualização (view|edit)
+     * @param params 
+     */
     public EditarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
@@ -66,6 +70,10 @@ public class EditarPedido extends Templates.BaseFrame {
         
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         // adiciona elementos na tela
         initComponents();
@@ -74,11 +82,13 @@ public class EditarPedido extends Templates.BaseFrame {
         createBaseLayout();
         addTopContent(title);
         addCenterContent();
+        
         // add botões de negar e finalizar se estiver no modo edit
         if (this.mode.equals("edit")) {
             addBottomContent();
         }
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -87,6 +97,9 @@ public class EditarPedido extends Templates.BaseFrame {
         });
     }
     
+    /**
+     * Adiciona o conteúdo da área central
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new BorderLayout());
@@ -107,18 +120,22 @@ public class EditarPedido extends Templates.BaseFrame {
         pCenter.add(bg);
     }
     
+    /**
+     * Adiciona o conteúdo da área bottom
+     */
     private void addBottomContent() {
         btnFinalizar = new JButton(Methods.getTranslation("FinalizarPedido"));
         Styles.defaultButton(btnFinalizar);
-        
+        // click finalizar pedido (editar)
         btnFinalizar.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(bg);
             timerTest("finalizar");
         });
         
+        
         btnNegar = new JButton(Methods.getTranslation("NegarPedido"));
         Styles.redButton(btnNegar);
-        
+        // click negar pedido
         btnNegar.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(bg);
             timerTest("negar");
@@ -202,6 +219,7 @@ public class EditarPedido extends Templates.BaseFrame {
             
             switch (action) {
                 case "finalizar": 
+                    // finaliza o pedido (colocá-o no modo de Aguardando entrega)
                     if (pedidosProdutos.size() > 0) {
                         pedido.setStatus(Methods.getTranslation("AguardandoEntrega"));
                         pedidoDao.mudaStatus(pedido);
@@ -212,6 +230,7 @@ public class EditarPedido extends Templates.BaseFrame {
                     }
                     break;
                 case "negar":
+                    // nega o pedido
                     if (pedidosProdutos.size() > 0) {
                         pedido.setStatus(Methods.getTranslation("Negado"));
                         pedidosProdutos.forEach(pp -> {

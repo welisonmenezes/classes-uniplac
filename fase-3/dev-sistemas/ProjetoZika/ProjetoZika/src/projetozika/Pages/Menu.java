@@ -16,15 +16,16 @@ import projetozika.Login;
 import projetozika.Main;
 
 /**
- *
+ * O menu da aplicação
  * @author Welison
  */
 public class Menu extends javax.swing.JPanel {
     
     private Main main;
     private Properties params;
+    
     /**
-     * Creates new form Menu
+     * Cria o menu da aplicação
      */
     public Menu(Main main) {
         initComponents();
@@ -66,6 +67,9 @@ public class Menu extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Tradução dos textos do menu
+     */
     private void translation() {
         bDashboard.setText(Methods.getTranslation("Dashboard"));
         bPedidos.setText(Methods.getTranslation("Pedidos"));

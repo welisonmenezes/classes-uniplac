@@ -43,7 +43,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ *  Tela de fazer/ver/editar pedido
  * @author Welison
  */
 public class FazerPedido extends Templates.BaseFrame {
@@ -66,32 +66,46 @@ public class FazerPedido extends Templates.BaseFrame {
     private Pedido pedido;
     private String id;
     
-   public FazerPedido(Properties params) {
-       this.self = this;
-       this.mode = "add";
-       this.params = params;
-       
-       initPage(Methods.getTranslation("FazerPedido"));
-   }
+    /**
+     * chamada para adição
+     * @param params parâmetros de filtro e paginação
+     */
+    public FazerPedido(Properties params) {
+        this.self = this;
+        this.mode = "add";
+        this.params = params;
+
+        initPage(Methods.getTranslation("FazerPedido"));
+    }
    
-   public FazerPedido(String id, String mode, Properties params) {
-       this.self = this;
-       this.mode = mode;
-       this.params = params;
-       this.id = id;
-       
-        switch (this.mode) {
-            case "view":
-                initPage(Methods.getTranslation("SeuPedido"));
-                pFilter.setVisible(false);
-                pBottom.setVisible(false);
-                break;
-            case "edit":
-                initPage(Methods.getTranslation("EditarSeuPedido"));
-                break;
-        }
-   }
+    /**
+     * chamada para adição ou visualização
+     * @param id o id do pedido
+     * @param mode o mode de exibição (view|edit)
+     * @param params parâmetros de filtro e paginação
+     */
+    public FazerPedido(String id, String mode, Properties params) {
+        this.self = this;
+        this.mode = mode;
+        this.params = params;
+        this.id = id;
+
+         switch (this.mode) {
+             case "view":
+                 initPage(Methods.getTranslation("SeuPedido"));
+                 pFilter.setVisible(false);
+                 pBottom.setVisible(false);
+                 break;
+             case "edit":
+                 initPage(Methods.getTranslation("EditarSeuPedido"));
+                 break;
+         }
+    }
    
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
         // carrega os dados
@@ -100,11 +114,12 @@ public class FazerPedido extends Templates.BaseFrame {
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
         pedidosProdutos = new ArrayList<>();
-        
         if (! mode.equals("add")) {
-            fillFields(id);
+            pedidosProdutos = pedidoDao.selecionarPedidoProdutoPorId(id);
+            pedido = pedidosProdutos.get(0).getPedido();
         }
         
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
@@ -114,6 +129,7 @@ public class FazerPedido extends Templates.BaseFrame {
         addFilterContent();
         addBottomContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -122,6 +138,9 @@ public class FazerPedido extends Templates.BaseFrame {
         });
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new BorderLayout());
@@ -134,6 +153,9 @@ public class FazerPedido extends Templates.BaseFrame {
         pCenter.add(bg, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo da área central
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -155,6 +177,7 @@ public class FazerPedido extends Templates.BaseFrame {
         new SuggestionsBox(pSuggestions, fproduto, cproduto, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
                 produtos.clear();
                 produtos = produtoDao.selecionarPorNome(fproduto.getText());
@@ -172,14 +195,14 @@ public class FazerPedido extends Templates.BaseFrame {
         pFilter.add(pSuggestions);
         pFilter.add(btnAddProduto);
         
-        // click do buscar
+        // click do add produto
         btnAddProduto.addActionListener((ActionEvent e) -> {
             ComboItem selectedProd = (ComboItem)cproduto.getSelectedItem();
             String typedText = fproduto.getText();
             if (selectedProd != null && selectedProd.getDescription().equals(typedText)) {
-                // TODO: implement real database add product
+    
                 if (!hasProduct(selectedProd.getId())) {
-
+                    // adiciona produto à lista de pedidos
                     Produto produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
                     if (produto != null && produto.getId() > 0) {
                         Usuario usuario = Environment.getLoggedUser();
@@ -204,6 +227,11 @@ public class FazerPedido extends Templates.BaseFrame {
         pCenter.add(this.pFilter, BorderLayout.NORTH);
     }
     
+    /**
+     * Verifica se existe produto com id correspondente na lista de pedidosProdutos
+     * @param id o id do produto a ser buscado
+     * @return true se existir produto com o dado id
+     */
     private boolean hasProduct(int id) {
         for (int i = 0; i < pedidosProdutos.size(); i++) {
             PedidoProduto pp = pedidosProdutos.get(i);
@@ -214,6 +242,9 @@ public class FazerPedido extends Templates.BaseFrame {
         return false;
     }
     
+    /**
+     * Adiciona o conteúdo à àrea bottom do layout
+     */
     private void addBottomContent() {
         btnFinalizar = new JButton(Methods.getTranslation("SalvarPedido"));
         Styles.defaultButton(btnFinalizar);
@@ -300,10 +331,10 @@ public class FazerPedido extends Templates.BaseFrame {
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
         
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
-            // TODO: editar produto do pedido
             if (!tabela.getSelectionModel().isSelectionEmpty()) {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
                 String idTable = Methods.selectedTableItemId(tabela);
+                // atualiza a quantidade do produto edito na tabela
                 for (int i = 0; i < pedidosProdutos.size(); i++) {
                     PedidoProduto pp = pedidosProdutos.get(i);
                     int idModel = pp.getProduto().getId();
@@ -323,6 +354,7 @@ public class FazerPedido extends Templates.BaseFrame {
                 @Override
                 public void buttonAction() {
                     String idTable = Methods.selectedTableItemId(tabela);
+                    // remove o produto da lista de pedidosProdutos do pedido
                     for (int i = 0; i < pedidosProdutos.size(); i++) {
                         PedidoProduto pp = pedidosProdutos.get(i);
                         int idModel = pp.getProduto().getId();
@@ -334,11 +366,6 @@ public class FazerPedido extends Templates.BaseFrame {
                 }
             });
         }
-    }
-    
-    private void fillFields(String id) {
-        pedidosProdutos = pedidoDao.selecionarPedidoProdutoPorId(id);
-        pedido = pedidosProdutos.get(0).getPedido();
     }
     
     private Timer t;
@@ -367,6 +394,7 @@ public class FazerPedido extends Templates.BaseFrame {
                     }
                     break;
                 case "edit":
+                    // edita o pedido no banco de dados
                     try {
                         if (pedido.getId() > 0) {
                             pedidoDao.deletarPedidoProdutos(pedido.getId());

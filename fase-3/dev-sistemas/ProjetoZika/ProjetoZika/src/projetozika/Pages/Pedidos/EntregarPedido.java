@@ -9,7 +9,6 @@ import DAO.PedidoDAO;
 import DAO.UsuarioDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
-import Models.Produto;
 import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -21,7 +20,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -38,7 +36,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
+ * Tela de entregar pedido
  * @author Welison
  */
 public class EntregarPedido extends Templates.BaseFrame {
@@ -56,12 +54,18 @@ public class EntregarPedido extends Templates.BaseFrame {
     private JPasswordField fsenha;
     private JButton btnConfirm;
     private JLabel linfo;
-    private ArrayList<PedidoProduto> pedidosProdutos;
+    private final ArrayList<PedidoProduto> pedidosProdutos;
     private final PedidoDAO pedidoDao;
     private final UsuarioDAO usuarioDao;
     private Usuario usuario;
     private Pedido pedido;
-   
+    
+    /**
+     * chamada pra entregar pedido
+     * @param id o id do pedido
+     * @param mode o modo de visualização (edit)
+     * @param params parâmetros de filtro e paginação
+     */
     public EntregarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
@@ -78,14 +82,21 @@ public class EntregarPedido extends Templates.BaseFrame {
         initPage(Methods.getTranslation("ConfirmacaoDeRetirada"));
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -93,9 +104,11 @@ public class EntregarPedido extends Templates.BaseFrame {
             }
         });
         
-        addCenterContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         ptable = new JPanel();
         ptable.setLayout(new BorderLayout());
@@ -152,7 +165,7 @@ public class EntregarPedido extends Templates.BaseFrame {
             // reseta erro
             linfo.setText("");
             
-            // validação
+            // validação do solicitante
             if (pedidosProdutos.size() > 0) {
                 String login = flogin.getText();
                 String password = new String(fsenha.getPassword());

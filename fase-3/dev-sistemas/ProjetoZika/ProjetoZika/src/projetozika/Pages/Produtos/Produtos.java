@@ -33,9 +33,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
- * Tela de listagem do fornecedores
- * 
+ * Tela de listagem do produtos
  * @author Welison
  */
 public class Produtos extends Templates.BaseLayout {

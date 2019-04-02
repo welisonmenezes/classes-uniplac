@@ -34,7 +34,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
+ * Tela para add/ver/editar usuário
  * @author Welison
  */
 public class AddUsuario extends Templates.BaseFrame {
@@ -366,7 +366,6 @@ public class AddUsuario extends Templates.BaseFrame {
                 }
             }
             
-            
         });
         
         pCenter.add(bg);
@@ -472,7 +471,6 @@ public class AddUsuario extends Templates.BaseFrame {
                     Navigation.updateLayout("usuarios", params);
                     break;
             }
-            
             
             t.stop();
         });

@@ -29,9 +29,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
  * Tela de listagem do fornecedores
- * 
  * @author Welison
  */
 public class Fornecedores extends Templates.BaseLayout {

@@ -32,9 +32,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
- * Tela de listagem do fornecedores
- * 
+ * Tela de listagem de usuários
  * @author Welison
  */
 public class Usuarios extends Templates.BaseLayout {

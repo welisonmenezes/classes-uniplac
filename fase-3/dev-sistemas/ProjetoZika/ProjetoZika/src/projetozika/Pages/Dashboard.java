@@ -20,14 +20,14 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
+ * Tela do dashboard
  * @author Welison
  */
 public class Dashboard extends Templates.BaseLayout {
     private JPanel bg;
     
     /**
-     * Creates new form Dashboard
+     * Cria a tela do dashboard
      * @param params Parâmetros para filtro e paginação
      */
     public Dashboard(Properties params) {
@@ -35,14 +35,16 @@ public class Dashboard extends Templates.BaseLayout {
         this.self = this;
         this.params = params;
         
+        // inicia os componentes
         initComponents();
         createBaseLayout();
-        
-        translation();
-        
         addCenterContent();
+        addTopContent(Methods.getTranslation("Dashboard"));
     }
     
+    /**
+     * Adiciona os elmentos da àrea central do layout
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
@@ -54,6 +56,9 @@ public class Dashboard extends Templates.BaseLayout {
         pCenter.add(bg);
     }
     
+    /**
+     * Gera o gráfico de pedidos
+     */
     private void chartPedidos() {
         DefaultCategoryDataset dataPedidos = new DefaultCategoryDataset();
         dataPedidos.setValue(35, "", Methods.getTranslation("Janeiro"));
@@ -71,6 +76,9 @@ public class Dashboard extends Templates.BaseLayout {
         );
     }
     
+    /**
+     * Gera o gráfico de produtos
+     */
     private void chartProdutos() {
         DefaultCategoryDataset dataProdutos = new DefaultCategoryDataset();
         dataProdutos.setValue(70, "", Methods.getTranslation("Janeiro"));
@@ -89,6 +97,16 @@ public class Dashboard extends Templates.BaseLayout {
         );
     }
     
+    /**
+     * Helper para construição de gráficos
+     * @param dataset o dataset com os dados do gráfico
+     * @param title o título do gráfico
+     * @param titleCol o título das colunas
+     * @param titleRow o título das linhas
+     * @param color a cor do gráfico
+     * @param x a posição x
+     * @param y a posição y
+     */
     private void buildChart(DefaultCategoryDataset dataset, String title, String titleCol, String titleRow, Color color, int x, int y) {
         JFreeChart chartPedidos = ChartFactory.createBarChart3D(title, titleCol, titleRow, dataset);
         ChartPanel chartPanel = new ChartPanel(chartPedidos);
@@ -98,10 +116,6 @@ public class Dashboard extends Templates.BaseLayout {
         renderer.setSeriesPaint(0, color);
         renderer.setBaseSeriesVisibleInLegend(false);
         bg.add(chartPanel, new AbsoluteConstraints(x, y, -1, -1));
-    }
-    
-    private void translation() {
-        addTopContent(Methods.getTranslation("Dashboard"));
     }
     
     /**

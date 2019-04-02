@@ -17,9 +17,9 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
 /**
- * Tela de listagem do fornecedores
- * 
+ * Tela do perfil do usuário logado
  * @author Welison
  */
 public class Perfil extends Templates.BaseLayout {
@@ -134,7 +134,6 @@ public class Perfil extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

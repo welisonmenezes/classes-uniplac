@@ -40,7 +40,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
+ * Tela de add/ver/editar nota fiscal
  * @author Welison
  */
 public class AddNotaFiscal extends Templates.BaseFrame {
