@@ -130,7 +130,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         pedidos.forEach(p -> {
             String btnEditar = Methods.getTranslation("Editar");
             String btnCancelar = Methods.getTranslation("Cancelar");
-            if ( p.getId() % 2 == 0 ) {
+            if (! p.getStatus().equals(Methods.getTranslation("Pendente")) ) {
                 btnEditar = "";
                 btnCancelar = "";
             } 
@@ -169,23 +169,26 @@ public class SeusPedidos extends Templates.BaseLayout {
         colCancelar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                // TODO: real database delete
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, 4);
+                String idTabel = Methods.selectedTableItemId(tabela);
+                
                 if (!actionValue.equals("")) {
                     
                     int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                     if (opcion == 0) {
                         
-                        String idTabel = Methods.selectedTableItemId(tabela);
-                        for (int i = 0; i < pedidos.size(); i++) {
-                            Pedido p = pedidos.get(i);
-                            if (idTabel.equals(""+p.getId())) {
-                                pedidos.remove(p);
-                            }
+                        // deleta o produto da base
+                        try {
+                            pedidoDao.deletar(Integer.parseInt(idTabel));
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                        } catch(Exception error) {
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                            throw new RuntimeException("SeusPedidos.delete: " + error);
                         }
-                        updateCenterContent();
-                       JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                        // 'recarrega a tela'
+                        Navigation.updateLayout("", new Properties());
+                        Navigation.updateLayout("seusPedidos", params);
                        
                     }
                 }

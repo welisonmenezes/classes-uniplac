@@ -126,6 +126,22 @@ public class PedidoDAO {
     }
     
     /**
+     * 'deleta' o pedido da visualização, na base de dados altera apenas o status para 'Deleted'
+     * @param Id o Id do pedido a ser 'deletado'
+     */
+    public void deletar(int Id) {
+        String sql = "UPDATE pedidos SET Status='Deleted' WHERE Id=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, Id);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.deletar: " + error);
+        }
+    }
+    
+    /**
      * seleciona um pedido da base de dados pelo seu Id
      * @param Id o Id do pedido a ser retornado
      * @return o pedido com Id correspondente
@@ -186,8 +202,8 @@ public class PedidoDAO {
     }
     
     /**
-     * seleciona os pedidosProdutos da base de dados pelo seu usuário
-     * @param usuario o usuário solicitante
+     * seleciona os pedidosProdutos da base de dados pelo id do pedido
+     * @param Id o id do pedido
      * @return os pedidosProdutos com usuário correspondente
      */
     public ArrayList<PedidoProduto> selecionarPedidoProdutoPorId(String Id) {
@@ -211,7 +227,6 @@ public class PedidoDAO {
                 pedidosProdutos.add(pedidoProduto);
             }
             st.close();
-            System.out.println(sql);
             return pedidosProdutos;
         } catch (Exception error) {
             throw new RuntimeException("PedidoDAO.selecionarPedidoProdutoPorUsuario: " + error);
