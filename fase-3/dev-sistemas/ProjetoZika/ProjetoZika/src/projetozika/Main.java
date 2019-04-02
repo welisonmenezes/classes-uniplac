@@ -17,7 +17,6 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
  * A tela principal da aplicação
- * 
  * @author Welison
  */
 public class Main extends javax.swing.JFrame {
@@ -26,8 +25,9 @@ public class Main extends javax.swing.JFrame {
     private JPanel jBODY; // container do conteúdo
     private JPanel jSIDE; // container do menu
     public static JPanel menu; // o menu
+    
     /**
-     * Creates new form Main
+     * Carrega a tela principal
      */
     public Main() {
         initComponents();

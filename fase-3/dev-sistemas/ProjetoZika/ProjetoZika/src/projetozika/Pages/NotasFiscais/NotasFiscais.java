@@ -6,18 +6,20 @@
 package projetozika.Pages.NotasFiscais;
 
 
-import Models.Fornecedor;
+import DAO.NotaFiscalDAO;
 import Models.NotaFiscal;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
+import Utils.Pagination;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
@@ -32,7 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ * Tela de listagem das notas fiscais
  * @author Welison
  */
 public class NotasFiscais extends Templates.BaseLayout {
@@ -44,6 +46,11 @@ public class NotasFiscais extends Templates.BaseLayout {
     private JLabel lcnpj;
     private JButton bSearch;
     private ArrayList<NotaFiscal> notasFiscais;
+    private NotaFiscalDAO notaFiscalDao;
+    private int totalNotasFiscais;
+    private JTextField fnumero;
+    private JLabel lnumero;
+    private static DecimalFormat df2 = new DecimalFormat(".##");
     
     /**
      * Creates new form NotasFiscais
@@ -57,32 +64,43 @@ public class NotasFiscais extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
+        
+        // carrega os dados
+        notaFiscalDao = new NotaFiscalDAO();
+        notasFiscais = notaFiscalDao.selecionar(params);
+        totalNotasFiscais = notaFiscalDao.total(params);
+        
+        // constroi o layout
         initComponents();
         createBaseLayout();
-        
-        notasFiscais = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Fornecedor f = new Fornecedor(333,"Nome Fornecedor","333000333","99999999","10/11/2008");
-            NotaFiscal n = new NotaFiscal(i, 222, 20.4f, "10/10/2019", f);
-            notasFiscais.add(n);
-        }
-        
         addTopContent(Methods.getTranslation("NotasFiscais"));
         addFilterContent();
         addCenterContent();
         addBottomContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fdata.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("cnpj", fcnpj.getText());
+        params.setProperty("numero", fnumero.getText());
         params.setProperty("data", date);
     }
     
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane(tabela);
         Styles.defaultScroll(barraRolagem);
@@ -90,11 +108,17 @@ public class NotasFiscais extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
     }
     
+    /**
+     * Gera a tabela com os dados
+     */
     private void makeTable() {
         // cria tabela
         tabela = new JTable();
@@ -102,6 +126,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         // seta colunas
         String[] colunas = {
             Methods.getTranslation("Codigo"),
+            Methods.getTranslation("Numero"),
             Methods.getTranslation("Valor"),
             Methods.getTranslation("CNPJ"),
             Methods.getTranslation("Data"),
@@ -113,7 +138,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 4 && column != 5 && column != 6) {
+               if (column != 5 && column != 6 && column != 7) {
                    return false;
                }
                return true;
@@ -122,8 +147,9 @@ public class NotasFiscais extends Templates.BaseLayout {
         // adiciona linhas
         notasFiscais.forEach(n -> {
             Object[] data = {
+                n.getId(),
                 n.getNumero(),
-                n.getValor(),
+                df2.format(n.getValor()),
                 n.getFornecedor().getCnpj(),
                 n.getData(),
                 Methods.getTranslation("Editar"),
@@ -136,7 +162,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
-        colEditar.setMaxWidth(65);
+        colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -147,7 +173,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         });
         
         TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
-        colExcluir.setMaxWidth(65);
+        colExcluir.setMaxWidth(40);
         colExcluir.setCellRenderer(new ButtonRenderer());
         colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -156,20 +182,23 @@ public class NotasFiscais extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    for (int i = 0; i < notasFiscais.size(); i++) {
-                        NotaFiscal n = notasFiscais.get(i);
-                        if (idTabel.equals(""+n.getNumero())) {
-                            notasFiscais.remove(n);
-                        }
+                    // deleta o a nota fiscal da base
+                    try {
+                        notaFiscalDao.deletar(Integer.parseInt(idTabel));
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                        throw new RuntimeException("NotasFiscais.delete: " + error);
                     }
-                    updateCenterContent();
-                   JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    // 'recarrega a tela'
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("notasFiscais", params);
                 }
             }
         });
         
         TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
-        colVer.setMaxWidth(60);
+        colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -180,6 +209,9 @@ public class NotasFiscais extends Templates.BaseLayout {
         });
     }
     
+    /**
+     * Adiciona o conteúdo à area de filtro da tela de conteúdo
+     */
     private void addFilterContent() {
         addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
@@ -190,6 +222,13 @@ public class NotasFiscais extends Templates.BaseLayout {
         
         lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj, false);
+        
+        fnumero = new JTextField();
+        Styles.defaultField(fnumero, 150);
+        fnumero.setText(params.getProperty("numero", ""));
+        
+        lnumero = new JLabel(Methods.getTranslation("Numero"));
+        Styles.defaultLabel(lnumero, false);
         
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
@@ -205,6 +244,8 @@ public class NotasFiscais extends Templates.BaseLayout {
         JLabel hideL = new JLabel();
         hideL.setPreferredSize(new Dimension(50, 35));
         
+        pFilter.add(lnumero);
+        pFilter.add(fnumero);
         pFilter.add(lcnpj);
         pFilter.add(fcnpj);
         pFilter.add(ldata);
@@ -213,52 +254,53 @@ public class NotasFiscais extends Templates.BaseLayout {
         pFilter.add(hideL);
         pFilter.add(addMore);
         
+        // click do adicionar novo
         addMore.addActionListener((ActionEvent e) -> {
             Navigation.updateLayout("addNotaFiscal", params);
         });
         
+        // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
     
+    /**
+     * Adiciona o conteúdo à area de footer do conteúdo
+     */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalNotasFiscais);
     }
     
+    /**
+     * Gera a paginação com base no total de páginas
+     * @param total o total de páginas
+     */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            for (int i = 0; i < notasFiscais.size(); i++) {
-                NotaFiscal n = notasFiscais.get(i);
-                if (n.getNumero()> 10) {
-                    notasFiscais.remove(n);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            notasFiscais.clear();
+            notasFiscais = notaFiscalDao.selecionar(params);
+            totalNotasFiscais = notaFiscalDao.total(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalNotasFiscais);
             
             t.stop();
         });
@@ -276,7 +318,6 @@ public class NotasFiscais extends Templates.BaseLayout {
 
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

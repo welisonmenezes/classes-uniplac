@@ -6,28 +6,33 @@
 package projetozika;
 
 import Config.Environment;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
-import java.util.Arrays;
 import java.util.Properties;
 import javax.swing.JFrame;
 
 /**
  * Tela de login
- * 
  * @author Welison
  */
 public class Login extends javax.swing.JFrame {
     
     private Properties params;
+    private final UsuarioDAO usuarioDao;
+    private Usuario usuario;
 
     /**
      * Creates new form Login
      */
     public Login() {
+        
+        // carrega os dados
+        usuarioDao = new UsuarioDAO();
+        
         initComponents();
         this.params = new Properties();
         
@@ -97,7 +102,7 @@ public class Login extends javax.swing.JFrame {
         llogin.setText("Login");
         jBg.add(llogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
 
-        flogin.setText("administrador");
+        flogin.setText("welison");
         jBg.add(flogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
 
         lsenha.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -128,7 +133,6 @@ public class Login extends javax.swing.JFrame {
     
     /**
      * Escuta o evento de click do botão de login
-     * 
      * @param evt o ActionEvent
      */
     private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
@@ -138,44 +142,31 @@ public class Login extends javax.swing.JFrame {
         
         // validação
         String login = flogin.getText();
-        char[] password = fsenha.getPassword();
-        String userPassword = "123456";
-        if ((login.equals("administrador") || login.equals("almoxarife") || login.equals("usuario")) && Arrays.equals(password, userPassword.toCharArray())) {
+        String password = new String(fsenha.getPassword());
+        usuario = usuarioDao.selecionarAposLogin(login, password);
+        if (usuario != null && usuario.getId() > 0) {
             
-            // seta usuario logado
-            Usuario u = new Usuario("22122-11","Welison Menezes","welison@email.com","9999-9999","2233-3322","Recursos Humanos","Masculino","Adminstrador","10/10/1998");
-            u.setLogin("administrador");
-            u.setSenha("123456");
+            // seta o usuário logado na aplicação
+            Environment.setLoggedUser(usuario);
             
-            switch (login) {
-                case "administrador":
-                    u.setPermissao(Methods.getTranslation("Administrador"));
-                    break;
-                case "almoxarife":
-                    u.setPermissao(Methods.getTranslation("Almoxarife"));
-                    break;
-                case "usuario":
-                    u.setPermissao(Methods.getTranslation("Usuario"));
-                    break;
-            }
-            
-            Environment.setLoggedUser(u);
-            
+            // carrega a tela da aplicação
             this.setVisible(false);
             JFrame main = new Main();
             main.setVisible(true);
             Navigation.updateLayout("", params);
             
+            // resolve permissões e navega para a tela correspondente
             if (login.equals("usuario")) {
                 params.clear();
                 Navigation.updateLayout("seusPedidos", params);
             } else {
                 Navigation.updateLayout("dashboard", params);
             }
-            
+
         } else {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
+   
         
     }//GEN-LAST:event_bentrarActionPerformed
     

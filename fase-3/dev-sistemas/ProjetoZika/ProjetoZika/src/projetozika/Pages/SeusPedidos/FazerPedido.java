@@ -5,6 +5,9 @@
  */
 package projetozika.Pages.SeusPedidos;
 
+import Config.Environment;
+import DAO.PedidoDAO;
+import DAO.ProdutoDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
@@ -40,7 +43,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ *  Tela de fazer/ver/editar pedido
  * @author Welison
  */
 public class FazerPedido extends Templates.BaseFrame {
@@ -57,57 +60,87 @@ public class FazerPedido extends Templates.BaseFrame {
     private JPanel pSuggestions;
     private ArrayList<PedidoProduto> pedidosProdutos;
     private JLabel efinalizar;
+    private ProdutoDAO produtoDao;
+    private ArrayList<Produto> produtos;
+    private PedidoDAO pedidoDao;
+    private Pedido pedido;
+    private String id;
     
-   public FazerPedido(Properties params) {
-       this.self = this;
-       this.mode = "add";
-       this.params = params;
-       pedidosProdutos = new ArrayList<>();
-       
-       initPage(Methods.getTranslation("FazerPedido"));
-   }
+    /**
+     * chamada para adição
+     * @param params parâmetros de filtro e paginação
+     */
+    public FazerPedido(Properties params) {
+        this.self = this;
+        this.mode = "add";
+        this.params = params;
+
+        initPage(Methods.getTranslation("FazerPedido"));
+    }
    
-   public FazerPedido(String id, String mode, Properties params) {
-       this.self = this;
-       this.mode = mode;
-       this.params = params;
-       pedidosProdutos = new ArrayList<>();
-       
-       fillFields();
-       
-        switch (this.mode) {
-            case "view":
-                initPage(Methods.getTranslation("SeuPedido"));
-                pFilter.setVisible(false);
-                pBottom.setVisible(false);
-                break;
-            case "edit":
-                initPage(Methods.getTranslation("EditarSeuPedido"));
-                break;
-        }
-   }
+    /**
+     * chamada para adição ou visualização
+     * @param id o id do pedido
+     * @param mode o mode de exibição (view|edit)
+     * @param params parâmetros de filtro e paginação
+     */
+    public FazerPedido(String id, String mode, Properties params) {
+        this.self = this;
+        this.mode = mode;
+        this.params = params;
+        this.id = id;
+
+         switch (this.mode) {
+             case "view":
+                 initPage(Methods.getTranslation("SeuPedido"));
+                 pFilter.setVisible(false);
+                 pBottom.setVisible(false);
+                 break;
+             case "edit":
+                 initPage(Methods.getTranslation("EditarSeuPedido"));
+                 break;
+         }
+    }
    
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
+        // carrega os dados
+        pedidoDao = new PedidoDAO();
+        pedido = new Pedido();
+        produtoDao = new ProdutoDAO();
+        produtos = new ArrayList<>();
+        pedidosProdutos = new ArrayList<>();
+        if (! mode.equals("add")) {
+            pedidosProdutos = pedidoDao.selecionarPedidoProdutoPorId(id);
+            pedido = pedidosProdutos.get(0).getPedido();
+        }
+        
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
+        addFilterContent();
+        addBottomContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 Navigation.currentPage = "seusPedidos";
             }
         });
-        
-        addCenterContent();
-        addFilterContent();
-        addBottomContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new BorderLayout());
@@ -120,6 +153,9 @@ public class FazerPedido extends Templates.BaseFrame {
         pCenter.add(bg, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo da área central
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -141,11 +177,13 @@ public class FazerPedido extends Templates.BaseFrame {
         new SuggestionsBox(pSuggestions, fproduto, cproduto, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                produtos.clear();
+                produtos = produtoDao.selecionarPorNome(fproduto.getText());
+                produtos.forEach(produto -> {
+                    elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
+                });
                 return elements;
             }
         };
@@ -157,19 +195,28 @@ public class FazerPedido extends Templates.BaseFrame {
         pFilter.add(pSuggestions);
         pFilter.add(btnAddProduto);
         
-        // click do buscar
+        // click do add produto
         btnAddProduto.addActionListener((ActionEvent e) -> {
             ComboItem selectedProd = (ComboItem)cproduto.getSelectedItem();
             String typedText = fproduto.getText();
             if (selectedProd != null && selectedProd.getDescription().equals(typedText)) {
-                // TODO: implement real database add product
+    
                 if (!hasProduct(selectedProd.getId())) {
-                    Produto produto = new Produto(111, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-                    Usuario u = new Usuario(""+1122, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-                    Pedido pedido = new Pedido("10/10/2009","Pendente",u);
-                    PedidoProduto pp = new PedidoProduto(produto,pedido,3);
-                    pedidosProdutos.add(pp);
-                    updateCenterContent();
+                    // adiciona produto à lista de pedidos
+                    Produto produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
+                    if (produto != null && produto.getId() > 0) {
+                        Usuario usuario = Environment.getLoggedUser();
+                        if (usuario != null && usuario.getId() > 0) {
+                            Pedido pedido = new Pedido ("", Methods.getTranslation("Pendente"), usuario);
+                            PedidoProduto pp = new PedidoProduto(produto, pedido, 1);
+                            pedidosProdutos.add(pp);
+                            updateCenterContent();
+                            // limpa o campo de busca
+                            fproduto.setText("");
+                        }
+                    }
+                    
+                    
                 }
             }
         });
@@ -180,6 +227,11 @@ public class FazerPedido extends Templates.BaseFrame {
         pCenter.add(this.pFilter, BorderLayout.NORTH);
     }
     
+    /**
+     * Verifica se existe produto com id correspondente na lista de pedidosProdutos
+     * @param id o id do produto a ser buscado
+     * @return true se existir produto com o dado id
+     */
     private boolean hasProduct(int id) {
         for (int i = 0; i < pedidosProdutos.size(); i++) {
             PedidoProduto pp = pedidosProdutos.get(i);
@@ -190,6 +242,9 @@ public class FazerPedido extends Templates.BaseFrame {
         return false;
     }
     
+    /**
+     * Adiciona o conteúdo à àrea bottom do layout
+     */
     private void addBottomContent() {
         btnFinalizar = new JButton(Methods.getTranslation("SalvarPedido"));
         Styles.defaultButton(btnFinalizar);
@@ -201,14 +256,12 @@ public class FazerPedido extends Templates.BaseFrame {
             
             // validação
             if (pedidosProdutos.size() > 0) {
-                pedidosProdutos.forEach(pp -> {
-                    System.out.println(pp.getProduto().getId() + " " + pp.getQuantidade());
-                });
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             } else {
                 efinalizar.setText(Methods.getTranslation("SelecioneUmProduto"));
             }
+            
         });
         
         efinalizar = new JLabel("");
@@ -278,11 +331,10 @@ public class FazerPedido extends Templates.BaseFrame {
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
         
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
-            // TODO: editar produto do pedido
-            
             if (!tabela.getSelectionModel().isSelectionEmpty()) {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
                 String idTable = Methods.selectedTableItemId(tabela);
+                // atualiza a quantidade do produto edito na tabela
                 for (int i = 0; i < pedidosProdutos.size(); i++) {
                     PedidoProduto pp = pedidosProdutos.get(i);
                     int idModel = pp.getProduto().getId();
@@ -295,11 +347,14 @@ public class FazerPedido extends Templates.BaseFrame {
         });
         
         if(! mode.equals("view")) {
-            tabela.getColumn(Methods.getTranslation("Remover")).setCellRenderer(new ButtonRenderer());
-            tabela.getColumn(Methods.getTranslation("Remover")).setCellEditor(new ButtonEditor(new JCheckBox()){
+            TableColumn colRemover = tabela.getColumn(Methods.getTranslation("Remover"));
+            colRemover.setMaxWidth(40);
+            colRemover.setCellRenderer(new ButtonRenderer());
+            colRemover.setCellEditor(new ButtonEditor(new JCheckBox()){
                 @Override
                 public void buttonAction() {
                     String idTable = Methods.selectedTableItemId(tabela);
+                    // remove o produto da lista de pedidosProdutos do pedido
                     for (int i = 0; i < pedidosProdutos.size(); i++) {
                         PedidoProduto pp = pedidosProdutos.get(i);
                         int idModel = pp.getProduto().getId();
@@ -313,23 +368,48 @@ public class FazerPedido extends Templates.BaseFrame {
         }
     }
     
-    private void fillFields() {
-        for (int i = 0; i < 5; i++) {
-            Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            Usuario u = new Usuario(""+1122, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido pedido = new Pedido("10/10/2009","Pendente",u);
-            PedidoProduto pp = new PedidoProduto(produto,pedido,3);
-            pedidosProdutos.add(pp);
-        }
-    }
-    
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoEnviadoComSucesso"));
+            
+            switch (this.mode) {
+                case "add":
+                    // cria pedido e add no banco de dados
+                    try {
+                        pedido.setSolicitante(Environment.getLoggedUser());
+                        int pedidoId = pedidoDao.inserir(pedido);
+                        pedido.setId(pedidoId);
+                        // insere os produtos ao pedido
+                        pedidosProdutos.forEach(pp -> {
+                            pp.setPedido(pedido);
+                            pedidoDao.inserirProduto(pp);
+                        });
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoEnviadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEnviar"));
+                        throw new RuntimeException("FazerPedido.add: " + error);
+                    }
+                    break;
+                case "edit":
+                    // edita o pedido no banco de dados
+                    try {
+                        if (pedido.getId() > 0) {
+                            pedidoDao.deletarPedidoProdutos(pedido.getId());
+                            pedidosProdutos.forEach(pp -> {
+                                pp.setPedido(pedido);
+                                pedidoDao.inserirProduto(pp);
+                            });
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoAtualizadoComSucesso"));
+                        }
+                    } catch (Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAtualizar"));
+                        throw new RuntimeException("FazerPedido.edit: " + error);
+                    }
+                    break;
+            }
             
             Navigation.updateLayout("", new Properties());
             Navigation.updateLayout("seusPedidos", params);

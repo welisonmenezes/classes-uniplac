@@ -27,7 +27,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 
 /**
- *
+ * Tela de add/ver/editar fornecedor
  * @author Welison
  */
 public class AddFornecedor extends Templates.BaseFrame {
@@ -44,6 +44,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JButton bSave;
     private FornecedorDAO fornecedorDao;
     private Fornecedor fornecedor;
+    private String oldCnpj;
     
    /**
     * chama para adição
@@ -179,14 +180,22 @@ public class AddFornecedor extends Templates.BaseFrame {
             if (! Validator.validaCampo(fname, ename, 100)) isValid = false;
             if (! Validator.validaTelefone(ftel, etel)) isValid = false;
             if (isValid) {
-                
+              
                 // seta os valores do formulário ao fornecedor corrente
                 fornecedor.setCnpj(fcnpj.getText());
                 fornecedor.setNome(fname.getText());
                 fornecedor.setTelefone(ftel.getText());
                 
-                Dialogs.showLoadPopup(bg);
-                timerTest();
+                // valida campos únicos
+                if (mode.equals("edit") && (!oldCnpj.equals(fcnpj.getText())) && (fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0)) {
+                    ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
+                } else if((!mode.equals("edit")) && fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0) {
+                    ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
+                } else {
+                    Dialogs.showLoadPopup(bg);
+                    timerTest();
+                }
+                
                 
             }
 
@@ -202,6 +211,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private void fillFields(String id) {
         fornecedor = fornecedorDao.selecionarPorId(id);
         if (fornecedor != null) {
+            oldCnpj = fornecedor.getCnpj();
             fname.setText(fornecedor.getNome());
             ftel.setText(fornecedor.getTelefone());
             fcnpj.setText(fornecedor.getCnpj());
@@ -256,7 +266,7 @@ public class AddFornecedor extends Templates.BaseFrame {
                         // adiciona um novo fornecedor via nota fiscal
                         int lastInsertedId = fornecedorDao.inserir(fornecedor);
                         AddNotaFiscal.fcnpj.setText(fcnpj.getText());
-                        ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getNome());
+                        ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getCnpj());
                         AddNotaFiscal.ccnpj.addItem(ci);
                         AddNotaFiscal.ccnpj.setSelectedItem(ci);
                     } catch(Exception error) {
@@ -291,7 +301,6 @@ public class AddFornecedor extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

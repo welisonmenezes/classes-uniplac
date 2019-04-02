@@ -5,10 +5,11 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import DAO.ProdutoDAO;
+import Models.NotaFiscalProduto;
 import Models.Produto;
 import Templates.ComboItem;
 import Templates.SuggestionsBox;
-import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -26,11 +27,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 /**
- *
+ * Tela para selecionar produto para a nota fiscal
  * @author Welison
  */
 public class SelecionarProduto extends javax.swing.JPanel {
@@ -54,6 +54,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
     public static JComboBox cnome;
     private Properties params;
     private final AddNotaFiscal caller;
+    private final ProdutoDAO produtoDao;
+    private ArrayList<Produto> produtos;
+    private Produto produto;
+    private JLabel eselProd;
 
     /**
      * Creates new form SelecionarProduto
@@ -67,8 +71,15 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.setBorderTitle(this, Methods.getTranslation("Adicionar/SelecionarProduto"));
         
         addElements();
+        
+        // carrega os dados
+        produtoDao = new ProdutoDAO();
+        produtos = new ArrayList<>();
     }
     
+    /**
+     * Adiciona os elementos na tela
+     */
     private void addElements() {
         lnome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lnome);
@@ -82,15 +93,24 @@ public class SelecionarProduto extends javax.swing.JPanel {
             @Override
             public ArrayList<ComboItem> addElements() {
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                // atualiza a lista de sugestões dos produtos
+                produtos.clear();
+                produtos = produtoDao.selecionarPorNome(fnome.getText());
+                produtos.forEach(produto -> {
+                    elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
+                });
                 return elements;
             }
             @Override
             public void afterSelectItem() {
-                funidade.setText("Caixa");
+                // adiciona o produto selecionado
+                ComboItem selectedProd = (ComboItem)cnome.getSelectedItem();
+                if (selectedProd != null) {
+                    produto = produtoDao.selecionarPorId(selectedProd.getId()+"");
+                    if (produto != null && produto.getId() > 0) {
+                        funidade.setText(produto.getUnidade());
+                    }
+                }
             }
         };
         add(pSuggestions, new AbsoluteConstraints(20, 50, -1, -1));
@@ -100,6 +120,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         addProduto.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(addProduto, new AbsoluteConstraints(230, 45, -1, -1));
         
+        // click botão add produto
         addProduto.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -149,6 +170,10 @@ public class SelecionarProduto extends javax.swing.JPanel {
         Styles.errorLabel(evalor);
         add(evalor, new AbsoluteConstraints(20, 325, -1, -1));
         
+        eselProd = new JLabel("");
+        Styles.errorLabel(eselProd);
+        add(eselProd, new AbsoluteConstraints(240, 325, -1, -1));
+        
         selProd = new JButton(Methods.getTranslation("Adicionar"));
         Styles.defaultButton(selProd);
         selProd.setPreferredSize(new Dimension(100, 34));
@@ -157,8 +182,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             
             // limpa erros
             clearErrors();
-            
-            System.out.println(cnome.getSelectedItem());
+
             // validação
             boolean isValid = true;
             if (! Validator.validaCampo(funidade, eunidade)) isValid = false;
@@ -166,32 +190,43 @@ public class SelecionarProduto extends javax.swing.JPanel {
             if (! Validator.validaValor(fvalor, evalor)) isValid = false;
             if (! Validator.validaComboBox(cnome, enome)) isValid = false;
             if (isValid) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
+                // cria NotaFiscalProduto e adiciona à lista de produtos da nota fiscal
+                NotaFiscalProduto notaProduto = new NotaFiscalProduto(produto, Integer.parseInt(fquantidade.getText()), Double.parseDouble(fvalor.getText()), "");
+                if (caller.addProduto(notaProduto)) {
+                    clearFields();
+                } else {
+                    eselProd.setText(Methods.getTranslation("ProdutoJaAdicionado"));
+                }
             }
             
         });
     }
     
+    /**
+     * Limpa os labels de erros
+     */
     private void clearErrors() {
         eunidade.setText("");
         equantidade.setText("");
         evalor.setText("");
         enome.setText("");
+        eselProd.setText("");
     }
     
-    private Timer t;
-    private void timerTest() {
-        
-        t = new Timer(2000, (ActionEvent e) -> {
-            Dialogs.hideLoadPopup(self);
-            
-            funidade.setEnabled(false);
-            caller.addProduto(new Produto(333,"Prod Teste","Caixa","Desc teste","12/11/2008"));
-            
-            t.stop();
-        });
-        t.start();
+    /**
+     * Reseta os campos do formulário
+     */
+    private void clearFields() {
+        funidade.setText("");
+        fquantidade.setText("");
+        fnome.setText("");
+        fvalor.setText("");
+        cnome.removeAll();
+        cnome.revalidate();
+        ComboItem ci = new ComboItem(0, "");
+        cnome.addItem(ci);
+        cnome.setSelectedItem(ci);
+        //cnome.setSelectedIndex(0);
     }
 
     /**
@@ -205,7 +240,6 @@ public class SelecionarProduto extends javax.swing.JPanel {
 
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

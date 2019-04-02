@@ -6,8 +6,8 @@
 package projetozika.Pages.Pedidos;
 
 import Config.Environment;
+import DAO.PedidoDAO;
 import Models.Pedido;
-import Models.Usuario;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
@@ -31,9 +31,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
- * Tela de listagem do fornecedores
- * 
+ * Tela de listagem do pedidos
  * @author Welison
  */
 public class Pedidos extends Templates.BaseLayout {
@@ -46,9 +46,11 @@ public class Pedidos extends Templates.BaseLayout {
     private JLabel lStatus;
     private JButton bSearch;
     private ArrayList<Pedido> pedidos;
+    private PedidoDAO pedidoDao;
+    private int totalPedidos;
 
     /**
-     * Cria a tela de fornecedores
+     * Cria a tela de pedidos
      * @param params Parâmetros para filtro e paginação
      */
     public Pedidos(Properties params) {
@@ -58,35 +60,43 @@ public class Pedidos extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
+        
+        // carrega os dados
+        pedidoDao = new PedidoDAO();
+        pedidos = pedidoDao.selecionar(params);
+        totalPedidos = pedidoDao.total(params);
+        
+        // constroi o layout
         initComponents();
         createBaseLayout();
-        
-        pedidos = new ArrayList<>();
-        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-        for (int i = 0; i < 15; i++) {
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            p.setId(i);
-            pedidos.add(p);
-        }
-        
         addTopContent(Methods.getTranslation("Pedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("data", date);
         params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -94,6 +104,9 @@ public class Pedidos extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -128,15 +141,19 @@ public class Pedidos extends Templates.BaseLayout {
         // adiciona linhas
         pedidos.forEach(p -> {
             String btnValue = Methods.getTranslation("Entregar");
-            if ( p.getId() % 2 == 0 ) {
+            String btnEdit = Methods.getTranslation("Ver");
+            if (! p.getStatus().equals(Methods.getTranslation("AguardandoEntrega")) ) {
                 btnValue = "";
-            } 
+            }
+            if (p.getStatus().equals(Methods.getTranslation("Pendente"))) {
+                btnEdit = Methods.getTranslation("Editar");
+            }
             Object[] data = {
                 p.getId(),
                 p.getSolicitante().getNome(),
                 p.getCreated(),
                 p.getStatus(),
-                Methods.getTranslation("Ver/Editar"), 
+                btnEdit, 
                 btnValue
             };
             tableModel.addRow(data);
@@ -145,7 +162,7 @@ public class Pedidos extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEntregar = tabela.getColumn(Methods.getTranslation("Entregar"));
-        colEntregar.setMaxWidth(80);
+        colEntregar.setMaxWidth(40);
         colEntregar.setCellRenderer(new ButtonRenderer());
         colEntregar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -155,21 +172,27 @@ public class Pedidos extends Templates.BaseLayout {
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, col);
                 if (!actionValue.equals("")) {
-                    // TODO : tela de finalizar
                     Navigation.updateLayout("entregarPedido", id, params);
                 }
             }
         });
         
         TableColumn colVerEditar = tabela.getColumn(Methods.getTranslation("Ver/Editar"));
-        colVerEditar.setPreferredWidth(90);
-        colVerEditar.setMaxWidth(90);
+        colVerEditar.setPreferredWidth(40);
+        colVerEditar.setMaxWidth(40);
         colVerEditar.setCellRenderer(new ButtonRenderer());
         colVerEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
-                Navigation.updateLayout("editarPedido", id, params);
+                String actionCommand = this.button.getActionCommand();
+                if (actionCommand.equals(Methods.getTranslation("Editar"))) {
+                    Navigation.updateLayout("editarPedido", id, params);
+                } else {
+                    Navigation.updateLayout("verPedido", id, params);
+                }
+                
+                
             }
         });
     }
@@ -217,9 +240,8 @@ public class Pedidos extends Templates.BaseLayout {
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
@@ -228,7 +250,7 @@ public class Pedidos extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalPedidos);
     }
     
     /**
@@ -237,35 +259,27 @@ public class Pedidos extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // reseta tabela
-            for (int i = 0; i < pedidos.size(); i++) {
-                Pedido p = pedidos.get(i);
-                if (p.getId() > 10) {
-                    pedidos.remove(p);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            pedidos.clear();
+            pedidos = pedidoDao.selecionar(params);
+            totalPedidos = pedidoDao.total(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalPedidos);
             
             t.stop();
         });
@@ -284,7 +298,6 @@ public class Pedidos extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

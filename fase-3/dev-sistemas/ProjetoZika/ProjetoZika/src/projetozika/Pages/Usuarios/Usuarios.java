@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
@@ -31,9 +32,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
- * Tela de listagem do fornecedores
- * 
+ * Tela de listagem de usuários
  * @author Welison
  */
 public class Usuarios extends Templates.BaseLayout {
@@ -48,6 +49,8 @@ public class Usuarios extends Templates.BaseLayout {
     private JButton bSearch;
     private JLabel hideL;
     private ArrayList<Usuario> usuarios;
+    private UsuarioDAO usuarioDao;
+    private int totalUsuarios;
 
     /**
      * Cria a tela de fornecedores
@@ -61,32 +64,42 @@ public class Usuarios extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
+        
+        // carrega os dados
+        usuarioDao = new UsuarioDAO();
+        usuarios = usuarioDao.selecionar(params);
+        totalUsuarios = usuarioDao.total(params);
+        
+        // constroi o layout
         initComponents();
         createBaseLayout();
-        
-        usuarios = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            Usuario u = new Usuario(""+i, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            usuarios.add(u);
-        }
-        
         addTopContent(Methods.getTranslation("Usuarios"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("email", fEmail.getText());
         params.setProperty("setor", fSetor.getSelectedItem().toString());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -94,6 +107,9 @@ public class Usuarios extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -143,7 +159,7 @@ public class Usuarios extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
-        colEditar.setMaxWidth(65);
+        colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -154,7 +170,7 @@ public class Usuarios extends Templates.BaseLayout {
         });
         
         TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
-        colExcluir.setMaxWidth(65);
+        colExcluir.setMaxWidth(40);
         colExcluir.setCellRenderer(new ButtonRenderer());
         colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -163,20 +179,25 @@ public class Usuarios extends Templates.BaseLayout {
 
                 int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                 if (opcion == 0) {
-                    for (int i = 0; i < usuarios.size(); i++) {
-                        Usuario u = usuarios.get(i);
-                        if (idTabel.equals(""+u.getCpf())) {
-                            usuarios.remove(u);
-                        }
+                    
+                    // deleta o usuário da base
+                    try {
+                        usuarioDao.deletar(idTabel);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                        throw new RuntimeException("Usuarios.delete: " + error);
                     }
-                    updateCenterContent();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                    // 'recarrega a tela'
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("usuarios", params);
+                    
                 }
             }
         });
         
         TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
-        colVer.setMaxWidth(60);
+        colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -209,13 +230,6 @@ public class Usuarios extends Templates.BaseLayout {
         fSetor = new JComboBox();
         fSetor.setModel(new DefaultComboBoxModel(Environment.SETORES));
         fSetor.setSelectedItem(params.getProperty("setor", ""));
-        /* example
-        fSetor.addActionListener (new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(fSetor.getSelectedIndex());
-            }
-        });
-        */
         Styles.defaultComboBox(fSetor);
         
         lSetor = new JLabel(Methods.getTranslation("Setor"));
@@ -248,9 +262,8 @@ public class Usuarios extends Templates.BaseLayout {
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
     }
@@ -259,44 +272,35 @@ public class Usuarios extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalUsuarios);
     }
     
     /**
-     * Gera a paginação
-     * 
+     * Gera a paginação com base no total de páginas
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // reseta tabela
-            for (int i = 0; i < usuarios.size(); i++) {
-                Usuario u = usuarios.get(i);
-                if (Integer.parseInt(u.getCpf()) > 10) {
-                    usuarios.remove(u);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            usuarios.clear();
+            usuarios = usuarioDao.selecionar(params);
+            totalUsuarios = usuarioDao.total(params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalUsuarios);
             
             t.stop();
         });
@@ -315,7 +319,6 @@ public class Usuarios extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

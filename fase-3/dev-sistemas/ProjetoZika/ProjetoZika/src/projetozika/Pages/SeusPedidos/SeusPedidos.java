@@ -6,13 +6,14 @@
 package projetozika.Pages.SeusPedidos;
 
 import Config.Environment;
+import DAO.PedidoDAO;
 import Models.Pedido;
-import Models.Usuario;
 import Templates.ButtonEditor;
 import Templates.ButtonRenderer;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
+import Utils.Pagination;
 import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
@@ -32,9 +33,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
 /**
  * Tela de listagem do fornecedores
- * 
  * @author Welison
  */
 public class SeusPedidos extends Templates.BaseLayout {
@@ -46,6 +47,8 @@ public class SeusPedidos extends Templates.BaseLayout {
     private JLabel lStatus;
     private JButton bSearch;
     private ArrayList<Pedido> pedidos;
+    private PedidoDAO pedidoDao;
+    private int totalPedidos;
 
     /**
      * Cria a tela de fornecedores
@@ -59,34 +62,42 @@ public class SeusPedidos extends Templates.BaseLayout {
         initPage();
     }
     
+    /**
+     * Inicializa a tela
+     */
     private void initPage() {
+        
+        // carrega os dados
+        pedidoDao = new PedidoDAO();
+        pedidos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser(), params);
+        totalPedidos = pedidoDao.totalPorUsuario(Environment.getLoggedUser(), params);
+        
+        // constroi o layout
         initComponents();
         createBaseLayout();
-        
-        pedidos = new ArrayList<>();
-        Usuario u = new Usuario("111111-22", "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-        for (int i = 0; i < 15; i++) {
-            Pedido p = new Pedido("10/11/2019", "Pendente", u);
-            p.setId(i);
-            pedidos.add(p);
-        }
-        
         addTopContent(Methods.getTranslation("SeusPedidos"));
         addCenterContent();
         addBottomContent();
         addFilterContent();
         
+        // seta os parâmetros
         updateParams();
     }
     
+    /**
+     * Seta os parâmetros a serem usados na paginação e no filtro
+     */
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
+        params.setProperty("offset", "0");
         params.setProperty("page", "1");
         params.setProperty("data", date);
         params.setProperty("status", fStatus.getSelectedItem().toString());
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         barraRolagem = new JScrollPane();
         Styles.defaultScroll(barraRolagem);
@@ -94,6 +105,9 @@ public class SeusPedidos extends Templates.BaseLayout {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Atualiza o conteúdo do centro da area de conteúdo
+     */
     private void updateCenterContent() {
         makeTable();
         barraRolagem.getViewport().setView(tabela);
@@ -129,7 +143,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         pedidos.forEach(p -> {
             String btnEditar = Methods.getTranslation("Editar");
             String btnCancelar = Methods.getTranslation("Cancelar");
-            if ( p.getId() % 2 == 0 ) {
+            if (! p.getStatus().equals(Methods.getTranslation("Pendente")) ) {
                 btnEditar = "";
                 btnCancelar = "";
             } 
@@ -147,7 +161,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         tabela.setModel(tableModel);
         
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
-        colEditar.setMaxWidth(65);
+        colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -162,29 +176,32 @@ public class SeusPedidos extends Templates.BaseLayout {
         });
         
         TableColumn colCancelar = tabela.getColumn(Methods.getTranslation("Cancelar"));
-        colCancelar.setMaxWidth(85);
-        colCancelar.setPreferredWidth(85);
+        colCancelar.setMaxWidth(40);
+        colCancelar.setPreferredWidth(40);
         colCancelar.setCellRenderer(new ButtonRenderer());
         colCancelar.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
             public void buttonAction() {
-                // TODO: real database delete
                 int row = tabela.getSelectedRow();
                 String actionValue = (String)tabela.getModel().getValueAt(row, 4);
+                String idTabel = Methods.selectedTableItemId(tabela);
+                
                 if (!actionValue.equals("")) {
                     
                     int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteExcluir?"), "Aviso", JOptionPane.YES_NO_OPTION);
                     if (opcion == 0) {
                         
-                        String idTabel = Methods.selectedTableItemId(tabela);
-                        for (int i = 0; i < pedidos.size(); i++) {
-                            Pedido p = pedidos.get(i);
-                            if (idTabel.equals(""+p.getId())) {
-                                pedidos.remove(p);
-                            }
+                        // deleta o produto da base
+                        try {
+                            pedidoDao.deletar(Integer.parseInt(idTabel));
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                        } catch(Exception error) {
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
+                            throw new RuntimeException("SeusPedidos.delete: " + error);
                         }
-                        updateCenterContent();
-                       JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
+                        // 'recarrega a tela'
+                        Navigation.updateLayout("", new Properties());
+                        Navigation.updateLayout("seusPedidos", params);
                        
                     }
                 }
@@ -192,7 +209,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         });
         
         TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
-        colVer.setMaxWidth(60);
+        colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
             @Override
@@ -237,13 +254,11 @@ public class SeusPedidos extends Templates.BaseLayout {
         pFilter.add(bSearch);
         pFilter.add(btnAddPedido);
         
-
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {
             Dialogs.showLoadPopup(self);
-            
+            // atualiza os parâmetros com os dados do form de busca
             updateParams();
-            
             timerTest();
         });
         
@@ -257,44 +272,35 @@ public class SeusPedidos extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        this.pagination(5);
+        this.pagination(totalPedidos);
     }
     
     /**
      * Gera a paginação
-     * 
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        /*
-        Pagination pag = new Pagination(pBottom, total){
+        Pagination pag = new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
-                
-                params.setProperty("page", ""+this.page);
-                
                 Dialogs.showLoadPopup(self);
                 timerTest();
             }
         };
-        */
     }
     
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
-            // apenas teste
-            for (int i = 0; i < pedidos.size(); i++) {
-                Pedido p = pedidos.get(i);
-                if (p.getId() > 10) {
-                    pedidos.remove(p);
-                }
-            }
+            // reseta tabela e recarrega os dados
+            pedidos.clear();
+            pedidos = pedidoDao.selecionarPorUsuario(Environment.getLoggedUser(), params);
+            totalPedidos = pedidoDao.totalPorUsuario(Environment.getLoggedUser(), params);
             updateCenterContent();
-            pagination(3);
+            pagination(totalPedidos);
             
             t.stop();
         });
@@ -313,7 +319,6 @@ public class SeusPedidos extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setMinimumSize(new java.awt.Dimension(1, 1));
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

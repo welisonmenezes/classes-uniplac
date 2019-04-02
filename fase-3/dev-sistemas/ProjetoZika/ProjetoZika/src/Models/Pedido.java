@@ -8,7 +8,7 @@ package Models;
 import java.util.ArrayList;
 
 /**
- *
+ * Modelo para pedido
  * @author Welison
  */
 public class Pedido {
@@ -17,6 +17,8 @@ public class Pedido {
     private String Status;
     private Usuario Solicitante;
     private ArrayList<PedidoProduto> Produtos;
+    
+    public Pedido() {}
     
     public Pedido(String created, String status, Usuario solicitante) {
         Created = created;

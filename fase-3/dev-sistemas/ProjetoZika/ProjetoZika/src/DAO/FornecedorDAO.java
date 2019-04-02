@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
- *
- * @author welis
+ *  Manipula os dados de fornecedores
+ * @author welison
  */
 public class FornecedorDAO {
     
@@ -120,6 +120,50 @@ public class FornecedorDAO {
             return fornecedor;
         } catch (Exception error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorId: " + error);
+        }
+    }
+    
+    /**
+     * conta quantos fornecedores exsitem com o dado cnpj
+     * @param cnpj o cnpj a ser buscado
+     * @return o total de resultados
+     */
+    public int temCnpj(String cnpj) {
+        String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = '" + cnpj + "'";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            rs.next();
+            return rs.getInt(1);
+        } catch(Exception error) {
+            throw new RuntimeException("FornecedorDAO.temCnpj: " + error);
+        }
+    }
+    
+    /**
+     * seleciona os fornecedores por um dado cnpj
+     * @param cnpj o cnpj do fornecedor desejado
+     * @return uma lista de fornecedores correspondentes
+     */
+    public ArrayList<Fornecedor> selecionarPorCnpj(String cnpj) {
+        String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Cnpj LIKE '%"+ cnpj +"%' LIMIT 50";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setId(rs.getInt("Id"));
+                fornecedor.setCnpj(rs.getString("Cnpj"));
+                fornecedor.setNome(rs.getString("Nome"));
+                fornecedor.setStatus(rs.getString("Status"));
+                fornecedor.setTelefone(rs.getString("Telefone"));
+                fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                fornecedores.add(fornecedor);
+            }
+            st.close();
+            return fornecedores;
+        } catch(Exception error) {
+            throw new RuntimeException("FornecedorDAO.selecionarPorCnpj: " + error);
         }
     }
     

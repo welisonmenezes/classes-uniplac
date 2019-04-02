@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import DAO.UsuarioDAO;
 import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -16,6 +17,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -32,7 +34,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
+ * Tela para add/ver/editar usuário
  * @author Welison
  */
 public class AddUsuario extends Templates.BaseFrame {
@@ -74,8 +76,16 @@ public class AddUsuario extends Templates.BaseFrame {
     private JLabel lsenha;
     private JLabel esenha;
     private JButton bSave;
+    private Usuario usuario;
+    private UsuarioDAO usuarioDao;
+    private String oldLogin;
+    private String oldCpf;
+    private String cpf;
     
-   
+    /**
+     * chamada para adição
+     * @param params parâmetros de filtro e paginação
+     */
     public AddUsuario(Properties params) {
         this.self = this;
         this.mode = "add";
@@ -83,10 +93,17 @@ public class AddUsuario extends Templates.BaseFrame {
         initPage(Methods.getTranslation("AdicionarUsuario"));
     }
     
+    /**
+     * chamada para visualização ou edição
+     * @param id o id do usuário
+     * @param mode o modo (view|edit|perfil)
+     * @param params parâmetros de filtro e paginação 
+     */
     public AddUsuario(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
         this.params = params;
+        this.cpf = id;
         switch (this.mode) {
             case "view":
                 initPage(Methods.getTranslation("VerUsuario"));
@@ -103,15 +120,25 @@ public class AddUsuario extends Templates.BaseFrame {
         fillFields(id);
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
         
+        // cria objetos para carregar dados posteriormente
+        usuarioDao = new UsuarioDAO();
+        usuario = new Usuario();
+        
+        // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 670, 550);
         Methods.setAccessibility(this);
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
@@ -122,10 +149,11 @@ public class AddUsuario extends Templates.BaseFrame {
                 }
             }
         });
-        
-        addCenterContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central (o formulário em si)
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new AbsoluteLayout());
@@ -161,7 +189,9 @@ public class AddUsuario extends Templates.BaseFrame {
         
         gsexo = new ButtonGroup();
         fhomem = new JRadioButton(Methods.getTranslation("Masculino"));
+        fhomem.setActionCommand(Methods.getTranslation("Masculino"));
         fmulher = new JRadioButton(Methods.getTranslation("Feminino"));
+        fmulher.setActionCommand(Methods.getTranslation("Feminino"));
         fhomem.setForeground(new Color(255, 255, 255));
         fmulher.setForeground(new Color(255, 255, 255));
         gsexo.add(fhomem);
@@ -296,34 +326,77 @@ public class AddUsuario extends Templates.BaseFrame {
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;
             if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
             if (isValid) {
-                Dialogs.showLoadPopup(bg);
-                timerTest();
+                
+                // seta os valores do formulário ao usuário corrente
+                usuario.setNome(fnome.getText());
+                usuario.setCpf(fcpf.getText());
+                usuario.setSexo(gsexo.getSelection().getActionCommand());
+                
+                java.util.Date pega = fdata.getDate();
+                SimpleDateFormat sdf;
+                if (Environment.getCurrentLang().equals("en")) {
+                    sdf = new SimpleDateFormat("yyyy-MM-dd");
+                } else {
+                    sdf = new SimpleDateFormat("dd/MM/yyyy");
+                }
+                String data = sdf.format(pega);
+                usuario.setDataNascimento(Methods.getSqlDateTime(data));
+                
+                usuario.setCelular(fcelular.getText());
+                usuario.setTelefone(ftelefone.getText());
+                usuario.setEmail(femail.getText());
+                usuario.setSetor(fsetor.getSelectedItem().toString());
+                usuario.setPermissao(fpermissao.getSelectedItem().toString());
+                usuario.setLogin(flogin.getText());
+                String senha = new String(fsenha.getPassword());
+                usuario.setSenha(senha);
+                
+                // valida campos únicos
+                if (!mode.equals("add") && (!oldCpf.equals(fcpf.getText())) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
+                    ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
+                } else if (!mode.equals("add") && (!oldLogin.equals(flogin.getText())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
+                    elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
+                } else if((mode.equals("add")) && usuarioDao.temCpf(usuario.getCpf()) > 0) {
+                    ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
+                } else if((mode.equals("add")) && usuarioDao.temLogin(usuario.getLogin()) > 0) {
+                    elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
+                } else {
+                    Dialogs.showLoadPopup(bg);
+                    timerTest();
+                }
             }
-            
             
         });
         
         pCenter.add(bg);
     }
     
-    private void fillFields(String id) {
-        Usuario u = new Usuario("3344334","Welison Menezes","email@teste","999999","222222","Recursos Humanos","Masculino","Administrador","11/10/1990");
-        u.setLogin("welison");
-        u.setSenha("123456");
-        
-        fnome.setText(u.getNome());
-        fcpf.setText(u.getCpf());
-        Methods.setButtonGroup(u.getSexo(), gsexo.getElements());
-        Methods.setDateToDateChooser(fdata, u.getDataNascimento());
-        fcelular.setText(u.getCelular());
-        ftelefone.setText(u.getTelefone());
-        femail.setText(u.getEmail());
-        fsetor.setSelectedItem(u.getSetor());
-        fpermissao.setSelectedItem(u.getPermissao());
-        flogin.setText(u.getLogin());
-        fsenha.setText(u.getSenha());
+    /**
+     * preenche os campos do formulário com o usuário cujo cpf é correspondente na base de dados
+     * @param id o id do produto
+     */
+    private void fillFields(String cpf) {
+        usuario = usuarioDao.selecionarPorCpf(cpf);
+        if (usuario != null ) {
+            oldLogin = usuario.getLogin();
+            oldCpf = usuario.getCpf();
+            fnome.setText(usuario.getNome());
+            fcpf.setText(usuario.getCpf());
+            Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
+            Methods.setDateToDateChooser(fdata, usuario.getDataNascimento());
+            fcelular.setText(usuario.getCelular());
+            ftelefone.setText(usuario.getTelefone());
+            femail.setText(usuario.getEmail());
+            fsetor.setSelectedItem(usuario.getSetor());
+            fpermissao.setSelectedItem(usuario.getPermissao());
+            flogin.setText(usuario.getLogin());
+            fsenha.setText(usuario.getSenha());
+        }
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         enome.setText("");
         ecpf.setText("");
@@ -341,28 +414,54 @@ public class AddUsuario extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             
             switch (mode) {
                 case "edit":
                     // TODO: edit here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    try {
+                        // edita o usuario
+                        usuarioDao.alterar(usuario);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddUsuario.edit: " + error);
+                    }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("usuarios", params);
                     break;
                 case "add":
                     // TODO: save here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    try {
+                        // adiciona um novo produto
+                        usuarioDao.inserir(usuario);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
+                        throw new RuntimeException("AddUsuario.add: " + error);
+                    }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("usuarios", params);
                     break;
                 case "perfil":
                     // TODO: save here
                     self.dispose();
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    try {
+                        // edita o usuario
+                        usuarioDao.alterar(usuario);
+                        usuario = usuarioDao.selecionarPorCpf(cpf);
+                        Environment.setLoggedUser(usuario);
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
+                    } catch(Exception error) {
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
+                        throw new RuntimeException("AddUsuario.perfil: " + error);
+                    }
+                    // recarrega a tela pai
                     Navigation.updateLayout("", new Properties());
                     Navigation.updateLayout("perfil", params);
                     break;
@@ -372,7 +471,6 @@ public class AddUsuario extends Templates.BaseFrame {
                     Navigation.updateLayout("usuarios", params);
                     break;
             }
-            
             
             t.stop();
         });

@@ -2,7 +2,6 @@ package Models;
 
 /**
  * Modelo para Notas Fiscais
- * 
  * @author Welison
  */
 public class NotaFiscal {

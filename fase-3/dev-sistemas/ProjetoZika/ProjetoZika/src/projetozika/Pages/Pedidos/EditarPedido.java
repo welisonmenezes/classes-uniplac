@@ -5,10 +5,9 @@
  */
 package projetozika.Pages.Pedidos;
 
+import DAO.PedidoDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
-import Models.Produto;
-import Models.Usuario;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -32,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ *  Tela de editar/ver pedido
  * @author Welison
  */
 public class EditarPedido extends Templates.BaseFrame {
@@ -43,61 +42,75 @@ public class EditarPedido extends Templates.BaseFrame {
     private JScrollPane barraRolagem;
     private JButton btnFinalizar;
     private JPanel paction;
-    private ArrayList<PedidoProduto> pedidosProdutos;
+    private final ArrayList<PedidoProduto> pedidosProdutos;
     private JButton btnNegar;
+    private final PedidoDAO pedidoDao;
+    private Pedido pedido;
     
-   public EditarPedido(Properties params) {
-       this.self = this;
-       this.params = params;
-   }
-    
+    /**
+     * chamada pra ver/editar pedido
+     * @param id o id do pedido
+     * @param mode o modo de visualização (view|edit)
+     * @param params 
+     */
     public EditarPedido(String id, String mode, Properties params) {
         this.self = this;
         this.mode = mode;
         this.params = params;
         
-        initPage(Methods.getTranslation("Pedido"));
+        pedidoDao = new PedidoDAO();
+        pedidosProdutos = pedidoDao.selecionarPorId(id);
+        
+        if (pedidosProdutos.size() > 0) {
+            pedido = pedidosProdutos.get(0).getPedido();
+            initPage(Methods.getTranslation("Pedido") + " " + id + " - " + pedido.getCreated());
+        } else {
+            initPage(Methods.getTranslation("Pedido") + " " + id);
+        }
+        
     }
     
+    /**
+     * Inicia a tela
+     * @param title o título
+     */
     private void initPage(String title) {
-        
+        // adiciona elementos na tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
         Methods.setAccessibility(this);
-        
-        
-        pedidosProdutos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Produto produto = new Produto(i, "Nome Produto", "Caixa", "Descrição Produto", "1/12/2009");
-            Usuario u = new Usuario(""+i, "Nome Usuario", "email@email.com", "99999-9999", "2222-2222", "Contabilidade", "M", "admin", "12/12/1989");
-            Pedido pedido = new Pedido("10/10/2009","Pendente",u);
-            PedidoProduto pp = new PedidoProduto(produto,pedido,3);
-            pp.setId(i);
-            pedidosProdutos.add(pp);
-        }
-        
         createBaseLayout();
         addTopContent(title);
+        addCenterContent();
         
+        // add botões de negar e finalizar se estiver no modo edit
+        if (this.mode.equals("edit")) {
+            addBottomContent();
+        }
+        
+        // seta a página pai como página corrente
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent windowEvent) {
                 Navigation.currentPage = "pedidos";
             }
         });
-        
-        addCenterContent();
-        addBottomContent();
     }
     
+    /**
+     * Adiciona o conteúdo da área central
+     */
     private void addCenterContent() {
         bg = new JPanel();
         bg.setLayout(new BorderLayout());
         bg.setOpaque(false);
         
-        title = new JLabel(Methods.getTranslation("Itens"));
-        Styles.defaultLabel(title);
-        bg.add(title, BorderLayout.NORTH);
+        if (pedidosProdutos.size() > 0) {
+            String nome = pedido.getSolicitante().getNome();
+            title = new JLabel(Methods.getTranslation("PedidoDoColaborador") + ": " + nome);
+            Styles.defaultLabel(title);
+            bg.add(title, BorderLayout.NORTH);
+        }
         
         makeTable();
         barraRolagem = new JScrollPane(tabela);
@@ -107,25 +120,25 @@ public class EditarPedido extends Templates.BaseFrame {
         pCenter.add(bg);
     }
     
+    /**
+     * Adiciona o conteúdo da área bottom
+     */
     private void addBottomContent() {
         btnFinalizar = new JButton(Methods.getTranslation("FinalizarPedido"));
         Styles.defaultButton(btnFinalizar);
-        
+        // click finalizar pedido (editar)
         btnFinalizar.addActionListener((ActionEvent e) -> {
-            // TODO: finalizar pedido aqui
-   
             Dialogs.showLoadPopup(bg);
-            timerTest();
+            timerTest("finalizar");
         });
+        
         
         btnNegar = new JButton(Methods.getTranslation("NegarPedido"));
         Styles.redButton(btnNegar);
-        
+        // click negar pedido
         btnNegar.addActionListener((ActionEvent e) -> {
-            // TODO: negar pedido aqui
-
             Dialogs.showLoadPopup(bg);
-            timerTest();
+            timerTest("negar");
         });
         
         paction = new JPanel();
@@ -154,10 +167,14 @@ public class EditarPedido extends Templates.BaseFrame {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 3 && column != 4){
-                   return false;
-               }
-               return true;
+                if (mode.equals("view")) {
+                    return false;
+                } else {
+                    if (column != 3 && column != 4){
+                        return false;
+                    }
+                    return true;
+                }
             }
         };
         // adiciona linhas
@@ -171,22 +188,21 @@ public class EditarPedido extends Templates.BaseFrame {
         
         TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
         JComboBox cquantidade = new JComboBox();
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 0; i <= 15; i++) {
             cquantidade.addItem(i);
         }
         quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
       
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
-            // TODO: editar produto do pedido
-            
+            // edita quantidade produto do pedido
             if (!tabela.getSelectionModel().isSelectionEmpty()) {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
                 String idTable = Methods.selectedTableItemId(tabela);
                 for (int i = 0; i < pedidosProdutos.size(); i++) {
                     PedidoProduto pp = pedidosProdutos.get(i);
-                    int idModel = pp.getProduto().getId();
+                    int idModel = pp.getId();
                     if (idTable.equals(""+idModel)) {
-                        pp.setQuantidade(Integer.parseInt(newQtd));
+                        pp.setQuantidadeAprovada(Integer.parseInt(newQtd));
                         break;
                     }
                 }
@@ -195,12 +211,37 @@ public class EditarPedido extends Templates.BaseFrame {
     }
     
     private Timer t;
-    private void timerTest() {
+    private void timerTest(String action) {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+            
+            switch (action) {
+                case "finalizar": 
+                    // finaliza o pedido (colocá-o no modo de Aguardando entrega)
+                    if (pedidosProdutos.size() > 0) {
+                        pedido.setStatus(Methods.getTranslation("AguardandoEntrega"));
+                        pedidoDao.mudaStatus(pedido);
+                        pedidosProdutos.forEach(pp -> {
+                            pedidoDao.mudaQuantidadeAprovada(pp);
+                        });
+                        JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                    }
+                    break;
+                case "negar":
+                    // nega o pedido
+                    if (pedidosProdutos.size() > 0) {
+                        pedido.setStatus(Methods.getTranslation("Negado"));
+                        pedidosProdutos.forEach(pp -> {
+                            pp.setQuantidadeAprovada(0);
+                            pedidoDao.mudaQuantidadeAprovada(pp);
+                        });
+                        pedidoDao.mudaStatus(pedido);
+                    }
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("OkPedidoNegado"));
+                    break;
+            }
             
             Navigation.updateLayout("", new Properties());
             Navigation.updateLayout("pedidos", params);

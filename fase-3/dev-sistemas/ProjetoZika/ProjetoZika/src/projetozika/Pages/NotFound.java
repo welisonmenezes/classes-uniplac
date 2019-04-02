@@ -8,22 +8,17 @@ package projetozika.Pages;
 import Utils.Methods;
 
 /**
- *
+ * Tela de erro
  * @author Welison
  */
 public class NotFound extends Templates.BaseLayout {
 
     /**
-     * Creates new form NotFound
+     * Cria a tela de erro
      */
     public NotFound() {
         initComponents();
         createBaseLayout();
-        
-        translation();
-    }
-    
-    private void translation() {
         addTopContent(Methods.getTranslation("PaginaNaoEncontrada"));
     }
 
@@ -40,7 +35,6 @@ public class NotFound extends Templates.BaseLayout {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

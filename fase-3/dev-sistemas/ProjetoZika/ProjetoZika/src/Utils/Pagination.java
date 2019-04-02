@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 
 /**
  * Gerencia a paginação da aplicação
- * 
  * @author Welison
  */
 public class Pagination {
@@ -31,7 +30,6 @@ public class Pagination {
     
     /**
      * Construtor. Ao ser instanciada, a classe gera os botões e adiciona no Footer da aplicação
-     * 
      * @param c o JPanel que receberá a paginação
      * @param total o total de páginas
      */
@@ -51,7 +49,6 @@ public class Pagination {
             updateActivePage();
         }
         
-        //System.out.println(pages);
     }
     
     /**
@@ -140,7 +137,6 @@ public class Pagination {
     
     /**
      * Pega a página corrent da paginação
-     * 
      * @return a página corrente
      */
     public int getCurrentPage() {

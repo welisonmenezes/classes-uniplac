@@ -16,8 +16,8 @@ import java.util.Calendar;
 import java.util.Properties;
 
 /**
- *
- * @author welis
+ * Manipula os dados de produtos
+ * @author welison
  */
 public class ProdutoDAO {
     
@@ -47,8 +47,6 @@ public class ProdutoDAO {
             stmt.setString(2, produto.getUnidade());
             stmt.setString(3, produto.getDescricao());
             stmt.setString(4, "Publish");
-            //Date date = Methods.convertStringToDate(produto.getCreated());
-            //java.sql.Date sqlDate = new java.sql.Date(date.getTime());
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(5, sqlDate);
             stmt.executeUpdate();
@@ -126,6 +124,33 @@ public class ProdutoDAO {
     }
     
     /**
+     * seleciona os produtos correspondentes ao dado nome
+     * @param nome o nome desejado
+     * @return uma lista de produtos correspondentes
+     */
+    public ArrayList<Produto> selecionarPorNome(String nome) {
+        String sql = "SELECT * FROM produtos WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getInt("Id"));
+                produto.setNome(rs.getString("Nome"));
+                produto.setDescricao(rs.getString("Descricao"));
+                produto.setUnidade(rs.getString("Unidade"));
+                produto.setStatus(rs.getString("Status"));
+                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produtos.add(produto);
+            }
+            st.close();
+            return produtos;
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.selecionarPorNome: " + error);
+        }
+    }
+    
+    /**
      * seleciona os produtos correspondentes aos parâmetros de filtragem e paginação
      * @param params os parâmetros de filtragem e paginação
      * @return uma lista de produtos correspondentes
@@ -197,7 +222,7 @@ public class ProdutoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDate(data);
+            String sqlDate = Methods.getSqlDateTime(data);
             sql += " AND Created >= '" + sqlDate + "'";
         }
         
