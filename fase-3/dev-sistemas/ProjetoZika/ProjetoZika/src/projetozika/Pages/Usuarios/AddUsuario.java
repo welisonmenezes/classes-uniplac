@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import CustomFields.MaxSize;
 import DAO.UsuarioDAO;
 import Models.Usuario;
 import Utils.Dialogs;
@@ -166,6 +167,7 @@ public class AddUsuario extends Templates.BaseFrame {
         fnome = new JTextField("");
         Styles.defaultField(fnome);
         bg.add(fnome, new AbsoluteConstraints(0, 40, -1, -1));
+        fnome.setDocument(new MaxSize(100));
         
         enome = new JLabel("");
         Styles.errorLabel(enome);
@@ -178,6 +180,7 @@ public class AddUsuario extends Templates.BaseFrame {
         fcpf = new JTextField();
         Styles.defaultField(fcpf);
         bg.add(fcpf, new AbsoluteConstraints(220, 40, -1, -1));
+        fcpf.setDocument(new MaxSize(14));
         
         ecpf = new JLabel("");
         Styles.errorLabel(ecpf);
@@ -223,6 +226,7 @@ public class AddUsuario extends Templates.BaseFrame {
         fcelular = new JTextField();
         Styles.defaultField(fcelular);
         bg.add(fcelular, new AbsoluteConstraints(220, 130, -1, -1));
+        fcelular.setDocument(new MaxSize(45));
         
         ecelular = new JLabel("");
         Styles.errorLabel(ecelular);
@@ -235,6 +239,7 @@ public class AddUsuario extends Templates.BaseFrame {
         ftelefone = new JTextField();
         Styles.defaultField(ftelefone);
         bg.add(ftelefone, new AbsoluteConstraints(440, 130, -1, -1));
+        ftelefone.setDocument(new MaxSize(45));
         
         etelefone = new JLabel("");
         Styles.errorLabel(etelefone);
@@ -247,6 +252,7 @@ public class AddUsuario extends Templates.BaseFrame {
         femail = new JTextField();
         Styles.defaultField(femail);
         bg.add(femail, new AbsoluteConstraints(0, 220, -1, -1));
+        femail.setDocument(new MaxSize(100));
         
         eemail = new JLabel("");
         Styles.errorLabel(eemail);
@@ -285,6 +291,7 @@ public class AddUsuario extends Templates.BaseFrame {
         flogin = new JTextField();
         Styles.defaultField(flogin);
         bg.add(flogin, new AbsoluteConstraints(0, 310, -1, -1));
+        flogin.setDocument(new MaxSize(45));
         
         elogin = new JLabel("");
         Styles.errorLabel(elogin);
@@ -297,6 +304,7 @@ public class AddUsuario extends Templates.BaseFrame {
         fsenha = new JPasswordField();
         Styles.defaultField(fsenha);
         bg.add(fsenha, new AbsoluteConstraints(220, 310, -1, -1));
+        fsenha.setDocument(new MaxSize(100));
         
         esenha = new JLabel("");
         Styles.errorLabel(esenha);

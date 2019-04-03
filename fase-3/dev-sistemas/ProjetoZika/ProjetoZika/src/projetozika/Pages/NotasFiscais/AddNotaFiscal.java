@@ -6,6 +6,8 @@
 package projetozika.Pages.NotasFiscais;
 
 import Config.Environment;
+import CustomFields.FormataDecimal;
+import CustomFields.MaxSize;
 import DAO.FornecedorDAO;
 import DAO.NotaFiscalDAO;
 import Models.Fornecedor;
@@ -167,6 +169,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fnumero = new JTextField();
         Styles.defaultField(fnumero);
         bg.add(fnumero, new AbsoluteConstraints(0, 40, -1, -1));
+        fnumero.setDocument(new MaxSize(20));
         
         enumero = new JLabel("");
         Styles.errorLabel(enumero);
@@ -179,6 +182,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         // suggestion box
         pSuggestions = new JPanel();
         fcnpj = new JTextField();
+        fcnpj.setDocument(new MaxSize(18));
         ccnpj = new JComboBox();
         new SuggestionsBox(pSuggestions, fcnpj, ccnpj, 200) {
             @Override
@@ -227,6 +231,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fserie = new JTextField();
         Styles.defaultField(fserie);
         bg.add(fserie, new AbsoluteConstraints(0, 130, -1, -1));
+        fserie.setDocument(new MaxSize(11));
         
         eserie = new JLabel("");
         Styles.errorLabel(eserie);
@@ -239,6 +244,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fvalor = new JTextField();
         Styles.defaultField(fvalor);
         bg.add(fvalor, new AbsoluteConstraints(220, 130, -1, -1));
+        fvalor.setDocument(new FormataDecimal(10, 2));
         
         evalor = new JLabel("");
         Styles.errorLabel(evalor);

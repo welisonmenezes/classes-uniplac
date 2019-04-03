@@ -6,6 +6,7 @@
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
+import CustomFields.MaxSize;
 import DAO.ProdutoDAO;
 import Models.Produto;
 import Templates.ComboItem;
@@ -142,6 +143,7 @@ public class AddProduto extends Templates.BaseFrame {
         fnome = new JTextField();
         Styles.defaultField(fnome);
         bg.add(fnome, new AbsoluteConstraints(0, 40, -1, -1));
+        fnome.setDocument(new MaxSize(45));
         
         enome = new JLabel("");
         Styles.errorLabel(enome);
@@ -168,6 +170,7 @@ public class AddProduto extends Templates.BaseFrame {
         JScrollPane sp = new JScrollPane();
         Styles.defaultTextArea(fdescricao, sp);
         bg.add(sp, new AbsoluteConstraints(0, 130, -1, -1));
+        fdescricao.setDocument(new MaxSize(255));
         
         edescricao = new JLabel("");
         Styles.errorLabel(edescricao);

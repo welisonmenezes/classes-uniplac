@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.NotasFiscais;
 
+import CustomFields.FormataDecimal;
 import DAO.ProdutoDAO;
 import Models.NotaFiscalProduto;
 import Models.Produto;
@@ -165,6 +166,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         fvalor = new JTextField();
         Styles.defaultField(fvalor);
         add(fvalor, new AbsoluteConstraints(20, 290, -1, -1));
+        fvalor.setDocument(new FormataDecimal(10, 2));
         
         evalor = new JLabel("");
         Styles.errorLabel(evalor);

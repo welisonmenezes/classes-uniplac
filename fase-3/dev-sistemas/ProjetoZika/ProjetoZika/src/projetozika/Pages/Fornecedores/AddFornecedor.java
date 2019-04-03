@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Fornecedores;
 
+import CustomFields.MaxSize;
 import DAO.FornecedorDAO;
 import Models.Fornecedor;
 import Templates.ComboItem;
@@ -135,6 +136,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         fname = new JTextField();
         Styles.defaultField(fname);
         bg.add(fname, new AbsoluteConstraints(0, 40, -1, -1));
+        fname.setDocument(new MaxSize(100));
         
         ename = new JLabel("");
         Styles.errorLabel(ename);
@@ -147,6 +149,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         ftel = new JTextField();
         Styles.defaultField(ftel);
         bg.add(ftel, new AbsoluteConstraints(220, 40, -1, -1));
+        ftel.setDocument(new MaxSize(45));
         
         etel = new JLabel("");
         Styles.errorLabel(etel);
@@ -159,6 +162,7 @@ public class AddFornecedor extends Templates.BaseFrame {
         fcnpj = new JTextField();
         Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(0, 130, -1, -1));
+        fcnpj.setDocument(new MaxSize(18));
         
         ecnpj = new JLabel("");
         Styles.errorLabel(ecnpj);

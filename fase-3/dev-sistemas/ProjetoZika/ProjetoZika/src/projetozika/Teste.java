@@ -34,36 +34,20 @@ public class Teste extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup2 = new javax.swing.ButtonGroup();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        panel1 = new java.awt.Panel();
+        textField1 = new java.awt.TextField();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1000, 600));
         setSize(new java.awt.Dimension(400, 400));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLayeredPane1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        textField1.setText("textField1");
+        getContentPane().add(textField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jLayeredPane1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
-
-        jLabel2.setText("tab 1");
-        jPanel1.add(jLabel2);
-
-        jTabbedPane1.addTab("tab1", jPanel1);
-
-        jLabel1.setText("tab 2");
-        jPanel2.add(jLabel1);
-
-        jTabbedPane1.addTab("tab2", jPanel2);
-
-        jLayeredPane1.add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 120, 70));
-
-        getContentPane().add(jLayeredPane1, java.awt.BorderLayout.CENTER);
+        jFormattedTextField1.setText("jFormattedTextField1");
+        getContentPane().add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -106,12 +90,8 @@ public class Teste extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLayeredPane jLayeredPane1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private java.awt.Panel panel1;
+    private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
 }
