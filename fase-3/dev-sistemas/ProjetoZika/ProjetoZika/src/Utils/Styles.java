@@ -12,6 +12,8 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.AbstractListModel;
@@ -108,6 +110,18 @@ public class Styles {
         field.setCaretColor(new Color(255, 255, 255));
         field.setOpaque(false);
         field.setPreferredSize(new Dimension(200, 39));
+        
+        field.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                field.setBackground(new Color(85, 87, 89));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                field.setBackground(new Color(55, 57, 59));
+            }
+        });
     }
     
     /**
@@ -132,6 +146,18 @@ public class Styles {
         field.setOpaque(false);
         panel.setViewportView(field);
         panel.setPreferredSize( new Dimension( 200, 80 ) );
+        
+        field.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                field.setBackground(new Color(85, 87, 89));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                field.setBackground(new Color(55, 57, 59));
+            }
+        });
     }
     
     /**
@@ -144,6 +170,18 @@ public class Styles {
         fDate.getDateEditor().getUiComponent().setBackground(new Color(55, 57, 59));
         fDate.getDateEditor().getUiComponent().setForeground(new Color(255, 255, 255));
         fDate.setPreferredSize(new Dimension(200, 39));
+        
+        fDate.getDateEditor().getUiComponent().addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                fDate.getDateEditor().getUiComponent().setBackground(new Color(85, 87, 89));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                fDate.getDateEditor().getUiComponent().setBackground(new Color(55, 57, 59));
+            }
+        });
     }
     
     /**
