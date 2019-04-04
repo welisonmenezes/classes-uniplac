@@ -6,6 +6,7 @@
 package projetozika.Pages.Pedidos;
 
 import Config.Environment;
+import CustomFields.MyDefaultCellEditor;
 import DAO.PedidoDAO;
 import DAO.UsuarioDAO;
 import Models.Pedido;
@@ -200,12 +201,11 @@ public class EditarPedido extends Templates.BaseFrame {
         // inicializa
         tabela.setModel(tableModel);
         
+        
+        
         TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
         JComboBox cquantidade = new JComboBox();
-        for(int i = 0; i <= 15; i++) {
-            cquantidade.addItem(i);
-        }
-        quantidadeCol.setCellEditor(new DefaultCellEditor(cquantidade));
+        quantidadeCol.setCellEditor(new MyDefaultCellEditor(cquantidade));
       
         tabela.getModel().addTableModelListener((TableModelEvent e) -> {
             // edita quantidade produto do pedido
