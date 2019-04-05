@@ -8,8 +8,9 @@ package projetozika.Pages.NotasFiscais;
 
 import DAO.NotaFiscalDAO;
 import Models.NotaFiscal;
-import Templates.ButtonEditor;
-import Templates.ButtonRenderer;
+import CustomFields.ButtonEditor;
+import CustomFields.ButtonRenderer;
+import CustomFields.MaskFactory;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -41,7 +43,7 @@ public class NotasFiscais extends Templates.BaseLayout {
 
     private JButton addMore;
     private JDateChooser fdata;
-    private JTextField fcnpj;
+    private JFormattedTextField fcnpj;
     private JLabel ldata;
     private JLabel lcnpj;
     private JButton bSearch;
@@ -216,9 +218,10 @@ public class NotasFiscais extends Templates.BaseLayout {
         addMore = new JButton(Methods.getTranslation("CriarNovo"));
         Styles.defaultButton(addMore);
         
-        fcnpj = new JTextField();
+        fcnpj = new JFormattedTextField();
         Styles.defaultField(fcnpj, 150);
         fcnpj.setText(params.getProperty("cnpj", ""));
+        fcnpj.setFormatterFactory(MaskFactory.setMaskCnpj());
         
         lcnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lcnpj, false);

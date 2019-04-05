@@ -6,6 +6,7 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import CustomFields.MaskFactory;
 import CustomFields.MaxSize;
 import DAO.UsuarioDAO;
 import Models.Usuario;
@@ -24,6 +25,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,7 +46,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private JTextField fnome;
     private JLabel lnome;
     private JLabel enome;
-    private JTextField fcpf;
+    private JFormattedTextField fcpf;
     private JLabel lcpf;
     private JLabel ecpf;
     private ButtonGroup gsexo;
@@ -177,10 +179,11 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.defaultLabel(lcpf);
         bg.add(lcpf, new AbsoluteConstraints(220, 0, -1, -1));
 
-        fcpf = new JTextField();
+        fcpf = new JFormattedTextField();
         Styles.defaultField(fcpf);
         bg.add(fcpf, new AbsoluteConstraints(220, 40, -1, -1));
         fcpf.setDocument(new MaxSize(14));
+        fcpf.setFormatterFactory(MaskFactory.setMaskCpf());
         
         ecpf = new JLabel("");
         Styles.errorLabel(ecpf);

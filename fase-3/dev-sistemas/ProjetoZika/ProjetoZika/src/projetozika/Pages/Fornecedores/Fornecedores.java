@@ -7,8 +7,9 @@ package projetozika.Pages.Fornecedores;
 
 import DAO.FornecedorDAO;
 import Models.Fornecedor;
-import Templates.ButtonEditor;
-import Templates.ButtonRenderer;
+import CustomFields.ButtonEditor;
+import CustomFields.ButtonRenderer;
+import CustomFields.MaskFactory;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -37,7 +39,7 @@ import javax.swing.table.TableColumn;
 public class Fornecedores extends Templates.BaseLayout {
     
     private JButton addMore;
-    private JTextField fCnpj;
+    private JFormattedTextField fCnpj;
     private JTextField fNome;
     private JTextField fTelefone;
     private JLabel lNome;
@@ -216,9 +218,10 @@ public class Fornecedores extends Templates.BaseLayout {
         lNome = new JLabel(Methods.getTranslation("Nome"));
         Styles.defaultLabel(lNome, false);
         
-        fCnpj = new JTextField();
+        fCnpj = new JFormattedTextField();
         Styles.defaultField(fCnpj, 150);
         fCnpj.setText(params.getProperty("cnpj", ""));
+        fCnpj.setFormatterFactory(MaskFactory.setMaskCnpj());
         
         lCnpj = new JLabel(Methods.getTranslation("CNPJ"));
         Styles.defaultLabel(lCnpj, false);

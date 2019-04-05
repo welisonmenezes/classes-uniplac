@@ -9,8 +9,8 @@ import CustomFields.FormataDecimal;
 import DAO.ProdutoDAO;
 import Models.NotaFiscalProduto;
 import Models.Produto;
-import Templates.ComboItem;
-import Templates.SuggestionsBox;
+import CustomFields.ComboItem;
+import CustomFields.SuggestionsBox;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -154,6 +154,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
         fquantidade = new JTextField();
         Styles.defaultField(fquantidade);
         add(fquantidade, new AbsoluteConstraints(20, 210, -1, -1));
+        fquantidade.setDocument(new FormataDecimal(11, 0));
         
         equantidade = new JLabel("");
         Styles.errorLabel(equantidade);

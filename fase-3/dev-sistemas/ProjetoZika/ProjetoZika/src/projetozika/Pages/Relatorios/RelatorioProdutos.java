@@ -5,8 +5,8 @@
  */
 package projetozika.Pages.Relatorios;
 
-import Templates.ComboItem;
-import Templates.SuggestionsBox;
+import CustomFields.ComboItem;
+import CustomFields.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Styles;

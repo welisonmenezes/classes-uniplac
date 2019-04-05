@@ -8,7 +8,8 @@ package projetozika.Pages.Fornecedores;
 import CustomFields.MaxSize;
 import DAO.FornecedorDAO;
 import Models.Fornecedor;
-import Templates.ComboItem;
+import CustomFields.ComboItem;
+import CustomFields.MaskFactory;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -18,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,7 +41,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private JTextField ftel;
     private JLabel ltel;
     private JLabel etel;
-    private JTextField fcnpj;
+    private JFormattedTextField fcnpj;
     private JLabel lcnpj;
     private JLabel ecnpj;
     private JButton bSave;
@@ -159,10 +161,11 @@ public class AddFornecedor extends Templates.BaseFrame {
         Styles.defaultLabel(lcnpj);
         bg.add(lcnpj, new AbsoluteConstraints(0, 90, -1, -1));
 
-        fcnpj = new JTextField();
+        fcnpj = new JFormattedTextField();
         Styles.defaultField(fcnpj);
         bg.add(fcnpj, new AbsoluteConstraints(0, 130, -1, -1));
         fcnpj.setDocument(new MaxSize(18));
+        fcnpj.setFormatterFactory(MaskFactory.setMaskCnpj());
         
         ecnpj = new JLabel("");
         Styles.errorLabel(ecnpj);

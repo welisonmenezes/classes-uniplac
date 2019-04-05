@@ -9,7 +9,7 @@ import Config.Environment;
 import CustomFields.MaxSize;
 import DAO.ProdutoDAO;
 import Models.Produto;
-import Templates.ComboItem;
+import CustomFields.ComboItem;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;

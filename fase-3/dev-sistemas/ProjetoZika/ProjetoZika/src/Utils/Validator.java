@@ -6,7 +6,7 @@
 package Utils;
 
 import Config.Environment;
-import Templates.ComboItem;
+import CustomFields.ComboItem;
 import com.toedter.calendar.JDateChooser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

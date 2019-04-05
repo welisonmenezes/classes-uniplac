@@ -13,8 +13,9 @@ import DAO.NotaFiscalDAO;
 import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
-import Templates.ComboItem;
-import Templates.SuggestionsBox;
+import CustomFields.ComboItem;
+import CustomFields.MaskFactory;
+import CustomFields.SuggestionsBox;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -55,7 +57,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private JTextField fserie;
     private JLabel  eserie;
     private JLabel lcnpj;
-    public static JTextField fcnpj;
+    public static JFormattedTextField fcnpj;
     private JLabel  ecnpj;
     private JLabel lvalor;
     private JTextField fvalor;
@@ -169,7 +171,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fnumero = new JTextField();
         Styles.defaultField(fnumero);
         bg.add(fnumero, new AbsoluteConstraints(0, 40, -1, -1));
-        fnumero.setDocument(new MaxSize(20));
+        fnumero.setDocument(new FormataDecimal(20, 0));
         
         enumero = new JLabel("");
         Styles.errorLabel(enumero);
@@ -181,8 +183,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         
         // suggestion box
         pSuggestions = new JPanel();
-        fcnpj = new JTextField();
+        fcnpj = new JFormattedTextField();
         fcnpj.setDocument(new MaxSize(18));
+        fcnpj.setFormatterFactory(MaskFactory.setMaskCnpj());
         ccnpj = new JComboBox();
         new SuggestionsBox(pSuggestions, fcnpj, ccnpj, 200) {
             @Override
@@ -231,7 +234,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fserie = new JTextField();
         Styles.defaultField(fserie);
         bg.add(fserie, new AbsoluteConstraints(0, 130, -1, -1));
-        fserie.setDocument(new MaxSize(11));
+        fserie.setDocument(new FormataDecimal(11, 0));
         
         eserie = new JLabel("");
         Styles.errorLabel(eserie);
