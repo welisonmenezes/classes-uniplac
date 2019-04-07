@@ -168,6 +168,7 @@ public class ProdutoDAO {
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
                 produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setTotal(rs.getInt("Total"));
                 produtos.add(produto);
             }
             st.close();
@@ -208,7 +209,7 @@ public class ProdutoDAO {
         String sql;
         
         if (! isCount) {
-            sql = "SELECT * FROM produtos WHERE Status != 'Deleted'";
+            sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Status != 'Deleted'";
         } else {
             sql = "SELECT COUNT(Id) FROM produtos WHERE Status != 'Deleted'";
         }

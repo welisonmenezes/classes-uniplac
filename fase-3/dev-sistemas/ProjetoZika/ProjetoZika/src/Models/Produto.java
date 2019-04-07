@@ -16,6 +16,7 @@ public class Produto {
     private String Descricao;
     private String Status;
     private String Created;
+    private int Total;
     
     public Produto() {}
     
@@ -73,6 +74,14 @@ public class Produto {
 
     public void setStatus(String Status) {
         this.Status = Status;
+    }
+
+    public int getTotal() {
+        return Total;
+    }
+
+    public void setTotal(int Total) {
+        this.Total = Total;
     }
     
     

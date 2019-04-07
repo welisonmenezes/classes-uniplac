@@ -125,12 +125,13 @@ public class Produtos extends Templates.BaseLayout {
         tabela.setRowHeight(35);
         // seta colunas
         String[] colunas = {
-            Methods.getTranslation("Codigo"), 
-            Methods.getTranslation("Nome"), 
-            Methods.getTranslation("Unidade"), 
-            Methods.getTranslation("Data"), 
+            Methods.getTranslation("Codigo"),
+            Methods.getTranslation("Nome"),
+            Methods.getTranslation("Unidade"),
+            Methods.getTranslation("Data"),
+            Methods.getTranslation("Total"),
             Methods.getTranslation("Editar"), 
-            Methods.getTranslation("Excluir"), 
+            Methods.getTranslation("Excluir"),
             Methods.getTranslation("Ver")
         };
        // seta modelo
@@ -150,6 +151,7 @@ public class Produtos extends Templates.BaseLayout {
                 p.getNome(),
                 p.getUnidade(),
                 p.getCreated(),
+                p.getTotal(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
                 Methods.getTranslation("Ver")
