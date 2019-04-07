@@ -6,15 +6,11 @@
 package DAO;
 
 import Models.Fornecedor;
-import Models.NotaFiscal;
-import Models.NotaFiscalProduto;
-import Models.Produto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  *
@@ -55,13 +51,16 @@ public class EstoqueDAO {
     
 
     public void alterar(int idProduto, int quantidade) {
-        String sql = "UPDATE estoque SET Total=Total+(?) WHERE ProdutoId=?";
+        //String sql = "UPDATE estoque SET Total=Total+(?) WHERE ProdutoId=?";
+        String sql = "UPDATE estoque SET Total = CASE WHEN (Total+(?)) < 0 THEN 0 ELSE (Total+(?)) END WHERE ProdutoId=?";
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, quantidade);
-            stmt.setInt(2, idProduto);
+            stmt.setInt(2, quantidade);
+            stmt.setInt(3, idProduto);
             stmt.execute();
             stmt.close();
+            //System.out.println(sql);
         } catch(Exception error) {
             throw new RuntimeException("EstoqueDAO.alterar: " + error);
         }
