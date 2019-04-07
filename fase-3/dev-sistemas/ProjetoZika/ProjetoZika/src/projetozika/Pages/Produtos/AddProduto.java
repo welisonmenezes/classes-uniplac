@@ -10,6 +10,7 @@ import CustomFields.MaxSize;
 import DAO.ProdutoDAO;
 import Models.Produto;
 import CustomFields.ComboItem;
+import DAO.EstoqueDAO;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -51,6 +52,7 @@ public class AddProduto extends Templates.BaseFrame {
     private JButton bSave;
     private Produto produto;
     private ProdutoDAO produtoDao;
+    private EstoqueDAO estoqueDao;
     
    /**
     * Chamada para adição
@@ -110,6 +112,7 @@ public class AddProduto extends Templates.BaseFrame {
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
         produto = new Produto();
+        estoqueDao = new EstoqueDAO();
         
         // carrega os elementos e o design da tela
         initComponents();
@@ -254,7 +257,8 @@ public class AddProduto extends Templates.BaseFrame {
                 case "add":
                     try {
                         // adiciona um novo produto
-                        produtoDao.inserir(produto);
+                        int idProduto = produtoDao.inserir(produto);
+                        estoqueDao.inserir(idProduto, 0);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));

@@ -16,6 +16,7 @@ import Models.NotaFiscalProduto;
 import CustomFields.ComboItem;
 import CustomFields.MaskFactory;
 import CustomFields.SuggestionsBox;
+import DAO.EstoqueDAO;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -79,6 +80,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
     private NotaFiscal notaFiscal;
     private Fornecedor fornecedor;
     private ArrayList<NotaFiscalProduto> notaFiscalProdutos;
+    private EstoqueDAO estoqueDao;
     
     /**
      * chamada para adição
@@ -130,6 +132,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         fornecedores = new ArrayList();
         notaFiscalDao = new NotaFiscalDAO();
         notaFiscal = new NotaFiscal();
+        estoqueDao = new EstoqueDAO();
         
         // carrega os elementos e o design da tela
         initComponents();
@@ -396,6 +399,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                                         notaProduto.setNotaFiscal(nf);
                                         // adiciona produto à nota fiscal
                                         notaFiscalDao.inserirProduto(notaProduto);
+                                        
+                                        // atualiza o estoque
+                                        estoqueDao.alterar(notaProduto.getProduto().getId(), notaProduto.getQuantidade());
                                     }
                                 });
                             }
@@ -419,7 +425,11 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                             //notaFiscalDao.deletarProdutos(notaFiscal.getId());
                             ArrayList<NotaFiscalProduto> oldProdutos = notaFiscalDao.selecionarProdutos(notaFiscal.getId()+"");
                             oldProdutos.forEach(oldProduto -> {
+                                // deleta o produto
                                 notaFiscalDao.deletarProduto(notaFiscal.getId(), oldProduto.getProduto().getId());
+                                
+                                // subtrai do estoque
+                                estoqueDao.alterar(oldProduto.getProduto().getId(), -oldProduto.getQuantidade());
                             });
                             if (panelListarProdutos.notaProdutos.size() > 0) {
                                 panelListarProdutos.notaProdutos.forEach(notaProduto -> {
@@ -428,6 +438,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                                         notaProduto.setNotaFiscal(nf);
                                         // adiciona nova lista de produtos
                                         notaFiscalDao.inserirProduto(notaProduto);
+                                        
+                                        // atualiza o estoque
+                                        estoqueDao.alterar(notaProduto.getProduto().getId(), notaProduto.getQuantidade());
                                     }
                                 });
                             }

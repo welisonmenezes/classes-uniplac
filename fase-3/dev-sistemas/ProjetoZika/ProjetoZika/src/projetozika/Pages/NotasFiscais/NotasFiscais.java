@@ -11,6 +11,8 @@ import Models.NotaFiscal;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import CustomFields.MaskFactory;
+import DAO.EstoqueDAO;
+import Models.NotaFiscalProduto;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -53,6 +55,7 @@ public class NotasFiscais extends Templates.BaseLayout {
     private JTextField fnumero;
     private JLabel lnumero;
     private static DecimalFormat df2 = new DecimalFormat(".##");
+    private EstoqueDAO estoqueDao;
     
     /**
      * Creates new form NotasFiscais
@@ -75,6 +78,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         notaFiscalDao = new NotaFiscalDAO();
         notasFiscais = notaFiscalDao.selecionar(params);
         totalNotasFiscais = notaFiscalDao.total(params);
+        estoqueDao = new EstoqueDAO();
         
         // constroi o layout
         initComponents();
@@ -187,6 +191,13 @@ public class NotasFiscais extends Templates.BaseLayout {
                     // deleta o a nota fiscal da base
                     try {
                         notaFiscalDao.deletar(Integer.parseInt(idTabel));
+                        
+                        ArrayList<NotaFiscalProduto> oldProdutos = notaFiscalDao.selecionarProdutos(idTabel);
+                        oldProdutos.forEach(oldProduto -> {
+                            // subtrai do estoque
+                            estoqueDao.alterar(oldProduto.getProduto().getId(), -oldProduto.getQuantidade());
+                        });
+                        
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
                     } catch(Exception error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
