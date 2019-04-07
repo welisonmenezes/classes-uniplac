@@ -413,10 +413,14 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                     self.dispose();
                     try {
                         // edita nota fiscal
-                        notaFiscalDao.alterar(notaFiscal);
+                        //notaFiscalDao.alterar(notaFiscal);
                         if (notaFiscal.getId() > 0) {
                             // deleta lista de produtos antiga
-                            notaFiscalDao.deletarProdutos(notaFiscal.getId());
+                            //notaFiscalDao.deletarProdutos(notaFiscal.getId());
+                            ArrayList<NotaFiscalProduto> oldProdutos = notaFiscalDao.selecionarProdutos(notaFiscal.getId()+"");
+                            oldProdutos.forEach(oldProduto -> {
+                                notaFiscalDao.deletarProduto(notaFiscal.getId(), oldProduto.getProduto().getId());
+                            });
                             if (panelListarProdutos.notaProdutos.size() > 0) {
                                 panelListarProdutos.notaProdutos.forEach(notaProduto -> {
                                     NotaFiscal nf = notaFiscalDao.selecionarPorId(notaFiscal.getId()+"");

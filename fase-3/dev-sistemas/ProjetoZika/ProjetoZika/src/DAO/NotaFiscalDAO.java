@@ -135,6 +135,24 @@ public class NotaFiscalDAO {
     }
     
     /**
+     * Deleta o produto da nota fiscal
+     * @param notaId o Id da nota fiscal 
+     * @param ProdutoId o Id do produto 
+     */
+    public void deletarProduto(int notaId, int ProdutoId) {
+        String sql = "DELETE FROM notasfiscaisprodutos WHERE NotaFiscalId=? AND ProdutoId=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, notaId);
+            stmt.setInt(2, ProdutoId);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.deletarProduto: " + error);
+        }
+    }
+    
+    /**
      * 'deleta' a nota fiscal da visualização, na base de dados altera apenas o status para 'Deleted'
      * @param notaId o Id da nota fiscal a ser 'deletado'
      */
