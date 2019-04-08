@@ -211,7 +211,7 @@ public class ProdutoDAO {
         if (! isCount) {
             sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Status != 'Deleted'";
         } else {
-            sql = "SELECT COUNT(Id) FROM produtos WHERE Status != 'Deleted'";
+            sql = "SELECT COUNT(Id) FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Status != 'Deleted'";
         }
         
         if (! nome.equals("")) {
@@ -232,7 +232,7 @@ public class ProdutoDAO {
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
+        System.out.println(sql);
         return sql;
     }
 }

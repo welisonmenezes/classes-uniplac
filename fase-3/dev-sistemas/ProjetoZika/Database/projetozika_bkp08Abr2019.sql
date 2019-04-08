@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27-Mar-2019 às 19:43
+-- Generation Time: 08-Abr-2019 às 20:54
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -33,6 +33,34 @@ CREATE TABLE `estoque` (
   `Total` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `estoque`
+--
+
+INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
+(1, 45),
+(2, 44),
+(3, 21),
+(4, 33),
+(5, 21),
+(6, 65),
+(7, 14),
+(8, 76),
+(9, 12),
+(10, 31),
+(11, 21),
+(12, 11),
+(13, 8),
+(14, 21),
+(15, 44),
+(16, 12),
+(17, 0),
+(18, 43),
+(19, 13),
+(20, 7),
+(21, 76),
+(22, 27);
+
 -- --------------------------------------------------------
 
 --
@@ -53,10 +81,13 @@ CREATE TABLE `fornecedores` (
 --
 
 INSERT INTO `fornecedores` (`Id`, `Cnpj`, `Nome`, `Telefone`, `Status`, `Created`) VALUES
-(1, '11111111111', 'Casa do papel', '9911991199', 'Publish', '2019-03-27 00:00:00'),
-(2, '22222222222', 'Escritórios SA', '333222333', 'Publish', '2019-03-27 00:00:00'),
-(3, '33333333333', 'Papelaria Rosário', '4343434334', 'Publish', '2019-03-27 00:00:00'),
-(4, '44444444444', 'Depositoffice Ltda', '44445555', 'Publish', '2019-03-27 00:00:00');
+(1, '11.111.111/1156-67', 'Casa do papel', '9911991199', 'Publish', '2019-03-27 00:00:00'),
+(2, '22.222.222/2334-44', 'Escritórios SA', '333222333', 'Publish', '2019-03-27 00:00:00'),
+(3, '33.333.333/3333-33', 'Papelaria Rosário', '4343434334', 'Publish', '2019-03-27 00:00:00'),
+(4, '44.444.444/4445-55', 'Depositoffice Ltda', '4444555566', 'Publish', '2019-03-27 00:00:00'),
+(5, '55.555.555/5553-33', 'Casa do Papel', '33224455', 'Publish', '2019-03-30 00:00:00'),
+(6, '66.666.666/6633-33', 'Staples.com', '333333333', 'Publish', '2019-03-31 00:00:00'),
+(7, '77.777.777/7773-33', 'Venda ESC SA', '23234545', 'Publish', '2019-04-02 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -68,12 +99,26 @@ CREATE TABLE `notasfiscais` (
   `Id` int(11) NOT NULL,
   `Numero` bigint(20) NOT NULL,
   `Serie` int(11) NOT NULL,
-  `Valor` double NOT NULL,
-  `Data` datetime NOT NULL,
+  `Valor` double(11,2) NOT NULL,
+  `Data` date NOT NULL,
   `Status` varchar(45) NOT NULL,
   `Created` datetime NOT NULL,
   `FornecedorId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `notasfiscais`
+--
+
+INSERT INTO `notasfiscais` (`Id`, `Numero`, `Serie`, `Valor`, `Data`, `Status`, `Created`, `FornecedorId`) VALUES
+(2, 222222, 22, 3.00, '2019-03-06', 'Publish', '2019-03-30 00:00:00', 2),
+(3, 43443, 663, 45.00, '2018-03-07', 'Publish', '2019-03-30 00:00:00', 4),
+(4, 76765554, 3221, 50.56, '2018-03-05', 'Publish', '2019-03-30 00:00:00', 3),
+(5, 5645436, 3222, 32.00, '2019-03-04', 'Publish', '2019-03-31 00:00:00', 5),
+(6, 533253, 323, 21.89, '2019-03-31', 'Publish', '2019-03-31 00:00:00', 6),
+(7, 787878, 3234, 23.90, '2019-04-03', 'Publish', '2019-04-02 00:00:00', 7),
+(8, 33333333, 2323, 33.33, '2019-04-03', 'Deleted', '2019-04-07 00:00:00', 1),
+(9, 3, 54566, 40.00, '2019-04-08', 'Publish', '2019-04-08 00:00:00', 2);
 
 -- --------------------------------------------------------
 
@@ -84,10 +129,40 @@ CREATE TABLE `notasfiscais` (
 CREATE TABLE `notasfiscaisprodutos` (
   `NotaFiscalId` int(11) NOT NULL,
   `ProdutoId` int(11) NOT NULL,
-  `Valor` double NOT NULL,
+  `Valor` double(11,2) NOT NULL,
   `Quantidade` int(11) NOT NULL,
   `Created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `notasfiscaisprodutos`
+--
+
+INSERT INTO `notasfiscaisprodutos` (`NotaFiscalId`, `ProdutoId`, `Valor`, `Quantidade`, `Created`) VALUES
+(2, 13, 2.00, 2, '2019-03-30 00:00:00'),
+(3, 3, 6.00, 4, '2019-03-31 00:00:00'),
+(3, 6, 2.50, 1, '2019-03-31 00:00:00'),
+(3, 7, 1.00, 3, '2019-03-31 00:00:00'),
+(3, 11, 8.90, 5, '2019-03-31 00:00:00'),
+(4, 1, 2.00, 2, '2019-03-31 00:00:00'),
+(4, 5, 3.50, 5, '2019-03-31 00:00:00'),
+(4, 11, 1.00, 1, '2019-03-31 00:00:00'),
+(4, 14, 2.00, 2, '2019-03-31 00:00:00'),
+(5, 4, 2.00, 3, '2019-03-31 00:00:00'),
+(5, 16, 4.90, 1, '2019-03-31 00:00:00'),
+(5, 17, 4.50, 1, '2019-03-31 00:00:00'),
+(6, 1, 2.00, 2, '2019-03-31 00:00:00'),
+(6, 4, 1.00, 1, '2019-03-31 00:00:00'),
+(6, 5, 1.00, 1, '2019-03-31 00:00:00'),
+(6, 12, 1.70, 1, '2019-03-31 00:00:00'),
+(6, 14, 0.97, 1, '2019-03-31 00:00:00'),
+(6, 15, 0.90, 2, '2019-03-31 00:00:00'),
+(6, 17, 4.00, 1, '2019-03-31 00:00:00'),
+(6, 18, 2.00, 2, '2019-03-31 00:00:00'),
+(7, 22, 2.22, 2, '2019-04-07 00:00:00'),
+(8, 22, 1.11, 1, '2019-04-07 00:00:00'),
+(9, 2, 2.22, 41, '2019-04-08 00:00:00'),
+(9, 22, 1.22, 22, '2019-04-08 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -99,8 +174,26 @@ CREATE TABLE `pedidos` (
   `Id` int(11) NOT NULL,
   `Status` varchar(45) NOT NULL,
   `Created` datetime NOT NULL,
-  `UsuarioId` int(11) NOT NULL
+  `UsuarioId` int(11) NOT NULL,
+  `AlmoxarifeId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `pedidos`
+--
+
+INSERT INTO `pedidos` (`Id`, `Status`, `Created`, `UsuarioId`, `AlmoxarifeId`) VALUES
+(6, 'Negado', '2019-03-08 00:00:00', 5, NULL),
+(7, 'Pendente', '2019-04-01 00:00:00', 6, NULL),
+(8, 'Pendente', '2019-04-01 00:00:00', 8, NULL),
+(9, 'Aguardando entrega', '2019-04-01 00:00:00', 8, 5),
+(10, 'Aguardando entrega', '2019-04-02 00:00:00', 7, NULL),
+(11, 'Aguardando entrega', '2019-04-02 00:00:00', 5, 5),
+(12, 'Finalizado', '2019-04-02 00:00:00', 5, NULL),
+(13, 'Aguardando entrega', '2019-04-02 00:00:00', 5, NULL),
+(14, 'Negado', '2018-04-03 00:00:00', 5, NULL),
+(15, 'Aguardando entrega', '2019-04-02 00:00:00', 5, NULL),
+(16, 'Aguardando entrega', '2019-04-05 00:00:00', 5, 5);
 
 -- --------------------------------------------------------
 
@@ -115,6 +208,44 @@ CREATE TABLE `pedidosprodutos` (
   `QuantidadeSolicitada` int(11) NOT NULL,
   `QuantidadeAprovada` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `pedidosprodutos`
+--
+
+INSERT INTO `pedidosprodutos` (`Id`, `PedidoId`, `ProdutoId`, `QuantidadeSolicitada`, `QuantidadeAprovada`) VALUES
+(5, 6, 1, 3, 3),
+(6, 6, 7, 2, 2),
+(7, 6, 6, 1, 1),
+(8, 7, 4, 1, 1),
+(9, 7, 14, 4, 4),
+(10, 8, 2, 2, 2),
+(11, 8, 12, 3, 3),
+(14, 10, 17, 4, 1),
+(15, 10, 12, 1, 1),
+(16, 10, 11, 2, 2),
+(17, 10, 1, 2, 2),
+(18, 10, 4, 4, 0),
+(19, 11, 21, 2, 0),
+(20, 11, 20, 3, 0),
+(21, 11, 2, 1, 1),
+(22, 12, 5, 3, 3),
+(23, 12, 1, 1, 1),
+(24, 12, 15, 1, 1),
+(25, 13, 21, 1, 1),
+(26, 13, 7, 3, 3),
+(27, 14, 3, 4, 0),
+(28, 14, 4, 1, 0),
+(29, 14, 12, 2, 0),
+(30, 14, 11, 1, 0),
+(40, 15, 1, 4, 1),
+(41, 15, 5, 4, 2),
+(42, 15, 2, 4, 3),
+(43, 9, 3, 2, 2),
+(44, 9, 11, 1, 1),
+(45, 9, 8, 1, 1),
+(46, 16, 17, 14, 5),
+(47, 16, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -144,12 +275,20 @@ INSERT INTO `produtos` (`Id`, `Nome`, `Unidade`, `Descricao`, `Status`, `Created
 (6, 'Clips Coloridos', 'Caixa', 'Clips coloridos jumbo caixa com 200 unidades', 'Publish', '2019-03-27 00:00:00'),
 (7, 'Post-It Amarelo', 'Pacote', 'Post-It 4 bocos amarelo', 'Publish', '2019-03-27 00:00:00'),
 (8, 'Corretivo 18ml', 'Unidade', 'Líquido corretivo office blanc', 'Publish', '2019-03-27 00:00:00'),
-(9, 'fafa', 'Quilo', 'faa', 'Deleted', '2019-03-27 00:00:00'),
-(10, 'afa', 'Quilo', 'fa', 'Deleted', '2019-03-27 00:00:00'),
+(9, 'Tinta Carimbo', 'Litro', 'Tinta para carimbo litro', 'Publish', '2019-03-27 00:00:00'),
+(10, 'Lapiseira', 'Pacote', 'Lapiseira pacote 3 unidades', 'Publish', '2019-03-27 00:00:00'),
 (11, 'Pasta Ofício', 'Unidade', 'Pasta AZ ofício economic', 'Publish', '2019-03-27 00:00:00'),
 (12, 'Borracha Plástica', 'Unidade', 'Borracha plástica stapless', 'Publish', '2019-03-27 00:00:00'),
-(13, 'Marca Texto', 'Unidade', 'Marca texto azul stapless', 'Publish', '2019-03-27 00:00:00'),
-(14, 'Marcatexto Azull', 'Unidade', 'Marcatexto azul stapless', 'Publish', '2019-03-27 00:00:00');
+(13, 'Marcatexto Verde', 'Unidade', 'Marca texto verde stapless', 'Publish', '2019-03-27 00:00:00'),
+(14, 'Marcatexto Azul', 'Unidade', 'Marcatexto azul stapless', 'Publish', '2019-03-27 00:00:00'),
+(15, 'Régua 30cm', 'Unidade', 'Régua 30cm transparente', 'Publish', '2019-03-30 00:00:00'),
+(16, 'Alfinete Mapa', 'Pacote', 'Alfinetes para mapa amarelo', 'Publish', '2019-03-30 00:00:00'),
+(17, 'Porta Canetas', 'Unidade', 'Porta lápis e caneta simples', 'Publish', '2019-03-31 00:00:00'),
+(18, 'Saco Plástico Ofício', 'Pacote', 'Saco plástico ofício sem furos. Pacote com 100 unidades', 'Publish', '2019-03-31 00:00:00'),
+(19, 'Mouse Dell', 'Unidade', 'Mouse sem fio Dell', 'Publish', '2019-04-02 00:00:00'),
+(20, 'Caneta Compact Azul', 'Unidade', 'Caneta Compact azul ponta fina', 'Publish', '2019-04-02 00:00:00'),
+(21, 'Cola 1kg Tenaz', 'Quilo', 'Colar Tenaz 1kg', 'Publish', '2019-04-02 00:00:00'),
+(22, 'Tesoura Tramontina', 'Unidade', 'Tesoura Tramontina inox', 'Publish', '2019-04-07 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -165,7 +304,7 @@ CREATE TABLE `usuarios` (
   `Email` varchar(100) DEFAULT NULL,
   `Telefone` varchar(45) DEFAULT NULL,
   `Celular` varchar(45) DEFAULT NULL,
-  `DataNascimenot` datetime NOT NULL,
+  `DataNascimento` date NOT NULL,
   `Setor` varchar(45) NOT NULL,
   `Permissao` varchar(45) NOT NULL,
   `Login` varchar(45) NOT NULL,
@@ -175,6 +314,16 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
+-- Extraindo dados da tabela `usuarios`
+--
+
+INSERT INTO `usuarios` (`Id`, `CPF`, `Nome`, `Sexo`, `Email`, `Telefone`, `Celular`, `DataNascimento`, `Setor`, `Permissao`, `Login`, `Senha`, `Status`, `Created`) VALUES
+(5, '11111111111', 'Welison Menezes', 'Masculino', 'welison@email.com', '333333332222', '99999999', '1987-01-06', 'Administração', 'Administrador', 'welison', '123456', 'Publish', '2019-03-28 00:00:00'),
+(6, '22222222222', 'José', 'Masculino', 'js@email.com', '33333333', '99999999', '1999-03-06', 'Recursos Humanos', 'Usuário', 'jose', '123456', 'Publish', '2019-03-28 00:00:00'),
+(7, '33333333333', 'Maria Luiza', 'Feminino', 'maria@luiza.com', '22111133', '99889988', '2000-06-05', 'Recursos Humanos', 'Almoxarife', 'maria', '123456', 'Publish', '2019-03-28 00:00:00'),
+(8, '44444444444', 'Bruce Banner', 'Masculino', 'bat@email', '22333344', '99009900', '1999-07-06', 'Contabilidade', 'Usuário', 'batman', '123456', 'Publish', '2019-03-29 00:00:00');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -182,13 +331,15 @@ CREATE TABLE `usuarios` (
 -- Indexes for table `estoque`
 --
 ALTER TABLE `estoque`
+  ADD UNIQUE KEY `ProdutoId` (`ProdutoId`),
   ADD KEY `fk_Estoque_Produtos1_idx` (`ProdutoId`);
 
 --
 -- Indexes for table `fornecedores`
 --
 ALTER TABLE `fornecedores`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `Cnpj` (`Cnpj`);
 
 --
 -- Indexes for table `notasfiscais`
@@ -242,37 +393,37 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `fornecedores`
 --
 ALTER TABLE `fornecedores`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `notasfiscais`
 --
 ALTER TABLE `notasfiscais`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pedidosprodutos`
 --
 ALTER TABLE `pedidosprodutos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
