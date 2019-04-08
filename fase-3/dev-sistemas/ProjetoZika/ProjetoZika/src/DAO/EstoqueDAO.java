@@ -6,6 +6,8 @@
 package DAO;
 
 import Models.Fornecedor;
+import Models.Produto;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,6 +65,22 @@ public class EstoqueDAO {
             //System.out.println(sql);
         } catch(Exception error) {
             throw new RuntimeException("EstoqueDAO.alterar: " + error);
+        }
+    }
+    
+    public int quantidade(int IdProduto) {
+        String sql = "SELECT total FROM estoque WHERE ProdutoId=" + IdProduto;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            int total = 0;
+            while(rs.next()) {
+                total = rs.getInt("Total");
+            }
+            st.close();
+            return total;
+        } catch (Exception error) {
+            throw new RuntimeException("EstoqueDAO.quantidade: " + error);
         }
     }
 }

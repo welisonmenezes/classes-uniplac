@@ -6,9 +6,11 @@
 package projetozika.Pages.Pedidos;
 
 import Config.Environment;
-import CustomFields.MyDefaultCellEditor;
+import CustomFields.FormataDecimal;
+import DAO.EstoqueDAO;
 import DAO.PedidoDAO;
 import DAO.UsuarioDAO;
+import Models.EstoqueAviso;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Usuario;
@@ -19,8 +21,11 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Properties;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -28,7 +33,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -50,6 +58,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private final PedidoDAO pedidoDao;
     private Pedido pedido;
     private Usuario almoxarife;
+    private final EstoqueDAO estoqueDao;
     
     /**
      * chamada pra ver/editar pedido
@@ -64,6 +73,7 @@ public class EditarPedido extends Templates.BaseFrame {
         
         pedidoDao = new PedidoDAO();
         pedidosProdutos = pedidoDao.selecionarPorId(id);
+        estoqueDao = new EstoqueDAO();
         
         if (pedidosProdutos.size() > 0) {
             pedido = pedidosProdutos.get(0).getPedido();
@@ -200,27 +210,46 @@ public class EditarPedido extends Templates.BaseFrame {
         // inicializa
         tabela.setModel(tableModel);
         
-        
-        
-        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
-        JComboBox cquantidade = new JComboBox();
-        quantidadeCol.setCellEditor(new MyDefaultCellEditor(cquantidade));
-      
-        tabela.getModel().addTableModelListener((TableModelEvent e) -> {
-            // edita quantidade produto do pedido
-            if (!tabela.getSelectionModel().isSelectionEmpty()) {
-                String newQtd = Methods.selectedTableItemValue(tabela, 3);
-                String idTable = Methods.selectedTableItemId(tabela);
-                for (int i = 0; i < pedidosProdutos.size(); i++) {
-                    PedidoProduto pp = pedidosProdutos.get(i);
-                    int idModel = pp.getId();
-                    if (idTable.equals(""+idModel)) {
-                        pp.setQuantidadeAprovada(Integer.parseInt(newQtd));
-                        break;
-                    }
-                }
+        JTextField tmpTxt = new JTextField();
+        tmpTxt.setDocument(new FormataDecimal(1,0));
+        // no evento do campo, atualizar quantidade com valor digitado
+        tmpTxt.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                JTextField source = (JTextField) e.getSource();
+                changeTableValue(source.getText());
+            }
+            public void keyTyped(KeyEvent e) {
+                JTextField source = (JTextField) e.getSource();
+                changeTableValue(source.getText());
+            }
+            public void keyPressed(KeyEvent e) {
+                JTextField source = (JTextField) e.getSource();
+                changeTableValue(source.getText());
             }
         });
+        
+        TableColumn quantidadeCol = tabela.getColumnModel().getColumn(3);
+        quantidadeCol.setCellEditor(new DefaultCellEditor(tmpTxt));
+        
+    }
+    
+    /**
+     * Troca o valor da quantidade
+     * @param value a nova quantidade
+     */
+    private void changeTableValue (String value){
+        int row = tabela.getSelectedRow();
+        if (row != -1) {
+            String idTable = tabela.getValueAt(row, 0).toString();
+            for (int i = 0; i < pedidosProdutos.size(); i++) {
+                PedidoProduto pp = pedidosProdutos.get(i);
+                int idModel = pp.getId();
+                if (idTable.equals(""+idModel)) {
+                    pp.setQuantidadeAprovada(Integer.parseInt(value));
+                    break;
+                }
+            }
+        }
     }
     
     private Timer t;
@@ -228,22 +257,48 @@ public class EditarPedido extends Templates.BaseFrame {
         
         t = new Timer(500, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
-            self.dispose();
+            
             
             switch (action) {
                 case "finalizar": 
                     // finaliza o pedido (colocá-o no modo de Aguardando entrega)
+                    ArrayList<EstoqueAviso> avisos = new ArrayList();
                     if (pedidosProdutos.size() > 0) {
-                        pedido.setStatus(Methods.getTranslation("AguardandoEntrega"));
-                        pedidoDao.finalizar(pedido, Environment.getLoggedUser());
+                        
+                        // verifica se algum produto é insuficiente no estoque
                         pedidosProdutos.forEach(pp -> {
-                            pedidoDao.mudaQuantidadeAprovada(pp);
+                            int quantidade = estoqueDao.quantidade(pp.getProduto().getId());
+                            if (pp.getQuantidadeAprovada() > quantidade) {
+                                EstoqueAviso tmpAviso = new EstoqueAviso(pp.getProduto(), quantidade);
+                                avisos.add(tmpAviso);
+                            }
                         });
-                        JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                        
+                        // Finaliza o pedido para entrega
+                        if (avisos.size() > 0) {
+                            Navigation.updateLayout("avisoQuantidade", avisos);
+                        } else {
+                            self.dispose();
+                            
+                            //*
+                            pedido.setStatus(Methods.getTranslation("AguardandoEntrega"));
+                            pedidoDao.finalizar(pedido, Environment.getLoggedUser());
+                            pedidosProdutos.forEach(pp -> {
+                                estoqueDao.alterar(pp.getProduto().getId(), -pp.getQuantidadeAprovada());
+                                pedidoDao.mudaQuantidadeAprovada(pp);
+                            });
+                            //*/
+                            JOptionPane.showMessageDialog(null, Methods.getTranslation("OkItemAguardandoRetirada"));
+                            
+                            Navigation.updateLayout("", new Properties());
+                            Navigation.updateLayout("pedidos", params);
+                        }
+
                     }
                     break;
                 case "negar":
                     // nega o pedido
+                    self.dispose();
                     if (pedidosProdutos.size() > 0) {
                         pedido.setStatus(Methods.getTranslation("Negado"));
                         pedidosProdutos.forEach(pp -> {
@@ -253,11 +308,13 @@ public class EditarPedido extends Templates.BaseFrame {
                         pedidoDao.finalizar(pedido, Environment.getLoggedUser());
                     }
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("OkPedidoNegado"));
+                    
+                    Navigation.updateLayout("", new Properties());
+                    Navigation.updateLayout("pedidos", params);
                     break;
             }
             
-            Navigation.updateLayout("", new Properties());
-            Navigation.updateLayout("pedidos", params);
+            
             
             t.stop();
         });
