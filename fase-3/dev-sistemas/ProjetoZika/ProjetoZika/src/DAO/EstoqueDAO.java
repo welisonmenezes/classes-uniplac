@@ -83,4 +83,18 @@ public class EstoqueDAO {
             throw new RuntimeException("EstoqueDAO.quantidade: " + error);
         }
     }
+    
+    public void normalizarEstoqueProduto(int idProduto, int quantidade) {
+        String sql = "UPDATE estoque SET Total = ? WHERE ProdutoId = ?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, quantidade);
+            stmt.setInt(2, idProduto);
+            stmt.execute();
+            stmt.close();
+            //System.out.println(sql);
+        } catch(Exception error) {
+            throw new RuntimeException("EstoqueDAO.normalizarEstoqueProduto: " + error);
+        }
+    }
 }

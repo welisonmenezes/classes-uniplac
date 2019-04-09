@@ -8,6 +8,9 @@ package projetozika.Pages.Produtos;
 import CustomFields.ComboItem;
 import CustomFields.FormataDecimal;
 import CustomFields.MaxSize;
+import DAO.EstoqueDAO;
+import DAO.ProdutoDAO;
+import Models.Produto;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -38,6 +41,9 @@ public class NormalizaEstoque extends Templates.BaseFrame {
     private JLabel eqtd;
     private JButton bSave;
     private String id;
+    private final ProdutoDAO produtoDao;
+    private final Produto produto;
+    private final EstoqueDAO estoqueDao;
 
     /**
      * Creates new form NormalizaEstoque
@@ -48,6 +54,11 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         this.params = params;
         
         initComponents();
+        
+        // cria objetos para carregar dados posteriormente
+        produtoDao = new ProdutoDAO();
+        produto = produtoDao.selecionarPorId(id);
+        estoqueDao = new EstoqueDAO();
         
         Styles.internalFrame(this, 280, 360);
         Methods.setAccessibility(this);
@@ -77,6 +88,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         Styles.defaultField(fqtd);
         bg.add(fqtd, new AbsoluteConstraints(0, 70, -1, -1));
         fqtd.setDocument(new FormataDecimal(11, 0));
+        fqtd.setText(produto.getTotal()+"");
         
         eqtd = new JLabel("");
         Styles.errorLabel(eqtd);
@@ -95,7 +107,6 @@ public class NormalizaEstoque extends Templates.BaseFrame {
             boolean isValid = true;
             if (! Validator.validaNumero(fqtd, eqtd)) isValid = false;
             if (isValid) {
-                System.out.println("Salva aqui");
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             }
@@ -119,7 +130,11 @@ public class NormalizaEstoque extends Templates.BaseFrame {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
             
-            // database request here
+            int qtd = Integer.parseInt(fqtd.getText());
+            int prodId = produto.getId();
+            estoqueDao.normalizarEstoqueProduto(prodId, qtd);
+            
+            // recarrega janelas anteriores
             Navigation.updateLayout("", new Properties());
             Navigation.updateLayout("produtos", params);
             Navigation.updateLayout("editarProduto", id, params);
