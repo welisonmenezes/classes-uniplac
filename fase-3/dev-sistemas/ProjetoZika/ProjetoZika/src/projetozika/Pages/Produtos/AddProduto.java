@@ -239,6 +239,7 @@ public class AddProduto extends Templates.BaseFrame {
                     public void mouseClicked(MouseEvent evt) {
                         if (!normalizaProduto.isEnabled()) return;
                         Navigation.updateLayout("normalizaEstoque", produto.getId()+"", params);
+                        self.dispose();
                     }
                 });
             }
