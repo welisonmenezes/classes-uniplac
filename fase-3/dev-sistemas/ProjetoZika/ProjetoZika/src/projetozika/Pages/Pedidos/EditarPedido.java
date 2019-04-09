@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -35,9 +34,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -245,6 +241,7 @@ public class EditarPedido extends Templates.BaseFrame {
                 PedidoProduto pp = pedidosProdutos.get(i);
                 int idModel = pp.getId();
                 if (idTable.equals(""+idModel)) {
+                    if (value.equals("")) value = "0";
                     pp.setQuantidadeAprovada(Integer.parseInt(value));
                     break;
                 }

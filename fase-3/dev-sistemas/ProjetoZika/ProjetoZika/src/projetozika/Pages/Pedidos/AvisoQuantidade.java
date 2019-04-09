@@ -9,6 +9,8 @@ import Models.EstoqueAviso;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,14 +25,16 @@ public class AvisoQuantidade extends Templates.BaseFrame {
     
     private JScrollPane bgScroll;
     private JPanel bg;
-    private ArrayList<EstoqueAviso> avisos;
+    private final ArrayList<EstoqueAviso> avisos;
     
     /**
      * Creates new form AvisoQuantidade
+     * @param avisos Lista de produtos com quantidade insuficiente em estoque
      */
     public AvisoQuantidade(ArrayList<EstoqueAviso> avisos) {
         this.avisos = avisos;
-        initPage("Estoque insuficiente p/ os itens abaixo");
+        //initPage("Estoque insuficiente p/ os itens abaixo");
+        initPage(Methods.getTranslation("EstoqueInsuficienteParaOsItensAbaixo"));
     }
     
     /**
@@ -48,9 +52,9 @@ public class AvisoQuantidade extends Templates.BaseFrame {
         addCenterContent();
         
         // seta a página pai como página corrente
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+            public void windowClosed(WindowEvent windowEvent) {
                 Navigation.currentPage = "pedidos";
             }
         });
@@ -68,11 +72,11 @@ public class AvisoQuantidade extends Templates.BaseFrame {
         bg.setOpaque(false);
         
         avisos.forEach(aviso -> {
-            String strLabel = "O produto" + " "
+            String strLabel = Methods.getTranslation("OProduto") + " "
                     + aviso.getProduto().getNome() + " " 
-                    + "contém apenas" + " "
+                    + Methods.getTranslation("contemApenas") + " "
                     + aviso.getQuantidade() + " "
-                    + "item(s) em estoque";
+                    + Methods.getTranslation("itensEmEstoque");
             
             JLabel tmpL = new JLabel(strLabel);
             Styles.errorLabel(tmpL);
