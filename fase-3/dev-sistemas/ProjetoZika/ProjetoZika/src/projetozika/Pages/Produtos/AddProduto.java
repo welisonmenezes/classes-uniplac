@@ -16,8 +16,11 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import Utils.Validator;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -53,6 +56,9 @@ public class AddProduto extends Templates.BaseFrame {
     private Produto produto;
     private ProdutoDAO produtoDao;
     private EstoqueDAO estoqueDao;
+    private JLabel normalizaProduto;
+    private JLabel ltotal;
+    private String id;
     
    /**
     * Chamada para adição
@@ -89,6 +95,7 @@ public class AddProduto extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         this.params = params;
+        this.id = id;
         
         switch (this.mode) {
             case "view":
@@ -114,9 +121,17 @@ public class AddProduto extends Templates.BaseFrame {
         produto = new Produto();
         estoqueDao = new EstoqueDAO();
         
+        if (this.mode.equals("view") || this.mode.equals("edit")) {
+            produto = produtoDao.selecionarPorId(id);
+        }
+        
         // carrega os elementos e o design da tela
         initComponents();
-        Styles.internalFrame(this, 450, 400);
+        if (this.mode.equals("view") || this.mode.equals("edit")) {
+            Styles.internalFrame(this, 450, 460);
+        } else {
+            Styles.internalFrame(this, 450, 400);
+        }
         Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
@@ -207,6 +222,28 @@ public class AddProduto extends Templates.BaseFrame {
 
         });
         
+        if (this.mode.equals("view") || this.mode.equals("edit")) {
+            ltotal = new JLabel(Methods.getTranslation("TotalEmEstoque") + ": " + produto.getTotal());
+            Styles.defaultLabel(ltotal);
+            bg.add(ltotal, new AbsoluteConstraints(0, 220, -1, -1));
+
+            if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))
+                && this.mode.equals("edit")) {
+                normalizaProduto = new JLabel("<html><u>"+ Methods.getTranslation("NormalizarEstoque") +"</u></html>");
+                Styles.defaultLabel(normalizaProduto);
+                normalizaProduto.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                bg.add(normalizaProduto, new AbsoluteConstraints(160, 220, -1, -1));
+                // button click add fornecedor
+                normalizaProduto.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent evt) {
+                        if (!normalizaProduto.isEnabled()) return;
+                        Navigation.updateLayout("normalizaEstoque", produto.getId()+"", params);
+                    }
+                });
+            }
+        }
+        
         pCenter.add(bg);
     }
     
@@ -216,7 +253,6 @@ public class AddProduto extends Templates.BaseFrame {
      */
     private void fillFields(String id) {
         // carrega os dados do produto corrente baseado no id passado
-        produto = produtoDao.selecionarPorId(id);
         if (produto != null) {
             fnome.setText(produto.getNome());
             funidade.setSelectedItem(produto.getUnidade());

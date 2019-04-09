@@ -27,6 +27,7 @@ import projetozika.Pages.Pedidos.EntregarPedido;
 import projetozika.Pages.Pedidos.Pedidos;
 import projetozika.Pages.Perfil.Perfil;
 import projetozika.Pages.Produtos.AddProduto;
+import projetozika.Pages.Produtos.NormalizaEstoque;
 import projetozika.Pages.Produtos.Produtos;
 import projetozika.Pages.Relatorios.Relatorios;
 import projetozika.Pages.SeusPedidos.FazerPedido;
@@ -142,6 +143,11 @@ public class Navigation {
             case "editarSeuPedido":
                 updateSatusMenu("seusPedidos");
                 tmpFrame = new FazerPedido(id, "edit", params);
+                tmpFrame.setVisible(true);
+                break;
+            case "normalizaEstoque":
+                updateSatusMenu("produtos");
+                tmpFrame = new NormalizaEstoque(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
             default:
@@ -263,7 +269,8 @@ public class Navigation {
     private static void resetLayout(String pageName) {
         if (!pageName.equals("addFornecedorNota")
             && !pageName.equals("addProdutoNota")
-            && !pageName.equals("avisoQuantidade")){
+            && !pageName.equals("avisoQuantidade")
+            && !pageName.equals("normalizaEstoque")){
             if (tmpFrame != null) {
                 tmpFrame.dispose();
                 tmpFrame = null;

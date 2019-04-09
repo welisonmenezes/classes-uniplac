@@ -103,7 +103,7 @@ public class ProdutoDAO {
      * @return o produto com Id correspondente
      */
     public Produto selecionarPorId(String Id) {
-        String sql = "SELECT * FROM produtos WHERE Id = " + Id;
+        String sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Id = " + Id;
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -114,6 +114,7 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
+                produto.setTotal(rs.getInt("Total"));
                 produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
             }
             st.close();

@@ -138,7 +138,7 @@ public class Produtos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 4 && column != 5 && column != 6) {
+               if (column != 5 && column != 6 && column != 7) {
                    return false;
                }
                return true;
