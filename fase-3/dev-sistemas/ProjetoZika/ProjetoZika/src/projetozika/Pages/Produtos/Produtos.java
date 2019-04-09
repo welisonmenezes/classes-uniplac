@@ -19,7 +19,10 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -30,9 +33,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  * Tela de listagem do produtos
@@ -92,6 +99,9 @@ public class Produtos extends Templates.BaseLayout {
     private void updateParams() {
         String date = ((JTextField) fData.getDateEditor().getUiComponent()).getText();
         params.setProperty("offset", "0");
+        params.setProperty("orderby", "Id");
+        params.setProperty("orderkey", "0");
+        //params.setProperty("order", "DESC");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("data", date);
@@ -142,6 +152,16 @@ public class Produtos extends Templates.BaseLayout {
                    return false;
                }
                return true;
+            }
+            @Override
+            public Class<?> getColumnClass(int columnIndex){
+                 if (columnIndex == 0) {
+                     return Integer.class;
+                 }
+                 //if (columnIndex == 3) {
+                 //    return Date.class;
+                 //}
+                 return String.class;
             }
         };
         // adiciona linhas
@@ -207,6 +227,62 @@ public class Produtos extends Templates.BaseLayout {
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
                 Navigation.updateLayout("verProduto", id, params);
+            }
+        });
+        
+        
+        
+        tabela.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabela.getModel());
+        tabela.setRowSorter(sorter);
+        ArrayList list = new ArrayList();
+        
+        SortOrder so;
+        if (params.getProperty("order", "DESC").equals("DESC")) {
+            so = SortOrder.DESCENDING;
+        } else {
+            so = SortOrder.ASCENDING;
+        }
+        
+        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so) );
+        sorter.setSortKeys(list);
+        //System.out.println(tabela.getRowSorter().getSortKeys().get(0).getSortOrder());
+        // listener
+        tabela.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = tabela.columnAtPoint(e.getPoint());
+                //String name = tabela.getColumnName(col);
+                //System.out.println("Column index selected " + col + " " + name);
+                Dialogs.showLoadPopup(self);
+                updateParams();
+                
+                if (params.getProperty("order", "DESC").equals("DESC")) {
+                    params.setProperty("order", "ASC");
+                } else {
+                    params.setProperty("order", "DESC");
+                }
+                
+                switch (col) {
+                    case 0 : 
+                        params.setProperty("orderby", "Id");
+                        params.setProperty("orderkey", "0");
+                        break;
+                    case 1 :
+                        params.setProperty("orderby", "Nome");
+                        params.setProperty("orderkey", "1");
+                        break;
+                    case 2 :
+                        params.setProperty("orderby", "Unidade");
+                        params.setProperty("orderkey", "2");
+                        break;
+                    case 3 :
+                        params.setProperty("orderby", "Created");
+                        params.setProperty("orderkey", "3");
+                        break;
+                }
+                
+                timerTest();
             }
         });
     }

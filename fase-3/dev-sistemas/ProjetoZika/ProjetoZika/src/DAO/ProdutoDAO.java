@@ -229,11 +229,11 @@ public class ProdutoDAO {
         }
         
         if (! isCount) {
-            sql += " ORDER BY Id DESC";
+            sql += " ORDER BY " + params.getProperty("orderby", "Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
+        System.out.println(sql);
         return sql;
     }
 }
