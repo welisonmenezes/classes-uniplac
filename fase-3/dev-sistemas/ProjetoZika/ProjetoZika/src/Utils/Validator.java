@@ -8,6 +8,7 @@ package Utils;
 import Config.Environment;
 import CustomFields.ComboItem;
 import com.toedter.calendar.JDateChooser;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javax.swing.ButtonGroup;
@@ -58,6 +59,21 @@ public class Validator {
         String s = field.getText();
         try { 
             Integer.parseInt(s); 
+        } catch(NumberFormatException | NullPointerException e) { 
+            return false; 
+        }
+        return true;
+    }
+    
+    /**
+     * Checa se o valor do campo é um long
+     * @param field o campo a ser verificado
+     * @return true se é long
+     */
+    public static boolean isLong(JTextField field) {
+        String s = field.getText();
+        try { 
+            Long.parseLong(field.getText());
         } catch(NumberFormatException | NullPointerException e) { 
             return false; 
         }
@@ -206,7 +222,7 @@ public class Validator {
      * @return true se recebeu número válido
      */
     public static boolean validaNumero(JTextField field, JLabel errorLabel) {
-        if (isEmpty(field)|| !isInteger(field)) {
+        if (isEmpty(field)|| !isLong(field)) {
             errorLabel.setText(Methods.getTranslation("NumeroInvalido"));
             return false;
         }

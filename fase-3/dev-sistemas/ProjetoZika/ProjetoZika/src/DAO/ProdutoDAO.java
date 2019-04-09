@@ -232,7 +232,7 @@ public class ProdutoDAO {
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        System.out.println(sql);
+        //System.out.println(sql);
         return sql;
     }
 }
