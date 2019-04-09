@@ -112,14 +112,14 @@ public class Perfil extends Templates.BaseLayout {
      */
     private void addBottomContent() {
         // se administrador, add botão de editar perfil
-        if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
+        //if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
             btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
             Styles.defaultButton(btnEditar);
             pBottom.add(btnEditar);
             btnEditar.addActionListener((ActionEvent e) -> {
                 Navigation.updateLayout("editarPerfil", usuario.getCpf(), params);
             });
-        }
+        //}
     }
     
     /**

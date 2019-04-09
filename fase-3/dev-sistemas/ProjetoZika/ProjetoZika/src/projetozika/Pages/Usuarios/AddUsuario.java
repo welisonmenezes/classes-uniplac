@@ -380,6 +380,20 @@ public class AddUsuario extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+        
+        disabledNonAdminFields();
+    }
+    
+    /**
+     * desabilita campos de permissão e setor pra qm não for admin
+     */
+    private void disabledNonAdminFields() {
+        if (!Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
+            fsetor.setEditable(false);
+            fsetor.setEnabled(false);
+            fpermissao.setEditable(false);
+            fpermissao.setEnabled(false);
+        }
     }
     
     /**
