@@ -46,20 +46,23 @@ public class NormalizaEstoque extends Templates.BaseFrame {
     private final EstoqueDAO estoqueDao;
 
     /**
-     * Creates new form NormalizaEstoque
+     * Janela para normalizar estoque de um dado produto
+     * @param id o id do produto a ser normalizado
+     * @param mode o mode de visualiação da página (edit)
+     * @param params parâmetros de filtro e paginação
      */
     public NormalizaEstoque(String id, String mode, Properties params) {
         this.self = this;
         this.id = id;
         this.params = params;
         
-        initComponents();
-        
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
         produto = produtoDao.selecionarPorId(id);
         estoqueDao = new EstoqueDAO();
         
+        // carrega os elementos e o design da tela
+        initComponents();
         Styles.internalFrame(this, 280, 360);
         Methods.setAccessibility(this);
         createBaseLayout();
@@ -75,7 +78,9 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         bg.setLayout(new AbsoluteLayout());
         bg.setOpaque(false);
         
-        lprod = new JLabel("Produto: Caneta Azul - Unidade");
+        String titleProd = Methods.getTranslation("Produto") + ": "
+                + produto.getNome() + " - " + produto.getUnidade();
+        lprod = new JLabel(titleProd);
         Styles.defaultLabel(lprod);
         lprod.setPreferredSize(new Dimension(600, 30));
         bg.add(lprod, new AbsoluteConstraints(0, 0, -1, -1));
@@ -130,6 +135,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
             
+            // atualiza o estoque na base de dados
             int qtd = Integer.parseInt(fqtd.getText());
             int prodId = produto.getId();
             estoqueDao.normalizarEstoqueProduto(prodId, qtd);

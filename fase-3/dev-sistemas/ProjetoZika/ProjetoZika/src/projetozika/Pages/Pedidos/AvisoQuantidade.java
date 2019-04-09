@@ -18,8 +18,8 @@ import javax.swing.JScrollPane;
 import org.jfree.ui.tabbedui.VerticalLayout;
 
 /**
- *
- * @author welis
+ * Janela pra informar pedido que excede quantidade em estoque
+ * @author welison
  */
 public class AvisoQuantidade extends Templates.BaseFrame {
     
@@ -111,7 +111,6 @@ public class AvisoQuantidade extends Templates.BaseFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

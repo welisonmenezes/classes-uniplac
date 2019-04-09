@@ -247,7 +247,7 @@ public class Navigation {
      * Atualiza o JBody, area onde o conteúdo de cada menu será exibido
      * Este metodo cuida das listagens e adições
      * @param pageName o nome do modulo desejado
-     * @param params Parâmetros para filtro e paginação
+     * @param avisos Uma lista de produtos com quantidade insuficiente no estoque
      */
     public static void updateLayout(String pageName, ArrayList<EstoqueAviso> avisos) {
         if (currentPage.equals(pageName)) return;

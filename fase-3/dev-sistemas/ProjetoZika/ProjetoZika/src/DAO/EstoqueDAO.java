@@ -6,8 +6,6 @@
 package DAO;
 
 import Models.Fornecedor;
-import Models.Produto;
-import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,8 +13,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
- *
- * @author welis
+ * Manipula dados do Estoque
+ * @author welison
  */
 public class EstoqueDAO {
     private final Connection conn;
@@ -32,6 +30,12 @@ public class EstoqueDAO {
         conn = new ConnectionFactory().getConexao();
     }
 
+    /**
+     * Insere o produto e a quantidade na base de dados
+     * @param idProduto o id do produto a ser inserido
+     * @param quantidade a quantidade do produto
+     * @return retorna o item inserido
+     */
     public int inserir(int idProduto, int quantidade) {
         String sql = "INSERT INTO estoque (ProdutoId, Total) VALUES (?, ?)";
         try {
@@ -51,7 +55,11 @@ public class EstoqueDAO {
         }
     }
     
-
+    /**
+     * Altera a quantide do prouto na base de dados, sempre mantende >= 0
+     * @param idProduto o id do produto a ser alterado
+     * @param quantidade a quantidade a ser atualziada
+     */
     public void alterar(int idProduto, int quantidade) {
         //String sql = "UPDATE estoque SET Total=Total+(?) WHERE ProdutoId=?";
         String sql = "UPDATE estoque SET Total = CASE WHEN (Total+(?)) < 0 THEN 0 ELSE (Total+(?)) END WHERE ProdutoId=?";
@@ -68,6 +76,11 @@ public class EstoqueDAO {
         }
     }
     
+    /**
+     * Pega o total de um dado produto
+     * @param IdProduto o id do produto
+     * @return o total do produto
+     */
     public int quantidade(int IdProduto) {
         String sql = "SELECT total FROM estoque WHERE ProdutoId=" + IdProduto;
         try {
@@ -84,6 +97,11 @@ public class EstoqueDAO {
         }
     }
     
+    /**
+     * atualiza a quantidade do produto na base de dados
+     * @param idProduto o id do produto
+     * @param quantidade a nova quantidade
+     */
     public void normalizarEstoqueProduto(int idProduto, int quantidade) {
         String sql = "UPDATE estoque SET Total = ? WHERE ProdutoId = ?";
         try {
