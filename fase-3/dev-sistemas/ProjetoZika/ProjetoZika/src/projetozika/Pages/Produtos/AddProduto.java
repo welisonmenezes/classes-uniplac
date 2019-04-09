@@ -308,9 +308,10 @@ public class AddProduto extends Templates.BaseFrame {
                 case "nota":
                     try {
                         // adiciona um novo produto via nota fiscal
-                        int lastInsertedId = produtoDao.inserir(produto);
+                        int idProduto = produtoDao.inserir(produto);
+                        estoqueDao.inserir(idProduto, 0);
                         SelecionarProduto.fnome.setText(produto.getNome());
-                        ComboItem ci = new ComboItem(lastInsertedId, produto.getNome()+" - "+produto.getUnidade());
+                        ComboItem ci = new ComboItem(idProduto, produto.getNome()+" - "+produto.getUnidade());
                         SelecionarProduto.cnome.addItem(ci);
                         SelecionarProduto.cnome.setSelectedItem(ci);
                         SelecionarProduto.funidade.setText(produto.getUnidade());

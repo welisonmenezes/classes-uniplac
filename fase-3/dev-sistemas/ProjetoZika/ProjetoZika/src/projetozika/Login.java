@@ -156,7 +156,7 @@ public class Login extends javax.swing.JFrame {
             Navigation.updateLayout("", params);
             
             // resolve permissões e navega para a tela correspondente
-            if (login.equals("usuario")) {
+            if (usuario.getPermissao().equals(Methods.getTranslation("Usuario"))) {
                 params.clear();
                 Navigation.updateLayout("seusPedidos", params);
             } else {
@@ -167,7 +167,6 @@ public class Login extends javax.swing.JFrame {
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
    
-        
     }//GEN-LAST:event_bentrarActionPerformed
     
     /**

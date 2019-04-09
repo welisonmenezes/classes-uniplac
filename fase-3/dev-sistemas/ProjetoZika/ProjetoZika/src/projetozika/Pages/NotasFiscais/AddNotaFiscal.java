@@ -419,7 +419,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                     self.dispose();
                     try {
                         // edita nota fiscal
-                        //notaFiscalDao.alterar(notaFiscal);
+                        notaFiscalDao.alterar(notaFiscal);
                         if (notaFiscal.getId() > 0) {
                             // deleta lista de produtos antiga
                             //notaFiscalDao.deletarProdutos(notaFiscal.getId());
