@@ -115,7 +115,8 @@ public class ProdutoDAO {
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
                 produto.setTotal(rs.getInt("Total"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setCreated(rs.getString("Created"));
             }
             st.close();
             return produto;
@@ -141,7 +142,8 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setCreated(rs.getString("Created"));
                 produtos.add(produto);
             }
             st.close();
@@ -168,7 +170,8 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setCreated(rs.getString("Created"));
                 produto.setTotal(rs.getInt("Total"));
                 produtos.add(produto);
             }

@@ -21,6 +21,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -144,6 +146,19 @@ public class Produtos extends Templates.BaseLayout {
             Methods.getTranslation("Excluir"),
             Methods.getTranslation("Ver")
         };
+        
+        // informando os tipos das colunas para auxiliar na ordenação
+        final Class<?>[] columnClasses = new Class<?>[] {
+            Integer.class, 
+            String.class, 
+            String.class, 
+            Date.class, 
+            Integer.class, 
+            String.class, 
+            String.class, 
+            String.class
+        };
+
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -154,14 +169,8 @@ public class Produtos extends Templates.BaseLayout {
                return true;
             }
             @Override
-            public Class<?> getColumnClass(int columnIndex){
-                 if (columnIndex == 0) {
-                     return Integer.class;
-                 }
-                 //if (columnIndex == 3) {
-                 //    return Date.class;
-                 //}
-                 return String.class;
+            public Class<?> getColumnClass(int column) {
+                return columnClasses[column];
             }
         };
         // adiciona linhas
@@ -170,7 +179,7 @@ public class Produtos extends Templates.BaseLayout {
                 p.getId(),
                 p.getNome(),
                 p.getUnidade(),
-                p.getCreated(),
+                Methods.getJavaDate(p.getCreated()),
                 p.getTotal(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
@@ -181,6 +190,14 @@ public class Produtos extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
+        // botões da tabela
+        actionsTable();
+        
+        // ordenação da tabela
+        sortTable();
+    }
+    
+    private void actionsTable() {
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
@@ -229,9 +246,9 @@ public class Produtos extends Templates.BaseLayout {
                 Navigation.updateLayout("verProduto", id, params);
             }
         });
-        
-        
-        
+    }
+    
+    private void sortTable() {
         tabela.setAutoCreateRowSorter(true);
         TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabela.getModel());
         tabela.setRowSorter(sorter);
@@ -244,48 +261,54 @@ public class Produtos extends Templates.BaseLayout {
             so = SortOrder.ASCENDING;
         }
         
-        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so) );
+        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
         sorter.setSortKeys(list);
-        //System.out.println(tabela.getRowSorter().getSortKeys().get(0).getSortOrder());
-        // listener
+        
+        // ouve o evento de click no header da tabela
         tabela.getTableHeader().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int col = tabela.columnAtPoint(e.getPoint());
-                //String name = tabela.getColumnName(col);
-                //System.out.println("Column index selected " + col + " " + name);
-                Dialogs.showLoadPopup(self);
-                updateParams();
                 
-                if (params.getProperty("order", "DESC").equals("DESC")) {
-                    params.setProperty("order", "ASC");
-                } else {
-                    params.setProperty("order", "DESC");
+                if (col <= 4) {
+                    Dialogs.showLoadPopup(self);
+                    updateParams();
+
+                    if (params.getProperty("order", "DESC").equals("DESC")) {
+                        params.setProperty("order", "ASC");
+                    } else {
+                        params.setProperty("order", "DESC");
+                    }
+
+                    switch (col) {
+                        case 0 : 
+                            params.setProperty("orderby", "Id");
+                            params.setProperty("orderkey", "0");
+                            break;
+                        case 1 :
+                            params.setProperty("orderby", "Nome");
+                            params.setProperty("orderkey", "1");
+                            break;
+                        case 2 :
+                            params.setProperty("orderby", "Unidade");
+                            params.setProperty("orderkey", "2");
+                            break;
+                        case 3 :
+                            params.setProperty("orderby", "Created");
+                            params.setProperty("orderkey", "3");
+                            break;
+                        case 4 :
+                            params.setProperty("orderby", "Total");
+                            params.setProperty("orderkey", "4");
+                            break;
+                    }
+
+                    timerTest();
                 }
-                
-                switch (col) {
-                    case 0 : 
-                        params.setProperty("orderby", "Id");
-                        params.setProperty("orderkey", "0");
-                        break;
-                    case 1 :
-                        params.setProperty("orderby", "Nome");
-                        params.setProperty("orderkey", "1");
-                        break;
-                    case 2 :
-                        params.setProperty("orderby", "Unidade");
-                        params.setProperty("orderkey", "2");
-                        break;
-                    case 3 :
-                        params.setProperty("orderby", "Created");
-                        params.setProperty("orderkey", "3");
-                        break;
-                }
-                
-                timerTest();
             }
         });
     }
+    
     
     /**
      * Adiciona o conteúdo à area de filtro da tela de conteúdo

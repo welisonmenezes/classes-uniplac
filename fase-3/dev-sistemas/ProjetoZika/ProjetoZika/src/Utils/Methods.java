@@ -409,4 +409,16 @@ public class Methods {
             }
         }
     }
+    
+    public static Date getJavaDate(String s) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss");
+            Date d = sdf.parse(s);
+            return d;
+
+        } catch (ParseException ex) {
+            //Logger.getLogger(TableBasic.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
