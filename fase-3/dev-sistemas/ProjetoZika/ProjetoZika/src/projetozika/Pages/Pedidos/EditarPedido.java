@@ -181,8 +181,12 @@ public class EditarPedido extends Templates.BaseFrame {
             Methods.getTranslation("Codigo"),
             Methods.getTranslation("Produto"), 
             Methods.getTranslation("QuantidadeSolicitada"), 
-            Methods.getTranslation("QuantidadeAprovada")
+            Methods.getTranslation("QuantidadeAprovada"),
+            ""
         };
+        if (mode.equals("edit")) {
+            colunas[4] = Methods.getTranslation("TotalEmEstoque");
+        } 
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -190,7 +194,7 @@ public class EditarPedido extends Templates.BaseFrame {
                 if (mode.equals("view")) {
                     return false;
                 } else {
-                    if (column != 3 && column != 4){
+                    if (column != 3){
                         return false;
                     }
                     return true;
@@ -199,7 +203,10 @@ public class EditarPedido extends Templates.BaseFrame {
         };
         // adiciona linhas
         pedidosProdutos.forEach(pp -> {
-            Object[] data = {pp.getId(), pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada()};
+            Object[] data = {pp.getId(), pp.getProduto().getNome(), pp.getQuantidade(), pp.getQuantidadeAprovada(), ""};
+            if (mode.equals("edit")) {
+                data[4] = pp.getProduto().getTotal();
+            }
             tableModel.addRow(data);
         });
 
@@ -210,14 +217,17 @@ public class EditarPedido extends Templates.BaseFrame {
         tmpTxt.setDocument(new FormataDecimal(1,0));
         // no evento do campo, atualizar quantidade com valor digitado
         tmpTxt.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent e) {
                 JTextField source = (JTextField) e.getSource();
                 changeTableValue(source.getText());
             }
+            @Override
             public void keyTyped(KeyEvent e) {
                 JTextField source = (JTextField) e.getSource();
                 changeTableValue(source.getText());
             }
+            @Override
             public void keyPressed(KeyEvent e) {
                 JTextField source = (JTextField) e.getSource();
                 changeTableValue(source.getText());

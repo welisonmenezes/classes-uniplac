@@ -185,6 +185,7 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedidos "
                 + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
                 + "LEFT JOIN usuarios ON pedidos.UsuarioId = usuarios.Id "
                 + "WHERE pedidos.Id = " + Id;
         try {
@@ -450,6 +451,7 @@ public class PedidoDAO {
             produto.setDescricao(rs.getString("produtos.Descricao"));
             produto.setStatus(rs.getString("produtos.Status"));
             produto.setUnidade(rs.getString("produtos.Unidade"));
+            produto.setTotal(rs.getInt("estoque.Total"));
             produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.fillProduto: " + error);
