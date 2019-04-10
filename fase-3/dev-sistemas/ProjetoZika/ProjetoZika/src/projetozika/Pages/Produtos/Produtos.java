@@ -10,6 +10,7 @@ import DAO.ProdutoDAO;
 import Models.Produto;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
+import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -176,7 +177,7 @@ public class Produtos extends Templates.BaseLayout {
                 p.getId(),
                 p.getNome(),
                 p.getUnidade(),
-                Methods.getJavaDate(p.getCreated()),
+                DateHandler.getJavaDate(p.getCreated()),
                 p.getTotal(),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
@@ -337,8 +338,8 @@ public class Produtos extends Templates.BaseLayout {
         
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
-        Methods.setDateChooserFormat(fData);
-        Methods.setParamsToDateChooser(fData, params);
+        DateHandler.setDateChooserFormat(fData);
+        DateHandler.setParamsToDateChooser(fData, params);
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);

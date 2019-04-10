@@ -13,6 +13,7 @@ import CustomFields.ButtonRenderer;
 import CustomFields.MaskFactory;
 import DAO.EstoqueDAO;
 import Models.NotaFiscalProduto;
+import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -181,7 +182,7 @@ public class NotasFiscais extends Templates.BaseLayout {
                 n.getNumero(),
                 n.getValor(),
                 n.getFornecedor().getCnpj(),
-                Methods.getJavaDate(n.getData()),
+                DateHandler.getJavaDate(n.getData()),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
                 Methods.getTranslation("Ver")
@@ -347,8 +348,8 @@ public class NotasFiscais extends Templates.BaseLayout {
         
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
-        Methods.setDateChooserFormat(fdata);
-        Methods.setParamsToDateChooser(fdata, params);
+        DateHandler.setDateChooserFormat(fdata);
+        DateHandler.setParamsToDateChooser(fdata, params);
         
         ldata = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(ldata, false);

@@ -10,6 +10,7 @@ import CustomFields.MaskFactory;
 import CustomFields.MaxSize;
 import DAO.UsuarioDAO;
 import Models.Usuario;
+import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -215,7 +216,7 @@ public class AddUsuario extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
-        Methods.setDateChooserFormat(fdata);
+        DateHandler.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 130, -1, -1));
         
         edata = new JLabel("");
@@ -351,7 +352,7 @@ public class AddUsuario extends Templates.BaseFrame {
                     sdf = new SimpleDateFormat("dd/MM/yyyy");
                 }
                 String data = sdf.format(pega);
-                usuario.setDataNascimento(Methods.getSqlDateTime(data));
+                usuario.setDataNascimento(DateHandler.getSqlDateTime(data));
                 
                 usuario.setCelular(fcelular.getText());
                 usuario.setTelefone(ftelefone.getText());
@@ -408,7 +409,7 @@ public class AddUsuario extends Templates.BaseFrame {
             fnome.setText(usuario.getNome());
             fcpf.setText(usuario.getCpf());
             Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
-            Methods.setDateToDateChooser(fdata, usuario.getDataNascimento().toString());
+            DateHandler.setDateToDateChooser(fdata, usuario.getDataNascimento().toString());
             fcelular.setText(usuario.getCelular());
             ftelefone.setText(usuario.getTelefone());
             femail.setText(usuario.getEmail());

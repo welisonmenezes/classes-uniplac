@@ -7,6 +7,7 @@ package projetozika.Pages.Perfil;
 
 import Config.Environment;
 import Models.Usuario;
+import Utils.DateHandler;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -91,7 +92,7 @@ public class Perfil extends Templates.BaseLayout {
             {Methods.getTranslation("Setor"), usuario.getSetor()},
             {Methods.getTranslation("Sexo"), usuario.getSexo()},
             {Methods.getTranslation("Permissao"), usuario.getPermissao()},
-            {Methods.getTranslation("DataDeNascimento"), Methods.getFriendlyBirthday((usuario.getDataNascimento()))},
+            {Methods.getTranslation("DataDeNascimento"), DateHandler.getFriendlyBirthday((usuario.getDataNascimento()))},
             {Methods.getTranslation("Login"), usuario.getLogin()},
             {Methods.getTranslation("Senha"), usuario.getSenha()}
         };
@@ -117,7 +118,7 @@ public class Perfil extends Templates.BaseLayout {
             Styles.defaultButton(btnEditar);
             pBottom.add(btnEditar);
             btnEditar.addActionListener((ActionEvent e) -> {
-                Navigation.updateLayout("editarPerfil", usuario.getCpf(), params);
+                Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
             });
         //}
     }

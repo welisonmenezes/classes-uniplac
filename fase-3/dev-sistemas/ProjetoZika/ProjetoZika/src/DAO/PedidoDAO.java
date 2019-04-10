@@ -9,6 +9,7 @@ import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
 import Models.Usuario;
+import Utils.DateHandler;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -246,6 +247,7 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedidosprodutos "
                 + "LEFT JOIN pedidos ON pedidosprodutos.PedidoId = pedidos.Id "
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
                 + "WHERE pedidosprodutos.PedidoId = " + Id;
         try {
             st = conn.createStatement();
@@ -361,7 +363,7 @@ public class PedidoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
+            String sqlDate = DateHandler.getSqlDateTime(data);
             sql += " AND pedidos.Created >= '" + sqlDate + "'";
         }
         
@@ -401,7 +403,7 @@ public class PedidoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
+            String sqlDate = DateHandler.getSqlDateTime(data);
             sql += " AND pedidos.Created >= '" + sqlDate + "'";
         }
         

@@ -17,6 +17,7 @@ import CustomFields.ComboItem;
 import CustomFields.MaskFactory;
 import CustomFields.SuggestionsBox;
 import DAO.EstoqueDAO;
+import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -262,7 +263,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
-        Methods.setDateChooserFormat(fdata);
+        DateHandler.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 220, -1, -1));
         
         edata = new JLabel("");
@@ -310,7 +311,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                     sdf = new SimpleDateFormat("dd/MM/yyyy");
                 }
                 String data = sdf.format(pega);
-                notaFiscal.setData(Methods.getSqlDateTime(data));
+                notaFiscal.setData(DateHandler.getSqlDateTime(data));
                 
                 notaFiscal.setFornecedor(fornecedor);
                 
@@ -357,7 +358,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
         ccnpj.addItem(new ComboItem(notaFiscal.getFornecedor().getId(), notaFiscal.getFornecedor().getCnpj()));
         fcnpj.setText(notaFiscal.getFornecedor().getCnpj());
         fvalor.setText(notaFiscal.getValor()+"");
-        Methods.setDateToDateChooser(fdata, notaFiscal.getData());
+        DateHandler.setDateToDateChooser(fdata, notaFiscal.getData());
         
         notaFiscalProdutos = notaFiscalDao.selecionarProdutos(id);
         if (notaFiscalProdutos != null && notaFiscalProdutos.size() > 0) {

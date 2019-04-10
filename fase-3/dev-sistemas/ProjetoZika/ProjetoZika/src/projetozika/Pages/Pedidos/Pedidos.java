@@ -10,6 +10,7 @@ import DAO.PedidoDAO;
 import Models.Pedido;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
+import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -173,7 +174,7 @@ public class Pedidos extends Templates.BaseLayout {
             Object[] data = {
                 p.getId(),
                 p.getSolicitante().getNome(),
-                Methods.getJavaDate(p.getCreated()),
+                DateHandler.getJavaDate(p.getCreated()),
                 p.getStatus(),
                 btnEdit, 
                 btnValue
@@ -306,8 +307,8 @@ public class Pedidos extends Templates.BaseLayout {
         
         fData = new JDateChooser();
         Styles.defaultDateChooser(fData);
-        Methods.setDateChooserFormat(fData);
-        Methods.setParamsToDateChooser(fData, params);
+        DateHandler.setDateChooserFormat(fData);
+        DateHandler.setParamsToDateChooser(fData, params);
         
         lData = new JLabel(Methods.getTranslation("Data"));
         Styles.defaultLabel(lData, false);

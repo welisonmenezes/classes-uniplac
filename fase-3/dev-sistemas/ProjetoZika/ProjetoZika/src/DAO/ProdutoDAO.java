@@ -6,6 +6,7 @@
 package DAO;
 
 import Models.Produto;
+import Utils.DateHandler;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -227,7 +228,7 @@ public class ProdutoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
+            String sqlDate = DateHandler.getSqlDateTime(data);
             sql += " AND Created >= '" + sqlDate + "'";
         }
         
