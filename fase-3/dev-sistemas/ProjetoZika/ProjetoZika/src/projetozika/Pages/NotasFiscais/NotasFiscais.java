@@ -22,8 +22,11 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -33,9 +36,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  * Tela de listagem das notas fiscais
@@ -98,6 +105,8 @@ public class NotasFiscais extends Templates.BaseLayout {
     private void updateParams() {
         String date = ((JTextField) fdata.getDateEditor().getUiComponent()).getText();
         params.setProperty("offset", "0");
+        params.setProperty("orderby", "nId");
+        params.setProperty("orderkey", "0");
         params.setProperty("page", "1");
         params.setProperty("cnpj", fcnpj.getText());
         params.setProperty("numero", fnumero.getText());
@@ -140,6 +149,17 @@ public class NotasFiscais extends Templates.BaseLayout {
             Methods.getTranslation("Excluir"),
             Methods.getTranslation("Ver")
         };
+        // informando os tipos das colunas para auxiliar na ordenação
+        final Class<?>[] columnClasses = new Class<?>[] {
+            Integer.class, 
+            Long.class, 
+            Double.class, 
+            String.class, 
+            Date.class, 
+            String.class, 
+            String.class, 
+            String.class
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -149,15 +169,19 @@ public class NotasFiscais extends Templates.BaseLayout {
                }
                return true;
             }
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return columnClasses[column];
+            }
         };
         // adiciona linhas
         notasFiscais.forEach(n -> {
             Object[] data = {
                 n.getId(),
                 n.getNumero(),
-                df2.format(n.getValor()),
+                n.getValor(),
                 n.getFornecedor().getCnpj(),
-                n.getData(),
+                Methods.getJavaDate(n.getData()),
                 Methods.getTranslation("Editar"),
                 Methods.getTranslation("Excluir"),
                 Methods.getTranslation("Ver")
@@ -167,6 +191,14 @@ public class NotasFiscais extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
+        // add actions para os botões da tabela
+        actionsTable();
+        
+        // add funcionalidade de ordenação na tabela
+        sortTable();
+    }
+    
+    private void actionsTable() {
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
@@ -218,6 +250,75 @@ public class NotasFiscais extends Templates.BaseLayout {
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
                 Navigation.updateLayout("verNotaFiscal", id, params);
+            }
+        });
+    }
+    
+    private void sortTable() {
+        tabela.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabela.getModel()){
+            @Override
+            public boolean isSortable(int column) {
+                if(column <= 4)
+                    return true;
+                else 
+                    return false;
+            };
+        };
+        tabela.setRowSorter(sorter);
+        ArrayList list = new ArrayList();
+        
+        SortOrder so;
+        if (params.getProperty("order", "DESC").equals("DESC")) {
+            so = SortOrder.DESCENDING;
+        } else {
+            so = SortOrder.ASCENDING;
+        }
+        
+        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
+        sorter.setSortKeys(list);
+        
+        // ouve o evento de click no header da tabela
+        tabela.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = tabela.columnAtPoint(e.getPoint());
+                
+                if (col <= 4) {
+                    Dialogs.showLoadPopup(self);
+                    updateParams();
+
+                    if (params.getProperty("order", "DESC").equals("DESC")) {
+                        params.setProperty("order", "ASC");
+                    } else {
+                        params.setProperty("order", "DESC");
+                    }
+
+                    switch (col) {
+                        case 0 : 
+                            params.setProperty("orderby", "nId");
+                            params.setProperty("orderkey", "0");
+                            break;
+                        case 1 :
+                            params.setProperty("orderby", "nNumero");
+                            params.setProperty("orderkey", "1");
+                            break;
+                        case 2 :
+                            params.setProperty("orderby", "nValor");
+                            params.setProperty("orderkey", "2");
+                            break;
+                        case 3 :
+                            params.setProperty("orderby", "fCnpj");
+                            params.setProperty("orderkey", "3");
+                            break;
+                        case 4 :
+                            params.setProperty("orderby", "nData");
+                            params.setProperty("orderkey", "4");
+                            break;
+                    }
+
+                    timerTest();
+                }
             }
         });
     }

@@ -307,13 +307,15 @@ public class UsuarioDAO {
             usuario.setCpf(rs.getString("Cpf"));
             usuario.setNome(rs.getString("Nome"));
             usuario.setEmail(rs.getString("Email"));
-            usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
+            //usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
+            usuario.setDataNascimento(rs.getString("DataNascimento"));
             usuario.setCelular(rs.getString("Celular"));
             usuario.setTelefone(rs.getString("Telefone"));
             usuario.setLogin(rs.getString("Login"));
             usuario.setSenha(rs.getString("Senha"));
             usuario.setSetor(rs.getString("Setor"));
-            usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+            //usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+            usuario.setCreated(rs.getString("Created"));
             usuario.setPermissao(rs.getString("Permissao"));
             usuario.setStatus(rs.getString("Status"));
             usuario.setSexo(rs.getString("Sexo"));

@@ -408,7 +408,7 @@ public class AddUsuario extends Templates.BaseFrame {
             fnome.setText(usuario.getNome());
             fcpf.setText(usuario.getCpf());
             Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
-            Methods.setDateToDateChooser(fdata, usuario.getDataNascimento());
+            Methods.setDateToDateChooser(fdata, usuario.getDataNascimento().toString());
             fcelular.setText(usuario.getCelular());
             ftelefone.setText(usuario.getTelefone());
             femail.setText(usuario.getEmail());

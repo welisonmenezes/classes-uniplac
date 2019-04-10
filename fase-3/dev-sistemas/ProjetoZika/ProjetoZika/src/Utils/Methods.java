@@ -311,13 +311,13 @@ public class Methods {
      * @param date a data a ser inserida no campo
      */
     public static void setDateToDateChooser(JDateChooser field, String date) {
-        SimpleDateFormat sdf;
-        if (Environment.getCurrentLang().equals("en")) {
-            sdf = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            sdf = new SimpleDateFormat("dd/MM/yyyy");
-        }
         try {
+            SimpleDateFormat sdf;
+            //if (Environment.getCurrentLang().equals("en")) {
+                sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //} else {
+                //sdf = new SimpleDateFormat("dd/MM/yyyy");
+            //}
             Date newDate = sdf.parse(date);
             field.setDate(newDate);
         } catch (ParseException error) {
@@ -412,7 +412,7 @@ public class Methods {
     
     public static Date getJavaDate(String s) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd");
             Date d = sdf.parse(s);
             return d;
 
