@@ -103,7 +103,6 @@ public class Produtos extends Templates.BaseLayout {
         params.setProperty("offset", "0");
         params.setProperty("orderby", "Id");
         params.setProperty("orderkey", "0");
-        //params.setProperty("order", "DESC");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("data", date);
@@ -146,7 +145,6 @@ public class Produtos extends Templates.BaseLayout {
             Methods.getTranslation("Excluir"),
             Methods.getTranslation("Ver")
         };
-        
         // informando os tipos das colunas para auxiliar na ordenação
         final Class<?>[] columnClasses = new Class<?>[] {
             Integer.class, 
@@ -158,7 +156,6 @@ public class Produtos extends Templates.BaseLayout {
             String.class, 
             String.class
         };
-
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -190,10 +187,10 @@ public class Produtos extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
-        // botões da tabela
+        // add actions para os botões da tabela
         actionsTable();
         
-        // ordenação da tabela
+        // add funcionalidade de ordenação na tabela
         sortTable();
     }
     

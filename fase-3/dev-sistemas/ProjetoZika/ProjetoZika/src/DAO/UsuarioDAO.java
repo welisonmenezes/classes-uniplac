@@ -287,7 +287,8 @@ public class UsuarioDAO {
         }
         
         if (! isCount) {
-            sql += " ORDER BY Id DESC";
+            //sql += " ORDER BY Id DESC";
+            sql += " ORDER BY " + params.getProperty("orderby", "Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
