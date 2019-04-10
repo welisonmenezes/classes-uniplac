@@ -6,6 +6,7 @@
 package DAO;
 
 import Models.Produto;
+import Utils.DateHandler;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,7 +104,7 @@ public class ProdutoDAO {
      * @return o produto com Id correspondente
      */
     public Produto selecionarPorId(String Id) {
-        String sql = "SELECT * FROM produtos WHERE Id = " + Id;
+        String sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Id = " + Id;
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
@@ -114,7 +115,9 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setTotal(rs.getInt("Total"));
+                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setCreated(rs.getString("Created"));
             }
             st.close();
             return produto;
@@ -140,7 +143,8 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setCreated(rs.getString("Created"));
                 produtos.add(produto);
             }
             st.close();
@@ -167,7 +171,9 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("Descricao"));
                 produto.setUnidade(rs.getString("Unidade"));
                 produto.setStatus(rs.getString("Status"));
-                produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
+                produto.setCreated(rs.getString("Created"));
+                produto.setTotal(rs.getInt("Total"));
                 produtos.add(produto);
             }
             st.close();
@@ -208,9 +214,9 @@ public class ProdutoDAO {
         String sql;
         
         if (! isCount) {
-            sql = "SELECT * FROM produtos WHERE Status != 'Deleted'";
+            sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Status != 'Deleted'";
         } else {
-            sql = "SELECT COUNT(Id) FROM produtos WHERE Status != 'Deleted'";
+            sql = "SELECT COUNT(Id) FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Status != 'Deleted'";
         }
         
         if (! nome.equals("")) {
@@ -222,12 +228,12 @@ public class ProdutoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
+            String sqlDate = DateHandler.getSqlDateTime(data);
             sql += " AND Created >= '" + sqlDate + "'";
         }
         
         if (! isCount) {
-            sql += " ORDER BY Id DESC";
+            sql += " ORDER BY " + params.getProperty("orderby", "Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             

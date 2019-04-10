@@ -9,6 +9,7 @@ import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
 import Models.Usuario;
+import Utils.DateHandler;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -185,6 +186,7 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedidos "
                 + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
                 + "LEFT JOIN usuarios ON pedidos.UsuarioId = usuarios.Id "
                 + "WHERE pedidos.Id = " + Id;
         try {
@@ -245,6 +247,7 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedidosprodutos "
                 + "LEFT JOIN pedidos ON pedidosprodutos.PedidoId = pedidos.Id "
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
                 + "WHERE pedidosprodutos.PedidoId = " + Id;
         try {
             st = conn.createStatement();
@@ -360,12 +363,13 @@ public class PedidoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
+            String sqlDate = DateHandler.getSqlDateTime(data);
             sql += " AND pedidos.Created >= '" + sqlDate + "'";
         }
         
         if (! isCount) {
-            sql += " ORDER BY pedidos.Id DESC";
+            //sql += " ORDER BY pedidos.Id DESC";
+            sql += " ORDER BY " + params.getProperty("orderby", "pedidos.Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
@@ -399,12 +403,13 @@ public class PedidoDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
+            String sqlDate = DateHandler.getSqlDateTime(data);
             sql += " AND pedidos.Created >= '" + sqlDate + "'";
         }
         
         if (! isCount) {
-            sql += " ORDER BY pedidos.Id DESC";
+            //sql += " ORDER BY pedidos.Id DESC";
+            sql += " ORDER BY " + params.getProperty("orderby", "pedidos.Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
@@ -423,13 +428,15 @@ public class PedidoDAO {
             usuario.setCpf(rs.getString("usuarios.Cpf"));
             usuario.setNome(rs.getString("usuarios.Nome"));
             usuario.setEmail(rs.getString("usuarios.Email"));
-            usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("usuarios.DataNascimento")));
+            //usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("usuarios.DataNascimento")));
+            usuario.setDataNascimento(rs.getString("usuarios.DataNascimento"));
             usuario.setCelular(rs.getString("usuarios.Celular"));
             usuario.setTelefone(rs.getString("usuarios.Telefone"));
             usuario.setLogin(rs.getString("usuarios.Login"));
             usuario.setSenha(rs.getString("usuarios.Senha"));
             usuario.setSetor(rs.getString("usuarios.Setor"));
-            usuario.setCreated(Methods.getFriendlyDate(rs.getString("usuarios.Created")));
+            //usuario.setCreated(Methods.getFriendlyDate(rs.getString("usuarios.Created")));
+            usuario.setCreated(rs.getString("usuarios.Created"));
             usuario.setPermissao(rs.getString("usuarios.Permissao"));
             usuario.setStatus(rs.getString("usuarios.Status"));
             usuario.setSexo(rs.getString("usuarios.Sexo"));
@@ -450,7 +457,9 @@ public class PedidoDAO {
             produto.setDescricao(rs.getString("produtos.Descricao"));
             produto.setStatus(rs.getString("produtos.Status"));
             produto.setUnidade(rs.getString("produtos.Unidade"));
-            produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+            produto.setTotal(rs.getInt("estoque.Total"));
+            //produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+            produto.setCreated(rs.getString("produtos.Created"));
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.fillProduto: " + error);
         }
@@ -465,7 +474,8 @@ public class PedidoDAO {
         try {
             pedido.setId(rs.getInt("pedidos.Id"));
             pedido.setStatus(rs.getString("pedidos.Status"));
-            pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+            //pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
+            pedido.setCreated(rs.getString("pedidos.Created"));
             pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.fillProduto: " + error);

@@ -9,6 +9,7 @@ import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
 import Models.Produto;
+import Utils.DateHandler;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -135,6 +136,24 @@ public class NotaFiscalDAO {
     }
     
     /**
+     * Deleta o produto da nota fiscal
+     * @param notaId o Id da nota fiscal 
+     * @param ProdutoId o Id do produto 
+     */
+    public void deletarProduto(int notaId, int ProdutoId) {
+        String sql = "DELETE FROM notasfiscaisprodutos WHERE NotaFiscalId=? AND ProdutoId=?";
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, notaId);
+            stmt.setInt(2, ProdutoId);
+            stmt.execute();
+            stmt.close();
+        } catch(Exception error) {
+            throw new RuntimeException("NotaFiscalDAO.deletarProduto: " + error);
+        }
+    }
+    
+    /**
      * 'deleta' a nota fiscal da visualização, na base de dados altera apenas o status para 'Deleted'
      * @param notaId o Id da nota fiscal a ser 'deletado'
      */
@@ -196,14 +215,16 @@ public class NotaFiscalDAO {
                 Produto p = new Produto();
                 nfp.setQuantidade(rs.getInt("Quantidade"));
                 nfp.setValor(rs.getFloat("Valor"));
-                nfp.setCreated(Methods.getFriendlyDate(rs.getString("notasfiscaisprodutos.Created")));
+                //nfp.setCreated(Methods.getFriendlyDate(rs.getString("notasfiscaisprodutos.Created")));
+                nfp.setCreated(rs.getString("notasfiscaisprodutos.Created"));
                 
                 p.setId(rs.getInt("Id"));
                 p.setNome(rs.getString("Nome"));
                 p.setDescricao(rs.getString("Descricao"));
                 p.setStatus(rs.getString("Status"));
                 p.setUnidade(rs.getString("Unidade"));
-                p.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+                //p.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
+                p.setCreated(rs.getString("produtos.Created"));
                 
                 nfp.setProduto(p);
                 
@@ -289,12 +310,13 @@ public class NotaFiscalDAO {
         }
         
         if (! data.equals("")) {
-            String sqlDate = Methods.getSqlDateTime(data);
-            sql += " AND Created >= '" + sqlDate + "'";
+            String sqlDate = DateHandler.getSqlDateTime(data);
+            sql += " AND notasFiscais.Created >= '" + sqlDate + "'";
         }
         
         if (! isCount) {
-            sql += " ORDER BY nId DESC";
+            //sql += " ORDER BY nId DESC";
+            sql += " ORDER BY " + params.getProperty("orderby", "nId") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
@@ -312,10 +334,12 @@ public class NotaFiscalDAO {
             notaFiscal.setId(rs.getInt("nId"));
             notaFiscal.setNumero(rs.getLong("nNumero"));
             notaFiscal.setSerie(rs.getInt("nSerie"));
-            notaFiscal.setData(Methods.getFriendlyBirthday(rs.getString("nData")));
+            //notaFiscal.setData(Methods.getFriendlyBirthday(rs.getString("nData")));
+            notaFiscal.setData(rs.getString("nData"));
             notaFiscal.setValor(rs.getFloat("nValor"));
             notaFiscal.setStatus(rs.getString("nStatus"));
-            notaFiscal.setCreated(Methods.getFriendlyDate(rs.getString("nCreated")));
+            //notaFiscal.setCreated(Methods.getFriendlyDate(rs.getString("nCreated")));
+            notaFiscal.setCreated(rs.getString("nCreated"));
             
             Fornecedor  fornecedor = new Fornecedor();
             fornecedor.setId(rs.getInt("fId"));
@@ -323,7 +347,8 @@ public class NotaFiscalDAO {
             fornecedor.setNome(rs.getString("fNome"));
             fornecedor.setStatus(rs.getString("fStatus"));
             fornecedor.setTelefone(rs.getString("fTelefone"));
-            fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("fCreated")));
+            //fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("fCreated")));
+            fornecedor.setCreated(rs.getString("fCreated"));
             notaFiscal.setFornecedor(fornecedor);
 
             

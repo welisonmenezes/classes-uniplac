@@ -6,8 +6,8 @@
 package projetozika.Pages.NotasFiscais;
 
 import Models.NotaFiscalProduto;
-import Templates.ButtonEditor;
-import Templates.ButtonRenderer;
+import CustomFields.ButtonEditor;
+import CustomFields.ButtonRenderer;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.BorderLayout;

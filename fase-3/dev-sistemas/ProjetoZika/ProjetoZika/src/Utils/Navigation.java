@@ -5,9 +5,11 @@
  */
 package Utils;
 
+import Models.EstoqueAviso;
 import static Utils.Methods.getJBody;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,11 +21,13 @@ import projetozika.Pages.Fornecedores.Fornecedores;
 import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
+import projetozika.Pages.Pedidos.AvisoQuantidade;
 import projetozika.Pages.Pedidos.EditarPedido;
 import projetozika.Pages.Pedidos.EntregarPedido;
 import projetozika.Pages.Pedidos.Pedidos;
 import projetozika.Pages.Perfil.Perfil;
 import projetozika.Pages.Produtos.AddProduto;
+import projetozika.Pages.Produtos.NormalizaEstoque;
 import projetozika.Pages.Produtos.Produtos;
 import projetozika.Pages.Relatorios.Relatorios;
 import projetozika.Pages.SeusPedidos.FazerPedido;
@@ -141,6 +145,11 @@ public class Navigation {
                 tmpFrame = new FazerPedido(id, "edit", params);
                 tmpFrame.setVisible(true);
                 break;
+            case "normalizaEstoque":
+                updateSatusMenu("produtos");
+                tmpFrame = new NormalizaEstoque(id, "edit", params);
+                tmpFrame.setVisible(true);
+                break;
             default:
                 setDefaultPage();
         }
@@ -235,12 +244,33 @@ public class Navigation {
     }
     
     /**
+     * Atualiza o JBody, area onde o conteúdo de cada menu será exibido
+     * Este metodo cuida das listagens e adições
+     * @param pageName o nome do modulo desejado
+     * @param avisos Uma lista de produtos com quantidade insuficiente no estoque
+     */
+    public static void updateLayout(String pageName, ArrayList<EstoqueAviso> avisos) {
+        if (currentPage.equals(pageName)) return;
+        resetLayout(pageName);
+        switch (pageName) {
+            case "avisoQuantidade":
+            updateSatusMenu("pedidos");
+            tmpFrame = new AvisoQuantidade(avisos);
+            tmpFrame.setVisible(true);
+            break;
+        }
+        addNewPage();
+    }
+    
+    /**
      * Reseta o JBody
      * @param pageName 
      */
     private static void resetLayout(String pageName) {
         if (!pageName.equals("addFornecedorNota")
-            && !pageName.equals("addProdutoNota")){
+            && !pageName.equals("addProdutoNota")
+            && !pageName.equals("avisoQuantidade")
+            && !pageName.equals("normalizaEstoque")){
             if (tmpFrame != null) {
                 tmpFrame.dispose();
                 tmpFrame = null;

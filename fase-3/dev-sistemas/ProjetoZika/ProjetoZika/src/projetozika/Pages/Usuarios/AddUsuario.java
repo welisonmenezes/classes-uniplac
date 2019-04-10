@@ -6,9 +6,11 @@
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
+import CustomFields.MaskFactory;
 import CustomFields.MaxSize;
 import DAO.UsuarioDAO;
 import Models.Usuario;
+import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Navigation;
@@ -24,6 +26,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,7 +47,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private JTextField fnome;
     private JLabel lnome;
     private JLabel enome;
-    private JTextField fcpf;
+    private JFormattedTextField fcpf;
     private JLabel lcpf;
     private JLabel ecpf;
     private ButtonGroup gsexo;
@@ -81,7 +84,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private UsuarioDAO usuarioDao;
     private String oldLogin;
     private String oldCpf;
-    private String cpf;
+    private String id;
     
     /**
      * chamada para adição
@@ -104,7 +107,7 @@ public class AddUsuario extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         this.params = params;
-        this.cpf = id;
+        this.id = id;
         switch (this.mode) {
             case "view":
                 initPage(Methods.getTranslation("VerUsuario"));
@@ -177,10 +180,11 @@ public class AddUsuario extends Templates.BaseFrame {
         Styles.defaultLabel(lcpf);
         bg.add(lcpf, new AbsoluteConstraints(220, 0, -1, -1));
 
-        fcpf = new JTextField();
+        fcpf = new JFormattedTextField();
         Styles.defaultField(fcpf);
         bg.add(fcpf, new AbsoluteConstraints(220, 40, -1, -1));
         fcpf.setDocument(new MaxSize(14));
+        fcpf.setFormatterFactory(MaskFactory.setMaskCpf());
         
         ecpf = new JLabel("");
         Styles.errorLabel(ecpf);
@@ -212,7 +216,7 @@ public class AddUsuario extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
-        Methods.setDateChooserFormat(fdata);
+        DateHandler.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 130, -1, -1));
         
         edata = new JLabel("");
@@ -348,7 +352,7 @@ public class AddUsuario extends Templates.BaseFrame {
                     sdf = new SimpleDateFormat("dd/MM/yyyy");
                 }
                 String data = sdf.format(pega);
-                usuario.setDataNascimento(Methods.getSqlDateTime(data));
+                usuario.setDataNascimento(DateHandler.getSqlDateTime(data));
                 
                 usuario.setCelular(fcelular.getText());
                 usuario.setTelefone(ftelefone.getText());
@@ -377,21 +381,35 @@ public class AddUsuario extends Templates.BaseFrame {
         });
         
         pCenter.add(bg);
+        
+        disabledNonAdminFields();
+    }
+    
+    /**
+     * desabilita campos de permissão e setor pra qm não for admin
+     */
+    private void disabledNonAdminFields() {
+        if (!Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
+            fsetor.setEditable(false);
+            fsetor.setEnabled(false);
+            fpermissao.setEditable(false);
+            fpermissao.setEnabled(false);
+        }
     }
     
     /**
      * preenche os campos do formulário com o usuário cujo cpf é correspondente na base de dados
      * @param id o id do produto
      */
-    private void fillFields(String cpf) {
-        usuario = usuarioDao.selecionarPorCpf(cpf);
+    private void fillFields(String id) {
+        usuario = usuarioDao.selecionarPorId(id);
         if (usuario != null ) {
             oldLogin = usuario.getLogin();
             oldCpf = usuario.getCpf();
             fnome.setText(usuario.getNome());
             fcpf.setText(usuario.getCpf());
             Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
-            Methods.setDateToDateChooser(fdata, usuario.getDataNascimento());
+            DateHandler.setDateToDateChooser(fdata, usuario.getDataNascimento().toString());
             fcelular.setText(usuario.getCelular());
             ftelefone.setText(usuario.getTelefone());
             femail.setText(usuario.getEmail());
@@ -462,7 +480,7 @@ public class AddUsuario extends Templates.BaseFrame {
                     try {
                         // edita o usuario
                         usuarioDao.alterar(usuario);
-                        usuario = usuarioDao.selecionarPorCpf(cpf);
+                        usuario = usuarioDao.selecionarPorId(id);
                         Environment.setLoggedUser(usuario);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     } catch(Exception error) {
