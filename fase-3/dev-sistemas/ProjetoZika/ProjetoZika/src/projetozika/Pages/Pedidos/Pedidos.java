@@ -32,13 +32,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  * Tela de listagem do pedidos
@@ -191,6 +187,9 @@ public class Pedidos extends Templates.BaseLayout {
         sortTable();
     }
     
+    /**
+     * adiciona ações para os botões da tabela
+     */
     private void actionsTable() {
         TableColumn colEntregar = tabela.getColumn(Methods.getTranslation("Entregar"));
         colEntregar.setMaxWidth(40);
@@ -228,29 +227,13 @@ public class Pedidos extends Templates.BaseLayout {
         });
     }
     
+    /**
+     * torna a tabela ordenável
+     */
     private void sortTable() {
-        tabela.setAutoCreateRowSorter(true);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabela.getModel()){
-            @Override
-            public boolean isSortable(int column) {
-                if(column <= 3)
-                    return true;
-                else 
-                    return false;
-            };
-        };
-        tabela.setRowSorter(sorter);
-        ArrayList list = new ArrayList();
         
-        SortOrder so;
-        if (params.getProperty("order", "DESC").equals("DESC")) {
-            so = SortOrder.DESCENDING;
-        } else {
-            so = SortOrder.ASCENDING;
-        }
-        
-        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
-        sorter.setSortKeys(list);
+        // torna a tabela ordenável
+        Methods.makeTableSortable(tabela, 3, params);
         
         // ouve o evento de click no header da tabela
         tabela.getTableHeader().addMouseListener(new MouseAdapter() {

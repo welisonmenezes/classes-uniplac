@@ -5,8 +5,6 @@
  */
 package Utils;
 
-import Config.Environment;
-import com.toedter.calendar.JDateChooser;
 import java.awt.Component;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -14,9 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -34,7 +30,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import projetozika.Main;
 
 /**
@@ -294,5 +294,33 @@ public class Methods {
                 button.setSelected(true);
             }
         }
+    }
+    
+    /**
+     * torna uma dada tabela ordenável
+     * @param tabela a tabela a ser ordenável
+     * @param indexCol o index da última coluna a ser ordenável 
+     * @param params parâmetros de paginação, ordenação e filtros
+     */
+    public static void makeTableSortable(JTable tabela, int indexCol, Properties params) {
+        tabela.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabela.getModel()){
+            @Override
+            public boolean isSortable(int column) {
+                return (column <= indexCol);
+            };
+        };
+        tabela.setRowSorter(sorter);
+        ArrayList list = new ArrayList();
+        
+        SortOrder so;
+        if (params.getProperty("order", "DESC").equals("DESC")) {
+            so = SortOrder.DESCENDING;
+        } else {
+            so = SortOrder.ASCENDING;
+        }
+        
+        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
+        sorter.setSortKeys(list);
     }
 }

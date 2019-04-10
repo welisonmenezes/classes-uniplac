@@ -19,6 +19,7 @@ import Utils.Styles;
 import com.toedter.calendar.JDateChooser;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,13 +35,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  * Tela de listagem do fornecedores
@@ -190,6 +187,9 @@ public class SeusPedidos extends Templates.BaseLayout {
         sortTable();
     }
     
+    /**
+     * adiciona ações para os botões da tabela
+     */
     private void actionsTable() {
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
         colEditar.setMaxWidth(40);
@@ -226,7 +226,7 @@ public class SeusPedidos extends Templates.BaseLayout {
                         try {
                             pedidoDao.deletar(Integer.parseInt(idTabel));
                             JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
-                        } catch(Exception error) {
+                        } catch(HeadlessException | NumberFormatException error) {
                             JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
                             throw new RuntimeException("SeusPedidos.delete: " + error);
                         }
@@ -251,29 +251,13 @@ public class SeusPedidos extends Templates.BaseLayout {
         });
     }
     
+    /**
+     * torna a tabela ordenável
+     */
     private void sortTable() {
-        tabela.setAutoCreateRowSorter(true);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabela.getModel()){
-            @Override
-            public boolean isSortable(int column) {
-                if(column <= 2)
-                    return true;
-                else 
-                    return false;
-            };
-        };
-        tabela.setRowSorter(sorter);
-        ArrayList list = new ArrayList();
         
-        SortOrder so;
-        if (params.getProperty("order", "DESC").equals("DESC")) {
-            so = SortOrder.DESCENDING;
-        } else {
-            so = SortOrder.ASCENDING;
-        }
-        
-        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
-        sorter.setSortKeys(list);
+        // torna a tabela ordenável
+        Methods.makeTableSortable(tabela, 2, params);
         
         // ouve o evento de click no header da tabela
         tabela.getTableHeader().addMouseListener(new MouseAdapter() {

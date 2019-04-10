@@ -13,8 +13,8 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- *
- * @author welis
+ * Métodos utilitários para conversão de manipulação de datas
+ * @author welison
  */
 public class DateHandler {
     /**
@@ -72,6 +72,7 @@ public class DateHandler {
         }
     }
     
+    /*
     public static String xxxgetFriendlyDate(String sqlDate) {
         try {
             SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss"); 
@@ -87,6 +88,7 @@ public class DateHandler {
             throw new RuntimeException("Methods.getFriendlyDate: " + error);
         }
     }
+    */
     
     /**
      * Parsea e retorna a data no formato sql datetime
@@ -131,12 +133,15 @@ public class DateHandler {
         }
     }
     
-    
-    
-    public static Date getJavaDate(String s) {
+    /**
+     * retoran uma data no padrão Java (sobretudo usado para ordenação de tabelas)
+     * @param date a data a ser convertida
+     * @return a data convertida
+     */
+    public static Date getJavaDate(String date) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd");
-            Date d = sdf.parse(s);
+            Date d = sdf.parse(date);
             return d;
 
         } catch (ParseException ex) {
