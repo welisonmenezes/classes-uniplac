@@ -104,13 +104,13 @@ public class UsuarioDAO {
     
     /**
      * 'deleta' o usuário da visualização, na base de dados altera apenas o status para 'Deleted'
-     * @param Cpf o Cpf do usuário a ser 'deletado'
+     * @param Id o Id do usuário a ser 'deletado'
      */
-    public void deletar(String Cpf) {
-        String sql = "UPDATE usuarios SET Status='Deleted' WHERE Cpf=?";
+    public void deletar(String Id) {
+        String sql = "UPDATE usuarios SET Status='Deleted' WHERE Id=?";
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, Cpf);
+            stmt.setString(1, Id);
             stmt.execute();
             stmt.close();
         } catch(Exception error) {
@@ -144,7 +144,7 @@ public class UsuarioDAO {
      * @param Id o Id do usuário a ser retornado
      * @return o usuário com Id correspondente
      */
-    public Usuario selecionarPorId(int Id) {
+    public Usuario selecionarPorId(String Id) {
         String sql = "SELECT * FROM usuarios WHERE Id = " + Id;
         try {
             st = conn.createStatement();

@@ -83,7 +83,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private UsuarioDAO usuarioDao;
     private String oldLogin;
     private String oldCpf;
-    private String cpf;
+    private String id;
     
     /**
      * chamada para adição
@@ -106,7 +106,7 @@ public class AddUsuario extends Templates.BaseFrame {
         this.self = this;
         this.mode = mode;
         this.params = params;
-        this.cpf = id;
+        this.id = id;
         switch (this.mode) {
             case "view":
                 initPage(Methods.getTranslation("VerUsuario"));
@@ -400,8 +400,8 @@ public class AddUsuario extends Templates.BaseFrame {
      * preenche os campos do formulário com o usuário cujo cpf é correspondente na base de dados
      * @param id o id do produto
      */
-    private void fillFields(String cpf) {
-        usuario = usuarioDao.selecionarPorCpf(cpf);
+    private void fillFields(String id) {
+        usuario = usuarioDao.selecionarPorId(id);
         if (usuario != null ) {
             oldLogin = usuario.getLogin();
             oldCpf = usuario.getCpf();
@@ -479,7 +479,7 @@ public class AddUsuario extends Templates.BaseFrame {
                     try {
                         // edita o usuario
                         usuarioDao.alterar(usuario);
-                        usuario = usuarioDao.selecionarPorCpf(cpf);
+                        usuario = usuarioDao.selecionarPorId(id);
                         Environment.setLoggedUser(usuario);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
                     } catch(Exception error) {

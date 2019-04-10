@@ -76,7 +76,7 @@ public class EditarPedido extends Templates.BaseFrame {
             int idAlmo = pedidosProdutos.get(0).getPedido().getAlmoxarifeId();
             if (idAlmo > 0) {
                 UsuarioDAO usuarioDao = new UsuarioDAO();
-                almoxarife = usuarioDao.selecionarPorId(idAlmo);
+                almoxarife = usuarioDao.selecionarPorId(idAlmo+"");
             }
             initPage(Methods.getTranslation("Pedido") + " " + id + " - " + pedido.getCreated());
         } else {

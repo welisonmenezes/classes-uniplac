@@ -21,7 +21,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -133,6 +132,7 @@ public class Usuarios extends Templates.BaseLayout {
         tabela.setRowHeight(35);
         // seta colunas
         String[] colunas = {
+            Methods.getTranslation("Codigo"),
             Methods.getTranslation("CPF"), 
             Methods.getTranslation("Nome"), 
             Methods.getTranslation("Email"), 
@@ -143,6 +143,7 @@ public class Usuarios extends Templates.BaseLayout {
         };
         // informando os tipos das colunas para auxiliar na ordenação
         final Class<?>[] columnClasses = new Class<?>[] {
+            Integer.class,
             String.class, 
             String.class, 
             String.class, 
@@ -155,7 +156,7 @@ public class Usuarios extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 4 && column != 5 && column != 6) {
+               if (column != 5 && column != 6 && column != 7) {
                    return false;
                }
                return true;
@@ -168,6 +169,7 @@ public class Usuarios extends Templates.BaseLayout {
         // adiciona linhas
         usuarios.forEach(u -> {
             Object[] data = {
+                u.getId(),
                 u.getCpf(),
                 u.getNome(),
                 u.getEmail(),
@@ -269,7 +271,7 @@ public class Usuarios extends Templates.BaseLayout {
             public void mouseClicked(MouseEvent e) {
                 int col = tabela.columnAtPoint(e.getPoint());
                 
-                if (col <= 3) {
+                if (col <= 4) {
                     Dialogs.showLoadPopup(self);
                     updateParams();
 
@@ -281,20 +283,24 @@ public class Usuarios extends Templates.BaseLayout {
 
                     switch (col) {
                         case 0 : 
-                            params.setProperty("orderby", "Cpf");
+                            params.setProperty("orderby", "Id");
                             params.setProperty("orderkey", "0");
                             break;
                         case 1 :
-                            params.setProperty("orderby", "Nome");
+                            params.setProperty("orderby", "Cpf");
                             params.setProperty("orderkey", "1");
                             break;
                         case 2 :
-                            params.setProperty("orderby", "Email");
+                            params.setProperty("orderby", "Nome");
                             params.setProperty("orderkey", "2");
                             break;
                         case 3 :
-                            params.setProperty("orderby", "Setor");
+                            params.setProperty("orderby", "Email");
                             params.setProperty("orderkey", "3");
+                            break;
+                        case 4 :
+                            params.setProperty("orderby", "Setor");
+                            params.setProperty("orderkey", "4");
                             break;
                     }
 
@@ -388,7 +394,7 @@ public class Usuarios extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
             // reseta tabela e recarrega os dados
