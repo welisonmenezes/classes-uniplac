@@ -18,7 +18,10 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -28,9 +31,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  * Tela de listagem do fornecedores
@@ -89,6 +96,8 @@ public class Fornecedores extends Templates.BaseLayout {
      */
     private void updateParams() {
         params.setProperty("offset", "0");
+        params.setProperty("orderby", "Id");
+        params.setProperty("orderkey", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
         params.setProperty("cnpj", fCnpj.getText());
@@ -130,6 +139,16 @@ public class Fornecedores extends Templates.BaseLayout {
             Methods.getTranslation("Excluir"),
             Methods.getTranslation("Ver")
         };
+        // informando os tipos das colunas para auxiliar na ordenação
+        final Class<?>[] columnClasses = new Class<?>[] {
+            Integer.class, 
+            String.class, 
+            String.class, 
+            String.class, 
+            String.class, 
+            String.class, 
+            String.class
+        };
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
@@ -138,6 +157,10 @@ public class Fornecedores extends Templates.BaseLayout {
                    return false;
                }
                return true;
+            }
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return columnClasses[column];
             }
         };
         // adiciona linhas
@@ -156,6 +179,14 @@ public class Fornecedores extends Templates.BaseLayout {
         // inicializa
         tabela.setModel(tableModel);
         
+        // add actions para os botões da tabela
+        actionsTable();
+        
+        // add funcionalidade de ordenação na tabela
+        sortTable();
+    }
+    
+    private void actionsTable() {
         TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
@@ -202,6 +233,71 @@ public class Fornecedores extends Templates.BaseLayout {
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
                 Navigation.updateLayout("verFornecedor", id, params);
+            }
+        });
+    }
+    
+    private void sortTable() {
+        tabela.setAutoCreateRowSorter(true);
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabela.getModel()){
+            @Override
+            public boolean isSortable(int column) {
+                if(column <= 3)
+                    return true;
+                else 
+                    return false;
+            };
+        };
+        tabela.setRowSorter(sorter);
+        ArrayList list = new ArrayList();
+        
+        SortOrder so;
+        if (params.getProperty("order", "DESC").equals("DESC")) {
+            so = SortOrder.DESCENDING;
+        } else {
+            so = SortOrder.ASCENDING;
+        }
+        
+        list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
+        sorter.setSortKeys(list);
+        
+        // ouve o evento de click no header da tabela
+        tabela.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int col = tabela.columnAtPoint(e.getPoint());
+                
+                if (col <= 3) {
+                    Dialogs.showLoadPopup(self);
+                    updateParams();
+
+                    if (params.getProperty("order", "DESC").equals("DESC")) {
+                        params.setProperty("order", "ASC");
+                    } else {
+                        params.setProperty("order", "DESC");
+                    }
+
+                    switch (col) {
+                        case 0 : 
+                            params.setProperty("orderby", "Id");
+                            params.setProperty("orderkey", "0");
+                            break;
+                        case 1 :
+                            params.setProperty("orderby", "Nome");
+                            params.setProperty("orderkey", "1");
+                            break;
+                        case 2 :
+                            params.setProperty("orderby", "Cnpj");
+                            params.setProperty("orderkey", "2");
+                            break;
+                        case 3 :
+                            params.setProperty("orderby", "Telefone");
+                            params.setProperty("orderkey", "3");
+                            break;
+                    }
+
+                    timerTest();
+                }
             }
         });
     }
@@ -289,7 +385,7 @@ public class Fornecedores extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
             // reseta tabela e recarrega os dados
