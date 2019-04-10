@@ -250,7 +250,15 @@ public class Produtos extends Templates.BaseLayout {
     
     private void sortTable() {
         tabela.setAutoCreateRowSorter(true);
-        TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabela.getModel());
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(tabela.getModel()){
+            @Override
+            public boolean isSortable(int column) {
+                if(column <= 4)
+                    return true;
+                else 
+                    return false;
+            };
+        };
         tabela.setRowSorter(sorter);
         ArrayList list = new ArrayList();
         
@@ -395,7 +403,7 @@ public class Produtos extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
             // reseta tabela e recarrega os dados
