@@ -310,7 +310,7 @@ public class NotaFiscalDAO {
         
         if (! data.equals("")) {
             String sqlDate = Methods.getSqlDateTime(data);
-            sql += " AND Created >= '" + sqlDate + "'";
+            sql += " AND notasFiscais.Created >= '" + sqlDate + "'";
         }
         
         if (! isCount) {

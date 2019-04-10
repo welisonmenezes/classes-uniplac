@@ -262,7 +262,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
 
         fdata = new JDateChooser();
         Styles.defaultDateChooser(fdata);
-        //Methods.setDateChooserFormat(fdata);
+        Methods.setDateChooserFormat(fdata);
         bg.add(fdata, new AbsoluteConstraints(0, 220, -1, -1));
         
         edata = new JLabel("");
