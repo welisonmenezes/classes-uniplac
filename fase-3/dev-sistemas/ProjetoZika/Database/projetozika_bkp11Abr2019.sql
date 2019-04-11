@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08-Abr-2019 às 20:54
+-- Generation Time: 11-Abr-2019 às 23:17
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -39,27 +39,29 @@ CREATE TABLE `estoque` (
 
 INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
 (1, 45),
-(2, 44),
+(2, 80),
 (3, 21),
-(4, 33),
+(4, 45),
 (5, 21),
 (6, 65),
-(7, 14),
+(7, 15),
 (8, 76),
 (9, 12),
 (10, 31),
 (11, 21),
 (12, 11),
-(13, 8),
+(13, 10),
 (14, 21),
 (15, 44),
 (16, 12),
-(17, 0),
+(17, 20),
 (18, 43),
 (19, 13),
-(20, 7),
+(20, 70),
 (21, 76),
-(22, 27);
+(22, 27),
+(23, 10),
+(24, 20);
 
 -- --------------------------------------------------------
 
@@ -69,7 +71,7 @@ INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
 
 CREATE TABLE `fornecedores` (
   `Id` int(11) NOT NULL,
-  `Cnpj` varchar(18) NOT NULL,
+  `Cnpj` varchar(14) NOT NULL,
   `Nome` varchar(100) NOT NULL,
   `Telefone` varchar(45) DEFAULT NULL,
   `Status` varchar(45) NOT NULL,
@@ -81,13 +83,13 @@ CREATE TABLE `fornecedores` (
 --
 
 INSERT INTO `fornecedores` (`Id`, `Cnpj`, `Nome`, `Telefone`, `Status`, `Created`) VALUES
-(1, '11.111.111/1156-67', 'Casa do papel', '9911991199', 'Publish', '2019-03-27 00:00:00'),
-(2, '22.222.222/2334-44', 'Escritórios SA', '333222333', 'Publish', '2019-03-27 00:00:00'),
-(3, '33.333.333/3333-33', 'Papelaria Rosário', '4343434334', 'Publish', '2019-03-27 00:00:00'),
-(4, '44.444.444/4445-55', 'Depositoffice Ltda', '4444555566', 'Publish', '2019-03-27 00:00:00'),
-(5, '55.555.555/5553-33', 'Casa do Papel', '33224455', 'Publish', '2019-03-30 00:00:00'),
-(6, '66.666.666/6633-33', 'Staples.com', '333333333', 'Publish', '2019-03-31 00:00:00'),
-(7, '77.777.777/7773-33', 'Venda ESC SA', '23234545', 'Publish', '2019-04-02 00:00:00');
+(1, '11111111115667', 'Oficina do papel', '9911991199', 'Publish', '2019-03-27 00:00:00'),
+(2, '22222222233444', 'Escritórios SA', '333222333', 'Publish', '2019-03-27 00:00:00'),
+(3, '33333333333333', 'Papelaria Rosário', '4343434334', 'Publish', '2019-03-27 00:00:00'),
+(4, '44444444444555', 'Depositoffice Ltda', '4444555566', 'Publish', '2019-03-27 00:00:00'),
+(5, '55555555555333', 'Casa do Papel', '33224455', 'Publish', '2019-03-30 00:00:00'),
+(6, '66666666663333', 'Staples.com', '333333333', 'Publish', '2019-03-31 00:00:00'),
+(7, '77777777777333', 'Venda ESC SA', '23234545', 'Publish', '2019-04-02 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -118,7 +120,9 @@ INSERT INTO `notasfiscais` (`Id`, `Numero`, `Serie`, `Valor`, `Data`, `Status`, 
 (6, 533253, 323, 21.89, '2019-03-31', 'Publish', '2019-03-31 00:00:00', 6),
 (7, 787878, 3234, 23.90, '2019-04-03', 'Publish', '2019-04-02 00:00:00', 7),
 (8, 33333333, 2323, 33.33, '2019-04-03', 'Deleted', '2019-04-07 00:00:00', 1),
-(9, 3, 54566, 40.00, '2019-04-08', 'Publish', '2019-04-08 00:00:00', 2);
+(9, 345798977, 54566, 4.00, '2019-04-08', 'Publish', '2019-04-08 00:00:00', 2),
+(10, 333333333335557, 43556990, 22.22, '2019-04-09', 'Publish', '2019-04-09 00:00:00', 7),
+(11, 88878677878, 325534, 33.33, '2019-04-03', 'Publish', '2019-04-09 00:00:00', 5);
 
 -- --------------------------------------------------------
 
@@ -139,7 +143,8 @@ CREATE TABLE `notasfiscaisprodutos` (
 --
 
 INSERT INTO `notasfiscaisprodutos` (`NotaFiscalId`, `ProdutoId`, `Valor`, `Quantidade`, `Created`) VALUES
-(2, 13, 2.00, 2, '2019-03-30 00:00:00'),
+(2, 2, 3.44, 3, '2019-04-09 00:00:00'),
+(2, 13, 2.00, 2, '2019-04-09 00:00:00'),
 (3, 3, 6.00, 4, '2019-03-31 00:00:00'),
 (3, 6, 2.50, 1, '2019-03-31 00:00:00'),
 (3, 7, 1.00, 3, '2019-03-31 00:00:00'),
@@ -151,18 +156,24 @@ INSERT INTO `notasfiscaisprodutos` (`NotaFiscalId`, `ProdutoId`, `Valor`, `Quant
 (5, 4, 2.00, 3, '2019-03-31 00:00:00'),
 (5, 16, 4.90, 1, '2019-03-31 00:00:00'),
 (5, 17, 4.50, 1, '2019-03-31 00:00:00'),
-(6, 1, 2.00, 2, '2019-03-31 00:00:00'),
-(6, 4, 1.00, 1, '2019-03-31 00:00:00'),
-(6, 5, 1.00, 1, '2019-03-31 00:00:00'),
-(6, 12, 1.70, 1, '2019-03-31 00:00:00'),
-(6, 14, 0.97, 1, '2019-03-31 00:00:00'),
-(6, 15, 0.90, 2, '2019-03-31 00:00:00'),
-(6, 17, 4.00, 1, '2019-03-31 00:00:00'),
-(6, 18, 2.00, 2, '2019-03-31 00:00:00'),
-(7, 22, 2.22, 2, '2019-04-07 00:00:00'),
+(6, 1, 2.00, 2, '2019-04-09 00:00:00'),
+(6, 4, 1.00, 1, '2019-04-09 00:00:00'),
+(6, 5, 1.00, 1, '2019-04-09 00:00:00'),
+(6, 12, 1.70, 1, '2019-04-09 00:00:00'),
+(6, 14, 0.97, 1, '2019-04-09 00:00:00'),
+(6, 15, 0.90, 2, '2019-04-09 00:00:00'),
+(6, 17, 4.00, 1, '2019-04-09 00:00:00'),
+(6, 18, 2.00, 2, '2019-04-09 00:00:00'),
+(7, 2, 3.33, 3, '2019-04-09 00:00:00'),
+(7, 22, 2.22, 2, '2019-04-09 00:00:00'),
 (8, 22, 1.11, 1, '2019-04-07 00:00:00'),
-(9, 2, 2.22, 41, '2019-04-08 00:00:00'),
-(9, 22, 1.22, 22, '2019-04-08 00:00:00');
+(9, 2, 2.22, 41, '2019-04-09 00:00:00'),
+(9, 17, 2.22, 20, '2019-04-09 00:00:00'),
+(9, 22, 1.22, 22, '2019-04-09 00:00:00'),
+(10, 2, 0.99, 30, '2019-04-10 00:00:00'),
+(10, 4, 1.11, 12, '2019-04-10 00:00:00'),
+(10, 23, 10.00, 10, '2019-04-10 00:00:00'),
+(11, 24, 3.99, 20, '2019-04-10 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -188,12 +199,15 @@ INSERT INTO `pedidos` (`Id`, `Status`, `Created`, `UsuarioId`, `AlmoxarifeId`) V
 (8, 'Pendente', '2019-04-01 00:00:00', 8, NULL),
 (9, 'Aguardando entrega', '2019-04-01 00:00:00', 8, 5),
 (10, 'Aguardando entrega', '2019-04-02 00:00:00', 7, NULL),
-(11, 'Aguardando entrega', '2019-04-02 00:00:00', 5, 5),
+(11, 'Finalizado', '2019-04-02 00:00:00', 5, 5),
 (12, 'Finalizado', '2019-04-02 00:00:00', 5, NULL),
-(13, 'Aguardando entrega', '2019-04-02 00:00:00', 5, NULL),
+(13, 'Finalizado', '2019-04-02 00:00:00', 5, NULL),
 (14, 'Negado', '2018-04-03 00:00:00', 5, NULL),
 (15, 'Aguardando entrega', '2019-04-02 00:00:00', 5, NULL),
-(16, 'Aguardando entrega', '2019-04-05 00:00:00', 5, 5);
+(16, 'Aguardando entrega', '2019-04-05 00:00:00', 5, 5),
+(17, 'Deleted', '2019-04-08 00:00:00', 5, NULL),
+(18, 'Pendente', '2019-04-09 00:00:00', 7, NULL),
+(19, 'Pendente', '2019-04-10 00:00:00', 9, NULL);
 
 -- --------------------------------------------------------
 
@@ -245,7 +259,21 @@ INSERT INTO `pedidosprodutos` (`Id`, `PedidoId`, `ProdutoId`, `QuantidadeSolicit
 (44, 9, 11, 1, 1),
 (45, 9, 8, 1, 1),
 (46, 16, 17, 14, 5),
-(47, 16, 2, 1, 1);
+(47, 16, 2, 1, 1),
+(48, 17, 20, 4, 4),
+(49, 17, 5, 2, 2),
+(50, 17, 12, 1, 1),
+(51, 17, 22, 6, 6),
+(52, 17, 15, 1, 1),
+(53, 17, 2, 1, 1),
+(58, 18, 15, 1, 1),
+(59, 18, 12, 2, 2),
+(60, 18, 18, 1, 1),
+(61, 18, 13, 1, 1),
+(62, 18, 4, 3, 3),
+(63, 19, 5, 3, 3),
+(64, 19, 23, 1, 1),
+(65, 19, 10, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -288,7 +316,9 @@ INSERT INTO `produtos` (`Id`, `Nome`, `Unidade`, `Descricao`, `Status`, `Created
 (19, 'Mouse Dell', 'Unidade', 'Mouse sem fio Dell', 'Publish', '2019-04-02 00:00:00'),
 (20, 'Caneta Compact Azul', 'Unidade', 'Caneta Compact azul ponta fina', 'Publish', '2019-04-02 00:00:00'),
 (21, 'Cola 1kg Tenaz', 'Quilo', 'Colar Tenaz 1kg', 'Publish', '2019-04-02 00:00:00'),
-(22, 'Tesoura Tramontina', 'Unidade', 'Tesoura Tramontina inox', 'Publish', '2019-04-07 00:00:00');
+(22, 'Tesoura Tramontina', 'Unidade', 'Tesoura Tramontina inox', 'Publish', '2019-04-07 00:00:00'),
+(23, 'Calculadora de Mesa', 'Unidade', 'Calculadora de mesa Maxprint', 'Publish', '2019-04-09 00:00:00'),
+(24, 'Agenda 2019', 'Unidade', 'Agenda diária 2019', 'Publish', '2019-04-09 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -298,7 +328,7 @@ INSERT INTO `produtos` (`Id`, `Nome`, `Unidade`, `Descricao`, `Status`, `Created
 
 CREATE TABLE `usuarios` (
   `Id` int(11) NOT NULL,
-  `CPF` varchar(14) NOT NULL,
+  `CPF` varchar(11) NOT NULL,
   `Nome` varchar(100) NOT NULL,
   `Sexo` varchar(10) NOT NULL,
   `Email` varchar(100) DEFAULT NULL,
@@ -321,7 +351,8 @@ INSERT INTO `usuarios` (`Id`, `CPF`, `Nome`, `Sexo`, `Email`, `Telefone`, `Celul
 (5, '11111111111', 'Welison Menezes', 'Masculino', 'welison@email.com', '333333332222', '99999999', '1987-01-06', 'Administração', 'Administrador', 'welison', '123456', 'Publish', '2019-03-28 00:00:00'),
 (6, '22222222222', 'José', 'Masculino', 'js@email.com', '33333333', '99999999', '1999-03-06', 'Recursos Humanos', 'Usuário', 'jose', '123456', 'Publish', '2019-03-28 00:00:00'),
 (7, '33333333333', 'Maria Luiza', 'Feminino', 'maria@luiza.com', '22111133', '99889988', '2000-06-05', 'Recursos Humanos', 'Almoxarife', 'maria', '123456', 'Publish', '2019-03-28 00:00:00'),
-(8, '44444444444', 'Bruce Banner', 'Masculino', 'bat@email', '22333344', '99009900', '1999-07-06', 'Contabilidade', 'Usuário', 'batman', '123456', 'Publish', '2019-03-29 00:00:00');
+(8, '44444444444', 'Bruce Banner', 'Masculino', 'batman@email', '22333344', '99009900', '1999-07-06', 'Contabilidade', 'Usuário', 'batman', '123456', 'Publish', '2019-03-29 00:00:00'),
+(9, '55555555555', 'Tony Stark', 'Masculino', 'iron@man.com', '22222233323', '77766776677', '2000-04-04', 'Almoxarifado', 'Almoxarife', 'tony', '123456', 'Publish', '2019-04-10 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -399,31 +430,31 @@ ALTER TABLE `fornecedores`
 -- AUTO_INCREMENT for table `notasfiscais`
 --
 ALTER TABLE `notasfiscais`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `pedidosprodutos`
 --
 ALTER TABLE `pedidosprodutos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
