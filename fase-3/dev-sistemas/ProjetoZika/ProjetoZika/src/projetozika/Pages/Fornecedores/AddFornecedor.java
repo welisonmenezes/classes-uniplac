@@ -189,7 +189,7 @@ public class AddFornecedor extends Templates.BaseFrame {
             if (isValid) {
               
                 // seta os valores do formulário ao fornecedor corrente
-                fornecedor.setCnpj(fcnpj.getText());
+                fornecedor.setCnpj(fcnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
                 fornecedor.setNome(fname.getText());
                 fornecedor.setTelefone(ftel.getText());
                 

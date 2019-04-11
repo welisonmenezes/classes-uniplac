@@ -163,6 +163,7 @@ public class FornecedorDAO {
                 fornecedores.add(fornecedor);
             }
             st.close();
+            //System.out.println(sql);
             return fornecedores;
         } catch(Exception error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorCnpj: " + error);

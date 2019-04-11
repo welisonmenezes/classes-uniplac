@@ -197,7 +197,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                 ArrayList<ComboItem> elements = new ArrayList<>();
                 // atualiza sugestão de fornecedores
                 fornecedores.clear();
-                fornecedores = fornecedorDao.selecionarPorCnpj(fcnpj.getText());
+                fornecedores = fornecedorDao.selecionarPorCnpj(fcnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
                 fornecedores.forEach(fornecedor -> {
                     elements.add(new ComboItem(fornecedor.getId(), fornecedor.getCnpj()));
                 });

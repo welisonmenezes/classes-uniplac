@@ -96,7 +96,7 @@ public class Fornecedores extends Templates.BaseLayout {
         params.setProperty("orderkey", "0");
         params.setProperty("page", "1");
         params.setProperty("nome", fNome.getText());
-        params.setProperty("cnpj", fCnpj.getText());
+        params.setProperty("cnpj", fCnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
         params.setProperty("telefone", fTelefone.getText());
     }
     

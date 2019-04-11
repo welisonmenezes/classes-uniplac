@@ -338,10 +338,10 @@ public class AddUsuario extends Templates.BaseFrame {
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;
             if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
             if (isValid) {
-                
+                String newCpf = fcpf.getText().replace(".","").replace("-","").replace("_","");
                 // seta os valores do formulário ao usuário corrente
                 usuario.setNome(fnome.getText());
-                usuario.setCpf(fcpf.getText());
+                usuario.setCpf(newCpf);
                 usuario.setSexo(gsexo.getSelection().getActionCommand());
                 
                 java.util.Date pega = fdata.getDate();
@@ -364,7 +364,7 @@ public class AddUsuario extends Templates.BaseFrame {
                 usuario.setSenha(senha);
                 
                 // valida campos únicos
-                if (!mode.equals("add") && (!oldCpf.equals(fcpf.getText())) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
+                if (!mode.equals("add") && (!oldCpf.equals(newCpf)) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
                 } else if (!mode.equals("add") && (!oldLogin.equals(flogin.getText())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
                     elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));

@@ -5,22 +5,20 @@
  */
 package CustomFields;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextField;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.MaskFormatter;
 
 /**
- *
+ * Fabrica máscara para a aplicação
  * @author welison
  */
 public class MaskFactory {
-
+    
+    /**
+     * máscara para cpf
+     * @return DefaultFormatterFactory para ser usado como máscara
+     */
     public static DefaultFormatterFactory setMaskCpf(){
         MaskFormatter mask = null;
         try{
@@ -32,6 +30,10 @@ public class MaskFactory {
         return new DefaultFormatterFactory(mask,mask);
     }
     
+    /**
+     * máscara para cnpj
+     * @return DefaultFormatterFactory para ser usado como máscara
+     */
     public static DefaultFormatterFactory setMaskCnpj(){
         MaskFormatter mask = null;
         try{
