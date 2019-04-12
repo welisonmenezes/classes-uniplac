@@ -106,7 +106,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         params.setProperty("orderby", "nId");
         params.setProperty("orderkey", "0");
         params.setProperty("page", "1");
-        params.setProperty("cnpj", fcnpj.getText());
+        params.setProperty("cnpj", fcnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
         params.setProperty("numero", fnumero.getText());
         params.setProperty("data", date);
     }

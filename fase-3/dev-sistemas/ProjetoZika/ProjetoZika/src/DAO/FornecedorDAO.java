@@ -6,7 +6,6 @@
 package DAO;
 
 import Models.Fornecedor;
-import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

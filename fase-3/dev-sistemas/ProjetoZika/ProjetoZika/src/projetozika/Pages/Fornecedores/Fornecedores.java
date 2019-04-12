@@ -98,6 +98,8 @@ public class Fornecedores extends Templates.BaseLayout {
         params.setProperty("nome", fNome.getText());
         params.setProperty("cnpj", fCnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
         params.setProperty("telefone", fTelefone.getText());
+        
+        //System.out.println(fCnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
     }
     
     /**

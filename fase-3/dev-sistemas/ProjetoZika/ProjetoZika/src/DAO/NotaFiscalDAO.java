@@ -10,7 +10,6 @@ import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
 import Models.Produto;
 import Utils.DateHandler;
-import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -320,7 +319,7 @@ public class NotaFiscalDAO {
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
+        System.out.println(sql);
         return sql;
     }
     
