@@ -5,12 +5,10 @@
  */
 package DAO;
 
-import Models.Fornecedor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 /**
  * Manipula dados do Estoque
@@ -21,7 +19,6 @@ public class EstoqueDAO {
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
-    private final ArrayList<Fornecedor> fornecedores = new ArrayList();
     
     /**
      * método construtor, inicializa a conexão
@@ -43,7 +40,7 @@ public class EstoqueDAO {
             stmt.setInt(1, idProduto);
             stmt.setInt(2, quantidade);
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -61,7 +58,6 @@ public class EstoqueDAO {
      * @param quantidade a quantidade a ser atualziada
      */
     public void alterar(int idProduto, int quantidade) {
-        //String sql = "UPDATE estoque SET Total=Total+(?) WHERE ProdutoId=?";
         String sql = "UPDATE estoque SET Total = CASE WHEN (Total+(?)) < 0 THEN 0 ELSE (Total+(?)) END WHERE ProdutoId=?";
         try {
             stmt = conn.prepareStatement(sql);
@@ -70,7 +66,6 @@ public class EstoqueDAO {
             stmt.setInt(3, idProduto);
             stmt.execute();
             stmt.close();
-            //System.out.println(sql);
         } catch(Exception error) {
             throw new RuntimeException("EstoqueDAO.alterar: " + error);
         }
@@ -110,7 +105,6 @@ public class EstoqueDAO {
             stmt.setInt(2, idProduto);
             stmt.execute();
             stmt.close();
-            //System.out.println(sql);
         } catch(Exception error) {
             throw new RuntimeException("EstoqueDAO.normalizarEstoqueProduto: " + error);
         }

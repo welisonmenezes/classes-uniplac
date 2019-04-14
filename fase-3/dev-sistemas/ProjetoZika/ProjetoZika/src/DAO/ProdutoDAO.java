@@ -7,6 +7,7 @@ package DAO;
 
 import Models.GraphModel;
 import Models.Produto;
+import Utils.FillModel;
 import Utils.DateHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +28,7 @@ public class ProdutoDAO {
     private Statement st;
     private ResultSet rs;
     private final ArrayList<Produto> produtos = new ArrayList();
+    private final FillModel helper = new FillModel();
     
     /**
      * método construtor, inicializa a conexão
@@ -51,7 +53,7 @@ public class ProdutoDAO {
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(5, sqlDate);
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -110,14 +112,7 @@ public class ProdutoDAO {
             rs = st.executeQuery(sql);
             Produto produto = new Produto();
             while(rs.next()) {
-                produto.setId(rs.getInt("Id"));
-                produto.setNome(rs.getString("Nome"));
-                produto.setDescricao(rs.getString("Descricao"));
-                produto.setUnidade(rs.getString("Unidade"));
-                produto.setStatus(rs.getString("Status"));
-                produto.setTotal(rs.getInt("Total"));
-                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                produto.setCreated(rs.getString("Created"));
+                this.helper.fillProduto(produto, rs);
             }
             st.close();
             return produto;
@@ -132,19 +127,15 @@ public class ProdutoDAO {
      * @return uma lista de produtos correspondentes
      */
     public ArrayList<Produto> selecionarPorNome(String nome) {
-        String sql = "SELECT * FROM produtos WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
+        String sql = "SELECT * FROM produtos "
+                + "LEFT JOIN estoque ON estoque.ProdutoId=Id "
+                + "WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("Id"));
-                produto.setNome(rs.getString("Nome"));
-                produto.setDescricao(rs.getString("Descricao"));
-                produto.setUnidade(rs.getString("Unidade"));
-                produto.setStatus(rs.getString("Status"));
-                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                produto.setCreated(rs.getString("Created"));
+                this.helper.fillProduto(produto, rs);
                 produtos.add(produto);
             }
             st.close();
@@ -192,14 +183,7 @@ public class ProdutoDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("Id"));
-                produto.setNome(rs.getString("Nome"));
-                produto.setDescricao(rs.getString("Descricao"));
-                produto.setUnidade(rs.getString("Unidade"));
-                produto.setStatus(rs.getString("Status"));
-                //produto.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                produto.setCreated(rs.getString("Created"));
-                produto.setTotal(rs.getInt("Total"));
+                this.helper.fillProduto(produto, rs);
                 produtos.add(produto);
             }
             st.close();
@@ -263,7 +247,6 @@ public class ProdutoDAO {
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
         return sql;
     }
 }

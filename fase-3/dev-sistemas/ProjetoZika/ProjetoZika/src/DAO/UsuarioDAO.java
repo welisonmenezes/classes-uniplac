@@ -6,7 +6,7 @@
 package DAO;
 
 import Models.Usuario;
-import Utils.Methods;
+import Utils.FillModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +26,7 @@ public class UsuarioDAO {
     private Statement st;
     private ResultSet rs;
     private final ArrayList<Usuario> usuarios = new ArrayList();
+    private final FillModel helper = new FillModel();
     
     /**
      * método construtor, inicializa a conexão
@@ -60,7 +61,7 @@ public class UsuarioDAO {
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(13, sqlDate);
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -130,7 +131,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             Usuario usuario = new Usuario();
             while(rs.next()) {
-                fillUser(usuario, rs);
+                this.helper.fillUsuario(usuario, rs);
             }
             st.close();
             return usuario;
@@ -151,7 +152,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             Usuario usuario = new Usuario();
             while(rs.next()) {
-                fillUser(usuario, rs);
+                this.helper.fillUsuario(usuario, rs);
             }
             st.close();
             return usuario;
@@ -173,7 +174,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             Usuario usuario = new Usuario();
             while(rs.next()) {
-                fillUser(usuario, rs);
+                this.helper.fillUsuario(usuario, rs);
             }
             st.close();
             return usuario;
@@ -228,7 +229,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Usuario usuario = new Usuario();
-                fillUser(usuario, rs);
+                this.helper.fillUsuario(usuario, rs);
                 usuarios.add(usuario);
             }
             st.close();
@@ -287,40 +288,10 @@ public class UsuarioDAO {
         }
         
         if (! isCount) {
-            //sql += " ORDER BY Id DESC";
             sql += " ORDER BY " + params.getProperty("orderby", "Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
         return sql;
-    }
-    
-    /**
-     * Popula o usuario corrente com o resultado da consulta
-     * @param usuario o usuario a ser populado
-     * @param rs o ResultSet da consulta
-     */
-    private void fillUser(Usuario usuario, ResultSet rs) {
-        try {
-            usuario.setId(rs.getInt("Id"));
-            usuario.setCpf(rs.getString("Cpf"));
-            usuario.setNome(rs.getString("Nome"));
-            usuario.setEmail(rs.getString("Email"));
-            //usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("DataNascimento")));
-            usuario.setDataNascimento(rs.getString("DataNascimento"));
-            usuario.setCelular(rs.getString("Celular"));
-            usuario.setTelefone(rs.getString("Telefone"));
-            usuario.setLogin(rs.getString("Login"));
-            usuario.setSenha(rs.getString("Senha"));
-            usuario.setSetor(rs.getString("Setor"));
-            //usuario.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-            usuario.setCreated(rs.getString("Created"));
-            usuario.setPermissao(rs.getString("Permissao"));
-            usuario.setStatus(rs.getString("Status"));
-            usuario.setSexo(rs.getString("Sexo"));
-        } catch(Exception error) {
-            throw new RuntimeException("UsuarioDAO.fillUser: " + error);
-        }
     }
 }

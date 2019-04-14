@@ -6,6 +6,7 @@
 package DAO;
 
 import Models.Fornecedor;
+import Utils.FillModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,7 @@ public class FornecedorDAO {
     private Statement st;
     private ResultSet rs;
     private final ArrayList<Fornecedor> fornecedores = new ArrayList();
+    private final FillModel helper = new FillModel();
     
     /**
      * método construtor, inicializa a conexão
@@ -49,7 +51,7 @@ public class FornecedorDAO {
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(5, sqlDate);
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -108,13 +110,7 @@ public class FornecedorDAO {
             rs = st.executeQuery(sql);
             Fornecedor fornecedor = new Fornecedor();
             while(rs.next()) {
-                fornecedor.setId(rs.getInt("Id"));
-                fornecedor.setCnpj(rs.getString("Cnpj"));
-                fornecedor.setNome(rs.getString("Nome"));
-                fornecedor.setStatus(rs.getString("Status"));
-                fornecedor.setTelefone(rs.getString("Telefone"));
-                //fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                fornecedor.setCreated(rs.getString("Created"));
+                this.helper.fillFornecedor(fornecedor, rs);
             }
             st.close();
             return fornecedor;
@@ -152,17 +148,10 @@ public class FornecedorDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Fornecedor fornecedor = new Fornecedor();
-                fornecedor.setId(rs.getInt("Id"));
-                fornecedor.setCnpj(rs.getString("Cnpj"));
-                fornecedor.setNome(rs.getString("Nome"));
-                fornecedor.setStatus(rs.getString("Status"));
-                fornecedor.setTelefone(rs.getString("Telefone"));
-                //fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                fornecedor.setCreated(rs.getString("Created"));
+                this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
             st.close();
-            //System.out.println(sql);
             return fornecedores;
         } catch(Exception error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorCnpj: " + error);
@@ -181,13 +170,7 @@ public class FornecedorDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Fornecedor fornecedor = new Fornecedor();
-                fornecedor.setId(rs.getInt("Id"));
-                fornecedor.setCnpj(rs.getString("Cnpj"));
-                fornecedor.setNome(rs.getString("Nome"));
-                fornecedor.setStatus(rs.getString("Status"));
-                fornecedor.setTelefone(rs.getString("Telefone"));
-                //fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("Created")));
-                fornecedor.setCreated(rs.getString("Created"));
+                this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
             st.close();
@@ -245,15 +228,11 @@ public class FornecedorDAO {
             sql += " AND Cnpj LIKE '%" + cnpj + "%'";
         }
         
-        
-        
         if (! isCount) {
-            //sql += " ORDER BY Id DESC";
             sql += " ORDER BY " + params.getProperty("orderby", "Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
         return sql;
     }
 }

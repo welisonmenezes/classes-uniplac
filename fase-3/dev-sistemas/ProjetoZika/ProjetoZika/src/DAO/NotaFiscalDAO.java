@@ -9,6 +9,7 @@ import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
 import Models.Produto;
+import Utils.FillModel;
 import Utils.DateHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,6 +30,7 @@ public class NotaFiscalDAO {
     private Statement st;
     private ResultSet rs;
     private final ArrayList<NotaFiscal> notasFiscais = new ArrayList();
+    private final FillModel helper = new FillModel();
     
     /**
      * método construtor, inicializa a conexão
@@ -55,7 +57,7 @@ public class NotaFiscalDAO {
             stmt.setDate(6, sqlDate);
             stmt.setInt(7, notaFiscal.getFornecedor().getId());
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -83,7 +85,7 @@ public class NotaFiscalDAO {
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             stmt.setDate(5, sqlDate);
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -110,7 +112,6 @@ public class NotaFiscalDAO {
             stmt.setString(4, notaFiscal.getData());
             stmt.setInt(5, notaFiscal.getFornecedor().getId());
             stmt.setInt(6, notaFiscal.getId());
-            //System.out.println(sql);
             stmt.execute();
             stmt.close();
         } catch(Exception error) {
@@ -185,10 +186,9 @@ public class NotaFiscalDAO {
             rs = st.executeQuery(sql);
             NotaFiscal notaFiscal = new NotaFiscal();
             while(rs.next()) {
-                fillNotas(notaFiscal, rs);
+                this.helper.fillNotas(notaFiscal, rs);
             }
             st.close();
-            //System.out.println(sql);
             return notaFiscal;
         } catch (Exception error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarPorId: " + error);
@@ -211,26 +211,22 @@ public class NotaFiscalDAO {
             ArrayList<NotaFiscalProduto> nfps = new ArrayList();
             while(rs.next()) {
                 NotaFiscalProduto nfp = new NotaFiscalProduto();
-                Produto p = new Produto();
                 nfp.setQuantidade(rs.getInt("Quantidade"));
                 nfp.setValor(rs.getFloat("Valor"));
-                //nfp.setCreated(Methods.getFriendlyDate(rs.getString("notasfiscaisprodutos.Created")));
                 nfp.setCreated(rs.getString("notasfiscaisprodutos.Created"));
-                
+                // o produto da nota
+                Produto p = new Produto();
                 p.setId(rs.getInt("Id"));
                 p.setNome(rs.getString("Nome"));
                 p.setDescricao(rs.getString("Descricao"));
                 p.setStatus(rs.getString("Status"));
                 p.setUnidade(rs.getString("Unidade"));
-                //p.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
                 p.setCreated(rs.getString("produtos.Created"));
                 
                 nfp.setProduto(p);
-                
                 nfps.add(nfp);
             }
             st.close();
-            //System.out.println(sql);
             return nfps;
         } catch (Exception error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarProdutos: " + error);
@@ -249,7 +245,7 @@ public class NotaFiscalDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 NotaFiscal notaFiscal = new NotaFiscal();
-                fillNotas(notaFiscal, rs);
+                this.helper.fillNotas(notaFiscal, rs);
                 notasFiscais.add(notaFiscal);
             }
             st.close();
@@ -314,45 +310,10 @@ public class NotaFiscalDAO {
         }
         
         if (! isCount) {
-            //sql += " ORDER BY nId DESC";
             sql += " ORDER BY " + params.getProperty("orderby", "nId") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        System.out.println(sql);
         return sql;
-    }
-    
-    /**
-     * Popula a nota fiscal corrente com o resultado da consulta
-     * @param notaFiscal a nota fiscal a ser populada
-     * @param rs o ResultSet da consulta
-     */
-    private void fillNotas(NotaFiscal notaFiscal, ResultSet rs) {
-        try {
-            notaFiscal.setId(rs.getInt("nId"));
-            notaFiscal.setNumero(rs.getLong("nNumero"));
-            notaFiscal.setSerie(rs.getInt("nSerie"));
-            //notaFiscal.setData(Methods.getFriendlyBirthday(rs.getString("nData")));
-            notaFiscal.setData(rs.getString("nData"));
-            notaFiscal.setValor(rs.getFloat("nValor"));
-            notaFiscal.setStatus(rs.getString("nStatus"));
-            //notaFiscal.setCreated(Methods.getFriendlyDate(rs.getString("nCreated")));
-            notaFiscal.setCreated(rs.getString("nCreated"));
-            
-            Fornecedor  fornecedor = new Fornecedor();
-            fornecedor.setId(rs.getInt("fId"));
-            fornecedor.setCnpj(rs.getString("fCnpj"));
-            fornecedor.setNome(rs.getString("fNome"));
-            fornecedor.setStatus(rs.getString("fStatus"));
-            fornecedor.setTelefone(rs.getString("fTelefone"));
-            //fornecedor.setCreated(Methods.getFriendlyDate(rs.getString("fCreated")));
-            fornecedor.setCreated(rs.getString("fCreated"));
-            notaFiscal.setFornecedor(fornecedor);
-
-            
-        } catch(Exception error) {
-            throw new RuntimeException("NotaFiscalDAO.fillUser: " + error);
-        }
     }
 }

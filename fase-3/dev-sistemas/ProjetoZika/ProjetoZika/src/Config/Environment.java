@@ -87,6 +87,9 @@ public class Environment {
         Methods.getTranslation("Negado")
     };
     
+    /**
+     * constante com os meses traduzíveis
+     */
     public static final String [] MONTHS = {
         Methods.getTranslation("Janeiro"),
         Methods.getTranslation("Fevereiro"),

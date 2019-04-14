@@ -10,6 +10,7 @@ import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
 import Models.Usuario;
+import Utils.FillModel;
 import Utils.DateHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,9 +30,9 @@ public class PedidoDAO {
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
-    private final ArrayList<Produto> produtos = new ArrayList();
     private final ArrayList<Pedido> pedidos = new ArrayList();
     private final ArrayList<PedidoProduto> pedidosProdutos = new ArrayList();
+    private final FillModel helper = new FillModel();
     
     /**
      * método construtor, inicializa a conexão
@@ -54,7 +55,7 @@ public class PedidoDAO {
             stmt.setDate(2, sqlDate);
             stmt.setInt(3, pedido.getSolicitante().getId());
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -80,7 +81,7 @@ public class PedidoDAO {
             stmt.setInt(3, pedidoProduto.getQuantidade());
             stmt.setInt(4, pedidoProduto.getQuantidade());
             stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
+            rs = stmt.getGeneratedKeys();
             int lastInsertedId = 0;
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
@@ -194,17 +195,17 @@ public class PedidoDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Pedido pedido = new Pedido();
-                fillPedido(pedido, rs);
+                this.helper.fillPedido(pedido, rs);
                 
                 Usuario usuario = new Usuario();
-                fillUser(usuario, rs);
+                this.helper.fillUsuario(usuario, rs);
                 pedido.setSolicitante(usuario);
                 
                 Produto produto = new Produto();
-                fillProduto(produto, rs);
+                this.helper.fillProduto(produto, rs);
                 
                 PedidoProduto pedidoProduto = new PedidoProduto();
-                fillPedidoProduto(pedidoProduto, pedido, produto, rs);
+                this.helper.fillPedidoProduto(pedidoProduto, pedido, produto, rs);
                 
                 pedidosProdutos.add(pedidoProduto);
             }
@@ -228,7 +229,7 @@ public class PedidoDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Pedido pedido = new Pedido();
-                fillPedido(pedido, rs);
+                this.helper.fillPedido(pedido, rs);
                 pedidos.add(pedido);
             }
             st.close();
@@ -254,13 +255,13 @@ public class PedidoDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Pedido pedido = new Pedido();
-                fillPedido(pedido, rs);
+                this.helper.fillPedido(pedido, rs);
                 
                 Produto produto = new Produto();
-                fillProduto(produto, rs);
+                this.helper.fillProduto(produto, rs);
                 
                 PedidoProduto pedidoProduto = new PedidoProduto();
-                fillPedidoProduto(pedidoProduto, pedido, produto, rs);
+                this.helper.fillPedidoProduto(pedidoProduto, pedido, produto, rs);
                 
                 pedidosProdutos.add(pedidoProduto);
             }
@@ -327,10 +328,10 @@ public class PedidoDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 Pedido pedido = new Pedido();
-                fillPedido(pedido, rs);
+                this.helper.fillPedido(pedido, rs);
                 
                 Usuario usuario = new Usuario();
-                fillUser(usuario, rs);
+                this.helper.fillUsuario(usuario, rs);
                 pedido.setSolicitante(usuario);
                 
                 pedidos.add(pedido);
@@ -394,12 +395,10 @@ public class PedidoDAO {
         }
         
         if (! isCount) {
-            //sql += " ORDER BY pedidos.Id DESC";
             sql += " ORDER BY " + params.getProperty("orderby", "pedidos.Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
         return sql;
     }
     
@@ -434,94 +433,10 @@ public class PedidoDAO {
         }
         
         if (! isCount) {
-            //sql += " ORDER BY pedidos.Id DESC";
             sql += " ORDER BY " + params.getProperty("orderby", "pedidos.Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
             
-        //System.out.println(sql);
         return sql;
-    }
-    
-    /**
-     * Popula o usuario corrente com o resultado da consulta
-     * @param usuario o usuario a ser populado
-     * @param rs o ResultSet da consulta
-     */
-    private void fillUser(Usuario usuario, ResultSet rs) {
-        try {
-            usuario.setId(rs.getInt("usuarios.Id"));
-            usuario.setCpf(rs.getString("usuarios.Cpf"));
-            usuario.setNome(rs.getString("usuarios.Nome"));
-            usuario.setEmail(rs.getString("usuarios.Email"));
-            //usuario.setDataNascimento(Methods.getFriendlyBirthday(rs.getString("usuarios.DataNascimento")));
-            usuario.setDataNascimento(rs.getString("usuarios.DataNascimento"));
-            usuario.setCelular(rs.getString("usuarios.Celular"));
-            usuario.setTelefone(rs.getString("usuarios.Telefone"));
-            usuario.setLogin(rs.getString("usuarios.Login"));
-            usuario.setSenha(rs.getString("usuarios.Senha"));
-            usuario.setSetor(rs.getString("usuarios.Setor"));
-            //usuario.setCreated(Methods.getFriendlyDate(rs.getString("usuarios.Created")));
-            usuario.setCreated(rs.getString("usuarios.Created"));
-            usuario.setPermissao(rs.getString("usuarios.Permissao"));
-            usuario.setStatus(rs.getString("usuarios.Status"));
-            usuario.setSexo(rs.getString("usuarios.Sexo"));
-        } catch(Exception error) {
-            throw new RuntimeException("PedidoDAO.fillUser: " + error);
-        }
-    }
-    
-    /**
-     * Popula o produto corrente com o resultado da consulta
-     * @param usuario o produto a ser populado
-     * @param rs o ResultSet da consulta
-     */
-    private void fillProduto(Produto produto, ResultSet rs) {
-        try {
-            produto.setId(rs.getInt("produtos.Id"));
-            produto.setNome(rs.getString("produtos.Nome"));
-            produto.setDescricao(rs.getString("produtos.Descricao"));
-            produto.setStatus(rs.getString("produtos.Status"));
-            produto.setUnidade(rs.getString("produtos.Unidade"));
-            produto.setTotal(rs.getInt("estoque.Total"));
-            //produto.setCreated(Methods.getFriendlyDate(rs.getString("produtos.Created")));
-            produto.setCreated(rs.getString("produtos.Created"));
-        } catch(Exception error) {
-            throw new RuntimeException("PedidoDAO.fillProduto: " + error);
-        }
-    }
-    
-    /**
-     * Popula o pedido corrente com o resultado da consulta
-     * @param usuario o pedido a ser populado
-     * @param rs o ResultSet da consulta
-     */
-    private void fillPedido(Pedido pedido, ResultSet rs) {
-        try {
-            pedido.setId(rs.getInt("pedidos.Id"));
-            pedido.setStatus(rs.getString("pedidos.Status"));
-            //pedido.setCreated(Methods.getFriendlyDate(rs.getString("pedidos.Created")));
-            pedido.setCreated(rs.getString("pedidos.Created"));
-            pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
-        } catch(Exception error) {
-            throw new RuntimeException("PedidoDAO.fillProduto: " + error);
-        }
-    }
-    
-    /**
-     * Popula o pedidoProduto corrente com o resultado da consulta
-     * @param usuario o pedidoProduto a ser populado
-     * @param rs o ResultSet da consulta
-     */
-    private void fillPedidoProduto(PedidoProduto pedidoProduto, Pedido pedido, Produto produto, ResultSet rs) {
-        try {
-            pedidoProduto.setId(rs.getInt("pedidosprodutos.Id"));
-            pedidoProduto.setQuantidade(rs.getInt("pedidosprodutos.QuantidadeSolicitada"));
-            pedidoProduto.setQuantidadeAprovada(rs.getInt("pedidosprodutos.QuantidadeAprovada"));
-            pedidoProduto.setPedido(pedido);
-            pedidoProduto.setProduto(produto);
-        } catch(Exception error) {
-            throw new RuntimeException("PedidoDAO.fillPedidoProduto: " + error);
-        }
     }
 }
