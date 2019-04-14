@@ -86,4 +86,19 @@ public class Environment {
         Methods.getTranslation("Finalizado"),
         Methods.getTranslation("Negado")
     };
+    
+    public static final String [] MONTHS = {
+        Methods.getTranslation("Janeiro"),
+        Methods.getTranslation("Fevereiro"),
+        Methods.getTranslation("Marco"),
+        Methods.getTranslation("Abril"),
+        Methods.getTranslation("Maio"),
+        Methods.getTranslation("Junho"),
+        Methods.getTranslation("Julho"),
+        Methods.getTranslation("Agosto"),
+        Methods.getTranslation("Setembro"),
+        Methods.getTranslation("Outubro"),
+        Methods.getTranslation("Novembro"),
+        Methods.getTranslation("Dezembro")
+    };
 }
