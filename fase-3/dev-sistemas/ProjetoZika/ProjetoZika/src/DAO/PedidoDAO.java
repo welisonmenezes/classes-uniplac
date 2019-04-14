@@ -5,12 +5,12 @@
  */
 package DAO;
 
+import Models.GraphModel;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
 import Models.Usuario;
 import Utils.DateHandler;
-import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -286,6 +286,32 @@ public class PedidoDAO {
             return rs.getInt(1);
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.total: " + error);
+        }
+    }
+    
+    /**
+     * seleciona total de pedidos dos últimos 6 meses
+     * @return lista de total de pedidos e seu respectivo mês
+     */
+    public ArrayList<GraphModel> graphData() {
+        String sql = "SELECT COUNT(Id) as total, MONTH(Created) as month " +
+                        "FROM pedidos " +
+                        "WHERE Created > DATE_SUB(now(), INTERVAL 6 MONTH) " +
+                        "GROUP BY MONTH(Created) ORDER BY Created";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            ArrayList graphs = new ArrayList();
+            while(rs.next()) {
+                GraphModel graph = new GraphModel();
+                graph.setQuantidade(rs.getInt("total"));
+                graph.setMonth(rs.getInt("month"));
+                graphs.add(graph);
+            }
+            st.close();
+            return graphs;
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.graphData: " + error);
         }
     }
     

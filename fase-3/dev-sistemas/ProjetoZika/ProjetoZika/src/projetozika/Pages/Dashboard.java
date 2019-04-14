@@ -6,8 +6,9 @@
 package projetozika.Pages;
 
 import Config.Environment;
+import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
-import Models.GraphProdutos;
+import Models.GraphModel;
 import Utils.Methods;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -30,8 +31,9 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 public class Dashboard extends Templates.BaseLayout {
     private JPanel bg;
     private ProdutoDAO produtoDao;
-    private ArrayList<GraphProdutos> dataProdutos;
-    private ArrayList<GraphProdutos> produtosDados;
+    private ArrayList<GraphModel> produtosDados;
+    private PedidoDAO pedidoDao;
+    private ArrayList<GraphModel> pedidosDados;
     
     /**
      * Cria a tela do dashboard
@@ -67,11 +69,19 @@ public class Dashboard extends Templates.BaseLayout {
      * Gera o gráfico de pedidos
      */
     private void chartPedidos() {
+        
+        // pega os dados da base de dados
+        pedidoDao = new PedidoDAO();
+        pedidosDados = pedidoDao.graphData();
+        
+        
+        // carrega os dados no gráfico
         DefaultCategoryDataset dataPedidos = new DefaultCategoryDataset();
-        dataPedidos.setValue(35, "", Methods.getTranslation("Janeiro"));
-        dataPedidos.setValue(15, "", Methods.getTranslation("Fevereiro"));
-        dataPedidos.setValue(45, "", Methods.getTranslation("Marco"));
-        dataPedidos.setValue(19, "", Methods.getTranslation("Abril"));
+        pedidosDados.forEach(graph -> {
+            dataPedidos.setValue(graph.getQuantidade(), "", Environment.MONTHS[graph.getMonth()-1]);
+        });
+        
+        // constrói o gráfico
         buildChart(
                 dataPedidos, 
                 Methods.getTranslation("PedidosRealizados"), 
@@ -88,17 +98,17 @@ public class Dashboard extends Templates.BaseLayout {
      */
     private void chartProdutos() {
         
-        // carrega os dados
+        // pega os dados da base de dados
         produtoDao = new ProdutoDAO();
         produtosDados = produtoDao.graphData();
         
-        
+        // carrega os dados no gráfico
         DefaultCategoryDataset dataProdutos = new DefaultCategoryDataset();
-        
         produtosDados.forEach(graph -> {
             dataProdutos.setValue(graph.getQuantidade(), "", Environment.MONTHS[graph.getMonth()-1]);
         });
         
+        // constrói o gráfico
         buildChart(
                 dataProdutos, 
                 Methods.getTranslation("EntradaProdutos"), 

@@ -6,16 +6,16 @@
 package Models;
 
 /**
- *
- * @author welis
+ * Modelo para o gráfico de total/mês
+ * @author welison
  */
-public class GraphProdutos {
+public class GraphModel {
     private int Quantidade;
     private int Month;
     
-    public GraphProdutos() {}
+    public GraphModel() {}
     
-    public GraphProdutos(int quantidade, int month) {
+    public GraphModel(int quantidade, int month) {
         this.Quantidade = quantidade;
         this.Month = month;
     }

@@ -5,10 +5,9 @@
  */
 package DAO;
 
-import Models.GraphProdutos;
+import Models.GraphModel;
 import Models.Produto;
 import Utils.DateHandler;
-import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -155,7 +154,11 @@ public class ProdutoDAO {
         }
     }
     
-    public ArrayList<GraphProdutos> graphData() {
+    /**
+     * seleciona total de produtos dos últimos 6 meses
+     * @return lista de total de produtos e seu respectivo mês
+     */
+    public ArrayList<GraphModel> graphData() {
         String sql = "SELECT COUNT(Id) as total, MONTH(Created) as month " +
                         "FROM produtos " +
                         "WHERE Created > DATE_SUB(now(), INTERVAL 6 MONTH) " +
@@ -165,7 +168,7 @@ public class ProdutoDAO {
             rs = st.executeQuery(sql);
             ArrayList graphs = new ArrayList();
             while(rs.next()) {
-                GraphProdutos graph = new GraphProdutos();
+                GraphModel graph = new GraphModel();
                 graph.setQuantidade(rs.getInt("total"));
                 graph.setMonth(rs.getInt("month"));
                 graphs.add(graph);
