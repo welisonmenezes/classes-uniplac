@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Models.GraphProdutos;
 import Models.Produto;
 import Utils.DateHandler;
 import Utils.Methods;
@@ -151,6 +152,28 @@ public class ProdutoDAO {
             return produtos;
         } catch(Exception error) {
             throw new RuntimeException("ProdutoDAO.selecionarPorNome: " + error);
+        }
+    }
+    
+    public ArrayList<GraphProdutos> graphData() {
+        String sql = "SELECT COUNT(Id) as total, MONTH(Created) as month " +
+                        "FROM produtos " +
+                        "WHERE Created > DATE_SUB(now(), INTERVAL 6 MONTH) " +
+                        "GROUP BY MONTH(Created) ORDER BY Created";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            ArrayList graphs = new ArrayList();
+            while(rs.next()) {
+                GraphProdutos graph = new GraphProdutos();
+                graph.setQuantidade(rs.getInt("total"));
+                graph.setMonth(rs.getInt("month"));
+                graphs.add(graph);
+            }
+            st.close();
+            return graphs;
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.graphData: " + error);
         }
     }
     

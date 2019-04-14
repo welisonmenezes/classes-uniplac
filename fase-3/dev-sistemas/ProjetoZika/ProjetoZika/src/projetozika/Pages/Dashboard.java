@@ -5,9 +5,12 @@
  */
 package projetozika.Pages;
 
+import DAO.ProdutoDAO;
+import Models.GraphProdutos;
 import Utils.Methods;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
@@ -25,6 +28,9 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  */
 public class Dashboard extends Templates.BaseLayout {
     private JPanel bg;
+    private ProdutoDAO produtoDao;
+    private ArrayList<GraphProdutos> dataProdutos;
+    private ArrayList<GraphProdutos> produtosDados;
     
     /**
      * Cria a tela do dashboard
@@ -80,12 +86,23 @@ public class Dashboard extends Templates.BaseLayout {
      * Gera o gráfico de produtos
      */
     private void chartProdutos() {
+        
+        // carrega os dados
+        produtoDao = new ProdutoDAO();
+        produtosDados = produtoDao.graphData();
+        
+        
         DefaultCategoryDataset dataProdutos = new DefaultCategoryDataset();
-        dataProdutos.setValue(70, "", Methods.getTranslation("Janeiro"));
-        dataProdutos.setValue(15, "", Methods.getTranslation("Fevereiro"));
-        dataProdutos.setValue(11, "", Methods.getTranslation("Marco"));
-        dataProdutos.setValue(19, "", Methods.getTranslation("Abril"));
-        dataProdutos.setValue(39, "", Methods.getTranslation("Maio"));
+        
+        produtosDados.forEach(graph -> {
+            dataProdutos.setValue(graph.getQuantidade(), "", graph.getMonth()+"");
+        });
+        
+        //dataProdutos.setValue(70, "", Methods.getTranslation("Janeiro"));
+        ///dataProdutos.setValue(15, "", Methods.getTranslation("Fevereiro"));
+        //dataProdutos.setValue(11, "", Methods.getTranslation("Marco"));
+        //dataProdutos.setValue(19, "", Methods.getTranslation("Abril"));
+        //dataProdutos.setValue(39, "", Methods.getTranslation("Maio"));
         buildChart(
                 dataProdutos, 
                 Methods.getTranslation("EntradaProdutos"), 
