@@ -21,11 +21,12 @@ import projetozika.Main;
  */
 public class Menu extends javax.swing.JPanel {
     
-    private Main main;
-    private Properties params;
+    private final Main main;
+    private final Properties params;
     
     /**
      * Cria o menu da aplicação
+     * @param main o Frame principal da aplicação
      */
     public Menu(Main main) {
         initComponents();

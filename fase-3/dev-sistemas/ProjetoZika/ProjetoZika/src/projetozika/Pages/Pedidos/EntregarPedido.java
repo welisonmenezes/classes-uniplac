@@ -216,7 +216,7 @@ public class EntregarPedido extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(pCenter);
             self.dispose();
             

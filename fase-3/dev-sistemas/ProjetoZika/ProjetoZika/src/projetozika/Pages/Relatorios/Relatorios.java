@@ -35,7 +35,9 @@ public class Relatorios extends Templates.BaseLayout {
         addCenterContent();
     }
     
-    // Adiciona conteúdo ao centro da area de conteúdo
+    /**
+     * Adiciona conteúdo ao centro da area de conteúdo
+     */
     private void addCenterContent() {
         jTabbedPane1 = new JTabbedPane();
         jTabbedPane1.setOpaque(false);

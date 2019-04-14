@@ -5,9 +5,7 @@
  */
 package projetozika.Pages.Produtos;
 
-import CustomFields.ComboItem;
 import CustomFields.FormataDecimal;
-import CustomFields.MaxSize;
 import DAO.EstoqueDAO;
 import DAO.ProdutoDAO;
 import Models.Produto;
@@ -21,13 +19,11 @@ import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
-import projetozika.Pages.NotasFiscais.SelecionarProduto;
 
 /**
  *
@@ -40,7 +36,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
     private JTextField fqtd;
     private JLabel eqtd;
     private JButton bSave;
-    private String id;
+    private final String id;
     private final ProdutoDAO produtoDao;
     private final Produto produto;
     private final EstoqueDAO estoqueDao;
@@ -131,7 +127,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             self.dispose();
             

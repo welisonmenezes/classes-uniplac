@@ -167,7 +167,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(2000, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
             t.stop();

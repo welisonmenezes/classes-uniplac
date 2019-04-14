@@ -70,6 +70,7 @@ public class Styles {
     /**
      * Estiliza os botões default
      * @param btn o JButton a ser estilizado
+     * @param width a largura do elemento
      */
     public static void defaultButton(JButton btn, int width) {
         defaultButton(btn);

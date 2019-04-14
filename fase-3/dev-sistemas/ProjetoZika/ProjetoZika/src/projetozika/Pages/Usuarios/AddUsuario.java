@@ -409,7 +409,7 @@ public class AddUsuario extends Templates.BaseFrame {
             fnome.setText(usuario.getNome());
             fcpf.setText(usuario.getCpf());
             Methods.setButtonGroup(usuario.getSexo(), gsexo.getElements());
-            DateHandler.setDateToDateChooser(fdata, usuario.getDataNascimento().toString());
+            DateHandler.setDateToDateChooser(fdata, usuario.getDataNascimento());
             fcelular.setText(usuario.getCelular());
             ftelefone.setText(usuario.getTelefone());
             femail.setText(usuario.getEmail());
@@ -440,7 +440,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(bg);
             
             switch (mode) {

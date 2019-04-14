@@ -36,7 +36,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
  */
 public class SelecionarProduto extends javax.swing.JPanel {
     
-    private JPanel self;
+    private final JPanel self;
     private JLabel lnome;
     public static JTextField fnome;
     private JLabel addProduto;

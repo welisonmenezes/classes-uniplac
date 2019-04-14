@@ -32,6 +32,7 @@ public class Pagination {
      * Construtor. Ao ser instanciada, a classe gera os botões e adiciona no Footer da aplicação
      * @param c o JPanel que receberá a paginação
      * @param total o total de páginas
+     * @param params Parâmetros para filtro e paginação
      */
     public Pagination(JComponent c, int total, Properties params) {
         this.context = (JPanel) c;
@@ -40,14 +41,11 @@ public class Pagination {
         
         // variavel para arrdedondamento
         double pag = Math.ceil(((double)this.total / (double)this.limit));
-        
-        //this.pages = (this.total / this.limit) + Math.round((this.total / this.limit) % 2);
         this.pages = (int) pag;
-        
         this.params = params;
         this.offset = Integer.parseInt(params.getProperty("offset", "0"));
         this.page = Integer.parseInt(params.getProperty("page", "1"));;
-        //System.out.println(Math.round((this.total / this.limit) % 2));
+
         Methods.clearStage(context);
         if (total > limit) {
             makePagination();

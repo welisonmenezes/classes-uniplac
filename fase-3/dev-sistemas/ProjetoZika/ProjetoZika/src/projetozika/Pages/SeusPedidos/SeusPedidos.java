@@ -356,7 +356,7 @@ public class SeusPedidos extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        Pagination pag = new Pagination(pBottom, total, params){
+        new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
                 Dialogs.showLoadPopup(self);
@@ -368,7 +368,7 @@ public class SeusPedidos extends Templates.BaseLayout {
     private Timer t;
     private void timerTest() {
         
-        t = new Timer(500, (ActionEvent e) -> {
+        t = new Timer(250, (ActionEvent e) -> {
             Dialogs.hideLoadPopup(self);
             
             // reseta tabela e recarrega os dados

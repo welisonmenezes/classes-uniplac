@@ -27,7 +27,7 @@ public class ListarProdutos extends javax.swing.JPanel {
     
     private DefaultTableModel tableModel;
     private JTable tabela;
-    private String mode;
+    private final String mode;
     private JScrollPane barraRolagem;
     public ArrayList<NotaFiscalProduto> notaProdutos;
     private static DecimalFormat df2 = new DecimalFormat(".##");
@@ -45,6 +45,7 @@ public class ListarProdutos extends javax.swing.JPanel {
     
     /**
      * Creates new form ListarProdutos
+     * @param id id da nota fiscal
      * @param mode Mostra como o painel foi chamado, se como edição ou como visualização
      */
     public ListarProdutos(String id, String mode) {

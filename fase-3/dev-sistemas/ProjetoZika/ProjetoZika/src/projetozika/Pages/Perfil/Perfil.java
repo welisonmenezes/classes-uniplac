@@ -30,6 +30,7 @@ public class Perfil extends Templates.BaseLayout {
 
     /**
      * Cria a tela de fornecedores
+     * @param params Parâmetros para filtro e paginação
      */
     public Perfil(Properties params) {
         super();
@@ -112,15 +113,12 @@ public class Perfil extends Templates.BaseLayout {
      * Adiciona o conteúdo à area de footer do conteúdo
      */
     private void addBottomContent() {
-        // se administrador, add botão de editar perfil
-        //if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Administrador"))) {
-            btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
-            Styles.defaultButton(btnEditar);
-            pBottom.add(btnEditar);
-            btnEditar.addActionListener((ActionEvent e) -> {
-                Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
-            });
-        //}
+        btnEditar = new JButton(Methods.getTranslation("EditarPerfil"));
+        Styles.defaultButton(btnEditar);
+        pBottom.add(btnEditar);
+        btnEditar.addActionListener((ActionEvent e) -> {
+            Navigation.updateLayout("editarPerfil", usuario.getId()+"", params);
+        });
     }
     
     /**

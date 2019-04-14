@@ -17,6 +17,7 @@ import java.util.Properties;
  * @author welison
  */
 public class DateHandler {
+    
     /**
      * Seta o parâmetro correspondente ao campo de data no formato do idioma da aplicação
      * @param field o campo de data
@@ -48,11 +49,7 @@ public class DateHandler {
     public static void setDateToDateChooser(JDateChooser field, String date) {
         try {
             SimpleDateFormat sdf;
-            //if (Environment.getCurrentLang().equals("en")) {
-                sdf = new SimpleDateFormat("yyyy-MM-dd");
-            //} else {
-                //sdf = new SimpleDateFormat("dd/MM/yyyy");
-            //}
+            sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date newDate = sdf.parse(date);
             field.setDate(newDate);
         } catch (ParseException error) {
@@ -71,24 +68,6 @@ public class DateHandler {
             field.setDateFormatString("dd/MM/yyyy");
         }
     }
-    
-    /*
-    public static String xxxgetFriendlyDate(String sqlDate) {
-        try {
-            SimpleDateFormat dt = new SimpleDateFormat("yyyyy-MM-dd hh:mm:ss"); 
-            Date date = dt.parse(sqlDate);
-            SimpleDateFormat sdf;
-            if (Environment.getCurrentLang().equals("en")) {
-                sdf = new SimpleDateFormat("yyyy-MM-dd");
-            } else {
-                sdf = new SimpleDateFormat("dd/MM/yyyy");
-            }
-            return sdf.format(date);
-        } catch (ParseException error) {
-            throw new RuntimeException("Methods.getFriendlyDate: " + error);
-        }
-    }
-    */
     
     /**
      * Parsea e retorna a data no formato sql datetime
@@ -143,9 +122,7 @@ public class DateHandler {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd");
             Date d = sdf.parse(date);
             return d;
-
         } catch (ParseException ex) {
-            //Logger.getLogger(TableBasic.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }

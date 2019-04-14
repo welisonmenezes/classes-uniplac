@@ -33,7 +33,6 @@ public class AvisoQuantidade extends Templates.BaseFrame {
      */
     public AvisoQuantidade(ArrayList<EstoqueAviso> avisos) {
         this.avisos = avisos;
-        //initPage("Estoque insuficiente p/ os itens abaixo");
         initPage(Methods.getTranslation("EstoqueInsuficienteParaOsItensAbaixo"));
     }
     

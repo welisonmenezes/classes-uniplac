@@ -26,7 +26,6 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
@@ -59,7 +58,6 @@ public class NotasFiscais extends Templates.BaseLayout {
     private int totalNotasFiscais;
     private JTextField fnumero;
     private JLabel lnumero;
-    private static DecimalFormat df2 = new DecimalFormat(".##");
     private EstoqueDAO estoqueDao;
     
     /**
@@ -380,7 +378,7 @@ public class NotasFiscais extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        Pagination pag = new Pagination(pBottom, total, params){
+        new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
                 Dialogs.showLoadPopup(self);

@@ -371,7 +371,7 @@ public class Produtos extends Templates.BaseLayout {
      * @param total o total de páginas
      */
     private void pagination(int total) {
-        Pagination pag = new Pagination(pBottom, total, params){
+        new Pagination(pBottom, total, params){
             @Override
             public void callbackPagination() {
                 Dialogs.showLoadPopup(self);
