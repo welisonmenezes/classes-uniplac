@@ -12,9 +12,16 @@ import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Styles;
 import Utils.Validator;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -164,10 +171,45 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         edatato.setText("");
     }
     
+    public static final String DEST = "simple_table.pdf";
+    public void createPdf(String dest) throws IOException, DocumentException {
+
+        Document document = new Document();
+
+        PdfWriter.getInstance(document, new FileOutputStream(dest));
+
+        document.open();
+
+        PdfPTable table = new PdfPTable(8);
+
+        for(int aw = 0; aw < 16; aw++){
+
+            table.addCell("hi");
+
+        }
+
+        document.add(table);
+
+        document.close();
+
+    }
+    
     private Timer t;
     private void timerTest() {
         
         t = new Timer(250, (ActionEvent e) -> {
+            
+            try {
+                File file = new File(DEST);
+
+                //file.getParentFile().mkdirs();
+
+                this.createPdf(DEST);
+            } catch (IOException | DocumentException error) {
+                System.out.println("error: " + error);
+            }
+            
+            
             Dialogs.hideLoadPopup(self);
             JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
             t.stop();
