@@ -10,8 +10,14 @@ import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.Properties;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 import projetozika.Login;
 import projetozika.Main;
 
@@ -66,6 +72,33 @@ public class Menu extends javax.swing.JPanel {
             bNotasFiscais.setVisible(false);
             bProdutos.setVisible(false);
         }
+        
+        this.exemploHotKey();
+    }
+    
+    private void exemploHotKey() {
+        //JButton button = new JButton();
+ 
+        Action buttonAction = new AbstractAction("Fornecedores") {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                //bPedidos.doClick();
+                params.clear();
+                Navigation.updateLayout("fornecedores", params);
+            }
+        };
+
+        String key = "Fornecedores";
+
+        bFornecedores.setAction(buttonAction);
+
+        //buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+
+        bFornecedores.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK), key);
+
+        bFornecedores.getActionMap().put(key, buttonAction);
     }
     
     /**

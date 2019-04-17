@@ -9,10 +9,16 @@ import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
@@ -49,6 +55,36 @@ public class Main extends javax.swing.JFrame {
                 }
             }
             
+        });
+        
+        this.exemploMenuContexto();
+        
+    }
+    
+    private void exemploMenuContexto() {
+        JPopupMenu jPopupMenu = new JPopupMenu();
+        JMenuItem jMenuItemAlterar = new JMenuItem();
+        jMenuItemAlterar.setText("Alterar");
+        
+        jMenuItemAlterar.addActionListener( new ActionListener() {
+          // Importe a classe java.awt.event.ActionEvent
+          public void actionPerformed(ActionEvent e) { 
+              System.out.println("teste menu de contexto");
+          }
+        });
+        
+        jPopupMenu.add(jMenuItemAlterar);
+        
+        jSIDE.addMouseListener( new MouseAdapter() {
+          //Importe a classe java.awt.event.MouseEvent
+          public void mouseClicked(MouseEvent e) {
+            // Se o botão direito do mouse foi pressionado
+            if (e.getButton() == MouseEvent.BUTTON3){
+              // Exibe o popup menu na posição do mouse.
+                jPopupMenu.show(jSIDE, e.getX(), e.getY());
+                System.out.println("Clicado vacilão");
+            }
+          }
         });
     }
     
