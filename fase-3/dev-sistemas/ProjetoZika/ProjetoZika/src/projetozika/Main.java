@@ -5,20 +5,30 @@
  */
 package projetozika;
 
+import Utils.Dialogs;
 import projetozika.Pages.Menu;
 import Utils.Methods;
+import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.CheckboxMenuItem;
+import java.awt.Frame;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
 import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.Timer;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
@@ -54,12 +64,77 @@ public class Main extends javax.swing.JFrame {
                     setDefaultCloseOperation(EXIT_ON_CLOSE);
                 }
             }
-            
+            @Override
+            public void windowIconified(WindowEvent e) {
+                System.out.println("xxxx");
+                setVisible(false);
+            }
         });
         
         this.exemploMenuContexto();
         
+        //this.timerTest();
     }
+    
+    public void exemploMenuTray() {
+        //Check the SystemTray is supported
+        if (!SystemTray.isSupported()) {
+            System.out.println("SystemTray is not supported");
+            return;
+        }
+        final PopupMenu popup = new PopupMenu();
+        final TrayIcon trayIcon =
+                new TrayIcon(new ImageIcon(this.getClass().getResource("/sources/cancel.png")).getImage());
+        final SystemTray tray = SystemTray.getSystemTray();
+       
+        // Create a pop-up menu components
+        MenuItem aboutItem = new MenuItem("About");
+        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
+        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
+        Menu displayMenu = new Menu(this);
+        MenuItem errorItem = new MenuItem("Error");
+        MenuItem warningItem = new MenuItem("Warning");
+        MenuItem infoItem = new MenuItem("Info");
+        MenuItem noneItem = new MenuItem("None");
+        MenuItem exitItem = new MenuItem("Exit");
+       
+        //Add components to pop-up menu
+        popup.add(aboutItem);
+        popup.addSeparator();
+        popup.add(cb1);
+        popup.add(cb2);
+        popup.addSeparator();
+        popup.add(exitItem);
+       
+        trayIcon.setPopupMenu(popup);
+       
+        try {
+            tray.add(trayIcon);
+            System.out.println("xxxxaa");
+            this.setState(this.ICONIFIED);
+            //int state = getExtendedState();
+            //state = state & ~Frame.ICONIFIED;
+           // this.setExtendedState(state);
+           // setVisible(true);
+            //this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            //this.dispose();
+            //System.exit(0);
+        } catch (AWTException e) {
+            System.out.println("TrayIcon could not be added.");
+        }
+        
+    }
+    
+    private Timer t;
+    private void timerTest() {
+        
+        t = new Timer(250, (ActionEvent e) -> {
+            this.exemploMenuTray();
+            t.stop();
+        });
+        t.start();
+    }
+    
     
     private void exemploMenuContexto() {
         JPopupMenu jPopupMenu = new JPopupMenu();
