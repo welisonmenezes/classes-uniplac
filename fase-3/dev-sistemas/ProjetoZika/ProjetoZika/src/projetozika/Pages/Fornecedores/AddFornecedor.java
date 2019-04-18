@@ -102,6 +102,8 @@ public class AddFornecedor extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
+        Methods.setAccessibility(this);
+        
         // cria objetos para carregar dados posteriormente
         fornecedorDao = new FornecedorDAO();
         fornecedor = new Fornecedor();

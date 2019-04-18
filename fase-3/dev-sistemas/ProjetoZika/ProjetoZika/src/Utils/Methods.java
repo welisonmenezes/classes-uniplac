@@ -203,6 +203,8 @@ public class Methods {
                     if (opcion == 0) {
                         System.exit(0);
                     }
+                } else {
+                    frame.dispose();
                 }
             }
         });

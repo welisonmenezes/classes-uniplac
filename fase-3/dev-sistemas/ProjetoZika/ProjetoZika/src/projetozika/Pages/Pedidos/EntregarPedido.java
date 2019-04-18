@@ -88,6 +88,8 @@ public class EntregarPedido extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
+        Methods.setAccessibility(this);
+        
         // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);

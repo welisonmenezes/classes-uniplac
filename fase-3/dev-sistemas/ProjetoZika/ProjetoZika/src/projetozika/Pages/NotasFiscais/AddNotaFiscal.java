@@ -128,6 +128,8 @@ public class AddNotaFiscal extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
+        Methods.setAccessibility(this);
+        
         // cria objetos para carregar dados posteriormente
         fornecedorDao = new FornecedorDAO();
         fornecedores = new ArrayList();

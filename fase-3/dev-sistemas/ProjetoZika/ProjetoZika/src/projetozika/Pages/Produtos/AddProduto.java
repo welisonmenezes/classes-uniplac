@@ -116,6 +116,8 @@ public class AddProduto extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
+        Methods.setAccessibility(this);
+        
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
         produto = new Produto();

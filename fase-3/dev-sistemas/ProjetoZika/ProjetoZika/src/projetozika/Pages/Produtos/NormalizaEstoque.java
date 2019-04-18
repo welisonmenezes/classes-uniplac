@@ -52,6 +52,8 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         this.id = id;
         this.params = params;
         
+        Methods.setAccessibility(this);
+        
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
         produto = produtoDao.selecionarPorId(id);
