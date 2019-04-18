@@ -9,11 +9,16 @@ import Models.EstoqueAviso;
 import static Utils.Methods.getJBody;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Properties;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import projetozika.Main;
 import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.AddFornecedor;
@@ -295,5 +300,18 @@ public class Navigation {
         updateSatusMenu("");
         currentPage = "";
         tmpPanel = new NotFound();
+    }
+    
+    public static void addHotLink(JButton button, String action, String page, KeyStroke keyStroke, Properties params) {
+        Action buttonAction = new AbstractAction(action) {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                params.clear();
+                Navigation.updateLayout(page, params);
+            }
+        };
+        button.setAction(buttonAction);
+        button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "");
+        button.getActionMap().put("", buttonAction);
     }
 }

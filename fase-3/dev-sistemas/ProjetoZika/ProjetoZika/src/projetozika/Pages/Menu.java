@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
@@ -35,11 +36,19 @@ public class Menu extends javax.swing.JPanel {
      * @param main o Frame principal da aplicação
      */
     public Menu(Main main) {
-        initComponents();
-        this.main = main;
         
+        this.main = main;
         this.params = new Properties();
         
+        this.initPage();
+        
+        this.accessControl();
+        this.addHotLinkToMenu();
+        this.addHotLinkToLogout();
+    }
+    
+    private void initPage() {
+        initComponents();
         // Espaçamentos entre os elementos
         labelEspacoTopo.setPreferredSize(new Dimension(200, 45));
         labelEspacoLogout.setPreferredSize(new Dimension(200, 100));
@@ -57,8 +66,10 @@ public class Menu extends javax.swing.JPanel {
         Styles.redButton(logout);
         
         // Tradução dos textos
-        translation();
-        
+        this.translation();
+    }
+    
+    private void accessControl() {
         // controle de acesso
         if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Almoxarife"))) {
             bRelatorios.setVisible(false);
@@ -72,33 +83,86 @@ public class Menu extends javax.swing.JPanel {
             bNotasFiscais.setVisible(false);
             bProdutos.setVisible(false);
         }
-        
-        this.exemploHotKey();
     }
     
-    private void exemploHotKey() {
-        //JButton button = new JButton();
- 
-        Action buttonAction = new AbstractAction("Fornecedores") {
-
+    private void addHotLinkToMenu() {
+        Navigation.addHotLink(
+                bDashboard, 
+                Methods.getTranslation("Dashboard"), 
+                "dashboard",
+                KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bPedidos, 
+                Methods.getTranslation("Pedidos"), 
+                "pedidos",
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bFornecedores, 
+                Methods.getTranslation("Fornecedores"), 
+                "fornecedores",
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bNotasFiscais, 
+                Methods.getTranslation("NotasFiscais"), 
+                "notasFiscais",
+                KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bProdutos, 
+                Methods.getTranslation("Produtos"), 
+                "produtos",
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bUsuarios, 
+                Methods.getTranslation("Usuarios"), 
+                "usuarios",
+                KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bSeusPedidos, 
+                Methods.getTranslation("SeusPedidos"), 
+                "seusPedidos",
+                KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bPerfil, 
+                Methods.getTranslation("Perfil"), 
+                "perfil",
+                KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
+                params);
+        
+        Navigation.addHotLink(
+                bRelatorios, 
+                Methods.getTranslation("Relatorios"), 
+                "relatorios",
+                KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
+                params);
+    }
+    
+    private void addHotLinkToLogout() {
+        Action buttonAction = new AbstractAction(Methods.getTranslation("Sair")) {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                //bPedidos.doClick();
-                params.clear();
-                Navigation.updateLayout("fornecedores", params);
+                // logout
+                main.dispose();
+                JFrame login = new Login();
+                login.setVisible(true);
             }
         };
-
-        String key = "Fornecedores";
-
-        bFornecedores.setAction(buttonAction);
-
-        //buttonAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
-
-        bFornecedores.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK), key);
-
-        bFornecedores.getActionMap().put(key, buttonAction);
+        logout.setAction(buttonAction);
+        logout.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "");
+        logout.getActionMap().put("", buttonAction);
     }
     
     /**
@@ -145,83 +209,38 @@ public class Menu extends javax.swing.JPanel {
 
         bDashboard.setText("Dashboard");
         bDashboard.setName("dashboard"); // NOI18N
-        bDashboard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bDashboardActionPerformed(evt);
-            }
-        });
         add(bDashboard);
 
         bSeusPedidos.setText("Seus Pedidos");
         bSeusPedidos.setName("seusPedidos"); // NOI18N
-        bSeusPedidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bSeusPedidosActionPerformed(evt);
-            }
-        });
         add(bSeusPedidos);
 
         bPedidos.setText("Pedidos");
         bPedidos.setName("pedidos"); // NOI18N
-        bPedidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bPedidosActionPerformed(evt);
-            }
-        });
         add(bPedidos);
 
         bFornecedores.setText("Fornecedores");
         bFornecedores.setName("fornecedores"); // NOI18N
-        bFornecedores.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bFornecedoresActionPerformed(evt);
-            }
-        });
         add(bFornecedores);
 
         bNotasFiscais.setText("Notas Fiscais");
         bNotasFiscais.setName("notasFiscais"); // NOI18N
-        bNotasFiscais.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bNotasFiscaisActionPerformed(evt);
-            }
-        });
         add(bNotasFiscais);
 
         bProdutos.setText("Produtos");
         bProdutos.setName("produtos"); // NOI18N
-        bProdutos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bProdutosActionPerformed(evt);
-            }
-        });
         add(bProdutos);
 
         bUsuarios.setText("Usuários");
         bUsuarios.setName("usuarios"); // NOI18N
-        bUsuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bUsuariosActionPerformed(evt);
-            }
-        });
         add(bUsuarios);
 
         bPerfil.setText("Perfil");
         bPerfil.setName("perfil"); // NOI18N
-        bPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bPerfilActionPerformed(evt);
-            }
-        });
         add(bPerfil);
 
         bRelatorios.setText("Relatórios");
         bRelatorios.setName("relatorios"); // NOI18N
-        bRelatorios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bRelatoriosActionPerformed(evt);
-            }
-        });
         add(bRelatorios);
         add(labelEspacoLogout);
 
@@ -233,75 +252,8 @@ public class Menu extends javax.swing.JPanel {
         logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         logout.setMargin(new java.awt.Insets(0, 0, 0, 0));
         logout.setPreferredSize(new java.awt.Dimension(80, 35));
-        logout.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutActionPerformed(evt);
-            }
-        });
         add(logout);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
-
-        // logout
-        this.main.dispose();
-        JFrame login = new Login();
-        login.setVisible(true);
-    }//GEN-LAST:event_logoutActionPerformed
-
-    private void bNotasFiscaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNotasFiscaisActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("notasFiscais", params);
-    }//GEN-LAST:event_bNotasFiscaisActionPerformed
-
-    private void bFornecedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bFornecedoresActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("fornecedores", params);
-    }//GEN-LAST:event_bFornecedoresActionPerformed
-
-    private void bDashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDashboardActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("dashboard", params);
-    }//GEN-LAST:event_bDashboardActionPerformed
-
-    private void bProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bProdutosActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("produtos", params);
-    }//GEN-LAST:event_bProdutosActionPerformed
-
-    private void bUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUsuariosActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("usuarios", params);
-    }//GEN-LAST:event_bUsuariosActionPerformed
-
-    private void bPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPedidosActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("pedidos", params);
-    }//GEN-LAST:event_bPedidosActionPerformed
-
-    private void bSeusPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSeusPedidosActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("seusPedidos", params);
-    }//GEN-LAST:event_bSeusPedidosActionPerformed
-
-    private void bPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPerfilActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("perfil", params);
-    }//GEN-LAST:event_bPerfilActionPerformed
-
-    private void bRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRelatoriosActionPerformed
-        // TODO add your handling code here:
-        params.clear();
-        Navigation.updateLayout("relatorios", params);
-    }//GEN-LAST:event_bRelatoriosActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

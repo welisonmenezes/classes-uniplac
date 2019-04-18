@@ -31,81 +31,54 @@
         <Property name="text" type="java.lang.String" value="Dashboard"/>
         <Property name="name" type="java.lang.String" value="dashboard" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bDashboardActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bSeusPedidos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Seus Pedidos"/>
         <Property name="name" type="java.lang.String" value="seusPedidos" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bSeusPedidosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bPedidos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pedidos"/>
         <Property name="name" type="java.lang.String" value="pedidos" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bPedidosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bFornecedores">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fornecedores"/>
         <Property name="name" type="java.lang.String" value="fornecedores" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bFornecedoresActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bNotasFiscais">
       <Properties>
         <Property name="text" type="java.lang.String" value="Notas Fiscais"/>
         <Property name="name" type="java.lang.String" value="notasFiscais" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bNotasFiscaisActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bProdutos">
       <Properties>
         <Property name="text" type="java.lang.String" value="Produtos"/>
         <Property name="name" type="java.lang.String" value="produtos" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bProdutosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bUsuarios">
       <Properties>
         <Property name="text" type="java.lang.String" value="Usu&#xe1;rios"/>
         <Property name="name" type="java.lang.String" value="usuarios" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bUsuariosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bPerfil">
       <Properties>
         <Property name="text" type="java.lang.String" value="Perfil"/>
         <Property name="name" type="java.lang.String" value="perfil" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bPerfilActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bRelatorios">
       <Properties>
         <Property name="text" type="java.lang.String" value="Relat&#xf3;rios"/>
         <Property name="name" type="java.lang.String" value="relatorios" noResource="true"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bRelatoriosActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="labelEspacoLogout">
     </Component>
@@ -136,9 +109,6 @@
           <Dimension value="[80, 35]"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logoutActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>
