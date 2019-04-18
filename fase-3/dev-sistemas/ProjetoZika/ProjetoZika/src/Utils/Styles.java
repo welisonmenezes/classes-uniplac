@@ -293,6 +293,17 @@ public class Styles {
     }
     
     /**
+     * Estliza o JButton de busca da aplicação
+     * @param btn o JButton a ser estilizado
+     */
+    public static void iconButton(JButton btn, String source) {
+        btn.setContentAreaFilled(false);
+        btn.setPreferredSize(new Dimension(30, 30));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btn.setIcon(new ImageIcon(btn.getClass().getResource(source)));
+    }
+    
+    /**
      * Estiliza os JFrame de add/editar/vizualizar (ou outro interno qualquer)
      * Esse metodo fixa altura e largura (450x350)
      * 

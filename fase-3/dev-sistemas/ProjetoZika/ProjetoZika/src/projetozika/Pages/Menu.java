@@ -15,7 +15,6 @@ import java.awt.event.KeyEvent;
 import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.KeyStroke;
@@ -40,15 +39,17 @@ public class Menu extends javax.swing.JPanel {
         this.main = main;
         this.params = new Properties();
         
-        this.initPage();
+        initComponents();
+        
         
         this.accessControl();
         this.addHotLinkToMenu();
         this.addHotLinkToLogout();
+        
+        this.initPage();
     }
     
     private void initPage() {
-        initComponents();
         // Espaçamentos entre os elementos
         labelEspacoTopo.setPreferredSize(new Dimension(200, 45));
         labelEspacoLogout.setPreferredSize(new Dimension(200, 100));
@@ -63,7 +64,12 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bSeusPedidos);
         Styles.menuButton(bPerfil);
         Styles.menuButton(bRelatorios);
-        Styles.redButton(logout);
+        
+        Styles.iconButton(logout, "/sources/logout.png");
+        Styles.iconButton(bHelp, "/sources/help.png");
+        Styles.iconButton(bInfo, "/sources/information.png");
+        
+        pLinks.setOpaque(false);
         
         // Tradução dos textos
         this.translation();
@@ -151,7 +157,7 @@ public class Menu extends javax.swing.JPanel {
     }
     
     private void addHotLinkToLogout() {
-        Action buttonAction = new AbstractAction(Methods.getTranslation("Sair")) {
+        Action buttonAction = new AbstractAction("") {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 // logout
@@ -178,7 +184,10 @@ public class Menu extends javax.swing.JPanel {
         bSeusPedidos.setText(Methods.getTranslation("SeusPedidos"));
         bPerfil.setText(Methods.getTranslation("Perfil"));
         bRelatorios.setText(Methods.getTranslation("Relatorios"));
-        logout.setText(Methods.getTranslation("Sair"));
+        //logout.setText(Methods.getTranslation("Sair"));
+        logout.setToolTipText(Methods.getTranslation("Sair"));
+        bHelp.setToolTipText(Methods.getTranslation("Ajuda"));
+        bInfo.setToolTipText(Methods.getTranslation("Sobre"));
     }
 
     /**
@@ -201,6 +210,9 @@ public class Menu extends javax.swing.JPanel {
         bPerfil = new javax.swing.JButton();
         bRelatorios = new javax.swing.JButton();
         labelEspacoLogout = new javax.swing.JLabel();
+        pLinks = new javax.swing.JPanel();
+        bInfo = new javax.swing.JButton();
+        bHelp = new javax.swing.JButton();
         logout = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(24, 24, 24));
@@ -244,21 +256,24 @@ public class Menu extends javax.swing.JPanel {
         add(bRelatorios);
         add(labelEspacoLogout);
 
-        logout.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        logout.setForeground(new java.awt.Color(255, 0, 0));
-        logout.setText("sair");
-        logout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
-        logout.setContentAreaFilled(false);
-        logout.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        logout.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        logout.setPreferredSize(new java.awt.Dimension(80, 35));
-        add(logout);
+        bInfo.setName("information"); // NOI18N
+        pLinks.add(bInfo);
+
+        bHelp.setName("help"); // NOI18N
+        pLinks.add(bHelp);
+
+        logout.setName("sair"); // NOI18N
+        pLinks.add(logout);
+
+        add(pLinks);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bDashboard;
     private javax.swing.JButton bFornecedores;
+    private javax.swing.JButton bHelp;
+    private javax.swing.JButton bInfo;
     private javax.swing.JButton bNotasFiscais;
     private javax.swing.JButton bPedidos;
     private javax.swing.JButton bPerfil;
@@ -269,5 +284,6 @@ public class Menu extends javax.swing.JPanel {
     private javax.swing.JLabel labelEspacoLogout;
     private javax.swing.JLabel labelEspacoTopo;
     private javax.swing.JButton logout;
+    private javax.swing.JPanel pLinks;
     // End of variables declaration//GEN-END:variables
 }
