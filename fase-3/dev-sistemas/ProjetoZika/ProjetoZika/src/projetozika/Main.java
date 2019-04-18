@@ -66,12 +66,12 @@ public class Main extends javax.swing.JFrame {
             }
             @Override
             public void windowIconified(WindowEvent e) {
-                System.out.println("xxxx");
-                setVisible(false);
+                //System.out.println("xxxx");
+                //setVisible(false);
             }
         });
         
-        this.exemploMenuContexto();
+        //this.exemploMenuContexto();
         
         //this.timerTest();
     }

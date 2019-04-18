@@ -161,6 +161,13 @@ public class Menu extends javax.swing.JPanel {
                 "ajuda",
                 KeyStroke.getKeyStroke("F1"),
                 params);
+        
+        Navigation.addHotLink(
+                bInfo, 
+                "", 
+                "sobre",
+                KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
+                params);
     }
     
     private void addHotLinkToLogout() {
