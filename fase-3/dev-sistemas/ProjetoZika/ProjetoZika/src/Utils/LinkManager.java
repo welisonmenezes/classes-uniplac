@@ -24,14 +24,14 @@ import javax.swing.KeyStroke;
 public class LinkManager {
     
     private final Properties params;
-    private final String page;
+    public final String page;
     private final JButton button;
     private final String action;
     private final KeyStroke keyStroke;
     
-    public LinkManager(JButton button, String action, String page, KeyStroke keyStroke, Properties params) {
+    public LinkManager(JButton button, String page, KeyStroke keyStroke, Properties params) {
         this.button = button;
-        this.action = action;
+        this.action = button.getText();
         this.page = page;
         this.keyStroke = keyStroke;
         this.params = params;

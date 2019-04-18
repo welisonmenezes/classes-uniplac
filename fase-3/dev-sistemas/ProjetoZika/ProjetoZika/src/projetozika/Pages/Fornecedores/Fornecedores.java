@@ -11,6 +11,7 @@ import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import CustomFields.MaskFactory;
 import Utils.Dialogs;
+import Utils.LinkManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -19,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -26,14 +28,17 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import projetozika.Login;
 
 /**
  * Tela de listagem do fornecedores
@@ -85,6 +90,7 @@ public class Fornecedores extends Templates.BaseLayout {
         
         // seta os parâmetros
         updateParams();
+        
     }
     
     /**
@@ -332,9 +338,15 @@ public class Fornecedores extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        addMore.addActionListener((ActionEvent e) -> {
-            Navigation.updateLayout("addFornecedor", params);
-        });
+        new LinkManager(addMore, 
+            "addFornecedor",
+            KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+            params) {
+                @Override
+                public void actionLink() {
+                    Navigation.updateLayout(this.page, params);
+                }
+            };
         
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {

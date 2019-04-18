@@ -15,6 +15,7 @@ import DAO.EstoqueDAO;
 import Models.NotaFiscalProduto;
 import Utils.DateHandler;
 import Utils.Dialogs;
+import Utils.LinkManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -24,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -353,9 +356,15 @@ public class NotasFiscais extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        addMore.addActionListener((ActionEvent e) -> {
-            Navigation.updateLayout("addNotaFiscal", params);
-        });
+        new LinkManager(addMore, 
+            "addNotaFiscal",
+            KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+            params) {
+                @Override
+                public void actionLink() {
+                    Navigation.updateLayout(this.page, params);
+                }
+            };
         
         // click do buscar
         bSearch.addActionListener((ActionEvent e) -> {

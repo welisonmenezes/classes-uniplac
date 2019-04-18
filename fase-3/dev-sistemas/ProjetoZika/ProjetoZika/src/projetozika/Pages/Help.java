@@ -70,7 +70,7 @@ public class Help extends Templates.BaseLayout {
                 + "<li>Seus pedidos: <code>CTRL + Y</code></li>"
                 + "<li>Pedidos: <code>CTRL + O</code></li>"
                 + "<li>Fornecedores: <code>CTRL + F</code></li>"
-                + "<li>Notas fiscais: <code>CTRL + N</code></li>"
+                + "<li>Notas fiscais: <code>CTRL + I</code></li>"
                 + "<li>Produtos: <code>CTRL + P</code></li>"
                 + "<li>Usuários: <code>CTRL + U</code></li>"
                 + "<li>Perfil: <code>CTRL + M</code></li>"
@@ -78,6 +78,7 @@ public class Help extends Templates.BaseLayout {
                 + "<li>Sobre: <code>CTRL + A</code></li>"
                 + "<li>Ajuda: <code>F1</code></li>"
                 + "<li>Sair: <code>CTRL + L</code> ou <code>ESC</code></li>"
+                + "<li>Adicionar Novo: <code>CTRL + N</code></li>"
                 + "</ul>";
     }
 

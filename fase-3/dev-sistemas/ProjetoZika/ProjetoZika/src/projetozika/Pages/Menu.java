@@ -8,22 +8,12 @@ package projetozika.Pages;
 import Config.Environment;
 import Utils.LinkManager;
 import Utils.Methods;
-import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Properties;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import projetozika.Login;
 import projetozika.Main;
@@ -51,7 +41,6 @@ public class Menu extends javax.swing.JPanel {
         
         this.accessControl();
         this.addHotLinkToMenu();
-        //this.addHotLinkToLogout();
         
         this.initPage();
     }
@@ -100,90 +89,78 @@ public class Menu extends javax.swing.JPanel {
     
     private void addHotLinkToMenu() {
         
-        new LinkManager(bDashboard, 
-            Methods.getTranslation("Dashboard"), 
+        new LinkManager(bDashboard,
             "dashboard",
             KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
             params);
         
-        new LinkManager(bPedidos, 
-            Methods.getTranslation("Pedidos"), 
+        new LinkManager(bPedidos,
             "pedidos",
             KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
             params);
         
         new LinkManager(bFornecedores, 
-            Methods.getTranslation("Fornecedores"), 
             "fornecedores",
             KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addFornecedor", Methods.getTranslation("AdicionarFornecedor"));
         
         new LinkManager(bNotasFiscais, 
-            Methods.getTranslation("NotasFiscais"), 
             "notasFiscais",
-            KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+            KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addNotaFiscal", Methods.getTranslation("AdicionarNotaFiscal"));
         
-        new LinkManager(bProdutos, 
-            Methods.getTranslation("Produtos"), 
+        new LinkManager(bProdutos,
             "produtos",
             KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addProduto", Methods.getTranslation("AdicionarProduto"));
         
-        new LinkManager(bUsuarios, 
-            Methods.getTranslation("Usuarios"), 
+        new LinkManager(bUsuarios,
             "usuarios",
             KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addUsuario", Methods.getTranslation("AdicionarUsuario"));
         
         new LinkManager(bSeusPedidos, 
-            Methods.getTranslation("SeusPedidos"), 
             "seusPedidos",
             KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("fazerPedido", Methods.getTranslation("FazerPedido"));
         
-        new LinkManager(bPerfil, 
-                Methods.getTranslation("Perfil"), 
-                "perfil",
-                KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bPerfil,
+            "perfil",
+            KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
+            params);
         
         new LinkManager(bRelatorios, 
-                Methods.getTranslation("Relatorios"), 
-                "relatorios",
-                KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
-                params);
+            "relatorios",
+            KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
+            params);
         
-        new LinkManager(bHelp, 
-                "", 
-                "ajuda",
-                KeyStroke.getKeyStroke("F1"),
-                params);
+        new LinkManager(bHelp,
+            "ajuda",
+            KeyStroke.getKeyStroke("F1"),
+            params);
         
-        new LinkManager(bInfo, 
-                "", 
-                "sobre",
-                KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bInfo,
+            "sobre",
+            KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
+            params);
         
-        new LinkManager(logout, 
-                "", 
-                "",
-                KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK),
-                params) {
-                    @Override
-                    public void actionLink() {
-                        // logout
-                        main.dispose();
-                        JFrame login = new Login();
-                        login.setVisible(true);
-                    }
-                };
+        new LinkManager(logout,
+            "",
+            KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK),
+            params) {
+                @Override
+                public void actionLink() {
+                    // logout
+                    main.dispose();
+                    JFrame login = new Login();
+                    login.setVisible(true);
+                }
+            };
 
     }
     

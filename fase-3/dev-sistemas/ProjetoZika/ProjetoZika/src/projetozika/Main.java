@@ -141,17 +141,16 @@ public class Main extends javax.swing.JFrame {
         JMenuItem jMenuItemAlterar = new JMenuItem();
         jMenuItemAlterar.setText("Alterar");
         
-        jMenuItemAlterar.addActionListener( new ActionListener() {
-          // Importe a classe java.awt.event.ActionEvent
-          public void actionPerformed(ActionEvent e) { 
-              System.out.println("teste menu de contexto");
-          }
-        });
+        jMenuItemAlterar.addActionListener((ActionEvent e) -> {
+            System.out.println("teste menu de contexto");
+        } // Importe a classe java.awt.event.ActionEvent
+        );
         
         jPopupMenu.add(jMenuItemAlterar);
         
         jSIDE.addMouseListener( new MouseAdapter() {
           //Importe a classe java.awt.event.MouseEvent
+          @Override
           public void mouseClicked(MouseEvent e) {
             // Se o botão direito do mouse foi pressionado
             if (e.getButton() == MouseEvent.BUTTON3){
