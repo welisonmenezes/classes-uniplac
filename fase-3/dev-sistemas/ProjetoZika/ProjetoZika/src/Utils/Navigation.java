@@ -312,16 +312,4 @@ public class Navigation {
         tmpPanel = new NotFound();
     }
     
-    public static void addHotLink(JButton button, String action, String page, KeyStroke keyStroke, Properties params) {
-        Action buttonAction = new AbstractAction(action) {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                params.clear();
-                Navigation.updateLayout(page, params);
-            }
-        };
-        button.setAction(buttonAction);
-        button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keyStroke, "");
-        button.getActionMap().put("", buttonAction);
-    }
 }

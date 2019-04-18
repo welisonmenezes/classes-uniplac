@@ -6,17 +6,24 @@
 package projetozika.Pages;
 
 import Config.Environment;
+import Utils.LinkManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Properties;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import projetozika.Login;
 import projetozika.Main;
@@ -44,7 +51,7 @@ public class Menu extends javax.swing.JPanel {
         
         this.accessControl();
         this.addHotLinkToMenu();
-        this.addHotLinkToLogout();
+        //this.addHotLinkToLogout();
         
         this.initPage();
     }
@@ -92,97 +99,92 @@ public class Menu extends javax.swing.JPanel {
     }
     
     private void addHotLinkToMenu() {
-        Navigation.addHotLink(
-                bDashboard, 
-                Methods.getTranslation("Dashboard"), 
-                "dashboard",
-                KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
-                params);
         
-        Navigation.addHotLink(
-                bPedidos, 
-                Methods.getTranslation("Pedidos"), 
-                "pedidos",
-                KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bDashboard, 
+            Methods.getTranslation("Dashboard"), 
+            "dashboard",
+            KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
+            params);
         
-        Navigation.addHotLink(
-                bFornecedores, 
-                Methods.getTranslation("Fornecedores"), 
-                "fornecedores",
-                KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bPedidos, 
+            Methods.getTranslation("Pedidos"), 
+            "pedidos",
+            KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+            params);
         
-        Navigation.addHotLink(
-                bNotasFiscais, 
-                Methods.getTranslation("NotasFiscais"), 
-                "notasFiscais",
-                KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bFornecedores, 
+            Methods.getTranslation("Fornecedores"), 
+            "fornecedores",
+            KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),
+            params)
+                .addContextMenuAddNew("addFornecedor", Methods.getTranslation("AdicionarFornecedor"));
         
-        Navigation.addHotLink(
-                bProdutos, 
-                Methods.getTranslation("Produtos"), 
-                "produtos",
-                KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bNotasFiscais, 
+            Methods.getTranslation("NotasFiscais"), 
+            "notasFiscais",
+            KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
+            params)
+                .addContextMenuAddNew("addNotaFiscal", Methods.getTranslation("AdicionarNotaFiscal"));
         
-        Navigation.addHotLink(
-                bUsuarios, 
-                Methods.getTranslation("Usuarios"), 
-                "usuarios",
-                KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bProdutos, 
+            Methods.getTranslation("Produtos"), 
+            "produtos",
+            KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),
+            params)
+                .addContextMenuAddNew("addProduto", Methods.getTranslation("AdicionarProduto"));
         
-        Navigation.addHotLink(
-                bSeusPedidos, 
-                Methods.getTranslation("SeusPedidos"), 
-                "seusPedidos",
-                KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK),
-                params);
+        new LinkManager(bUsuarios, 
+            Methods.getTranslation("Usuarios"), 
+            "usuarios",
+            KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK),
+            params)
+                .addContextMenuAddNew("addUsuario", Methods.getTranslation("AdicionarUsuario"));
         
-        Navigation.addHotLink(
-                bPerfil, 
+        new LinkManager(bSeusPedidos, 
+            Methods.getTranslation("SeusPedidos"), 
+            "seusPedidos",
+            KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK),
+            params)
+                .addContextMenuAddNew("fazerPedido", Methods.getTranslation("FazerPedido"));
+        
+        new LinkManager(bPerfil, 
                 Methods.getTranslation("Perfil"), 
                 "perfil",
                 KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
                 params);
         
-        Navigation.addHotLink(
-                bRelatorios, 
+        new LinkManager(bRelatorios, 
                 Methods.getTranslation("Relatorios"), 
                 "relatorios",
                 KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
                 params);
         
-        Navigation.addHotLink(
-                bHelp, 
+        new LinkManager(bHelp, 
                 "", 
                 "ajuda",
                 KeyStroke.getKeyStroke("F1"),
                 params);
         
-        Navigation.addHotLink(
-                bInfo, 
+        new LinkManager(bInfo, 
                 "", 
                 "sobre",
                 KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
                 params);
-    }
-    
-    private void addHotLinkToLogout() {
-        Action buttonAction = new AbstractAction("") {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // logout
-                main.dispose();
-                JFrame login = new Login();
-                login.setVisible(true);
-            }
-        };
-        logout.setAction(buttonAction);
-        logout.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK), "");
-        logout.getActionMap().put("", buttonAction);
+        
+        new LinkManager(logout, 
+                "", 
+                "",
+                KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK),
+                params) {
+                    @Override
+                    public void actionLink() {
+                        // logout
+                        main.dispose();
+                        JFrame login = new Login();
+                        login.setVisible(true);
+                    }
+                };
+
     }
     
     /**
@@ -198,7 +200,6 @@ public class Menu extends javax.swing.JPanel {
         bSeusPedidos.setText(Methods.getTranslation("SeusPedidos"));
         bPerfil.setText(Methods.getTranslation("Perfil"));
         bRelatorios.setText(Methods.getTranslation("Relatorios"));
-        //logout.setText(Methods.getTranslation("Sair"));
         logout.setToolTipText(Methods.getTranslation("Sair"));
         bHelp.setToolTipText(Methods.getTranslation("Ajuda"));
         bInfo.setToolTipText(Methods.getTranslation("Sobre"));
