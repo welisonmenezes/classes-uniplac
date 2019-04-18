@@ -154,6 +154,13 @@ public class Menu extends javax.swing.JPanel {
                 "relatorios",
                 KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
                 params);
+        
+        Navigation.addHotLink(
+                bHelp, 
+                "", 
+                "ajuda",
+                KeyStroke.getKeyStroke("F1"),
+                params);
     }
     
     private void addHotLinkToLogout() {

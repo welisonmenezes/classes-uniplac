@@ -23,6 +23,7 @@ import projetozika.Main;
 import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.AddFornecedor;
 import projetozika.Pages.Fornecedores.Fornecedores;
+import projetozika.Pages.Help;
 import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
@@ -174,6 +175,10 @@ public class Navigation {
             case "dashboard":
                 updateSatusMenu("dashboard");
                 tmpPanel = new Dashboard(params);
+                break;
+            case "ajuda":
+                updateSatusMenu("");
+                tmpPanel = new Help(params);
                 break;
             case "fornecedores":
                 updateSatusMenu("fornecedores");
