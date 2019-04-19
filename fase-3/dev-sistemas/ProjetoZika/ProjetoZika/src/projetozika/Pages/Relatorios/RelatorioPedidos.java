@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -55,6 +56,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private JButton btnRelatorioPedido;
     private final JPanel self;
     private JLabel title;
+    private JFileChooser fc;
 
     /**
      * Creates new form RelatorioPedidos
@@ -159,7 +161,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
             if (! Validator.validaData(fdatato, edatato)) isValid = false;
             if (isValid) {
-                Dialogs.showLoadPopup(self);
+                //Dialogs.showLoadPopup(self);
                 timerTest();
             }
             
@@ -172,25 +174,41 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     }
     
     public static final String DEST = "simple_table.pdf";
-    public void createPdf(String dest) throws IOException, DocumentException {
+    public void createPdf(String filename) throws IOException, DocumentException {
 
         Document document = new Document();
+        
+        fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = fc.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            
+            File file = fc.getSelectedFile();
+            String dest = file + "/" + filename;
+            
+            PdfWriter.getInstance(document, new FileOutputStream(dest));
 
-        PdfWriter.getInstance(document, new FileOutputStream(dest));
+            document.open();
 
-        document.open();
+            PdfPTable table = new PdfPTable(8);
 
-        PdfPTable table = new PdfPTable(8);
+            for(int aw = 0; aw < 16; aw++){
 
-        for(int aw = 0; aw < 16; aw++){
+                table.addCell("hi");
 
-            table.addCell("hi");
+            }
 
+            document.add(table);
+
+            document.close();
+            
+        } else {
+            System.out.println("Nada escolhido");
         }
-
-        document.add(table);
-
-        document.close();
+        
+        /*
+        
+        */
 
     }
     
@@ -210,7 +228,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             }
             
             
-            Dialogs.hideLoadPopup(self);
+            //Dialogs.hideLoadPopup(self);
             JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
             t.stop();
         });
