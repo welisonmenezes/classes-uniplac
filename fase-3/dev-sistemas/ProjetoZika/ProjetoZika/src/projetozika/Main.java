@@ -6,25 +6,14 @@
 package projetozika;
 
 import Utils.AccessibilityManager;
+import Utils.MenuTray;
 import projetozika.Pages.Menu;
 import Utils.Methods;
-import Utils.Navigation;
-import java.awt.AWTException;
 import java.awt.BorderLayout;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
 import java.awt.Toolkit;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Properties;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
  * A tela principal da aplicação
@@ -36,12 +25,7 @@ public class Main extends javax.swing.JFrame {
     private JPanel jBODY; // container do conteúdo
     private JPanel jSIDE; // container do menu
     public static JPanel menu; // o menu
-    private SystemTray tray;
-    private TrayIcon trayIcon;
-    private MenuItem openItem;
-    private MenuItem exitItem;
-    private MenuItem sobreItem;
-    private MenuItem logoutItem;
+    public final MenuTray menuTray;
     
     /**
      * Carrega a tela principal
@@ -55,105 +39,18 @@ public class Main extends javax.swing.JFrame {
         
         translation();
         
-        CreateMenuTray();
+        menuTray = new MenuTray(this);
+        menuTray.CreateMenuTray();
         
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                String[] options = new String[] {
-                    Methods.getTranslation("Encerrar"),
-                    Methods.getTranslation("Ficar"),
-                    Methods.getTranslation("Minimizar")
-                };
-                int option = JOptionPane.showOptionDialog(null, Methods.getTranslation("OQueVoceDesejaFazer?"), "",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-                
-                switch (option) {
-                    case 0: // sair
-                        setDefaultCloseOperation(EXIT_ON_CLOSE);
-                        break;
-                    case 1:// ficar
-                        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                        break;
-                    case 2: // minimizar
-                        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                        addTrayIcon();
-                        break;
-                }
-            }
-            @Override
-            public void windowIconified(WindowEvent e) {
-                setVisible(false);
+                menuTray.optionsClosing();
             }
         });
     }
     
-    private void CreateMenuTray() {
-        // verifica se tem suporte
-        if (!SystemTray.isSupported()) {
-            System.out.println("SystemTray is not supported");
-            return;
-        }
-        
-        // cria o icon tray menu
-        final PopupMenu popup = new PopupMenu();
-        trayIcon = new TrayIcon(new ImageIcon(this.getClass().getResource("/sources/saturn-small.png")).getImage());
-        tray = SystemTray.getSystemTray();
-       
-        // cria a pop-up menu components
-        openItem = new MenuItem(Methods.getTranslation("AbrirProjetoZika"));
-        exitItem = new MenuItem(Methods.getTranslation("EncerrarProjetoZika"));
-        sobreItem = new MenuItem(Methods.getTranslation("SobreProjetoZika"));
-        logoutItem = new MenuItem(Methods.getTranslation("FazerLogout"));
-        
-        addActionToMenuItems();
-       
-        // add itens no pop-up menu
-        popup.add(openItem);
-        popup.add(exitItem);
-        popup.add(sobreItem);
-        popup.add(logoutItem);
-        
-        // add pop-up menu no tray
-        trayIcon.setPopupMenu(popup);
-    }
     
-    private void addTrayIcon() {
-        try {
-            tray.add(trayIcon);
-            this.setState(ICONIFIED);
-        } catch (AWTException e) {
-            System.out.println("TrayIcon could not be added.");
-        }
-    }
-    
-    private void addActionToMenuItems() {
-        // abrir
-        openItem.addActionListener((ActionEvent actionEvent) -> {
-            reopenApp();
-        });
-        // encerrar
-        exitItem.addActionListener((ActionEvent actionEvent) -> {
-            System.exit(0);
-        });
-        // sobre
-        sobreItem.addActionListener((ActionEvent actionEvent) -> {
-            Navigation.updateLayout("sobre", new Properties());
-        });
-        // logout
-        logoutItem.addActionListener((ActionEvent actionEvent) -> {
-            reopenApp();
-            dispose();
-            JFrame login = new Login();
-            login.setVisible(true);
-        });
-    }
-    
-    private void reopenApp() {
-        setVisible(true);
-        setState(JFrame.NORMAL);
-        tray.remove(trayIcon);
-    }
     
     /**
      * Resolva as traduções

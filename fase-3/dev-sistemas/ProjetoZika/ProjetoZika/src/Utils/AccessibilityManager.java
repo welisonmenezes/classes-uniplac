@@ -110,10 +110,7 @@ public class AccessibilityManager {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (frame instanceof Main) {
-                    int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
-                    if (opcion == 0) {
-                        System.exit(0);
-                    }
+                    ((Main)frame).menuTray.optionsClosing();
                 } else {
                     frame.dispose();
                 }
