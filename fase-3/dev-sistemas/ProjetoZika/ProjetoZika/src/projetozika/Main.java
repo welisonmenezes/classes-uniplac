@@ -9,6 +9,7 @@ import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import projetozika.Pages.Menu;
 import Utils.Methods;
+import Utils.Navigation;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.CheckboxMenuItem;
@@ -24,7 +25,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Properties;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -42,6 +45,12 @@ public class Main extends javax.swing.JFrame {
     private JPanel jBODY; // container do conteúdo
     private JPanel jSIDE; // container do menu
     public static JPanel menu; // o menu
+    private SystemTray tray;
+    private TrayIcon trayIcon;
+    private MenuItem openItem;
+    private MenuItem exitItem;
+    private MenuItem sobreItem;
+    private MenuItem logoutItem;
     
     /**
      * Carrega a tela principal
@@ -54,6 +63,8 @@ public class Main extends javax.swing.JFrame {
         AccessibilityManager.setAccessibility(this);
         
         translation();
+        
+        CreateMenuTray();
         
         addWindowListener(new WindowAdapter() {
             @Override
@@ -73,7 +84,7 @@ public class Main extends javax.swing.JFrame {
                         break;
                     case 2: // minimizar
                         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                        menuTray();
+                        addTrayIcon();
                         break;
                 }
             }
@@ -84,37 +95,71 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
-    public void menuTray() {
-        //Check the SystemTray is supported
+    private void CreateMenuTray() {
+        // verifica se tem suporte
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
             return;
         }
+        
+        // cria o icon tray menu
         final PopupMenu popup = new PopupMenu();
-        final TrayIcon trayIcon =
-                new TrayIcon(new ImageIcon(this.getClass().getResource("/sources/saturn-small.png")).getImage());
-        final SystemTray tray = SystemTray.getSystemTray();
+        trayIcon = new TrayIcon(new ImageIcon(this.getClass().getResource("/sources/saturn-small.png")).getImage());
+        tray = SystemTray.getSystemTray();
        
-        // Create a pop-up menu components
-        MenuItem openItem = new MenuItem("Abrir ProjetoZika");
-        MenuItem exitItem = new MenuItem("Encerrar ProjetoZika");
-        MenuItem sobreItem = new MenuItem("Sobre o ProjetoZika");
-        MenuItem logoutItem = new MenuItem("Fazer logout");
+        // cria a pop-up menu components
+        openItem = new MenuItem("Abrir ProjetoZika");
+        exitItem = new MenuItem("Encerrar ProjetoZika");
+        sobreItem = new MenuItem("Sobre o ProjetoZika");
+        logoutItem = new MenuItem("Fazer logout");
+        
+        addActionToMenuItems();
        
-        //Add components to pop-up menu
+        // add itens no pop-up menu
         popup.add(openItem);
         popup.add(exitItem);
         popup.add(sobreItem);
         popup.add(logoutItem);
+        
+        // add pop-up menu no tray
         trayIcon.setPopupMenu(popup);
-       
+    }
+    
+    private void addTrayIcon() {
         try {
             tray.add(trayIcon);
-            this.setState(this.ICONIFIED);
+            this.setState(ICONIFIED);
         } catch (AWTException e) {
             System.out.println("TrayIcon could not be added.");
         }
-        
+    }
+    
+    private void addActionToMenuItems() {
+        // abrir
+        openItem.addActionListener((ActionEvent actionEvent) -> {
+            reopenApp();
+        });
+        // encerrar
+        exitItem.addActionListener((ActionEvent actionEvent) -> {
+            System.exit(0);
+        });
+        // sobre
+        sobreItem.addActionListener((ActionEvent actionEvent) -> {
+            Navigation.updateLayout("sobre", new Properties());
+        });
+        // logout
+        logoutItem.addActionListener((ActionEvent actionEvent) -> {
+            reopenApp();
+            dispose();
+            JFrame login = new Login();
+            login.setVisible(true);
+        });
+    }
+    
+    private void reopenApp() {
+        setVisible(true);
+        setState(JFrame.NORMAL);
+        tray.remove(trayIcon);
     }
     
     /**
