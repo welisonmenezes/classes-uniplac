@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -55,9 +56,7 @@ public class Methods {
      * @param w a largura desejada
      * @param h a altura desejada
      */
-    public static void makePanelRelativeSize(JFrame aFrame, int w, int h)
-    {
-        Rectangle screenSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+    public static void makePanelRelativeSize(JFrame aFrame, int w, int h){
         aFrame.setSize(w, h);
     }
     
@@ -166,6 +165,16 @@ public class Methods {
         int row = table.getSelectedRow();
         Object value = table.getValueAt(row, col);
         return value.toString();
+    }
+    
+    /**
+     * Remove a linha selecionada de um dado JTable
+     * @param table o JTable cuja linha selecionada será removida
+     * @param tableModel o JTableModel cuja linha selecionada será removida
+     */
+    public static void removeSelectedTableRow(JTable table, DefaultTableModel tableModel){
+        int row = table.getSelectedRow();
+        tableModel.removeRow(row);
     }
     
     /**

@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 /**
- *
- * @author welis
+ * Tela de ajuda
+ * @author welison
  */
 public class Ajuda extends Templates.BaseFrame {
     private JScrollPane barraRolagem;
@@ -34,6 +34,9 @@ public class Ajuda extends Templates.BaseFrame {
         initPage();
     }
     
+    /**
+     * Inicializa a página (Add elementos e estilos)
+     */
     private void initPage() {
         
         AccessibilityManager.setAccessibility(this);
@@ -79,6 +82,9 @@ public class Ajuda extends Templates.BaseFrame {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Conteúdo de página em inglês
+     */
     private void helpContentEN() {
         textContent = "<h2>Quick Links</h2>"
                 + "<ul>"
@@ -97,7 +103,10 @@ public class Ajuda extends Templates.BaseFrame {
                 + "<li>Add new: <code>CTRL + N</code></li>"
                 + "</ul>";
     }
-    
+       
+    /**
+     * Conteúdo da página em português
+     */
     private void helpContentPT() {
         textContent = "<h2>Acessos Rápidos</h2>"
                 + "<ul>"

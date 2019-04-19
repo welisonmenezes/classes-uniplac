@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 /**
- *
- * @author welis
+ * Cira a página Sobre
+ * @author welison
  */
 public class Sobre extends Templates.BaseFrame {
     private JScrollPane barraRolagem;
@@ -34,6 +34,9 @@ public class Sobre extends Templates.BaseFrame {
         initPage();
     }
     
+    /**
+     * Inicializa a página (Add elementos e estilos)
+     */
     private void initPage() {
         
         AccessibilityManager.setAccessibility(this);
@@ -78,6 +81,9 @@ public class Sobre extends Templates.BaseFrame {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
+    /**
+     * Conteúdo de página em inglês
+     */
     private void aboutContentEN() {
         textContent = "<h2>ProjetoZika en-us</h2>"
                 + "<br>"
@@ -103,6 +109,9 @@ public class Sobre extends Templates.BaseFrame {
                 + "</p>";
     }
     
+    /**
+     * Conteúdo de página em português
+     */
     private void aboutContentPT() {
         textContent = "<h2>ProjetoZika pt-br</h2>"
                 + "<br>"

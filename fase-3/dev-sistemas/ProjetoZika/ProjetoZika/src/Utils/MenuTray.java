@@ -18,8 +18,8 @@ import javax.swing.JOptionPane;
 import projetozika.Login;
 
 /**
- *
- * @author welis
+ * Cria o menu SystemTray
+ * @author welison
  */
 public class MenuTray {
     private TrayIcon trayIcon;
@@ -30,10 +30,17 @@ public class MenuTray {
     private MenuItem logoutItem;
     private final JFrame context;
     
+    /**
+     * Cria o menu SystemTray
+     * @param frame o JFrame principal da aplicação
+     */
     public MenuTray(JFrame frame) {
         context = frame;
     }
     
+    /**
+     * Cria o menu e adiciona os items no SystemTray
+     */
     public void CreateMenuTray() {
         // verifica se tem suporte
         if (!SystemTray.isSupported()) {
@@ -64,6 +71,9 @@ public class MenuTray {
         trayIcon.setPopupMenu(popup);
     }
     
+    /**
+     * Adiciona o ícone no SystemTray
+     */
     public void addTrayIcon() {
         try {
             tray.add(trayIcon);
@@ -73,6 +83,9 @@ public class MenuTray {
         }
     }
     
+    /**
+     * Adiciona actions para os item do menu
+     */
     private void addActionToMenuItems() {
         // abrir
         openItem.addActionListener((ActionEvent actionEvent) -> {
@@ -95,12 +108,18 @@ public class MenuTray {
         });
     }
     
+    /**
+     * Reabre a aplicação e remove o ícon do SystemTray
+     */
     private void reopenApp() {
         context.setVisible(true);
         context.setState(JFrame.NORMAL);
         tray.remove(trayIcon);
     }
     
+    /**
+     * Mostra opções para o usuário quando este tenta sair da aplicação
+     */
     public void optionsClosing() {
         String[] options = new String[] {
             Methods.getTranslation("Encerrar"),

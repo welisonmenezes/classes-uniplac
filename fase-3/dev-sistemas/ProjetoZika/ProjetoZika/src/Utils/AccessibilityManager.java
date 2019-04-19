@@ -16,17 +16,14 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
-import javax.swing.JTable;
 import javax.swing.KeyStroke;
-import javax.swing.table.DefaultTableModel;
 import projetozika.Main;
 
 /**
- *
- * @author welis
+ * Gerencia acessibiliade da aplicação (o que inclui links e atalhos)
+ * @author welison
  */
 public class AccessibilityManager {
     
@@ -36,6 +33,13 @@ public class AccessibilityManager {
     private final String action;
     private final KeyStroke keyStroke;
     
+    /**
+     * Gerencia acessibiliade da aplicação (o que inclui links e atalhos)
+     * @param button o botão a receber actions e atalhos
+     * @param page a pagina para a qual o botão navegará
+     * @param keyStroke o atalho
+     * @param params  parametros de navegação e filtro
+     */
     public AccessibilityManager(JButton button, String page, KeyStroke keyStroke, Properties params) {
         this.button = button;
         this.action = button.getText();
@@ -46,6 +50,9 @@ public class AccessibilityManager {
         addHotLink();
     }
     
+    /**
+     * adiciona um action e um atalho para o botão
+     */
     private void addHotLink() {
         Action buttonAction;
         buttonAction = new AbstractAction(action) {
@@ -59,11 +66,19 @@ public class AccessibilityManager {
         button.getActionMap().put("", buttonAction);
     }
     
+    /**
+     * callback default pra o action do botão (este poderá ser sobreescrito)
+     */
     public void actionLink() {
         params.clear();
         Navigation.updateLayout(page, params);
     }
     
+    /**
+     * Adiciona menu de contexto no botão
+     * @param page a página para a qual o item de menu de contexto navegará
+     * @param title o texto do menu de contexto
+     */
     public void addContextMenuAddNew(String page, String title) {
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem jMenuItemAddNew = new JMenuItem();
@@ -85,16 +100,6 @@ public class AccessibilityManager {
             }
           }
         });
-    }
-    
-    /**
-     * Remove a linha selecionada de um dado JTable
-     * @param table o JTable cuja linha selecionada será removida
-     * @param tableModel o JTableModel cuja linha selecionada será removida
-     */
-    public static void removeSelectedTableRow(JTable table, DefaultTableModel tableModel){
-        int row = table.getSelectedRow();
-        tableModel.removeRow(row);
     }
   
     /**

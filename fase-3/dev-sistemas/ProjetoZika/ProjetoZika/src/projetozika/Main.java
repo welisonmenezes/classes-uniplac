@@ -50,8 +50,6 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
-    
-    
     /**
      * Resolva as traduções
      */
