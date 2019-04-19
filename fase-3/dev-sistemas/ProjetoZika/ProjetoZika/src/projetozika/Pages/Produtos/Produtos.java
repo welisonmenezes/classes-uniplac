@@ -140,9 +140,9 @@ public class Produtos extends Templates.BaseLayout {
             Methods.getTranslation("Unidade"),
             Methods.getTranslation("Data"),
             Methods.getTranslation("Total"),
-            Methods.getTranslation("Editar"), 
-            Methods.getTranslation("Excluir"),
-            Methods.getTranslation("Ver")
+            "", 
+            "",
+            ""
         };
         // informando os tipos das colunas para auxiliar na ordenação
         final Class<?>[] columnClasses = new Class<?>[] {
@@ -197,7 +197,7 @@ public class Produtos extends Templates.BaseLayout {
      * adiciona ações para os botões da tabela
      */
     private void actionsTable() {
-        TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
+        TableColumn colEditar = tabela.getColumnModel().getColumn(5);
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -208,7 +208,7 @@ public class Produtos extends Templates.BaseLayout {
             }
         });
         
-        TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
+        TableColumn colExcluir = tabela.getColumnModel().getColumn(6);
         colExcluir.setMaxWidth(40);
         colExcluir.setCellRenderer(new ButtonRenderer());
         colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -235,7 +235,7 @@ public class Produtos extends Templates.BaseLayout {
             }
         });
         
-        TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
+        TableColumn colVer = tabela.getColumnModel().getColumn(7);
         colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){

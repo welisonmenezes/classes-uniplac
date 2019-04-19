@@ -135,9 +135,9 @@ public class SeusPedidos extends Templates.BaseLayout {
             Methods.getTranslation("Codigo"), 
             Methods.getTranslation("Data"), 
             Methods.getTranslation("Status"), 
-            Methods.getTranslation("Editar"), 
-            Methods.getTranslation("Cancelar"), 
-            Methods.getTranslation("Ver")
+            "", 
+            "", 
+            ""
         };
         // informando os tipos das colunas para auxiliar na ordenação
         final Class<?>[] columnClasses = new Class<?>[] {
@@ -194,7 +194,7 @@ public class SeusPedidos extends Templates.BaseLayout {
      * adiciona ações para os botões da tabela
      */
     private void actionsTable() {
-        TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
+        TableColumn colEditar = tabela.getColumnModel().getColumn(3);
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -209,7 +209,7 @@ public class SeusPedidos extends Templates.BaseLayout {
             }
         });
         
-        TableColumn colCancelar = tabela.getColumn(Methods.getTranslation("Cancelar"));
+        TableColumn colCancelar = tabela.getColumnModel().getColumn(4);
         colCancelar.setMaxWidth(40);
         colCancelar.setPreferredWidth(40);
         colCancelar.setCellRenderer(new ButtonRenderer());
@@ -242,7 +242,7 @@ public class SeusPedidos extends Templates.BaseLayout {
             }
         });
         
-        TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
+        TableColumn colVer = tabela.getColumnModel().getColumn(5);
         colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){

@@ -293,9 +293,7 @@ public class FazerPedido extends Templates.BaseFrame {
             Methods.getTranslation("Quantidade"), 
             ""
         };
-        if (! mode.equals("view")) {
-            colunas[4] = Methods.getTranslation("Remover");
-        } else {
+        if (mode.equals("view")) {
             colunas[4] = Methods.getTranslation("QuantidadeAprovada");
         }
        // seta modelo
@@ -349,7 +347,7 @@ public class FazerPedido extends Templates.BaseFrame {
         });
         
         if(! mode.equals("view")) {
-            TableColumn colRemover = tabela.getColumn(Methods.getTranslation("Remover"));
+            TableColumn colRemover = tabela.getColumnModel().getColumn(4);
             colRemover.setMaxWidth(40);
             colRemover.setCellRenderer(new ButtonRenderer());
             colRemover.setCellEditor(new ButtonEditor(new JCheckBox()){

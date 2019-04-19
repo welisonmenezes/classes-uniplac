@@ -94,9 +94,6 @@ public class ListarProdutos extends javax.swing.JPanel {
             Methods.getTranslation("Quantidade"),
             ""
         };
-        if(! mode.equals("view")) {
-            colunas[5] = Methods.getTranslation("Excluir");
-        } 
         
        // seta modelo
         tableModel = new DefaultTableModel(null, colunas) {
@@ -124,7 +121,7 @@ public class ListarProdutos extends javax.swing.JPanel {
         tabela.setModel(tableModel);
         
         if (! mode.equals("view")) {
-            TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
+            TableColumn colExcluir = tabela.getColumnModel().getColumn(5);
             colExcluir.setMaxWidth(40);
             colExcluir.setCellRenderer(new ButtonRenderer());
             colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){

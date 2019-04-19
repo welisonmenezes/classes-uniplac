@@ -28,7 +28,6 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -38,7 +37,6 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import projetozika.Login;
 
 /**
  * Tela de listagem do fornecedores
@@ -137,9 +135,9 @@ public class Fornecedores extends Templates.BaseLayout {
             Methods.getTranslation("Nome"),
             Methods.getTranslation("CNPJ"),
             Methods.getTranslation("Telefone"),
-            Methods.getTranslation("Editar"),
-            Methods.getTranslation("Excluir"),
-            Methods.getTranslation("Ver")
+            "",
+            "",
+            ""
         };
         // informando os tipos das colunas para auxiliar na ordenação
         final Class<?>[] columnClasses = new Class<?>[] {
@@ -192,7 +190,7 @@ public class Fornecedores extends Templates.BaseLayout {
      * adiciona ações para os botões da tabela
      */
     private void actionsTable() {
-        TableColumn colEditar = tabela.getColumn(Methods.getTranslation("Editar"));
+        TableColumn colEditar = tabela.getColumnModel().getColumn(4);
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -203,7 +201,7 @@ public class Fornecedores extends Templates.BaseLayout {
             }
         });
         
-        TableColumn colExcluir = tabela.getColumn(Methods.getTranslation("Excluir"));
+        TableColumn colExcluir = tabela.getColumnModel().getColumn(5);
         colExcluir.setMaxWidth(40);
         colExcluir.setCellRenderer(new ButtonRenderer());
         colExcluir.setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -230,7 +228,7 @@ public class Fornecedores extends Templates.BaseLayout {
             }
         });
         
-        TableColumn colVer = tabela.getColumn(Methods.getTranslation("Ver"));
+        TableColumn colVer = tabela.getColumnModel().getColumn(6);
         colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){

@@ -131,8 +131,8 @@ public class Pedidos extends Templates.BaseLayout {
             Methods.getTranslation("Nome"), 
             Methods.getTranslation("Data"), 
             Methods.getTranslation("Status"), 
-            Methods.getTranslation("Ver/Editar"), 
-            Methods.getTranslation("Entregar")
+            "", 
+            ""
         };
         // informando os tipos das colunas para auxiliar na ordenação
         final Class<?>[] columnClasses = new Class<?>[] {
@@ -191,23 +191,7 @@ public class Pedidos extends Templates.BaseLayout {
      * adiciona ações para os botões da tabela
      */
     private void actionsTable() {
-        TableColumn colEntregar = tabela.getColumn(Methods.getTranslation("Entregar"));
-        colEntregar.setMaxWidth(40);
-        colEntregar.setCellRenderer(new ButtonRenderer());
-        colEntregar.setCellEditor(new ButtonEditor(new JCheckBox()){
-            @Override
-            public void buttonAction() {
-                String id = Methods.selectedTableItemId(tabela);
-                int col = tabela.getSelectedColumn();
-                int row = tabela.getSelectedRow();
-                String actionValue = (String)tabela.getModel().getValueAt(row, col);
-                if (!actionValue.equals("")) {
-                    Navigation.updateLayout("entregarPedido", id, params);
-                }
-            }
-        });
-        
-        TableColumn colVerEditar = tabela.getColumn(Methods.getTranslation("Ver/Editar"));
+        TableColumn colVerEditar = tabela.getColumnModel().getColumn(4);
         colVerEditar.setPreferredWidth(40);
         colVerEditar.setMaxWidth(40);
         colVerEditar.setCellRenderer(new ButtonRenderer());
@@ -220,6 +204,22 @@ public class Pedidos extends Templates.BaseLayout {
                     Navigation.updateLayout("editarPedido", id, params);
                 } else {
                     Navigation.updateLayout("verPedido", id, params);
+                }
+            }
+        });
+        
+        TableColumn colEntregar = tabela.getColumnModel().getColumn(5);
+        colEntregar.setMaxWidth(40);
+        colEntregar.setCellRenderer(new ButtonRenderer());
+        colEntregar.setCellEditor(new ButtonEditor(new JCheckBox()){
+            @Override
+            public void buttonAction() {
+                String id = Methods.selectedTableItemId(tabela);
+                int col = tabela.getSelectedColumn();
+                int row = tabela.getSelectedRow();
+                String actionValue = (String)tabela.getModel().getValueAt(row, col);
+                if (!actionValue.equals("")) {
+                    Navigation.updateLayout("entregarPedido", id, params);
                 }
             }
         });
