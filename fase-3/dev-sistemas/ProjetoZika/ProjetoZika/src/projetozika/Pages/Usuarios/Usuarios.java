@@ -11,7 +11,7 @@ import Models.Usuario;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import Utils.Dialogs;
-import Utils.LinkManager;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -343,7 +343,7 @@ public class Usuarios extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        new LinkManager(addMore, 
+        new AccessibilityManager(addMore, 
             "addUsuario",
             KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
             params) {

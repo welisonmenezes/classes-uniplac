@@ -15,7 +15,7 @@ import DAO.EstoqueDAO;
 import Models.NotaFiscalProduto;
 import Utils.DateHandler;
 import Utils.Dialogs;
-import Utils.LinkManager;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -356,7 +356,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        new LinkManager(addMore, 
+        new AccessibilityManager(addMore, 
             "addNotaFiscal",
             KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
             params) {

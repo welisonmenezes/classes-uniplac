@@ -12,6 +12,7 @@ import Models.PedidoProduto;
 import Models.Produto;
 import Models.Usuario;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * classe utilitária para popular os diversos modelos da aplicação
@@ -32,7 +33,7 @@ public class FillModel {
             fornecedor.setStatus(rs.getString("Status"));
             fornecedor.setTelefone(rs.getString("Telefone"));
             fornecedor.setCreated(rs.getString("Created"));
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("FornecedorDAO.fillFornecedor: " + error);
         }
     }
@@ -60,7 +61,7 @@ public class FillModel {
             fornecedor.setTelefone(rs.getString("fTelefone"));
             fornecedor.setCreated(rs.getString("fCreated"));
             notaFiscal.setFornecedor(fornecedor);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("NotaFiscalDAO.fillUser: " + error);
         }
     }
@@ -86,7 +87,7 @@ public class FillModel {
             usuario.setPermissao(rs.getString("usuarios.Permissao"));
             usuario.setStatus(rs.getString("usuarios.Status"));
             usuario.setSexo(rs.getString("usuarios.Sexo"));
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("PedidoDAO.fillUser: " + error);
         }
     }
@@ -105,7 +106,7 @@ public class FillModel {
             produto.setUnidade(rs.getString("produtos.Unidade"));
             produto.setTotal(rs.getInt("estoque.Total"));
             produto.setCreated(rs.getString("produtos.Created"));
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("PedidoDAO.fillProduto: " + error);
         }
     }
@@ -121,7 +122,7 @@ public class FillModel {
             pedido.setStatus(rs.getString("pedidos.Status"));
             pedido.setCreated(rs.getString("pedidos.Created"));
             pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("PedidoDAO.fillProduto: " + error);
         }
     }
@@ -140,7 +141,7 @@ public class FillModel {
             pedidoProduto.setQuantidadeAprovada(rs.getInt("pedidosprodutos.QuantidadeAprovada"));
             pedidoProduto.setPedido(pedido);
             pedidoProduto.setProduto(produto);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("PedidoDAO.fillPedidoProduto: " + error);
         }
     }

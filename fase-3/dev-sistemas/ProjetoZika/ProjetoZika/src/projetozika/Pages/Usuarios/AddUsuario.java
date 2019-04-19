@@ -12,6 +12,7 @@ import DAO.UsuarioDAO;
 import Models.Usuario;
 import Utils.DateHandler;
 import Utils.Dialogs;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -130,7 +131,7 @@ public class AddUsuario extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // cria objetos para carregar dados posteriormente
         usuarioDao = new UsuarioDAO();
@@ -139,7 +140,6 @@ public class AddUsuario extends Templates.BaseFrame {
         // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 670, 550);
-        Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
         addCenterContent();

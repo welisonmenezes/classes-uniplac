@@ -10,6 +10,7 @@ import DAO.EstoqueDAO;
 import DAO.ProdutoDAO;
 import Models.Produto;
 import Utils.Dialogs;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -52,7 +53,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         this.id = id;
         this.params = params;
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
@@ -62,7 +63,6 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 280, 360);
-        Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent("Normalizar Estoque");
         addCenterContent();

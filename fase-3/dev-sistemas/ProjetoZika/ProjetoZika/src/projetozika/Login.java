@@ -8,6 +8,7 @@ package projetozika;
 import Config.Environment;
 import DAO.UsuarioDAO;
 import Models.Usuario;
+import Utils.AccessibilityManager;
 import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
@@ -48,7 +49,7 @@ public class Login extends javax.swing.JFrame {
         Styles.defaultField(fsenha);
         
         // seta a acessibilidade
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // Tradução
         translation();

@@ -12,6 +12,7 @@ import Models.Produto;
 import CustomFields.ComboItem;
 import DAO.EstoqueDAO;
 import Utils.Dialogs;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -116,7 +117,7 @@ public class AddProduto extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
@@ -134,7 +135,6 @@ public class AddProduto extends Templates.BaseFrame {
         } else {
             Styles.internalFrame(this, 450, 400);
         }
-        Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
         addCenterContent();

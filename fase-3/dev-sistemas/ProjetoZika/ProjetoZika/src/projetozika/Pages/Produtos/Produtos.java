@@ -12,7 +12,7 @@ import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import Utils.DateHandler;
 import Utils.Dialogs;
-import Utils.LinkManager;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -349,7 +349,7 @@ public class Produtos extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        new LinkManager(addMore, 
+        new AccessibilityManager(addMore, 
             "addProduto",
             KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
             params) {

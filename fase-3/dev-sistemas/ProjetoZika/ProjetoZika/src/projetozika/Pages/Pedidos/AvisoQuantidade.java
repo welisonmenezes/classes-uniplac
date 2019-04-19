@@ -6,6 +6,7 @@
 package projetozika.Pages.Pedidos;
 
 import Models.EstoqueAviso;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -42,12 +43,11 @@ public class AvisoQuantidade extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 500, 400);
-        Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
         addCenterContent();

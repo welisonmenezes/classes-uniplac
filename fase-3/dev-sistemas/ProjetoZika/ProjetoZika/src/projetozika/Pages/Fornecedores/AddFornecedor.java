@@ -11,6 +11,7 @@ import Models.Fornecedor;
 import CustomFields.ComboItem;
 import CustomFields.MaskFactory;
 import Utils.Dialogs;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -102,7 +103,7 @@ public class AddFornecedor extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // cria objetos para carregar dados posteriormente
         fornecedorDao = new FornecedorDAO();
@@ -111,7 +112,6 @@ public class AddFornecedor extends Templates.BaseFrame {
         // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this);
-        Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
         addCenterContent();

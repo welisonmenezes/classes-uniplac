@@ -11,6 +11,7 @@ import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Usuario;
 import Utils.Dialogs;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
@@ -88,12 +89,11 @@ public class EntregarPedido extends Templates.BaseFrame {
      */
     private void initPage(String title) {
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         // carrega os elementos e o design da tela
         initComponents();
         Styles.internalFrame(this, 1000, 600);
-        Methods.setAccessibility(this);
         createBaseLayout();
         addTopContent(title);
         addCenterContent();

@@ -6,7 +6,7 @@
 package projetozika.Pages;
 
 import Config.Environment;
-import Utils.LinkManager;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Dimension;
@@ -89,67 +89,67 @@ public class Menu extends javax.swing.JPanel {
     
     private void addHotLinkToMenu() {
         
-        new LinkManager(bDashboard,
+        new AccessibilityManager(bDashboard,
             "dashboard",
             KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
             params);
         
-        new LinkManager(bPedidos,
+        new AccessibilityManager(bPedidos,
             "pedidos",
             KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
             params);
         
-        new LinkManager(bFornecedores, 
+        new AccessibilityManager(bFornecedores, 
             "fornecedores",
             KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addFornecedor", Methods.getTranslation("AdicionarFornecedor"));
         
-        new LinkManager(bNotasFiscais, 
+        new AccessibilityManager(bNotasFiscais, 
             "notasFiscais",
             KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addNotaFiscal", Methods.getTranslation("AdicionarNotaFiscal"));
         
-        new LinkManager(bProdutos,
+        new AccessibilityManager(bProdutos,
             "produtos",
             KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addProduto", Methods.getTranslation("AdicionarProduto"));
         
-        new LinkManager(bUsuarios,
+        new AccessibilityManager(bUsuarios,
             "usuarios",
             KeyStroke.getKeyStroke(KeyEvent.VK_U, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("addUsuario", Methods.getTranslation("AdicionarUsuario"));
         
-        new LinkManager(bSeusPedidos, 
+        new AccessibilityManager(bSeusPedidos, 
             "seusPedidos",
             KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK),
             params)
                 .addContextMenuAddNew("fazerPedido", Methods.getTranslation("FazerPedido"));
         
-        new LinkManager(bPerfil,
+        new AccessibilityManager(bPerfil,
             "perfil",
             KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
             params);
         
-        new LinkManager(bRelatorios, 
+        new AccessibilityManager(bRelatorios, 
             "relatorios",
             KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
             params);
         
-        new LinkManager(bHelp,
+        new AccessibilityManager(bHelp,
             "ajuda",
             KeyStroke.getKeyStroke("F1"),
             params);
         
-        new LinkManager(bInfo,
+        new AccessibilityManager(bInfo,
             "sobre",
             KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
             params);
         
-        new LinkManager(logout,
+        new AccessibilityManager(logout,
             "",
             KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK),
             params) {

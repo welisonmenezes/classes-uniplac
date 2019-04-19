@@ -11,7 +11,7 @@ import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import CustomFields.MaskFactory;
 import Utils.Dialogs;
-import Utils.LinkManager;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -338,7 +338,7 @@ public class Fornecedores extends Templates.BaseLayout {
         pFilter.add(addMore);
         
         // click do adicionar novo
-        new LinkManager(addMore, 
+        new AccessibilityManager(addMore, 
             "addFornecedor",
             KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
             params) {

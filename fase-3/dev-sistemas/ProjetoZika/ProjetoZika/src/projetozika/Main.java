@@ -6,6 +6,7 @@
 package projetozika;
 
 import Utils.Dialogs;
+import Utils.AccessibilityManager;
 import projetozika.Pages.Menu;
 import Utils.Methods;
 import java.awt.AWTException;
@@ -50,7 +51,7 @@ public class Main extends javax.swing.JFrame {
         menu = new Menu(this);
         initLayout();
         
-        Methods.setAccessibility(this);
+        AccessibilityManager.setAccessibility(this);
         
         translation();
         

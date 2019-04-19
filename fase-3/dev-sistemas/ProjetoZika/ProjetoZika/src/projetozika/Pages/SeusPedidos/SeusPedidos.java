@@ -12,7 +12,7 @@ import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import Utils.DateHandler;
 import Utils.Dialogs;
-import Utils.LinkManager;
+import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Pagination;
@@ -342,7 +342,7 @@ public class SeusPedidos extends Templates.BaseLayout {
         });
         
         // click do add pedido
-        new LinkManager(btnAddPedido, 
+        new AccessibilityManager(btnAddPedido, 
             "fazerPedido",
             KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK),
             params) {
