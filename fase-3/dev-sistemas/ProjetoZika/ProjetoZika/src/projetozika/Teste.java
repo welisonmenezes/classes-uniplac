@@ -6,7 +6,17 @@
 package projetozika;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -21,7 +31,35 @@ public class Teste extends javax.swing.JFrame {
     public Teste() {
         initComponents();
        
+        pfoco.setFocusable(true);
+        if (pfoco.hasFocus()) {
+            
+        }
+        Action buttonAction;
+        buttonAction = new AbstractAction("") {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                //System.out.println("test clicked");
+                System.out.println(evt.getModifiers());
+                
+            }
+        };
+        //pfoco.setAction(buttonAction);
+        pfoco.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK), "");
+        pfoco.getActionMap().put("", buttonAction);
         
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                //System.out.println(evt.getNewValue());
+                System.out.println(getFocusOwner().getName());
+                if (getFocusOwner().getName() != null && getFocusOwner().getName().equals("teste")) {
+                    pfoco.setBackground(Color.red);
+                } else {
+                    pfoco.setBackground(Color.gray);
+                }
+            }
+        });
     }
 
     /**
@@ -35,8 +73,20 @@ public class Teste extends javax.swing.JFrame {
 
         buttonGroup2 = new javax.swing.ButtonGroup();
         panel1 = new java.awt.Panel();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         textField1 = new java.awt.TextField();
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jButton1 = new javax.swing.JButton();
+        pfoco = new javax.swing.JPanel();
+
+        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1000, 600));
@@ -49,9 +99,22 @@ public class Teste extends javax.swing.JFrame {
         jFormattedTextField1.setText("jFormattedTextField1");
         getContentPane().add(jFormattedTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, -1, -1));
 
+        jButton1.setText("jButton1");
+        jButton1.setComponentPopupMenu(jPopupMenu1);
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, -1, -1));
+
+        pfoco.setBackground(new java.awt.Color(51, 102, 255));
+        pfoco.setName("teste"); // NOI18N
+        getContentPane().add(pfoco, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 70, 40));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        System.out.println("xxxx teste");
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -90,8 +153,12 @@ public class Teste extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private java.awt.Panel panel1;
+    private javax.swing.JPanel pfoco;
     private java.awt.TextField textField1;
     // End of variables declaration//GEN-END:variables
 }
