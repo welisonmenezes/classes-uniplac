@@ -58,26 +58,33 @@ public class Main extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
-                if (opcion != 0) {
-                    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-                } else {
-                    setDefaultCloseOperation(EXIT_ON_CLOSE);
+                //int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
+                String[] options = new String[] {"Sair", "Ficar", "Minimizar"};
+                int option = JOptionPane.showOptionDialog(null, "O que você deseja fazer?", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+                
+                System.out.println(option);
+                switch (option) {
+                    case 0: // sair
+                        setDefaultCloseOperation(EXIT_ON_CLOSE);
+                        break;
+                    case 1:// ficar
+                        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                        break;
+                    case 2: // minimizar
+                        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+                        menuTray();
+                        break;
                 }
             }
             @Override
             public void windowIconified(WindowEvent e) {
-                //System.out.println("xxxx");
-                //setVisible(false);
+                setVisible(false);
             }
         });
-        
-        //this.exemploMenuContexto();
-        
-        //this.timerTest();
     }
     
-    public void exemploMenuTray() {
+    public void menuTray() {
         //Check the SystemTray is supported
         if (!SystemTray.isSupported()) {
             System.out.println("SystemTray is not supported");
@@ -85,82 +92,29 @@ public class Main extends javax.swing.JFrame {
         }
         final PopupMenu popup = new PopupMenu();
         final TrayIcon trayIcon =
-                new TrayIcon(new ImageIcon(this.getClass().getResource("/sources/cancel.png")).getImage());
+                new TrayIcon(new ImageIcon(this.getClass().getResource("/sources/saturn-small.png")).getImage());
         final SystemTray tray = SystemTray.getSystemTray();
        
         // Create a pop-up menu components
-        MenuItem aboutItem = new MenuItem("About");
-        CheckboxMenuItem cb1 = new CheckboxMenuItem("Set auto size");
-        CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip");
-        Menu displayMenu = new Menu(this);
-        MenuItem errorItem = new MenuItem("Error");
-        MenuItem warningItem = new MenuItem("Warning");
-        MenuItem infoItem = new MenuItem("Info");
-        MenuItem noneItem = new MenuItem("None");
-        MenuItem exitItem = new MenuItem("Exit");
+        MenuItem openItem = new MenuItem("Abrir ProjetoZika");
+        MenuItem exitItem = new MenuItem("Encerrar ProjetoZika");
+        MenuItem sobreItem = new MenuItem("Sobre o ProjetoZika");
+        MenuItem logoutItem = new MenuItem("Fazer logout");
        
         //Add components to pop-up menu
-        popup.add(aboutItem);
-        popup.addSeparator();
-        popup.add(cb1);
-        popup.add(cb2);
-        popup.addSeparator();
+        popup.add(openItem);
         popup.add(exitItem);
-       
+        popup.add(sobreItem);
+        popup.add(logoutItem);
         trayIcon.setPopupMenu(popup);
        
         try {
             tray.add(trayIcon);
-            System.out.println("xxxxaa");
             this.setState(this.ICONIFIED);
-            //int state = getExtendedState();
-            //state = state & ~Frame.ICONIFIED;
-           // this.setExtendedState(state);
-           // setVisible(true);
-            //this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            //this.dispose();
-            //System.exit(0);
         } catch (AWTException e) {
             System.out.println("TrayIcon could not be added.");
         }
         
-    }
-    
-    private Timer t;
-    private void timerTest() {
-        
-        t = new Timer(250, (ActionEvent e) -> {
-            this.exemploMenuTray();
-            t.stop();
-        });
-        t.start();
-    }
-    
-    
-    private void exemploMenuContexto() {
-        JPopupMenu jPopupMenu = new JPopupMenu();
-        JMenuItem jMenuItemAlterar = new JMenuItem();
-        jMenuItemAlterar.setText("Alterar");
-        
-        jMenuItemAlterar.addActionListener((ActionEvent e) -> {
-            System.out.println("teste menu de contexto");
-        } // Importe a classe java.awt.event.ActionEvent
-        );
-        
-        jPopupMenu.add(jMenuItemAlterar);
-        
-        jSIDE.addMouseListener( new MouseAdapter() {
-          //Importe a classe java.awt.event.MouseEvent
-          @Override
-          public void mouseClicked(MouseEvent e) {
-            // Se o botão direito do mouse foi pressionado
-            if (e.getButton() == MouseEvent.BUTTON3){
-              // Exibe o popup menu na posição do mouse.
-                jPopupMenu.show(jSIDE, e.getX(), e.getY());
-                System.out.println("Clicado vacilão");
-            }
-          }
-        });
     }
     
     /**
