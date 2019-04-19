@@ -15,11 +15,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import projetozika.Main;
+import projetozika.Pages.Ajuda;
 import projetozika.Pages.Dashboard;
 import projetozika.Pages.Fornecedores.AddFornecedor;
 import projetozika.Pages.Fornecedores.Fornecedores;
-import projetozika.Pages.Help;
-import projetozika.Pages.Info;
 import projetozika.Pages.NotFound;
 import projetozika.Pages.NotasFiscais.AddNotaFiscal;
 import projetozika.Pages.NotasFiscais.NotasFiscais;
@@ -34,6 +33,7 @@ import projetozika.Pages.Produtos.Produtos;
 import projetozika.Pages.Relatorios.Relatorios;
 import projetozika.Pages.SeusPedidos.FazerPedido;
 import projetozika.Pages.SeusPedidos.SeusPedidos;
+import projetozika.Pages.Sobre;
 import projetozika.Pages.Usuarios.AddUsuario;
 import projetozika.Pages.Usuarios.Usuarios;
 
@@ -173,12 +173,12 @@ public class Navigation {
                 tmpPanel = new Dashboard(params);
                 break;
             case "ajuda":
-                updateSatusMenu("");
-                tmpPanel = new Help(params);
+                tmpFrame = new Ajuda(params);
+                tmpFrame.setVisible(true);
                 break;
             case "sobre":
-                updateSatusMenu("");
-                tmpPanel = new Info(params);
+                tmpFrame = new Sobre(params);
+                tmpFrame.setVisible(true);
                 break;
             case "fornecedores":
                 updateSatusMenu("fornecedores");
@@ -280,7 +280,8 @@ public class Navigation {
         if (!pageName.equals("addFornecedorNota")
             && !pageName.equals("addProdutoNota")
             && !pageName.equals("avisoQuantidade")
-            && !pageName.equals("normalizaEstoque")){
+            && !pageName.equals("normalizaEstoque")
+            && !pageName.equals("ajuda")){
             if (tmpFrame != null) {
                 tmpFrame.dispose();
                 tmpFrame = null;
