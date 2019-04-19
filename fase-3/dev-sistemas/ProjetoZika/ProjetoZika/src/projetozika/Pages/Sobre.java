@@ -62,8 +62,12 @@ public class Sobre extends Templates.BaseFrame {
         
         wrapText = new JPanel(new FlowLayout(FlowLayout.LEFT));
         wrapText.setOpaque(false);
-
-        helpContentPT();
+        
+        if (System.getProperty("user.language").equals("en")) {
+            aboutContentEN();
+        } else {
+            aboutContentPT();
+        }
         
         textContainer = new JLabel("<html>"+textContent+"</html>");
         textContainer.setFont(new java.awt.Font("Tahoma", 0, 16));
@@ -74,8 +78,33 @@ public class Sobre extends Templates.BaseFrame {
         pCenter.add(barraRolagem, BorderLayout.CENTER);
     }
     
-    private void helpContentPT() {
-        textContent = "<h2>Projeto Zika</h2>"
+    private void aboutContentEN() {
+        textContent = "<h2>ProjetoZika en-us</h2>"
+                + "<br>"
+                + "<p>"
+                + "Donec faucibus nec orci ut sollicitudin. Proin fermentum nec augue nec"
+                + "<br>luctus. Vivamus elementum molestie tortor rhoncus lobortis."
+                + "</p>"
+                + "<br>"
+                + "<p>"
+                + "Cras convallis ultricies diam, consequat consequat sapien condimentum a."
+                + "<br>Phasellus nibh leo, luctus id tincidunt et, pharetra pharetra turpis."
+                + "</p>"
+                + "<br>"
+                + "<p>"
+                + "Quisque pretium tincidunt bibendum. Fusce malesuada diam id urna tristique,"
+                + "<br>nec imperdiet dui malesuada. Morbi sodales mattis porta. Ut cursus."
+                + "<br>Rutrum commodo Mauris tincidunt maximus suscipit. Aliquam erat volutpat."
+                + "</p>"
+                + "<br>"
+                + "<p>"
+                + "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                + "<br>Donec faucibus nec orci ut sollicitudin."
+                + "</p>";
+    }
+    
+    private void aboutContentPT() {
+        textContent = "<h2>ProjetoZika pt-br</h2>"
                 + "<br>"
                 + "<p>"
                 + "Donec faucibus nec orci ut sollicitudin. Proin fermentum nec augue nec"

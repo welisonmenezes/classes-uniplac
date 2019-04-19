@@ -5,34 +5,25 @@
  */
 package projetozika;
 
-import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import projetozika.Pages.Menu;
 import Utils.Methods;
 import Utils.Navigation;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
-import java.awt.CheckboxMenuItem;
-import java.awt.Frame;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.Timer;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
@@ -69,12 +60,14 @@ public class Main extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
-                //int opcion = JOptionPane.showConfirmDialog(null, Methods.getTranslation("DesejaRealmenteSair?"), "Aviso", JOptionPane.YES_NO_OPTION);
-                String[] options = new String[] {"Sair", "Ficar", "Minimizar"};
-                int option = JOptionPane.showOptionDialog(null, "O que você deseja fazer?", "",
+                String[] options = new String[] {
+                    Methods.getTranslation("Encerrar"),
+                    Methods.getTranslation("Ficar"),
+                    Methods.getTranslation("Minimizar")
+                };
+                int option = JOptionPane.showOptionDialog(null, Methods.getTranslation("OQueVoceDesejaFazer?"), "",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
                 
-                System.out.println(option);
                 switch (option) {
                     case 0: // sair
                         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -108,10 +101,10 @@ public class Main extends javax.swing.JFrame {
         tray = SystemTray.getSystemTray();
        
         // cria a pop-up menu components
-        openItem = new MenuItem("Abrir ProjetoZika");
-        exitItem = new MenuItem("Encerrar ProjetoZika");
-        sobreItem = new MenuItem("Sobre o ProjetoZika");
-        logoutItem = new MenuItem("Fazer logout");
+        openItem = new MenuItem(Methods.getTranslation("AbrirProjetoZika"));
+        exitItem = new MenuItem(Methods.getTranslation("EncerrarProjetoZika"));
+        sobreItem = new MenuItem(Methods.getTranslation("SobreProjetoZika"));
+        logoutItem = new MenuItem(Methods.getTranslation("FazerLogout"));
         
         addActionToMenuItems();
        

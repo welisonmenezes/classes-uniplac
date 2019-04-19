@@ -62,8 +62,13 @@ public class Ajuda extends Templates.BaseFrame {
         
         wrapText = new JPanel(new FlowLayout(FlowLayout.LEFT));
         wrapText.setOpaque(false);
-
-        helpContentPT();
+        
+        if (System.getProperty("user.language").equals("en")) {
+            helpContentEN();
+        } else {
+            helpContentPT();
+        }
+        
         
         textContainer = new JLabel("<html>"+textContent+"</html>");
         textContainer.setFont(new java.awt.Font("Tahoma", 0, 16));
@@ -72,6 +77,25 @@ public class Ajuda extends Templates.BaseFrame {
         wrapText.add(textContainer);
         barraRolagem.getViewport().setView(wrapText);
         pCenter.add(barraRolagem, BorderLayout.CENTER);
+    }
+    
+    private void helpContentEN() {
+        textContent = "<h2>Quick Links</h2>"
+                + "<ul>"
+                + "<li>Dashboard: <code>CTRL + D</code></li>"
+                + "<li>Your requests: <code>CTRL + Y</code></li>"
+                + "<li>Requests: <code>CTRL + O</code></li>"
+                + "<li>Providers: <code>CTRL + F</code></li>"
+                + "<li>Invoices: <code>CTRL + I</code></li>"
+                + "<li>Products: <code>CTRL + P</code></li>"
+                + "<li>Users: <code>CTRL + U</code></li>"
+                + "<li>Profile: <code>CTRL + M</code></li>"
+                + "<li>Reports: <code>CTRL + R</code></li>"
+                + "<li>About: <code>CTRL + A</code></li>"
+                + "<li>Help: <code>F1</code></li>"
+                + "<li>Logout: <code>CTRL + L</code> ou <code>ESC</code></li>"
+                + "<li>Add new: <code>CTRL + N</code></li>"
+                + "</ul>";
     }
     
     private void helpContentPT() {
