@@ -8,7 +8,6 @@ package projetozika.Pages.Relatorios;
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
 import Utils.DateHandler;
-import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Styles;
 import Utils.Validator;
@@ -33,7 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -59,7 +57,6 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private JButton btnRelatorioPedido;
     private final JPanel self;
     private JLabel title;
-    private JFileChooser fc;
 
     /**
      * Creates new form RelatorioPedidos
@@ -167,8 +164,11 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             // verifica se data é maior ou menor
             if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
-                //Dialogs.showLoadPopup(self);
-                timerTest();
+                try {
+                    this.createPdf();
+                } catch (IOException | DocumentException error) {
+                    System.out.println("error: " + error);
+                }
             }
             
         });
@@ -179,12 +179,12 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         edatato.setText("");
     }
     
-    public static final String DEST = "simple_table.pdf";
-    public void createPdf(String filename) throws IOException, DocumentException {
-
-        Document document = new Document();
+    public void createPdf() throws IOException, DocumentException {
         
-        fc = new JFileChooser();
+        String filename = "ProjetoZikaPediso-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
+        Document document = new Document();
+        JFileChooser fc = new JFileChooser();
+        
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -208,37 +208,11 @@ public class RelatorioPedidos extends javax.swing.JPanel {
 
             document.close();
             
+            JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
+            
         } else {
             System.out.println("Nada escolhido");
         }
-        
-        /*
-        
-        */
-
-    }
-    
-    private Timer t;
-    private void timerTest() {
-        
-        t = new Timer(250, (ActionEvent e) -> {
-            
-            try {
-                File file = new File(DEST);
-
-                //file.getParentFile().mkdirs();
-
-                this.createPdf(DEST);
-            } catch (IOException | DocumentException error) {
-                System.out.println("error: " + error);
-            }
-            
-            
-            //Dialogs.hideLoadPopup(self);
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
-            t.stop();
-        });
-        t.start();
     }
 
     /**
