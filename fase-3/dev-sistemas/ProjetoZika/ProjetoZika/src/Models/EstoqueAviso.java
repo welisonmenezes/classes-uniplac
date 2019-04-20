@@ -6,8 +6,8 @@
 package Models;
 
 /**
- *
- * @author welis
+ * Modelo para estoqueAviso
+ * @author welison
  */
 public class EstoqueAviso {
     private Produto Produto;

@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 
 /**
  * Popups genéricos da aplicação
- * 
  * @author Welison
  */
 public class Dialogs {
@@ -21,7 +20,6 @@ public class Dialogs {
     
     /**
      * Mostra o popup de loading...
-     * 
      * @param context o JPanel ou JFrame a partir de onde o popup será chamado
      */
     public static void showLoadPopup(JComponent context) {
@@ -54,7 +52,6 @@ public class Dialogs {
     
     /**
      * Esconde o popup de loading...
-     * 
      * @param context o JPanel ou JFrame a partir de onde o popup foi chamado
      */
     public static void hideLoadPopup(JComponent context) {

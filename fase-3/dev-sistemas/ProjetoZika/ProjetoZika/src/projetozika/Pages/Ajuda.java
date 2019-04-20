@@ -28,6 +28,7 @@ public class Ajuda extends Templates.BaseFrame {
 
     /**
      * Creates new form Ajuda
+     * @param params Parâmetros para filtro e paginação
      */
     public Ajuda(Properties params) {
         this.params = params;

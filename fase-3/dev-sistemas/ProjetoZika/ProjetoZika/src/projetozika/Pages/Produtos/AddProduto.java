@@ -38,7 +38,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
 import projetozika.Pages.NotasFiscais.SelecionarProduto;
 
 /**
- *
+ * Tela de add/ver/editar produto
  * @author Welison
  */
 public class AddProduto extends Templates.BaseFrame {

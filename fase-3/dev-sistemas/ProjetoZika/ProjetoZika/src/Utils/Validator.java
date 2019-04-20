@@ -18,8 +18,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- *
- * @author welis
+ * Responsável pela validação dos campos
+ * @author welison
  */
 public class Validator {
     
@@ -328,6 +328,13 @@ public class Validator {
         return true;
     }
     
+    /**
+     * verifica se a data do primeiro campo é anterior que a do segundo campo
+     * @param from o campo DE
+     * @param to o campo ATÉ
+     * @param edatato o label onde será exibida a mensagem de erro
+     * @return true se for anterior
+     */
     public static boolean isDateBeforeThen(JDateChooser from, JDateChooser to, JLabel edatato) {
         try {
             String vFrom = ((JTextField)from.getDateEditor().getUiComponent()).getText();

@@ -11,7 +11,7 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.SimpleAttributeSet;
 
 /**
- *
+ * Formata os campos de texto pra decimal
  * @author Welison
  */
 public class FormataDecimal extends PlainDocument {

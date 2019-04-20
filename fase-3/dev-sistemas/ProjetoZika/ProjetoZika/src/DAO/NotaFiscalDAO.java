@@ -5,7 +5,6 @@
  */
 package DAO;
 
-import Models.Fornecedor;
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
 import Models.Produto;

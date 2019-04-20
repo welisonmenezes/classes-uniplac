@@ -27,8 +27,8 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
- * @author welis
+ * Tela para normalizar quantidade do produto no estoque
+ * @author welison
  */
 public class NormalizaEstoque extends Templates.BaseFrame {
     private JPanel bg;

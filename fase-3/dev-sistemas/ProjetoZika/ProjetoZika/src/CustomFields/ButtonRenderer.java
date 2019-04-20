@@ -1,7 +1,6 @@
 package CustomFields;
 
 import Utils.Methods;
-import Utils.Styles;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
@@ -12,7 +11,6 @@ import javax.swing.table.TableCellRenderer;
 
 /**
  * Renderizador de células da JTable
- * 
  * @author Welison
  */
 public class ButtonRenderer extends JButton implements TableCellRenderer {

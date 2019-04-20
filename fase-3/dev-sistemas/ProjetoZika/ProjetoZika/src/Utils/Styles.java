@@ -295,6 +295,7 @@ public class Styles {
     /**
      * Estliza o JButton de busca da aplicação
      * @param btn o JButton a ser estilizado
+     * @param source o caminho/nome do arquivo
      */
     public static void iconButton(JButton btn, String source) {
         btn.setContentAreaFilled(false);

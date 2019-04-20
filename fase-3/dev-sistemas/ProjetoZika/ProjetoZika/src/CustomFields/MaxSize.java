@@ -10,7 +10,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- *
+ * limita quantidade de caracteres no campo
  * @author Welison
  */
 public class MaxSize extends PlainDocument {

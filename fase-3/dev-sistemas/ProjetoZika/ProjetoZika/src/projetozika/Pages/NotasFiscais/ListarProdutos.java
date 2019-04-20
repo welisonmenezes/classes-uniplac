@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 /**
- *
+ * panel de listar produtos da nota
  * @author Welison
  */
 public class ListarProdutos extends javax.swing.JPanel {

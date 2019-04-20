@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 /**
  * Implementa layout base para frames de visualização das telas internas às telas raízes
  * As telas internas às telas raízes deve extende-la
- * 
  * @author Welison
  */
 public class BaseFrame extends javax.swing.JFrame{
@@ -44,7 +43,6 @@ public class BaseFrame extends javax.swing.JFrame{
     
     /**
      * Adiciona um título para o topo do grid
-     * 
      * @param title o título da pagina adicionado no topo do grid
      */
     protected void addTopContent(String title) {

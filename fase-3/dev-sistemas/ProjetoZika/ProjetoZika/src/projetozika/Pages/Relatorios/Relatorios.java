@@ -10,9 +10,9 @@ import java.awt.BorderLayout;
 import java.util.Properties;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
 /**
  * Tela de listagem do fornecedores
- * 
  * @author Welison
  */
 public class Relatorios extends Templates.BaseLayout {

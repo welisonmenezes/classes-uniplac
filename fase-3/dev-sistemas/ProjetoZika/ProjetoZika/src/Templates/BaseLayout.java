@@ -15,7 +15,6 @@ import javax.swing.table.DefaultTableModel;
  *
  * Implementa layout base (baseado em BorderLayout) para paineis de visualização da raíz de cada menu
  * O Jpanel que é raíz de cada menu deve extende-la.
- * 
  * @author Welison
  */
 public class BaseLayout extends javax.swing.JPanel {
@@ -42,7 +41,6 @@ public class BaseLayout extends javax.swing.JPanel {
     
     /**
      * Adiciona um título ao topo do grid
-     * 
      * @param title o título da pagina adicionado no topo do grid
      */
     protected void addTopContent(String title) {

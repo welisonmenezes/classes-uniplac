@@ -27,8 +27,8 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
- * @author welis
+ * Tela para gerar relatório de produtos
+ * @author welison
  */
 public class RelatorioProdutos extends javax.swing.JPanel {
     private JLabel lfornecedor;

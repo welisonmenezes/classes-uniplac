@@ -12,7 +12,6 @@ import javax.swing.JTable;
 
 /**
  * Adiciona um JButton numa celula da JTable
- * 
  * @author Welison
  */
 public class ButtonEditor extends DefaultCellEditor {
@@ -20,7 +19,7 @@ public class ButtonEditor extends DefaultCellEditor {
     protected JButton button;
     private String label;
     private boolean isPushed;
-
+    
     public ButtonEditor(JCheckBox checkBox) {
         super(checkBox);
         button = new JButton();

@@ -28,6 +28,7 @@ public class Sobre extends Templates.BaseFrame {
 
     /**
      * Creates new form Sobre
+     * @param params Parâmetros para filtro e paginação
      */
     public Sobre(Properties params) {
         this.params = params;

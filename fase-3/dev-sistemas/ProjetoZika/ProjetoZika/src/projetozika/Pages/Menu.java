@@ -71,6 +71,9 @@ public class Menu extends javax.swing.JPanel {
         this.translation();
     }
     
+    /**
+     * Define quais itens do menu será mostrado de acordo com a permissão do usuári logado
+     */
     private void accessControl() {
         // controle de acesso
         if (Environment.getLoggedUser().getPermissao().equals(Methods.getTranslation("Almoxarife"))) {
@@ -87,6 +90,9 @@ public class Menu extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * adiciona actions e atalhos para os botões do menu
+     */
     private void addHotLinkToMenu() {
         
         new AccessibilityManager(bDashboard,

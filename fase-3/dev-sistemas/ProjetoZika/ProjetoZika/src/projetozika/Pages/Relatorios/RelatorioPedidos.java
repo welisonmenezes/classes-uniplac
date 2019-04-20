@@ -36,8 +36,8 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- *
- * @author welis
+ * Tela para gerar relatórios de pedidos
+ * @author welison
  */
 public class RelatorioPedidos extends javax.swing.JPanel {
     private JLabel lusuario;
