@@ -18,11 +18,14 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -145,6 +148,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         
         edatato = new JLabel("");
         Styles.errorLabel(edatato);
+        edatato.setPreferredSize( new Dimension( 300, 20 ) );
         add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
         
         
@@ -160,6 +164,8 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             boolean isValid = true;
             if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
             if (! Validator.validaData(fdatato, edatato)) isValid = false;
+            // verifica se data é maior ou menor
+            if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
                 //Dialogs.showLoadPopup(self);
                 timerTest();

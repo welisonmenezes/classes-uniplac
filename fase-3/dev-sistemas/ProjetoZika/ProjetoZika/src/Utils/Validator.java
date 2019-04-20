@@ -10,6 +10,7 @@ import CustomFields.ComboItem;
 import com.toedter.calendar.JDateChooser;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -325,6 +326,30 @@ public class Validator {
             return false;
         }
         return true;
+    }
+    
+    public static boolean isDateBeforeThen(JDateChooser from, JDateChooser to, JLabel edatato) {
+        try {
+            String vFrom = ((JTextField)from.getDateEditor().getUiComponent()).getText();
+            String vTo = ((JTextField)to.getDateEditor().getUiComponent()).getText();
+            
+            String sfrom = DateHandler.getSqlDateTime(vFrom);
+            String sto = DateHandler.getSqlDateTime(vTo);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date dateFrom = sdf.parse(sfrom);
+            Date dateTo = sdf.parse(sto);
+            
+            if (dateFrom.compareTo(dateTo) < 0) {
+                return true;
+            } else {
+                edatato.setText(Methods.getTranslation("DataMaiorQueODe"));
+                return false;
+            } 
+        } catch (Exception error) {
+            edatato.setText(Methods.getTranslation("DataMaiorQueODe"));
+            return false;
+        }
     }
     
 }
