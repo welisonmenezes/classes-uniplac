@@ -214,9 +214,9 @@ public class AddProduto extends Templates.BaseFrame {
             if (isValid) {
                 
                 // seta os valores do formulário ao produto corrente
-                produto.setNome(fnome.getText());
+                produto.setNome(fnome.getText().trim());
                 produto.setUnidade(funidade.getSelectedItem().toString());
-                produto.setDescricao(fdescricao.getText());
+                produto.setDescricao(fdescricao.getText().trim());
                 
                 Dialogs.showLoadPopup(bg);
                 timerTest();

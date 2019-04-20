@@ -29,7 +29,7 @@ public class Validator {
      * @return true se vazio
      */
     public static boolean isEmpty(JTextField field) {
-        return field.getText().equals("");
+        return field.getText().trim().equals("");
     }
     
     /**
@@ -38,7 +38,7 @@ public class Validator {
      * @return true se vazio
      */
     public static boolean isEmpty(JTextArea field) {
-        return field.getText().equals("");
+        return field.getText().trim().equals("");
     }
     
     /**
@@ -56,7 +56,7 @@ public class Validator {
      * @return true se é inteiro
      */
     public static boolean isInteger(JTextField field) {
-        String s = field.getText();
+        String s = field.getText().trim();
         try { 
             Integer.parseInt(s); 
         } catch(NumberFormatException | NullPointerException e) { 
@@ -71,7 +71,7 @@ public class Validator {
      * @return true se é long
      */
     public static boolean isLong(JTextField field) {
-        String s = field.getText();
+        String s = field.getText().trim();
         try { 
             Long.parseLong(field.getText());
         } catch(NumberFormatException | NullPointerException e) { 
@@ -86,7 +86,7 @@ public class Validator {
      * @return true se é um double
      */
     public static boolean isDouble(JTextField field) {
-        String s = field.getText();
+        String s = field.getText().trim();
         try { 
             Double.parseDouble(s);
         } catch(NumberFormatException | NullPointerException e) { 
@@ -102,7 +102,7 @@ public class Validator {
      * @return true se é menor ou igual
      */
     public static boolean isValidSize(JTextField field, int size) {
-        return (field.getText().length() <= size);
+        return (field.getText().trim().length() <= size);
     }
     
     /**
@@ -112,7 +112,7 @@ public class Validator {
      * @return true se é menor ou igual
      */
     public static boolean isValidSize(JTextArea field, int size) {
-        return (field.getText().length() <= size);
+        return (field.getText().trim().length() <= size);
     }
     
     /**

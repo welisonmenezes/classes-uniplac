@@ -189,14 +189,14 @@ public class AddFornecedor extends Templates.BaseFrame {
             if (! Validator.validaCampo(fname, ename, 100)) isValid = false;
             if (! Validator.validaTelefone(ftel, etel)) isValid = false;
             if (isValid) {
-              
+                String newCnpj = fcnpj.getText().replace(".","").replace("/","").replace("-","").replace("_","").trim();
                 // seta os valores do formulário ao fornecedor corrente
-                fornecedor.setCnpj(fcnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
-                fornecedor.setNome(fname.getText());
-                fornecedor.setTelefone(ftel.getText());
+                fornecedor.setCnpj(newCnpj);
+                fornecedor.setNome(fname.getText().trim());
+                fornecedor.setTelefone(ftel.getText().trim());
                 
                 // valida campos únicos
-                if (mode.equals("edit") && (!oldCnpj.equals(fcnpj.getText())) && (fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0)) {
+                if (mode.equals("edit") && (!oldCnpj.equals(newCnpj)) && (fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0)) {
                     ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
                 } else if((!mode.equals("edit")) && fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0) {
                     ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
@@ -274,7 +274,7 @@ public class AddFornecedor extends Templates.BaseFrame {
                     try {
                         // adiciona um novo fornecedor via nota fiscal
                         int lastInsertedId = fornecedorDao.inserir(fornecedor);
-                        AddNotaFiscal.fcnpj.setText(fcnpj.getText());
+                        AddNotaFiscal.fcnpj.setText(fcnpj.getText().trim());
                         ComboItem ci = new ComboItem(lastInsertedId, fornecedor.getCnpj());
                         AddNotaFiscal.ccnpj.addItem(ci);
                         AddNotaFiscal.ccnpj.setSelectedItem(ci);

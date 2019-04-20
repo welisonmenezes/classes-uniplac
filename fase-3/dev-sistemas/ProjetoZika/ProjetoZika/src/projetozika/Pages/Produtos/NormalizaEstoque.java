@@ -134,7 +134,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
             self.dispose();
             
             // atualiza o estoque na base de dados
-            int qtd = Integer.parseInt(fqtd.getText());
+            int qtd = Integer.parseInt(fqtd.getText().trim());
             int prodId = produto.getId();
             estoqueDao.normalizarEstoqueProduto(prodId, qtd);
             

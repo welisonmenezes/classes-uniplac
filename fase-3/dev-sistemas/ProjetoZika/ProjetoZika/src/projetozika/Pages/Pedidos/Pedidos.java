@@ -95,7 +95,7 @@ public class Pedidos extends Templates.BaseLayout {
         params.setProperty("orderby", "pedidos.Id");
         params.setProperty("orderkey", "0");
         params.setProperty("page", "1");
-        params.setProperty("nome", fNome.getText());
+        params.setProperty("nome", fNome.getText().trim());
         params.setProperty("data", date);
         params.setProperty("status", fStatus.getSelectedItem().toString());
     }

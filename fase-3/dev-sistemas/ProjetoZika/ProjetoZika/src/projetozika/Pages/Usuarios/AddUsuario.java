@@ -340,9 +340,9 @@ public class AddUsuario extends Templates.BaseFrame {
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;
             if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
             if (isValid) {
-                String newCpf = fcpf.getText().replace(".","").replace("-","").replace("_","");
+                String newCpf = fcpf.getText().trim().replace(".","").replace("-","").replace("_","");
                 // seta os valores do formulário ao usuário corrente
-                usuario.setNome(fnome.getText());
+                usuario.setNome(fnome.getText().trim());
                 usuario.setCpf(newCpf);
                 usuario.setSexo(gsexo.getSelection().getActionCommand());
                 
@@ -356,19 +356,19 @@ public class AddUsuario extends Templates.BaseFrame {
                 String data = sdf.format(pega);
                 usuario.setDataNascimento(DateHandler.getSqlDateTime(data));
                 
-                usuario.setCelular(fcelular.getText());
-                usuario.setTelefone(ftelefone.getText());
-                usuario.setEmail(femail.getText());
+                usuario.setCelular(fcelular.getText().trim());
+                usuario.setTelefone(ftelefone.getText().trim());
+                usuario.setEmail(femail.getText().trim());
                 usuario.setSetor(fsetor.getSelectedItem().toString());
                 usuario.setPermissao(fpermissao.getSelectedItem().toString());
-                usuario.setLogin(flogin.getText());
+                usuario.setLogin(flogin.getText().trim());
                 String senha = new String(fsenha.getPassword());
                 usuario.setSenha(senha);
                 
                 // valida campos únicos
                 if (!mode.equals("add") && (!oldCpf.equals(newCpf)) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
-                } else if (!mode.equals("add") && (!oldLogin.equals(flogin.getText())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
+                } else if (!mode.equals("add") && (!oldLogin.equals(flogin.getText().trim())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
                     elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
                 } else if((mode.equals("add")) && usuarioDao.temCpf(usuario.getCpf()) > 0) {
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));

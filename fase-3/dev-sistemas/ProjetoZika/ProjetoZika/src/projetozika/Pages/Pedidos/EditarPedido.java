@@ -223,17 +223,17 @@ public class EditarPedido extends Templates.BaseFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 JTextField source = (JTextField) e.getSource();
-                changeTableValue(source.getText());
+                changeTableValue(source.getText().trim());
             }
             @Override
             public void keyTyped(KeyEvent e) {
                 JTextField source = (JTextField) e.getSource();
-                changeTableValue(source.getText());
+                changeTableValue(source.getText().trim());
             }
             @Override
             public void keyPressed(KeyEvent e) {
                 JTextField source = (JTextField) e.getSource();
-                changeTableValue(source.getText());
+                changeTableValue(source.getText().trim());
             }
         });
         

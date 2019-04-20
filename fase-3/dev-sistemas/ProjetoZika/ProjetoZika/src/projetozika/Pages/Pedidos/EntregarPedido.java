@@ -169,7 +169,7 @@ public class EntregarPedido extends Templates.BaseFrame {
             
             // validação do solicitante
             if (pedidosProdutos.size() > 0) {
-                String login = flogin.getText();
+                String login = flogin.getText().trim();
                 String password = new String(fsenha.getPassword());
                 if (login.equals(usuario.getLogin()) && password.equals(usuario.getSenha())) {
                     Dialogs.showLoadPopup(pCenter);

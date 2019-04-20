@@ -96,7 +96,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
                 ArrayList<ComboItem> elements = new ArrayList<>();
                 // atualiza a lista de sugestões dos produtos
                 produtos.clear();
-                produtos = produtoDao.selecionarPorNome(fnome.getText());
+                produtos = produtoDao.selecionarPorNome(fnome.getText().trim());
                 produtos.forEach(produto -> {
                     elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
                 });
@@ -194,7 +194,7 @@ public class SelecionarProduto extends javax.swing.JPanel {
             if (! Validator.validaComboBox(cnome, enome)) isValid = false;
             if (isValid) {
                 // cria NotaFiscalProduto e adiciona à lista de produtos da nota fiscal
-                NotaFiscalProduto notaProduto = new NotaFiscalProduto(produto, Integer.parseInt(fquantidade.getText()), Double.parseDouble(fvalor.getText()), "");
+                NotaFiscalProduto notaProduto = new NotaFiscalProduto(produto, Integer.parseInt(fquantidade.getText().trim()), Double.parseDouble(fvalor.getText().trim()), "");
                 if (caller.addProduto(notaProduto)) {
                     clearFields();
                 } else {

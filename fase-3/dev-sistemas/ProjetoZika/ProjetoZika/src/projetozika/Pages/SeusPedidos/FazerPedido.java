@@ -182,7 +182,7 @@ public class FazerPedido extends Templates.BaseFrame {
                 // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
                 produtos.clear();
-                produtos = produtoDao.selecionarPorNome(fproduto.getText());
+                produtos = produtoDao.selecionarPorNome(fproduto.getText().trim());
                 produtos.forEach(produto -> {
                     elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
                 });
@@ -200,7 +200,7 @@ public class FazerPedido extends Templates.BaseFrame {
         // click do add produto
         btnAddProduto.addActionListener((ActionEvent e) -> {
             ComboItem selectedProd = (ComboItem)cproduto.getSelectedItem();
-            String typedText = fproduto.getText();
+            String typedText = fproduto.getText().trim();
             if (selectedProd != null && selectedProd.getDescription().equals(typedText)) {
     
                 if (!hasProduct(selectedProd.getId())) {

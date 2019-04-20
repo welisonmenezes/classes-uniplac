@@ -199,7 +199,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
                 ArrayList<ComboItem> elements = new ArrayList<>();
                 // atualiza sugestão de fornecedores
                 fornecedores.clear();
-                fornecedores = fornecedorDao.selecionarPorCnpj(fcnpj.getText().replace(".","").replace("/","").replace("-","").replace("_",""));
+                fornecedores = fornecedorDao.selecionarPorCnpj(fcnpj.getText().trim().replace(".","").replace("/","").replace("-","").replace("_",""));
                 fornecedores.forEach(fornecedor -> {
                     elements.add(new ComboItem(fornecedor.getId(), fornecedor.getCnpj()));
                 });
@@ -301,9 +301,9 @@ public class AddNotaFiscal extends Templates.BaseFrame {
             if (isValid) {
                 
                 // seta os valores do formulário à nota fiscal corrente
-                notaFiscal.setNumero(Long.parseLong(fnumero.getText()));
-                notaFiscal.setSerie(Integer.parseInt(fserie.getText()));
-                notaFiscal.setValor(Float.parseFloat(fvalor.getText()));
+                notaFiscal.setNumero(Long.parseLong(fnumero.getText().trim()));
+                notaFiscal.setSerie(Integer.parseInt(fserie.getText().trim()));
+                notaFiscal.setValor(Float.parseFloat(fvalor.getText().trim()));
                 
                 java.util.Date pega = fdata.getDate();
                 SimpleDateFormat sdf;

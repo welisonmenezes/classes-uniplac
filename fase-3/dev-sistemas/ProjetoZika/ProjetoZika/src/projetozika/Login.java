@@ -142,7 +142,7 @@ public class Login extends javax.swing.JFrame {
         lInfo.setText("");
         
         // validação
-        String login = flogin.getText();
+        String login = flogin.getText().trim();
         String password = new String(fsenha.getPassword());
         usuario = usuarioDao.selecionarAposLogin(login, password);
         if (usuario != null && usuario.getId() > 0) {
