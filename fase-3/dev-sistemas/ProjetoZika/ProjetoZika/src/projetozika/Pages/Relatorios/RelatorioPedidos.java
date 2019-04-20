@@ -11,8 +11,16 @@ import Utils.DateHandler;
 import Utils.Methods;
 import Utils.Styles;
 import Utils.Validator;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
@@ -22,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -192,26 +201,75 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             File file = fc.getSelectedFile();
             String dest = file + "/" + filename;
             
-            PdfWriter.getInstance(document, new FileOutputStream(dest));
+            //document.open();
+            
+            //PdfWriter.getInstance(document, new FileOutputStream(dest));
 
-            document.open();
-
+            
+            //onStartPage(PdfWriter.getInstance(document, new FileOutputStream(dest)), document);
+            addHeader(PdfWriter.getInstance(document, new FileOutputStream(dest)), document);
             PdfPTable table = new PdfPTable(8);
-
-            for(int aw = 0; aw < 16; aw++){
-
+            table.setSpacingBefore(25f);
+            for(int aw = 0; aw < 116; aw++){
                 table.addCell("hi");
-
             }
-
+            
             document.add(table);
-
             document.close();
             
             JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
             
         } else {
             System.out.println("Nada escolhido");
+        }
+    }
+    
+    /*
+    public void onStartPage(PdfWriter writer, Document document) {
+        document.open();
+       // ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Top Left"), 30, 800, 0);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Top Right"), 550, 800, 0);
+    }
+    */
+    
+    private void addHeader(PdfWriter writer, Document document){
+        PdfPTable header = new PdfPTable(2);
+        try {
+            document.open();
+            // set defaults
+            header.setWidths(new int[]{10, 90});
+            header.setTotalWidth(525);
+            //header.setSpacingAfter(30);
+            //header.getDefaultCell().setPaddingBottom(164);
+            header.setLockedWidth(true);
+            header.getDefaultCell().setFixedHeight(64);
+            header.getDefaultCell().setBorder(0);
+            header.getDefaultCell().setPaddingRight(10);
+            //header.getDefaultCell().setBorder(Rectangle.BOTTOM);
+            //header.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
+
+            // add image
+            Image logo = Image.getInstance(getClass().getResource("/sources/saturn.png"));
+            header.addCell(logo);
+            PdfPCell c1 = new PdfPCell(new Phrase("ProjetoZika - Pedidos"));
+            //c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            c1.setBorder(0);
+            //c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            header.addCell(c1);
+            
+            //header.addCell("");
+
+            //header.setComplete(true);
+            // write content
+            document.add(header);
+            //header.writeSelectedRows(0, -1, 34, 823, writer.getDirectContent());
+        } catch(DocumentException de) {
+            throw new ExceptionConverter(de);
+        } catch (MalformedURLException e) {
+            throw new ExceptionConverter(e);
+        } catch (IOException e) {
+            throw new ExceptionConverter(e);
         }
     }
 
