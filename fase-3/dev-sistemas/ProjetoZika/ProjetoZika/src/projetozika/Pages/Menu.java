@@ -8,6 +8,7 @@ package projetozika.Pages;
 import Config.Environment;
 import Utils.AccessibilityManager;
 import Utils.Methods;
+import Utils.Navigation;
 import Utils.Styles;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -138,7 +139,14 @@ public class Menu extends javax.swing.JPanel {
         new AccessibilityManager(bPerfil,
             "perfil",
             KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
-            params);
+            params) {
+                public void actionLinkMenuContext() {
+                    params.clear();
+                    Navigation.updateLayout(page, params);
+                    Navigation.updateLayout("editarPerfil", Environment.getLoggedUser().getId()+"", params);
+                }
+            }
+                .addContextMenuAddNew("editarPerfil", Methods.getTranslation("EditarPerfil"));
         
         new AccessibilityManager(bRelatorios, 
             "relatorios",

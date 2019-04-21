@@ -29,6 +29,7 @@ public class AccessibilityManager {
     
     private final Properties params;
     public final String page;
+    public String subpage;
     private final JButton button;
     private final String action;
     private final KeyStroke keyStroke;
@@ -75,6 +76,15 @@ public class AccessibilityManager {
     }
     
     /**
+     * callback default para o action do menu de contexto (este poderá ser sobreescrito)
+     */
+    public void actionLinkMenuContext() {
+        params.clear();
+        Navigation.updateLayout(page, params);
+        Navigation.updateLayout(subpage, params);
+    }
+    
+    /**
      * Adiciona menu de contexto no botão
      * @param subpage a página para a qual o item de menu de contexto navegará
      * @param title o texto do menu de contexto
@@ -85,9 +95,8 @@ public class AccessibilityManager {
         jMenuItemAddNew.setText(title);
         
         jMenuItemAddNew.addActionListener((ActionEvent e) -> {
-            params.clear();
-            Navigation.updateLayout(page, params);
-            Navigation.updateLayout(subpage, params);
+            this.subpage = subpage;
+            actionLinkMenuContext();
         });
         
         jPopupMenu.add(jMenuItemAddNew);
