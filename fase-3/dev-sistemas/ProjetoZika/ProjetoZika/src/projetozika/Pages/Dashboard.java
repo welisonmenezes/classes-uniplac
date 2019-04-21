@@ -115,7 +115,7 @@ public class Dashboard extends Templates.BaseLayout {
                 Methods.getTranslation("Mes"), 
                 Methods.getTranslation("Media"), 
                 new Color(29, 129, 89), 
-                600, 
+                500, 
                 0
         );
     }
@@ -133,7 +133,7 @@ public class Dashboard extends Templates.BaseLayout {
     private void buildChart(DefaultCategoryDataset dataset, String title, String titleCol, String titleRow, Color color, int x, int y) {
         JFreeChart chartPedidos = ChartFactory.createBarChart3D(title, titleCol, titleRow, dataset);
         ChartPanel chartPanel = new ChartPanel(chartPedidos);
-        chartPanel.setPreferredSize(new Dimension(550, 300));
+        chartPanel.setPreferredSize(new Dimension(450, 300));
         CategoryPlot plot = chartPedidos.getCategoryPlot();
         BarRenderer renderer = (BarRenderer) plot.getRenderer();
         renderer.setSeriesPaint(0, color);
