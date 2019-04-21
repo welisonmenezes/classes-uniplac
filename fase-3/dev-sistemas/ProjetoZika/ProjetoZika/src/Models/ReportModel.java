@@ -8,8 +8,8 @@ package Models;
 import java.util.ArrayList;
 
 /**
- *
- * @author welis
+ * Modelo de dados do relatório
+ * @author welison
  */
 public class ReportModel {
     private String filename;

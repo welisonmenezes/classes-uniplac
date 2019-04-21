@@ -28,8 +28,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
- * @author welis
+ * Gera o relatório em PDF
+ * @author welison
  */
 public final class PDFGenerator {
     private final String filename;
@@ -45,6 +45,11 @@ public final class PDFGenerator {
     private final int cols;
     private final ArrayList<String[]> data;
     
+    /**
+     * Gera o relatório em PDF
+     * @param report o modelo ReportModel com os dados do relatório
+     * @param context o JPanel de onde a classe foi chamada
+     */
     public PDFGenerator(ReportModel report, JPanel context) {
         this.filename = report.getFilename();
         this.document = new Document();
@@ -61,31 +66,37 @@ public final class PDFGenerator {
     public void chooseDirectory() {
 
         try {
+            // chama o filechooser
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int returnVal = fileChooser.showOpenDialog(context);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-
+                
+                // pega o diretório selecionada e concatena com o dado filename
                 File file = fileChooser.getSelectedFile();
                 String dest = file + "/" + filename;
                 writer = PdfWriter.getInstance(document, new FileOutputStream(dest));
-
+                
                 document.open();
 
+                // add o conteúdo no documento
                 addTop();
                 addInfo();
                 addTableHeader();
                 addTableMain();
 
                 document.close();
-
+                
+                // mensagem de sucesso
                 JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
-
             } 
         } catch (IOException | DocumentException de) {
             throw new ExceptionConverter(de);
         }
     }
     
+    /**
+     * Cria e adiciona o topo do relatório
+     */
     private void addTop(){
         top = new PdfPTable(2);
         try {
@@ -120,6 +131,9 @@ public final class PDFGenerator {
         }
     }
     
+    /**
+     * Cria e adiciona as meta informações do relatório
+     */
     private void addInfo() {
         try {
 
@@ -134,25 +148,28 @@ public final class PDFGenerator {
         }
     }
     
+    /**
+     * Cria e adiciona a tabela header
+     */
     private void addTableHeader() {
         try {
-            // crate table
+            // cria a tabela
             header = new PdfPTable(this.cols);
             header.setSpacingBefore(25f);
             header.getDefaultCell().setBorderColor(BaseColor.GRAY);
             header.getDefaultCell().setPadding(10);
             
-            // add content into header
+            // add o conteúdo na tabela
             for (int i = 0; i < this.cols; i++) {
                 header.addCell(columns[i]);
             }
             
-            // style header
+            // estiliza o header
             for(PdfPCell c: header.getRow(0).getCells()) {
                 c.setBackgroundColor(BaseColor.LIGHT_GRAY);
             }
             
-            // add in document
+            // add no documento
             document.add(header);
             
         }  catch(DocumentException de) {
@@ -160,13 +177,17 @@ public final class PDFGenerator {
         }
     }
     
+    /**
+     * Cria e adiciona a tabela principal
+     */
     private void addTableMain() {
         try {
-            
+            // cria e estiliza a tabela
             tableMain = new PdfPTable(this.cols);
             tableMain.getDefaultCell().setBorderColor(BaseColor.GRAY);
             tableMain.getDefaultCell().setPadding(5);
             
+            // adiciona os dados na tabela
             int total = data.size();
             for(int i = 0; i < total; i++){
                 String row[] = data.get(i);
@@ -176,7 +197,10 @@ public final class PDFGenerator {
                 }
             }
             
+            // tabela zebrada
             alternateBGColorRow(tableMain);
+            
+            // add no documento
             document.add(tableMain);
             
         }  catch(DocumentException de) {
@@ -184,6 +208,10 @@ public final class PDFGenerator {
         }
     }
     
+    /**
+     * Alterna o background das linhas de uma dada tabela
+     * @param table a tabela a ser estilizada
+     */
     private void alternateBGColorRow(PdfPTable table) {
         boolean b = true;
         for(PdfPRow r: table.getRows()) {

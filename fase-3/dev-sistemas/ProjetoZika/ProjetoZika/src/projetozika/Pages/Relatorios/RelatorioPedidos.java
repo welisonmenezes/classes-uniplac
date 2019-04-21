@@ -91,7 +91,6 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         };
         add(susuario, new AbsoluteConstraints(20, 90, -1, -1));
         
-        
         lproduto = new JLabel(Methods.getTranslation("Produto"));
         Styles.defaultLabel(lproduto);
         add(lproduto, new AbsoluteConstraints(340, 60, -1, -1));
@@ -112,7 +111,6 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             }
         };
         add(sproduto, new AbsoluteConstraints(340, 90, -1, -1));
-        
         
         ldatafrom = new JLabel(Methods.getTranslation("De"));
         Styles.defaultLabel(ldatafrom);
@@ -141,7 +139,6 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         edatato.setPreferredSize( new Dimension( 300, 20 ) );
         add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
         
-        
         btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
@@ -158,12 +155,12 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
                 
-                String filename = "ProjetoZikaPediso-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
+                String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {"Código", "Solicitante", "Status", "Data", "Qtd Produto"};
                 String infos[] = {"Usuário: Todos", "Produto: Todos", "Período: 12/11/2018 à 01/02/2019"};
                 
                 ArrayList<String[]> data = new ArrayList();
-                for (int i = 0; i < 600; i++) {
+                for (int i = 0; i < 100; i++) {
                     String row[] = {i+"","Fulano_" + i, "Status here", "11/11/2011", "33"};
                     data.add(row);
                 }
