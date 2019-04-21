@@ -5,6 +5,7 @@
  */
 package Utils;
 
+import Models.ReportModel;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -21,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,16 +40,20 @@ public final class PDFGenerator {
     private PdfPTable top;
     private PdfPTable header;
     private PdfPTable tableMain;
-    private final String textHeader[];
+    private final String columns[];
+    private final String infos[];
     private final int cols;
+    private final ArrayList<String[]> data;
     
-    public PDFGenerator(String filename, String[] textHeader, JPanel context) {
-        this.filename = filename;
+    public PDFGenerator(ReportModel report, JPanel context) {
+        this.filename = report.getFilename();
         this.document = new Document();
         this.fileChooser = new JFileChooser();
         this.context = context;
-        this.textHeader = textHeader;
-        this.cols = this.textHeader.length;
+        this.columns = report.getColumns();
+        this.cols = this.columns.length;
+        this.infos = report.getInfos();
+        this.data = report.getData();
         
         chooseDirectory();
     }
@@ -116,15 +122,12 @@ public final class PDFGenerator {
     
     private void addInfo() {
         try {
-            // create paragraphs
-            Paragraph paraUser = new Paragraph("Usuário: Todos");
-            Paragraph paraProd = new Paragraph("Produto: Todos");
-            Paragraph paraDate = new Paragraph("Período: 12/11/2018 à 01/02/2019");
-            
-            // add in document
-            document.add(paraUser);
-            document.add(paraProd);
-            document.add(paraDate);
+
+            int total = this.infos.length;
+            for (int i = 0; i < total; i++) {
+                Paragraph para = new Paragraph(this.infos[i]);
+                document.add(para);
+            }
             
         } catch(DocumentException de) {
             throw new ExceptionConverter(de);
@@ -137,10 +140,11 @@ public final class PDFGenerator {
             header = new PdfPTable(this.cols);
             header.setSpacingBefore(25f);
             header.getDefaultCell().setBorderColor(BaseColor.GRAY);
+            header.getDefaultCell().setPadding(10);
             
             // add content into header
             for (int i = 0; i < this.cols; i++) {
-                header.addCell(textHeader[i]);
+                header.addCell(columns[i]);
             }
             
             // style header
@@ -161,9 +165,15 @@ public final class PDFGenerator {
             
             tableMain = new PdfPTable(this.cols);
             tableMain.getDefaultCell().setBorderColor(BaseColor.GRAY);
+            tableMain.getDefaultCell().setPadding(5);
             
-            for(int aw = 0; aw < 800; aw++){
-                tableMain.addCell("hi");
+            int total = data.size();
+            for(int i = 0; i < total; i++){
+                String row[] = data.get(i);
+                int totalCell = row.length;
+                for (int x = 0; x < totalCell; x++) {
+                    tableMain.addCell(row[x]);
+                }
             }
             
             alternateBGColorRow(tableMain);
@@ -178,7 +188,7 @@ public final class PDFGenerator {
         boolean b = true;
         for(PdfPRow r: table.getRows()) {
           for(PdfPCell c: r.getCells()) {
-            c.setBackgroundColor(b ? BaseColor.WHITE : BaseColor.LIGHT_GRAY);
+            c.setBackgroundColor(b ? BaseColor.WHITE : new BaseColor(244, 244, 244));
           }
           b = !b;
         }

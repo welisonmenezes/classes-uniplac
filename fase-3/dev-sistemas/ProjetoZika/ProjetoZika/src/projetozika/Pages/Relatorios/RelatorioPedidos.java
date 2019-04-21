@@ -7,6 +7,7 @@ package projetozika.Pages.Relatorios;
 
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
+import Models.ReportModel;
 import Utils.DateHandler;
 import Utils.Methods;
 import Utils.PDFGenerator;
@@ -156,9 +157,20 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             // verifica se data é maior ou menor
             if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
+                
                 String filename = "ProjetoZikaPediso-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {"Código", "Solicitante", "Status", "Data", "Qtd Produto"};
-                new PDFGenerator(filename, header, this);
+                String infos[] = {"Usuário: Todos", "Produto: Todos", "Período: 12/11/2018 à 01/02/2019"};
+                
+                ArrayList<String[]> data = new ArrayList();
+                for (int i = 0; i < 600; i++) {
+                    String row[] = {i+"","Fulano_" + i, "Status here", "11/11/2011", "33"};
+                    data.add(row);
+                }
+                
+                ReportModel relatorio = new ReportModel(filename, header, infos, data);
+                
+                new PDFGenerator(relatorio, this);
             }
             
         });
