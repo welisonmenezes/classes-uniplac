@@ -77,7 +77,7 @@ public class AddFornecedor extends Templates.BaseFrame {
      * chama para editar ou visualizar
      * @param id o Id do fornecedor
      * @param mode o modo de carregamento (view|edit)
-     * @param params 
+     * @param params parâmetros de filtro e paginação
      */
     public AddFornecedor(String id, String mode, Properties params) {
         this.self = this;

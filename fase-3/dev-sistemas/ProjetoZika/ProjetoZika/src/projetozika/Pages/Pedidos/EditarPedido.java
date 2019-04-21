@@ -61,7 +61,7 @@ public class EditarPedido extends Templates.BaseFrame {
      * chamada pra ver/editar pedido
      * @param id o id do pedido
      * @param mode o modo de visualização (view|edit)
-     * @param params 
+     * @param params parâmetros de filtro e paginação
      */
     public EditarPedido(String id, String mode, Properties params) {
         this.self = this;

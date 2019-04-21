@@ -53,7 +53,7 @@ public class EstoqueDAO {
     }
     
     /**
-     * Altera a quantide do prouto na base de dados, sempre mantende >= 0
+     * Altera a quantide do prouto na base de dados, sempre mantende maior ou igual a 0
      * @param idProduto o id do produto a ser alterado
      * @param quantidade a quantidade a ser atualziada
      */
