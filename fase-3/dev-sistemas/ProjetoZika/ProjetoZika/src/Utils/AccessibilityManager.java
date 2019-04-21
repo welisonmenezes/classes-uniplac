@@ -76,16 +76,18 @@ public class AccessibilityManager {
     
     /**
      * Adiciona menu de contexto no botão
-     * @param page a página para a qual o item de menu de contexto navegará
+     * @param subpage a página para a qual o item de menu de contexto navegará
      * @param title o texto do menu de contexto
      */
-    public void addContextMenuAddNew(String page, String title) {
+    public void addContextMenuAddNew(String subpage, String title) {
         JPopupMenu jPopupMenu = new JPopupMenu();
         JMenuItem jMenuItemAddNew = new JMenuItem();
         jMenuItemAddNew.setText(title);
         
         jMenuItemAddNew.addActionListener((ActionEvent e) -> {
+            params.clear();
             Navigation.updateLayout(page, params);
+            Navigation.updateLayout(subpage, params);
         });
         
         jPopupMenu.add(jMenuItemAddNew);
