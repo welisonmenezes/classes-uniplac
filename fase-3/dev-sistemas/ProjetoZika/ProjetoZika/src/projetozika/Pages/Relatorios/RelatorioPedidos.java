@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -67,6 +68,13 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private final UsuarioDAO usuarioDao;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Usuario> aprovadores;
+    private Properties params;
+    private String dataDe;
+    private String dataAte;
+    private ComboItem usuarioSelecionado;
+    private ComboItem aprovadorSelecionado;
+    private ComboItem produtoSelecionado;
+    private String statusSelecionado;
 
     /**
      * Creates new form RelatorioPedidos
@@ -74,7 +82,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     public RelatorioPedidos() {
         initComponents();
         this.self = this;
-        
+        this.params = new Properties();
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
         usuarioDao = new UsuarioDAO();
@@ -215,9 +223,29 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
                 
+                dataDe = ((JTextField)fdatafrom.getDateEditor().getUiComponent()).getText();
+                dataAte = ((JTextField)fdatato.getDateEditor().getUiComponent()).getText();
+                usuarioSelecionado = (ComboItem)cusuario.getSelectedItem();
+                aprovadorSelecionado = (ComboItem)caprover.getSelectedItem();
+                produtoSelecionado = (ComboItem)cproduto.getSelectedItem();
+                statusSelecionado = fStatus.getSelectedItem().toString();
+      
+                this.updateParams();
+                
+                String infoUsuario = (usuarioSelecionado == null) ? "Todos" : usuarioSelecionado.getDescription();
+                String infoAprovador = (aprovadorSelecionado == null) ? "Todos" : aprovadorSelecionado.getDescription();
+                String infoProduto = (produtoSelecionado == null) ? "Todos" : produtoSelecionado.getDescription();
+                String infoStatus = (statusSelecionado.equals("")) ? "Todos" : statusSelecionado;
+
                 String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {"Código", "Solicitante", "Status", "Data", "Qtd Produto"};
-                String infos[] = {"Usuário: Todos", "Produto: Todos", "Período: 12/11/2018 à 01/02/2019"};
+                String infos[] = {
+                    "Usuário: " + infoUsuario,
+                    "Aprovador: " + infoAprovador,
+                    "Produto: " + infoProduto,
+                    "Status: " + infoStatus,
+                    "Período: "+ params.getProperty("dataDe", "") +" à " + params.getProperty("dataAte", "")
+                };
                 
                 ArrayList<String[]> data = new ArrayList();
                 for (int i = 0; i < 100; i++) {
@@ -228,9 +256,42 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                 ReportModel relatorio = new ReportModel(filename, header, infos, data);
                 
                 new PDFGenerator(relatorio, this);
+                
             }
             
         });
+    }
+    
+    private void updateParams() {
+        
+        /*
+        String dataDe = ((JTextField)fdatafrom.getDateEditor().getUiComponent()).getText();
+        String dataAte = ((JTextField)fdatato.getDateEditor().getUiComponent()).getText();
+        ComboItem usuarioSelecionado = (ComboItem)cusuario.getSelectedItem();
+        ComboItem aprovadorSelecionado = (ComboItem)caprover.getSelectedItem();
+        ComboItem produtoSelecionado = (ComboItem)cproduto.getSelectedItem();
+        String statusSelecionado = fStatus.getSelectedItem().toString();
+        */
+        
+        params.setProperty("dataDe", dataDe);
+        params.setProperty("dataAte", dataAte);
+        if (usuarioSelecionado != null) {
+            params.setProperty("usuarioId", usuarioSelecionado.getId() + "");
+        } else {
+            params.setProperty("usuarioId", "");
+        }
+        if (aprovadorSelecionado != null) {
+            params.setProperty("aprovadorId", aprovadorSelecionado.getId() + "");
+        } else {
+            params.setProperty("aprovadorId", "");
+        }
+        if (produtoSelecionado != null) {
+            params.setProperty("produtoId", produtoSelecionado.getId() + "");
+        } else {
+            params.setProperty("produtoId", "");
+        }
+        params.setProperty("status", statusSelecionado);
+        
     }
     
     private void clearErrors() {
