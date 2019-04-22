@@ -8,7 +8,11 @@ package projetozika.Pages.Relatorios;
 import Config.Environment;
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
+import DAO.ProdutoDAO;
+import DAO.UsuarioDAO;
+import Models.Produto;
 import Models.ReportModel;
+import Models.Usuario;
 import Utils.DateHandler;
 import Utils.Methods;
 import Utils.PDFGenerator;
@@ -58,6 +62,11 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private JLabel laprover;
     private JComboBox fStatus;
     private JLabel lstatus;
+    private final ProdutoDAO produtoDao;
+    private ArrayList<Produto> produtos;
+    private final UsuarioDAO usuarioDao;
+    private ArrayList<Usuario> usuarios;
+    private ArrayList<Usuario> aprovadores;
 
     /**
      * Creates new form RelatorioPedidos
@@ -65,6 +74,13 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     public RelatorioPedidos() {
         initComponents();
         this.self = this;
+        
+        produtoDao = new ProdutoDAO();
+        produtos = new ArrayList<>();
+        usuarioDao = new UsuarioDAO();
+        usuarios = new ArrayList<>();
+        aprovadores = new ArrayList<>();
+        
         addCamposPedidos();
     }
     
@@ -89,11 +105,13 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         new SuggestionsBox(susuario, fusuario, cusuario, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                usuarios.clear();
+                usuarios = usuarioDao.selecionarPorNome(fusuario.getText().trim());
+                usuarios.forEach(usuario -> {
+                    elements.add(new ComboItem(usuario.getId(), usuario.getNome()));
+                });
                 return elements;
             }
         };
@@ -110,11 +128,13 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         new SuggestionsBox(sproduto, fproduto, cproduto, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                produtos.clear();
+                produtos = produtoDao.selecionarPorNome(fproduto.getText().trim());
+                produtos.forEach(produto -> {
+                    elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
+                });
                 return elements;
             }
         };
@@ -131,11 +151,13 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         new SuggestionsBox(saprover, faprover, caprover, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                aprovadores.clear();
+                aprovadores = usuarioDao.selecionarPorNomeEPermissaoExcluida(faprover.getText().trim(), Methods.getTranslation("Usuario"));
+                aprovadores.forEach(usuario -> {
+                    elements.add(new ComboItem(usuario.getId(), usuario.getNome()));
+                });
                 return elements;
             }
         };

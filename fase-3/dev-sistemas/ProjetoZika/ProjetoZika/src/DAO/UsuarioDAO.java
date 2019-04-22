@@ -162,6 +162,55 @@ public class UsuarioDAO {
     }
     
     /**
+     * seleciona os usuários correspondentes ao dado nome
+     * @param nome o nome desejado
+     * @return uma lista de usuários correspondentes
+     */
+    public ArrayList<Usuario> selecionarPorNome(String nome) {
+        String sql = "SELECT * FROM usuarios "
+                + "WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Usuario usuario = new Usuario();
+                this.helper.fillUsuario(usuario, rs);
+                usuarios.add(usuario);
+            }
+            st.close();
+            return usuarios;
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
+        }
+    }
+    
+    /**
+     * seleciona os usuários com permissão de admin ou amoxarife correspondentes ao dado nome
+     * @param nome o nome desejado
+     * @param permissao permissão a ser excluída da busca
+     * @return uma lista de usuários correspondentes
+     */
+    public ArrayList<Usuario> selecionarPorNomeEPermissaoExcluida(String nome, String permissao) {
+        String sql = "SELECT * FROM usuarios "
+                + "WHERE Status != 'Deleted' "
+                + "AND Permissao != '" + permissao + "' "
+                + "AND Nome LIKE '%" + nome + "%' LIMIT 50";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Usuario usuario = new Usuario();
+                this.helper.fillUsuario(usuario, rs);
+                usuarios.add(usuario);
+            }
+            st.close();
+            return usuarios;
+        } catch(Exception error) {
+            throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
+        }
+    }
+    
+    /**
      * seleciona um usuário da base de dados pelo seu Id
      * @param login o login
      * @param senha a senha
