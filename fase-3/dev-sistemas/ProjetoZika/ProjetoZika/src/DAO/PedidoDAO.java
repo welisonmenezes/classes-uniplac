@@ -442,6 +442,14 @@ public class PedidoDAO {
     
     
     public void relatorioPedido(Properties params) {
+        
+        String dataDe = params.getProperty("dataDe", "");
+        String dataAte = params.getProperty("dataAte", "");
+        String usuarioId = params.getProperty("usuarioId", "");
+        String aprovadorId = params.getProperty("aprovadorId", "");
+        String produtoId = params.getProperty("produtoId", "");
+        String status = params.getProperty("status", "");
+        
         String sql = "SELECT pedidos.Id AS 'codigo', "
                 + "usuarios.Nome AS 'solicitante', "
                 + "aprovadores.Nome AS 'aprovador', "
@@ -452,14 +460,31 @@ public class PedidoDAO {
                 + "LEFT JOIN usuarios ON usuarios.Id = pedidos.UsuarioId "
                 + "LEFT JOIN usuarios AS aprovadores ON aprovadores.Id = pedidos.AlmoxarifeId "
                 + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
-                + "WHERE pedidos.Id > 0 "
-                + "AND pedidos.UsuarioId = 8 "
-                + "AND pedidos.AlmoxarifeId = 5 "
-                + "AND pedidosprodutos.ProdutoId = 12 "
-                + "AND pedidos.Status = 'Aguardando entrega' "
-                + "AND pedidos.Status != 'Deleted' "
-                + "AND pedidos.Created >= '2019-01-01 00:00:00' "
-                + "AND pedidos.Created <= '2019-04-01 00:00:00' "
+                + "WHERE pedidos.Id > 0 ";
+                
+        
+        if (! usuarioId.equals("") ) {
+            sql += "AND pedidos.UsuarioId = " + usuarioId + " ";
+        }
+        if (! aprovadorId.equals("") ) {
+            sql += "AND pedidos.AlmoxarifeId = " + aprovadorId + " ";
+        }
+        if (! produtoId.equals("") ) {
+            sql += "AND pedidosprodutos.ProdutoId = " + produtoId + " ";
+        }
+        if (! status.equals("") ) {
+            sql += "AND pedidos.Status = '" + status + "' ";
+        }
+        if (! dataDe.equals("") ) {
+            dataDe = DateHandler.getSqlDateTime(dataDe);
+            sql += "AND pedidos.Created >= '" + dataDe + "' ";
+        }
+        if (! dataAte.equals("") ) {
+            dataAte = DateHandler.getSqlDateTime(dataAte);
+            sql += "AND pedidos.Created <= '" + dataAte + "' ";
+        }
+        
+        sql += "AND pedidos.Status != 'Deleted' "
                 + "GROUP BY pedidos.Id "
                 + "ORDER BY pedidos.Id DESC";
         
@@ -469,6 +494,7 @@ public class PedidoDAO {
             while(rs.next()) {
                 System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total"));
             }
+            System.out.println(sql);
             st.close();
             //return pedidos;
         } catch(Exception error) {
