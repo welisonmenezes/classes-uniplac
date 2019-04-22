@@ -5,6 +5,7 @@
  */
 package projetozika.Pages.Relatorios;
 
+import Config.Environment;
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
 import Models.ReportModel;
@@ -20,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -50,6 +52,12 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private JButton btnRelatorioPedido;
     private final JPanel self;
     private JLabel title;
+    private JPanel saprover;
+    private JTextField faprover;
+    private JComboBox caprover;
+    private JLabel laprover;
+    private JComboBox fStatus;
+    private JLabel lstatus;
 
     /**
      * Creates new form RelatorioPedidos
@@ -112,36 +120,66 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         };
         add(sproduto, new AbsoluteConstraints(340, 90, -1, -1));
         
+        laprover = new JLabel(Methods.getTranslation("Aprovador"));
+        Styles.defaultLabel(laprover);
+        add(laprover, new AbsoluteConstraints(20, 140, -1, -1));
+        
+        // suggestion box
+        saprover = new JPanel();
+        faprover = new JTextField();
+        caprover = new JComboBox();
+        new SuggestionsBox(saprover, faprover, caprover, 300) {
+            @Override
+            public ArrayList<ComboItem> addElements() {
+                ArrayList<ComboItem> elements = new ArrayList<>();
+                for (int i = 1; i <= 25; i++) {
+                    // TODO: implements real database results
+                    elements.add(new ComboItem(i, "Nome_"+i));
+                }
+                return elements;
+            }
+        };
+        add(saprover, new AbsoluteConstraints(20, 170, -1, -1));
+        
+        lstatus = new JLabel(Methods.getTranslation("Status"));
+        Styles.defaultLabel(lstatus);
+        add(lstatus, new AbsoluteConstraints(340, 140, -1, -1));
+        
+        fStatus = new JComboBox();
+        fStatus.setModel(new DefaultComboBoxModel(Environment.STATUS));
+        Styles.defaultComboBox(fStatus, 300, 39);
+        add(fStatus, new AbsoluteConstraints(340, 170, -1, -1));
+        
         ldatafrom = new JLabel(Methods.getTranslation("De"));
         Styles.defaultLabel(ldatafrom);
-        add(ldatafrom, new AbsoluteConstraints(20, 140, -1, -1));
+        add(ldatafrom, new AbsoluteConstraints(20, 220, -1, -1));
         
         fdatafrom = new JDateChooser();
         Styles.defaultDateChooser(fdatafrom, 300);
         DateHandler.setDateChooserFormat(fdatafrom);
-        add(fdatafrom, new AbsoluteConstraints(20, 170, -1, -1));
+        add(fdatafrom, new AbsoluteConstraints(20, 250, -1, -1));
         
         edatafrom = new JLabel("");
         Styles.errorLabel(edatafrom);
-        add(edatafrom, new AbsoluteConstraints(20, 210, -1, -1));
+        add(edatafrom, new AbsoluteConstraints(20, 300, -1, -1));
         
         ldatato = new JLabel(Methods.getTranslation("Ate"));
         Styles.defaultLabel(ldatato);
-        add(ldatato, new AbsoluteConstraints(340, 140, -1, -1));
+        add(ldatato, new AbsoluteConstraints(340, 220, -1, -1));
         
         fdatato = new JDateChooser();
         Styles.defaultDateChooser(fdatato, 300);
         DateHandler.setDateChooserFormat(fdatato);
-        add(fdatato, new AbsoluteConstraints(340, 170, -1, -1));
+        add(fdatato, new AbsoluteConstraints(340, 250, -1, -1));
         
         edatato = new JLabel("");
         Styles.errorLabel(edatato);
         edatato.setPreferredSize( new Dimension( 300, 20 ) );
-        add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
+        add(edatato, new AbsoluteConstraints(340, 300, -1, -1));
         
         btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
         Styles.defaultButton(btnRelatorioPedido, 300);
-        add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
+        add(btnRelatorioPedido, new AbsoluteConstraints(340, 360, -1, -1));
         btnRelatorioPedido.addActionListener((ActionEvent e) -> {
             
             // limpa erros
