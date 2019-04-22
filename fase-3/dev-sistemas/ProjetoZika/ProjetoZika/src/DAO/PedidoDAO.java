@@ -439,4 +439,38 @@ public class PedidoDAO {
             
         return sql;
     }
+    
+    
+    public void relatorioPedido(Properties params) {
+        String sql = "SELECT pedidos.Id AS 'codigo', "
+                + "usuarios.Nome AS 'solicitante', "
+                + "aprovadores.Nome AS 'aprovador', "
+                + "pedidos.Status AS 'status', "
+                + "pedidos.Created AS 'data', "
+                + "SUM(pedidosprodutos.QuantidadeAprovada) AS 'total' "
+                + "FROM `pedidos` "
+                + "LEFT JOIN usuarios ON usuarios.Id = pedidos.UsuarioId "
+                + "LEFT JOIN usuarios AS aprovadores ON aprovadores.Id = pedidos.AlmoxarifeId "
+                + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
+                + "WHERE pedidos.Id > 0 "
+                + "AND pedidos.UsuarioId = 8 "
+                + "AND pedidos.AlmoxarifeId = 5 "
+                + "AND pedidos.Status = 'Aguardando entrega' "
+                + "AND pedidos.Created >= '2019-01-01 00:00:00' "
+                + "AND pedidos.Created <= '2019-04-01 00:00:00' "
+                + "GROUP BY pedidos.Id "
+                + "ORDER BY pedidos.Id DESC";
+        
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total"));
+            }
+            st.close();
+            //return pedidos;
+        } catch(Exception error) {
+            throw new RuntimeException("PedidoDAO.relatorioPedido: " + error);
+        }
+    }
 }

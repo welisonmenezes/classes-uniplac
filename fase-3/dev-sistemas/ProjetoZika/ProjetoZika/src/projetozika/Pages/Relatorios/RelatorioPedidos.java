@@ -8,6 +8,7 @@ package projetozika.Pages.Relatorios;
 import Config.Environment;
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
+import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
 import DAO.UsuarioDAO;
 import Models.Produto;
@@ -75,6 +76,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private ComboItem aprovadorSelecionado;
     private ComboItem produtoSelecionado;
     private String statusSelecionado;
+    private final PedidoDAO pedidoDao;
 
     /**
      * Creates new form RelatorioPedidos
@@ -88,6 +90,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         usuarioDao = new UsuarioDAO();
         usuarios = new ArrayList<>();
         aprovadores = new ArrayList<>();
+        pedidoDao = new PedidoDAO();
         
         addCamposPedidos();
     }
@@ -247,6 +250,8 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                     "Período: "+ params.getProperty("dataDe", "") +" à " + params.getProperty("dataAte", "")
                 };
                 
+                pedidoDao.relatorioPedido(params);
+                
                 ArrayList<String[]> data = new ArrayList();
                 for (int i = 0; i < 100; i++) {
                     String row[] = {i+"","Fulano_" + i, "Status here", "11/11/2011", "33"};
@@ -255,7 +260,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                 
                 ReportModel relatorio = new ReportModel(filename, header, infos, data);
                 
-                new PDFGenerator(relatorio, this);
+                //new PDFGenerator(relatorio, this);
                 
             }
             
