@@ -71,7 +71,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
     private final UsuarioDAO usuarioDao;
     private ArrayList<Usuario> usuarios;
     private ArrayList<Usuario> aprovadores;
-    private Properties params;
+    private final Properties params;
     private String dataDe;
     private String dataAte;
     private ComboItem usuarioSelecionado;
@@ -97,6 +97,9 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         addCamposPedidos();
     }
     
+    /**
+     * Cria e estiliza os elementos da tela
+     */
     private void addCamposPedidos() {
         setBackground(new Color(27, 28, 29));
         setLayout(new AbsoluteLayout());
@@ -240,18 +243,28 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                 this.updateParams();
                 
                 // meta infos a serem exibidos no pdf
-                String infoUsuario = (usuarioSelecionado == null) ? "Todos" : usuarioSelecionado.getDescription();
-                String infoAprovador = (aprovadorSelecionado == null) ? "Todos" : aprovadorSelecionado.getDescription();
-                String infoProduto = (produtoSelecionado == null) ? "Todos" : produtoSelecionado.getDescription();
-                String infoStatus = (statusSelecionado.equals("")) ? "Todos" : statusSelecionado;
+                String infoUsuario = (usuarioSelecionado == null) ? Methods.getTranslation("Todos") : usuarioSelecionado.getDescription();
+                String infoAprovador = (aprovadorSelecionado == null) ? Methods.getTranslation("Todos") : aprovadorSelecionado.getDescription();
+                String infoProduto = (produtoSelecionado == null) ? Methods.getTranslation("Todos") : produtoSelecionado.getDescription();
+                String infoStatus = (statusSelecionado.equals("")) ? Methods.getTranslation("Todos") : statusSelecionado;
                 String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
-                String header[] = {"Código", "Solicitante", "Aprovador", "Status", "Data", "Produtos", "Total"};
+                String header[] = {
+                    Methods.getTranslation("Codigo"),
+                    Methods.getTranslation("Solicitante"),
+                    Methods.getTranslation("Aprovador"),
+                    Methods.getTranslation("Status"),
+                    Methods.getTranslation("Data"),
+                    Methods.getTranslation("Produtos"),
+                    Methods.getTranslation("Total")
+                };
                 String infos[] = {
-                    "Usuário: " + infoUsuario,
-                    "Aprovador: " + infoAprovador,
-                    "Produto: " + infoProduto,
-                    "Status: " + infoStatus,
-                    "Período: "+ params.getProperty("dataDe", "") +" à " + params.getProperty("dataAte", "")
+                    Methods.getTranslation("Usuario") + ": " + infoUsuario,
+                    Methods.getTranslation("Aprovador") + ": " + infoAprovador,
+                    Methods.getTranslation("Produto") + ": " + infoProduto,
+                    Methods.getTranslation("Status") + ": " + infoStatus,
+                    Methods.getTranslation("Periodo") + "Período: "
+                        + Methods.getTranslation("De") + " "+ params.getProperty("dataDe", "") +" "
+                        + Methods.getTranslation("Ate") + " " + params.getProperty("dataAte", "")
                 };
                 
                 // carrega dados da base para serem exibidos no pdf
@@ -274,29 +287,19 @@ public class RelatorioPedidos extends javax.swing.JPanel {
 
                     // gera o pdf
                     new PDFGenerator(relatorio, this);
-                    
-                    // mensagem de sucesso
-                    JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
                 } else {
                     // mensagem de erro
-                    JOptionPane.showMessageDialog(null, "Nenhum dado encontrado.");
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("NenhumDadoEncontrado"));
                 }
             }
             
         });
     }
     
+    /**
+     * Atualiza os parâmetros de filtro pra o relatório
+     */
     private void updateParams() {
-        
-        /*
-        String dataDe = ((JTextField)fdatafrom.getDateEditor().getUiComponent()).getText();
-        String dataAte = ((JTextField)fdatato.getDateEditor().getUiComponent()).getText();
-        ComboItem usuarioSelecionado = (ComboItem)cusuario.getSelectedItem();
-        ComboItem aprovadorSelecionado = (ComboItem)caprover.getSelectedItem();
-        ComboItem produtoSelecionado = (ComboItem)cproduto.getSelectedItem();
-        String statusSelecionado = fStatus.getSelectedItem().toString();
-        */
-        
         params.setProperty("dataDe", dataDe);
         params.setProperty("dataAte", dataAte);
         if (usuarioSelecionado != null) {
@@ -318,6 +321,9 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         edatafrom.setText("");
         edatato.setText("");
@@ -343,7 +349,6 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

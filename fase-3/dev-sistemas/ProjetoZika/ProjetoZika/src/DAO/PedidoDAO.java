@@ -441,7 +441,11 @@ public class PedidoDAO {
         return sql;
     }
     
-    
+    /**
+     * constrói a query baseado nos dados parâmetros e faz a consulta para o relatório de pedidos
+     * @param params os parâmetros de filtro e paginação
+     * @return Uma lista de RelatorioPedido
+     */
     public ArrayList<RelatorioPedido> relatorioPedido(Properties params) {
         
         String dataDe = params.getProperty("dataDe", "");
@@ -462,7 +466,7 @@ public class PedidoDAO {
                 + "LEFT JOIN usuarios ON usuarios.Id = pedidos.UsuarioId "
                 + "LEFT JOIN usuarios AS aprovadores ON aprovadores.Id = pedidos.AlmoxarifeId "
                 + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
-                + "LEFT JOIN produtos on pedidosprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id AND pedidosprodutos.QuantidadeAprovada > 0 "
                 + "WHERE pedidos.Id > 0 ";
                 
         
