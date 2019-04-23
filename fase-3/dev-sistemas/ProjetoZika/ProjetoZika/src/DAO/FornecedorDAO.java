@@ -159,6 +159,28 @@ public class FornecedorDAO {
     }
     
     /**
+     * seleciona os fornecedores por um dado nome
+     * @param nome o nome do fornecedor desejado
+     * @return uma lista de fornecedores correspondentes
+     */
+    public ArrayList<Fornecedor> selecionarPorNome(String nome) {
+        String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Nome LIKE '%"+ nome +"%' LIMIT 50";
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                Fornecedor fornecedor = new Fornecedor();
+                this.helper.fillFornecedor(fornecedor, rs);
+                fornecedores.add(fornecedor);
+            }
+            st.close();
+            return fornecedores;
+        } catch(Exception error) {
+            throw new RuntimeException("FornecedorDAO.selecionarPorNome: " + error);
+        }
+    }
+    
+    /**
      * seleciona os fornecedores correspondentes aos parâmetros de filtragem e paginação
      * @param params os parâmetros de filtragem e paginação
      * @return uma lista de fornecedores correspondentes

@@ -7,7 +7,10 @@ package projetozika.Pages.Relatorios;
 
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
+import DAO.FornecedorDAO;
 import DAO.ProdutoDAO;
+import Models.Fornecedor;
+import Models.Produto;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -50,6 +53,9 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     private final JPanel self;
     private JLabel title;
     private final ProdutoDAO produtoDao;
+    private ArrayList<Produto> produtos;
+    private final FornecedorDAO fornecedorDao;
+    private ArrayList<Fornecedor> fornecedores;
 
     /**
      * Creates new form RelatorioPedidos
@@ -59,6 +65,9 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         this.self = this;
         
         produtoDao = new ProdutoDAO();
+        produtos = new ArrayList<>();
+        fornecedorDao = new FornecedorDAO();
+        fornecedores = new ArrayList<>();
         
         addCamposPedidos();
     }
@@ -84,11 +93,13 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         new SuggestionsBox(sfornecedor, ffornecedor, cfornecedor, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                fornecedores.clear();
+                fornecedores = fornecedorDao.selecionarPorNome(ffornecedor.getText().trim());
+                fornecedores.forEach(fornecedor -> {
+                    elements.add(new ComboItem(fornecedor.getId(), fornecedor.getNome()));
+                });
                 return elements;
             }
         };
@@ -106,11 +117,13 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         new SuggestionsBox(sproduto, fproduto, cproduto, 300) {
             @Override
             public ArrayList<ComboItem> addElements() {
+                // sugestão de produtos
                 ArrayList<ComboItem> elements = new ArrayList<>();
-                for (int i = 1; i <= 25; i++) {
-                    // TODO: implements real database results
-                    elements.add(new ComboItem(i, "Nome_"+i));
-                }
+                produtos.clear();
+                produtos = produtoDao.selecionarPorNome(fproduto.getText().trim());
+                produtos.forEach(produto -> {
+                    elements.add(new ComboItem(produto.getId(), produto.getNome() + " - " + produto.getUnidade()));
+                });
                 return elements;
             }
         };
