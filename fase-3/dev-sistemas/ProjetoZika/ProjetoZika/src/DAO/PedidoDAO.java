@@ -455,11 +455,13 @@ public class PedidoDAO {
                 + "aprovadores.Nome AS 'aprovador', "
                 + "pedidos.Status AS 'status', "
                 + "pedidos.Created AS 'data', "
-                + "SUM(pedidosprodutos.QuantidadeAprovada) AS 'total' "
+                + "SUM(pedidosprodutos.QuantidadeAprovada) AS 'total', "
+                + "GROUP_CONCAT(CONCAT(produtos.Nome, ' - ', produtos.Unidade, ' - ', pedidosprodutos.QuantidadeAprovada, '\n') SEPARATOR '') AS 'produtos' "
                 + "FROM `pedidos` "
                 + "LEFT JOIN usuarios ON usuarios.Id = pedidos.UsuarioId "
                 + "LEFT JOIN usuarios AS aprovadores ON aprovadores.Id = pedidos.AlmoxarifeId "
                 + "LEFT JOIN pedidosprodutos ON pedidosprodutos.PedidoId = pedidos.Id "
+                + "LEFT JOIN produtos on pedidosprodutos.ProdutoId = produtos.Id "
                 + "WHERE pedidos.Id > 0 ";
                 
         
@@ -492,7 +494,7 @@ public class PedidoDAO {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
-                System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total"));
+                System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total")+" - "+rs.getString("produtos"));
             }
             System.out.println(sql);
             st.close();
