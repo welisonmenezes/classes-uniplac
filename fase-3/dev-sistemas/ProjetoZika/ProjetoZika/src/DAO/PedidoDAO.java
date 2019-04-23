@@ -9,6 +9,7 @@ import Models.GraphModel;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
+import Models.RelatorioPedido;
 import Models.Usuario;
 import Utils.FillModel;
 import Utils.DateHandler;
@@ -441,7 +442,7 @@ public class PedidoDAO {
     }
     
     
-    public void relatorioPedido(Properties params) {
+    public ArrayList<RelatorioPedido> relatorioPedido(Properties params) {
         
         String dataDe = params.getProperty("dataDe", "");
         String dataAte = params.getProperty("dataAte", "");
@@ -456,7 +457,7 @@ public class PedidoDAO {
                 + "pedidos.Status AS 'status', "
                 + "pedidos.Created AS 'data', "
                 + "SUM(pedidosprodutos.QuantidadeAprovada) AS 'total', "
-                + "GROUP_CONCAT(CONCAT(produtos.Nome, ' - ', produtos.Unidade, ' - ', pedidosprodutos.QuantidadeAprovada, '\n') SEPARATOR '') AS 'produtos' "
+                + "GROUP_CONCAT(CONCAT('-> ', produtos.Nome, '/', produtos.Unidade, '/', pedidosprodutos.QuantidadeAprovada, '\n') SEPARATOR '') AS 'produtos' "
                 + "FROM `pedidos` "
                 + "LEFT JOIN usuarios ON usuarios.Id = pedidos.UsuarioId "
                 + "LEFT JOIN usuarios AS aprovadores ON aprovadores.Id = pedidos.AlmoxarifeId "
@@ -493,12 +494,21 @@ public class PedidoDAO {
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
+            ArrayList<RelatorioPedido> relatorioPedidos = new ArrayList<>();
             while(rs.next()) {
-                System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total")+" - "+rs.getString("produtos"));
+                //System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total")+" - "+rs.getString("produtos"));
+                RelatorioPedido item = new RelatorioPedido();
+                item.setCodigo(rs.getInt("codigo"));
+                item.setSoliciante(rs.getString("solicitante"));
+                item.setAprovador(rs.getString("aprovador"));
+                item.setStatus(rs.getString("status"));
+                item.setTotal(rs.getInt("total"));
+                item.setProdutos(rs.getString("produtos"));
+                relatorioPedidos.add(item);
             }
             System.out.println(sql);
             st.close();
-            //return pedidos;
+            return relatorioPedidos;
         } catch(Exception error) {
             throw new RuntimeException("PedidoDAO.relatorioPedido: " + error);
         }

@@ -12,6 +12,7 @@ import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
 import DAO.UsuarioDAO;
 import Models.Produto;
+import Models.RelatorioPedido;
 import Models.ReportModel;
 import Models.Usuario;
 import Utils.DateHandler;
@@ -241,7 +242,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                 String infoStatus = (statusSelecionado.equals("")) ? "Todos" : statusSelecionado;
 
                 String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
-                String header[] = {"Código", "Solicitante", "Status", "Data", "Qtd Produto"};
+                String header[] = {"Código", "Solicitante", "Aprovador", "Status", "Data", "Produtos", "Total"};
                 String infos[] = {
                     "Usuário: " + infoUsuario,
                     "Aprovador: " + infoAprovador,
@@ -250,17 +251,26 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                     "Período: "+ params.getProperty("dataDe", "") +" à " + params.getProperty("dataAte", "")
                 };
                 
-                pedidoDao.relatorioPedido(params);
-                
+                ArrayList<RelatorioPedido> relatorioPedidos = pedidoDao.relatorioPedido(params);
                 ArrayList<String[]> data = new ArrayList();
-                for (int i = 0; i < 100; i++) {
-                    String row[] = {i+"","Fulano_" + i, "Status here", "11/11/2011", "33"};
+                relatorioPedidos.forEach(item -> {
+                    //String row[] = {i+"","Fulano_" + i, "Status here", "11/11/2011", "33"};
+                    String row[] = {
+                        item.getCodigo()+"",
+                        item.getSoliciante(),
+                        item.getAprovador(),
+                        item.getStatus(),
+                        item.getData(),
+                        item.getTotal()+"",
+                        item.getProdutos()
+                    };
+                    //System.out.println(row);
                     data.add(row);
-                }
+                });
                 
                 ReportModel relatorio = new ReportModel(filename, header, infos, data);
                 
-                //new PDFGenerator(relatorio, this);
+                new PDFGenerator(relatorio, this);
                 
             }
             

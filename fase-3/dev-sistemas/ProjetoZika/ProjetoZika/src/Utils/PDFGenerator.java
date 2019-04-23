@@ -11,6 +11,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -158,10 +159,12 @@ public final class PDFGenerator {
             header.setSpacingBefore(25f);
             header.getDefaultCell().setBorderColor(BaseColor.GRAY);
             header.getDefaultCell().setPadding(10);
+            header.setWidthPercentage(100);
             
             // add o conteúdo na tabela
             for (int i = 0; i < this.cols; i++) {
-                header.addCell(columns[i]);
+                Phrase content = new Phrase(columns[i], FontFactory.getFont(FontFactory.HELVETICA, 11));
+                header.addCell(content);
             }
             
             // estiliza o header
@@ -185,7 +188,9 @@ public final class PDFGenerator {
             // cria e estiliza a tabela
             tableMain = new PdfPTable(this.cols);
             tableMain.getDefaultCell().setBorderColor(BaseColor.GRAY);
-            tableMain.getDefaultCell().setPadding(5);
+            tableMain.getDefaultCell().setPadding(3);
+            tableMain.setWidthPercentage(100);
+            //tableMain
             
             // adiciona os dados na tabela
             int total = data.size();
@@ -193,7 +198,8 @@ public final class PDFGenerator {
                 String row[] = data.get(i);
                 int totalCell = row.length;
                 for (int x = 0; x < totalCell; x++) {
-                    tableMain.addCell(row[x]);
+                    Phrase content = new Phrase(row[x], FontFactory.getFont(FontFactory.HELVETICA, 9));
+                    tableMain.addCell(content);
                 }
             }
             
