@@ -249,4 +249,40 @@ public class ProdutoDAO {
             
         return sql;
     }
+    
+    public void relatorioProduto() {
+        String sql = "SELECT produtos.Id AS 'codigo', "
+                + "CONCAT(produtos.Nome, '/', produtos.Unidade) AS 'produto', "
+                + "GROUP_CONCAT(DISTINCT(fornecedores.Nome) SEPARATOR '\n') AS 'fornecedores', "
+                + "(SELECT SUM(notasfiscaisprodutos.Quantidade) FROM notasfiscaisprodutos WHERE notasfiscaisprodutos.ProdutoId = produtos.Id) AS 'entrada', "
+                + "(SELECT SUM(QuantidadeAprovada) from pedidosprodutos WHERE pedidosprodutos.ProdutoId = produtos.Id) AS 'saida', "
+                + "estoque.Total AS 'estoqueAtual' "
+                + "FROM produtos "
+                + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
+                + "LEFT JOIN notasfiscaisprodutos ON notasfiscaisprodutos.ProdutoId = produtos.Id "
+                + "LEFT JOIN notasfiscais ON notasfiscais.Id = notasfiscaisprodutos.NotaFiscalId "
+                + "LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId "
+                + "WHERE produtos.Id > 0 "
+                + "AND fornecedores.Id = 2 "
+                + "AND produtos.Id = 26 "
+                + "AND notasfiscaisprodutos.Created >= '02016-04-23' "
+                + "AND notasfiscaisprodutos.Created <= '02019-04-23' "
+                + "AND produtos.Status != 'Deleted' "
+                + "AND fornecedores.Status != 'Deleted' "
+                + "AND notasfiscais.Status != 'Deleted' "
+                + "GROUP BY produtos.Id "
+                + "ORDER BY produtos.Id DESC";
+        
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                System.out.println(rs.getInt("codigo")+" - "+rs.getString("produto")+" - "+rs.getInt("entrada")+" - "+rs.getInt("saida")+" - "+rs.getInt("estoqueAtual")+" - "+rs.getString("fornecedores"));
+            }
+            System.out.println(sql);
+            st.close();
+        } catch(Exception error) {
+            throw new RuntimeException("ProdutoDAO.relatorioProduto: " + error);
+        }
+    }
 }

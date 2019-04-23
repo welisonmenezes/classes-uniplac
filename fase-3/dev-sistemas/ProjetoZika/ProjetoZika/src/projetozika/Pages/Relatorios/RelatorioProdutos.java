@@ -7,6 +7,7 @@ package projetozika.Pages.Relatorios;
 
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
+import DAO.ProdutoDAO;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -48,6 +49,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     private JButton btnRelatorioPedido;
     private final JPanel self;
     private JLabel title;
+    private final ProdutoDAO produtoDao;
 
     /**
      * Creates new form RelatorioPedidos
@@ -55,6 +57,9 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     public RelatorioProdutos() {
         initComponents();
         this.self = this;
+        
+        produtoDao = new ProdutoDAO();
+        
         addCamposPedidos();
     }
     
@@ -152,8 +157,10 @@ public class RelatorioProdutos extends javax.swing.JPanel {
             if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
             if (! Validator.validaData(fdatato, edatato)) isValid = false;
             if (isValid) {
-                Dialogs.showLoadPopup(self);
-                timerTest();
+                //Dialogs.showLoadPopup(self);
+                //timerTest();
+                
+                produtoDao.relatorioProduto();
             }
             
         });
