@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 11-Abr-2019 às 23:17
+-- Generation Time: 23-Abr-2019 às 20:02
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -40,8 +40,8 @@ CREATE TABLE `estoque` (
 INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
 (1, 45),
 (2, 80),
-(3, 21),
-(4, 45),
+(3, 11),
+(4, 56),
 (5, 21),
 (6, 65),
 (7, 15),
@@ -61,7 +61,9 @@ INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
 (21, 76),
 (22, 27),
 (23, 10),
-(24, 20);
+(24, 20),
+(25, 22),
+(26, 15);
 
 -- --------------------------------------------------------
 
@@ -89,7 +91,9 @@ INSERT INTO `fornecedores` (`Id`, `Cnpj`, `Nome`, `Telefone`, `Status`, `Created
 (4, '44444444444555', 'Depositoffice Ltda', '4444555566', 'Publish', '2019-03-27 00:00:00'),
 (5, '55555555555333', 'Casa do Papel', '33224455', 'Publish', '2019-03-30 00:00:00'),
 (6, '66666666663333', 'Staples.com', '333333333', 'Publish', '2019-03-31 00:00:00'),
-(7, '77777777777333', 'Venda ESC SA', '23234545', 'Publish', '2019-04-02 00:00:00');
+(7, '77777777777333', 'Venda ESC SA', '23234545', 'Publish', '2019-04-02 00:00:00'),
+(8, '99999999999999', 'VendaESCOnline', '222222222', 'Publish', '2019-04-18 00:00:00'),
+(9, '88888888888888', 'Escolar.com', '32323232', 'Publish', '2019-04-20 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -122,7 +126,9 @@ INSERT INTO `notasfiscais` (`Id`, `Numero`, `Serie`, `Valor`, `Data`, `Status`, 
 (8, 33333333, 2323, 33.33, '2019-04-03', 'Deleted', '2019-04-07 00:00:00', 1),
 (9, 345798977, 54566, 4.00, '2019-04-08', 'Publish', '2019-04-08 00:00:00', 2),
 (10, 333333333335557, 43556990, 22.22, '2019-04-09', 'Publish', '2019-04-09 00:00:00', 7),
-(11, 88878677878, 325534, 33.33, '2019-04-03', 'Publish', '2019-04-09 00:00:00', 5);
+(11, 88878677878, 325534, 33.33, '2019-04-03', 'Publish', '2019-04-09 00:00:00', 5),
+(12, 4343434343, 43434434, 43.44, '2019-04-02', 'Publish', '2019-04-20 00:00:00', 5),
+(13, 32322332323332, 33434, 44.55, '2019-04-23', 'Publish', '2019-04-23 00:00:00', 2);
 
 -- --------------------------------------------------------
 
@@ -173,7 +179,10 @@ INSERT INTO `notasfiscaisprodutos` (`NotaFiscalId`, `ProdutoId`, `Valor`, `Quant
 (10, 2, 0.99, 30, '2019-04-10 00:00:00'),
 (10, 4, 1.11, 12, '2019-04-10 00:00:00'),
 (10, 23, 10.00, 10, '2019-04-10 00:00:00'),
-(11, 24, 3.99, 20, '2019-04-10 00:00:00');
+(11, 24, 3.99, 20, '2019-04-20 00:00:00'),
+(12, 4, 1.11, 11, '2019-04-20 00:00:00'),
+(12, 25, 2.22, 22, '2019-04-20 00:00:00'),
+(13, 26, 4.44, 20, '2019-04-23 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -196,18 +205,23 @@ CREATE TABLE `pedidos` (
 INSERT INTO `pedidos` (`Id`, `Status`, `Created`, `UsuarioId`, `AlmoxarifeId`) VALUES
 (6, 'Negado', '2019-03-08 00:00:00', 5, NULL),
 (7, 'Pendente', '2019-04-01 00:00:00', 6, NULL),
-(8, 'Pendente', '2019-04-01 00:00:00', 8, NULL),
+(8, 'Aguardando entrega', '2019-02-18 00:00:00', 8, 5),
 (9, 'Aguardando entrega', '2019-04-01 00:00:00', 8, 5),
 (10, 'Aguardando entrega', '2019-04-02 00:00:00', 7, NULL),
 (11, 'Finalizado', '2019-04-02 00:00:00', 5, 5),
-(12, 'Finalizado', '2019-04-02 00:00:00', 5, NULL),
-(13, 'Finalizado', '2019-04-02 00:00:00', 5, NULL),
+(12, 'Finalizado', '2019-02-07 00:00:00', 5, NULL),
+(13, 'Finalizado', '2019-02-18 00:00:00', 5, NULL),
 (14, 'Negado', '2018-04-03 00:00:00', 5, NULL),
 (15, 'Aguardando entrega', '2019-04-02 00:00:00', 5, NULL),
 (16, 'Aguardando entrega', '2019-04-05 00:00:00', 5, 5),
 (17, 'Deleted', '2019-04-08 00:00:00', 5, NULL),
 (18, 'Pendente', '2019-04-09 00:00:00', 7, NULL),
-(19, 'Pendente', '2019-04-10 00:00:00', 9, NULL);
+(19, 'Pendente', '2019-04-10 00:00:00', 9, 5),
+(20, 'Aguardando entrega', '2019-04-19 00:00:00', 5, 5),
+(21, 'Pendente', '2019-04-20 00:00:00', 7, NULL),
+(22, 'Pendente', '2019-04-22 00:00:00', 9, NULL),
+(23, 'Pendente', '2019-04-22 00:00:00', 6, NULL),
+(24, 'Aguardando entrega', '2019-04-23 00:00:00', 6, 5);
 
 -- --------------------------------------------------------
 
@@ -234,7 +248,7 @@ INSERT INTO `pedidosprodutos` (`Id`, `PedidoId`, `ProdutoId`, `QuantidadeSolicit
 (8, 7, 4, 1, 1),
 (9, 7, 14, 4, 4),
 (10, 8, 2, 2, 2),
-(11, 8, 12, 3, 3),
+(11, 8, 4, 3, 3),
 (14, 10, 17, 4, 1),
 (15, 10, 12, 1, 1),
 (16, 10, 11, 2, 2),
@@ -273,7 +287,20 @@ INSERT INTO `pedidosprodutos` (`Id`, `PedidoId`, `ProdutoId`, `QuantidadeSolicit
 (62, 18, 4, 3, 3),
 (63, 19, 5, 3, 3),
 (64, 19, 23, 1, 1),
-(65, 19, 10, 1, 1);
+(65, 19, 10, 1, 1),
+(66, 20, 3, 1, 10),
+(67, 21, 25, 4, 4),
+(68, 21, 15, 2, 2),
+(69, 8, 12, 3, 3),
+(70, 9, 25, 1, 1),
+(71, 22, 25, 4, 4),
+(72, 22, 2, 1, 1),
+(73, 22, 10, 2, 2),
+(74, 23, 4, 1, 1),
+(75, 23, 9, 1, 1),
+(76, 23, 18, 5, 5),
+(77, 23, 21, 1, 1),
+(78, 24, 26, 6, 5);
 
 -- --------------------------------------------------------
 
@@ -297,28 +324,30 @@ CREATE TABLE `produtos` (
 INSERT INTO `produtos` (`Id`, `Nome`, `Unidade`, `Descricao`, `Status`, `Created`) VALUES
 (1, 'Caneta Bic Preta', 'Unidade', 'Caneta Bic preta esferográfica', 'Publish', '2019-03-26 00:00:00'),
 (2, 'Papel Ofício A4', 'Pacote', 'Papel ofício A4 pct 100 unidades', 'Publish', '2019-03-26 00:00:00'),
-(3, 'Lápis 6b', 'Unidade', 'Lápis 6b verde', 'Publish', '2019-03-26 00:00:00'),
-(4, 'Grampos de papel', 'Caixa', 'Grampos de papel', 'Publish', '2019-03-26 00:00:00'),
-(5, 'Fita Adesiva', 'Unidade', 'Fita adesiva 12mm x 30m', 'Publish', '2019-03-27 00:00:00'),
+(3, 'Lápis 6b', 'Unidade', 'Lápis 6b verde', 'Publish', '2018-11-13 00:00:00'),
+(4, 'Grampos de papel', 'Caixa', 'Grampos de papel', 'Publish', '2019-02-06 00:00:00'),
+(5, 'Fita Adesiva', 'Unidade', 'Fita adesiva 12mm x 30m', 'Publish', '2018-12-11 00:00:00'),
 (6, 'Clips Coloridos', 'Caixa', 'Clips coloridos jumbo caixa com 200 unidades', 'Publish', '2019-03-27 00:00:00'),
 (7, 'Post-It Amarelo', 'Pacote', 'Post-It 4 bocos amarelo', 'Publish', '2019-03-27 00:00:00'),
-(8, 'Corretivo 18ml', 'Unidade', 'Líquido corretivo office blanc', 'Publish', '2019-03-27 00:00:00'),
+(8, 'Corretivo 18ml', 'Unidade', 'Líquido corretivo office blanc', 'Publish', '2018-12-17 00:00:00'),
 (9, 'Tinta Carimbo', 'Litro', 'Tinta para carimbo litro', 'Publish', '2019-03-27 00:00:00'),
 (10, 'Lapiseira', 'Pacote', 'Lapiseira pacote 3 unidades', 'Publish', '2019-03-27 00:00:00'),
 (11, 'Pasta Ofício', 'Unidade', 'Pasta AZ ofício economic', 'Publish', '2019-03-27 00:00:00'),
-(12, 'Borracha Plástica', 'Unidade', 'Borracha plástica stapless', 'Publish', '2019-03-27 00:00:00'),
+(12, 'Borracha Plástica', 'Unidade', 'Borracha plástica stapless', 'Publish', '2018-12-10 00:00:00'),
 (13, 'Marcatexto Verde', 'Unidade', 'Marca texto verde stapless', 'Publish', '2019-03-27 00:00:00'),
 (14, 'Marcatexto Azul', 'Unidade', 'Marcatexto azul stapless', 'Publish', '2019-03-27 00:00:00'),
-(15, 'Régua 30cm', 'Unidade', 'Régua 30cm transparente', 'Publish', '2019-03-30 00:00:00'),
+(15, 'Régua 30cm', 'Unidade', 'Régua 30cm transparente', 'Publish', '2018-12-20 00:00:00'),
 (16, 'Alfinete Mapa', 'Pacote', 'Alfinetes para mapa amarelo', 'Publish', '2019-03-30 00:00:00'),
-(17, 'Porta Canetas', 'Unidade', 'Porta lápis e caneta simples', 'Publish', '2019-03-31 00:00:00'),
-(18, 'Saco Plástico Ofício', 'Pacote', 'Saco plástico ofício sem furos. Pacote com 100 unidades', 'Publish', '2019-03-31 00:00:00'),
+(17, 'Porta Canetas', 'Unidade', 'Porta lápis e caneta simples', 'Publish', '2018-11-12 00:00:00'),
+(18, 'Saco Plástico Ofício', 'Pacote', 'Saco plástico ofício sem furos. Pacote com 100 unidades', 'Publish', '2019-02-11 00:00:00'),
 (19, 'Mouse Dell', 'Unidade', 'Mouse sem fio Dell', 'Publish', '2019-04-02 00:00:00'),
-(20, 'Caneta Compact Azul', 'Unidade', 'Caneta Compact azul ponta fina', 'Publish', '2019-04-02 00:00:00'),
-(21, 'Cola 1kg Tenaz', 'Quilo', 'Colar Tenaz 1kg', 'Publish', '2019-04-02 00:00:00'),
+(20, 'Caneta Compact Azul', 'Unidade', 'Caneta Compact azul ponta fina', 'Publish', '2019-01-08 00:00:00'),
+(21, 'Cola 1kg Tenaz', 'Quilo', 'Colar Tenaz 1kg', 'Publish', '2019-03-11 00:00:00'),
 (22, 'Tesoura Tramontina', 'Unidade', 'Tesoura Tramontina inox', 'Publish', '2019-04-07 00:00:00'),
 (23, 'Calculadora de Mesa', 'Unidade', 'Calculadora de mesa Maxprint', 'Publish', '2019-04-09 00:00:00'),
-(24, 'Agenda 2019', 'Unidade', 'Agenda diária 2019', 'Publish', '2019-04-09 00:00:00');
+(24, 'Agenda 2019', 'Unidade', 'Agenda diária 2019', 'Publish', '2018-12-24 00:00:00'),
+(25, 'Pilha AA', 'Pacote', 'Pilha AA pequena', 'Publish', '2019-04-20 00:00:00'),
+(26, 'Phone de Ouvido', 'Unidade', 'Phone de ouvido Sansumg', 'Publish', '2019-04-23 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -424,31 +453,31 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `fornecedores`
 --
 ALTER TABLE `fornecedores`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `notasfiscais`
 --
 ALTER TABLE `notasfiscais`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `pedidosprodutos`
 --
 ALTER TABLE `pedidosprodutos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
