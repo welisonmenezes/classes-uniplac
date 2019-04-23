@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -86,9 +85,6 @@ public final class PDFGenerator {
                 addTableMain();
 
                 document.close();
-                
-                // mensagem de sucesso
-                JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
             } 
         } catch (IOException | DocumentException de) {
             throw new ExceptionConverter(de);

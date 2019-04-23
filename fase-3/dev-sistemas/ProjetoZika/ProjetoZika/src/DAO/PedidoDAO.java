@@ -457,7 +457,7 @@ public class PedidoDAO {
                 + "pedidos.Status AS 'status', "
                 + "pedidos.Created AS 'data', "
                 + "SUM(pedidosprodutos.QuantidadeAprovada) AS 'total', "
-                + "GROUP_CONCAT(CONCAT('-> ', produtos.Nome, '/', produtos.Unidade, '/', pedidosprodutos.QuantidadeAprovada, '\n') SEPARATOR '') AS 'produtos' "
+                + "GROUP_CONCAT(CONCAT(produtos.Nome, '/', produtos.Unidade, '/', pedidosprodutos.QuantidadeAprovada, '\n\n') SEPARATOR '') AS 'produtos' "
                 + "FROM `pedidos` "
                 + "LEFT JOIN usuarios ON usuarios.Id = pedidos.UsuarioId "
                 + "LEFT JOIN usuarios AS aprovadores ON aprovadores.Id = pedidos.AlmoxarifeId "
@@ -496,17 +496,17 @@ public class PedidoDAO {
             rs = st.executeQuery(sql);
             ArrayList<RelatorioPedido> relatorioPedidos = new ArrayList<>();
             while(rs.next()) {
-                //System.out.println(rs.getInt("codigo")+" - "+rs.getString("solicitante")+" - "+rs.getString("aprovador")+" - "+rs.getString("status")+" - "+rs.getDate("data")+" - "+rs.getInt("total")+" - "+rs.getString("produtos"));
                 RelatorioPedido item = new RelatorioPedido();
                 item.setCodigo(rs.getInt("codigo"));
                 item.setSoliciante(rs.getString("solicitante"));
                 item.setAprovador(rs.getString("aprovador"));
                 item.setStatus(rs.getString("status"));
                 item.setTotal(rs.getInt("total"));
+                item.setData(rs.getString("data"));
                 item.setProdutos(rs.getString("produtos"));
                 relatorioPedidos.add(item);
             }
-            System.out.println(sql);
+            //System.out.println(sql);
             st.close();
             return relatorioPedidos;
         } catch(Exception error) {

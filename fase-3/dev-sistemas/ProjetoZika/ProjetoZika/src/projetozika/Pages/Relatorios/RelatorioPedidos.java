@@ -32,6 +32,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
@@ -227,20 +228,22 @@ public class RelatorioPedidos extends javax.swing.JPanel {
             if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
                 
+                // pega dados do formulário
                 dataDe = ((JTextField)fdatafrom.getDateEditor().getUiComponent()).getText();
                 dataAte = ((JTextField)fdatato.getDateEditor().getUiComponent()).getText();
                 usuarioSelecionado = (ComboItem)cusuario.getSelectedItem();
                 aprovadorSelecionado = (ComboItem)caprover.getSelectedItem();
                 produtoSelecionado = (ComboItem)cproduto.getSelectedItem();
                 statusSelecionado = fStatus.getSelectedItem().toString();
-      
+                
+                // atualiza os parametros a serem enviados apra a consulta sql
                 this.updateParams();
                 
+                // meta infos a serem exibidos no pdf
                 String infoUsuario = (usuarioSelecionado == null) ? "Todos" : usuarioSelecionado.getDescription();
                 String infoAprovador = (aprovadorSelecionado == null) ? "Todos" : aprovadorSelecionado.getDescription();
                 String infoProduto = (produtoSelecionado == null) ? "Todos" : produtoSelecionado.getDescription();
                 String infoStatus = (statusSelecionado.equals("")) ? "Todos" : statusSelecionado;
-
                 String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {"Código", "Solicitante", "Aprovador", "Status", "Data", "Produtos", "Total"};
                 String infos[] = {
@@ -251,27 +254,33 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                     "Período: "+ params.getProperty("dataDe", "") +" à " + params.getProperty("dataAte", "")
                 };
                 
+                // carrega dados da base para serem exibidos no pdf
                 ArrayList<RelatorioPedido> relatorioPedidos = pedidoDao.relatorioPedido(params);
-                ArrayList<String[]> data = new ArrayList();
-                relatorioPedidos.forEach(item -> {
-                    //String row[] = {i+"","Fulano_" + i, "Status here", "11/11/2011", "33"};
-                    String row[] = {
-                        item.getCodigo()+"",
-                        item.getSoliciante(),
-                        item.getAprovador(),
-                        item.getStatus(),
-                        item.getData(),
-                        item.getTotal()+"",
-                        item.getProdutos()
-                    };
-                    //System.out.println(row);
-                    data.add(row);
-                });
-                
-                ReportModel relatorio = new ReportModel(filename, header, infos, data);
-                
-                new PDFGenerator(relatorio, this);
-                
+                if (relatorioPedidos.size() > 0) {
+                    ArrayList<String[]> data = new ArrayList();
+                    relatorioPedidos.forEach(item -> {
+                        String row[] = {
+                            item.getCodigo()+"",
+                            item.getSoliciante(),
+                            item.getAprovador(),
+                            item.getStatus(),
+                            DateHandler.getFriendlyBirthday(item.getData()),
+                            item.getProdutos(),
+                            item.getTotal()+""
+                        };
+                        data.add(row);
+                    });
+                    ReportModel relatorio = new ReportModel(filename, header, infos, data);
+
+                    // gera o pdf
+                    new PDFGenerator(relatorio, this);
+                    
+                    // mensagem de sucesso
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
+                } else {
+                    // mensagem de erro
+                    JOptionPane.showMessageDialog(null, "Nenhum dado encontrado.");
+                }
             }
             
         });
