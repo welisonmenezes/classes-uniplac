@@ -305,17 +305,29 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         params.setProperty("dataDe", dataDe);
         params.setProperty("dataAte", dataAte);
         if (usuarioSelecionado != null) {
-            params.setProperty("usuarioId", usuarioSelecionado.getId() + "");
+            if (usuarioSelecionado.getId() > 0) {
+                params.setProperty("usuarioId", usuarioSelecionado.getId() + "");
+            } else {
+                params.setProperty("usuarioId", "");
+            }
         } else {
             params.setProperty("usuarioId", "");
         }
         if (aprovadorSelecionado != null) {
-            params.setProperty("aprovadorId", aprovadorSelecionado.getId() + "");
+            if (aprovadorSelecionado.getId() > 0) {
+                params.setProperty("aprovadorId", aprovadorSelecionado.getId() + "");
+            } else {
+                params.setProperty("aprovadorId", "");
+            }
         } else {
             params.setProperty("aprovadorId", "");
         }
         if (produtoSelecionado != null) {
-            params.setProperty("produtoId", produtoSelecionado.getId() + "");
+            if (produtoSelecionado.getId() > 0) {
+                params.setProperty("produtoId", produtoSelecionado.getId() + "");
+            } else {
+                params.setProperty("produtoId", "");
+            }
         } else {
             params.setProperty("produtoId", "");
         }

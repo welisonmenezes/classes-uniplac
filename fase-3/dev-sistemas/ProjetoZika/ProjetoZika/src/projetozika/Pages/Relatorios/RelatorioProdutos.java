@@ -11,11 +11,9 @@ import DAO.FornecedorDAO;
 import DAO.ProdutoDAO;
 import Models.Fornecedor;
 import Models.Produto;
-import Models.RelatorioPedido;
 import Models.RelatorioProduto;
 import Models.ReportModel;
 import Utils.DateHandler;
-import Utils.Dialogs;
 import Utils.Methods;
 import Utils.PDFGenerator;
 import Utils.Styles;
@@ -34,7 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
@@ -176,7 +173,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
         btnRelatorioPedido.addActionListener((ActionEvent e) -> {
-            
+
             // limpa erros
             clearErrors();
             
@@ -243,7 +240,6 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                 }
                 
             }
-            
         });
     }
     
@@ -254,12 +250,20 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         params.setProperty("dataDe", dataDe);
         params.setProperty("dataAte", dataAte);
         if (fornecedorSelecionado != null) {
-            params.setProperty("fornecedorId", fornecedorSelecionado.getId() + "");
+            if (fornecedorSelecionado.getId() > 0) {
+                params.setProperty("fornecedorId", fornecedorSelecionado.getId() + "");
+            } else {
+                params.setProperty("fornecedorId", "");
+            }
         } else {
             params.setProperty("fornecedorId", "");
         }
         if (produtoSelecionado != null) {
-            params.setProperty("produtoId", produtoSelecionado.getId() + "");
+            if (produtoSelecionado.getId() > 0) {
+                params.setProperty("produtoId", produtoSelecionado.getId() + "");
+            } else {
+                params.setProperty("produtoId", "");
+            }
         } else {
             params.setProperty("produtoId", "");
         }
