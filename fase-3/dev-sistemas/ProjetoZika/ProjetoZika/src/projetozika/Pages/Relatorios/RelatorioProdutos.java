@@ -11,15 +11,22 @@ import DAO.FornecedorDAO;
 import DAO.ProdutoDAO;
 import Models.Fornecedor;
 import Models.Produto;
+import Models.RelatorioPedido;
+import Models.ReportModel;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
+import Utils.PDFGenerator;
 import Utils.Styles;
 import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -56,6 +63,11 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     private ArrayList<Produto> produtos;
     private final FornecedorDAO fornecedorDao;
     private ArrayList<Fornecedor> fornecedores;
+    private String dataDe;
+    private String dataAte;
+    private ComboItem fornecedorSelecionado;
+    private ComboItem produtoSelecionado;
+    private final Properties params;
 
     /**
      * Creates new form RelatorioPedidos
@@ -63,7 +75,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
     public RelatorioProdutos() {
         initComponents();
         this.self = this;
-        
+        this.params = new Properties();
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
         fornecedorDao = new FornecedorDAO();
@@ -154,6 +166,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         
         edatato = new JLabel("");
         Styles.errorLabel(edatato);
+        edatato.setPreferredSize( new Dimension( 300, 20 ) );
         add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
         
         
@@ -169,14 +182,75 @@ public class RelatorioProdutos extends javax.swing.JPanel {
             boolean isValid = true;
             if (! Validator.validaData(fdatafrom, edatafrom)) isValid = false;
             if (! Validator.validaData(fdatato, edatato)) isValid = false;
+            // verifica se data é maior ou menor
+            if (!Validator.isDateBeforeThen(fdatafrom, fdatato, edatato)) isValid = false;
             if (isValid) {
-                //Dialogs.showLoadPopup(self);
-                //timerTest();
+                
+                // pega dados do formulário
+                dataDe = ((JTextField)fdatafrom.getDateEditor().getUiComponent()).getText();
+                dataAte = ((JTextField)fdatato.getDateEditor().getUiComponent()).getText();
+                fornecedorSelecionado = (ComboItem)cfornecedor.getSelectedItem();
+                produtoSelecionado = (ComboItem)cproduto.getSelectedItem();
+                
+                // atualiza os parametros a serem enviados apra a consulta sql
+                this.updateParams();
+                
+                // meta infos a serem exibidos no pdf
+                String infoFornecedor = (fornecedorSelecionado == null) ? Methods.getTranslation("Todos") : fornecedorSelecionado.getDescription();
+                String infoProduto = (produtoSelecionado == null) ? Methods.getTranslation("Todos") : produtoSelecionado.getDescription();
+                String filename = "ProjetoZika-Produtos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
+                String header[] = {
+                    Methods.getTranslation("Codigo"),
+                    Methods.getTranslation("Produto"),
+                    Methods.getTranslation("Data"),
+                    "Entrada",
+                    "Saída",
+                    "Estoque Atual",
+                    Methods.getTranslation("Fornecedores")
+                };
+                String infos[] = {
+                    Methods.getTranslation("Fornecedor") + ": " + infoFornecedor,
+                    Methods.getTranslation("Produto") + ": " + infoProduto,
+                    Methods.getTranslation("Periodo") + "Período: "
+                        + Methods.getTranslation("De") + " "+ params.getProperty("dataDe", "") +" "
+                        + Methods.getTranslation("Ate") + " " + params.getProperty("dataAte", "")
+                };
                 
                 produtoDao.relatorioProduto();
+                
+                //Dialogs.showLoadPopup(self);
+                //timerTest();
+                ArrayList<String[]> data = new ArrayList();
+                for (int i = 0; i < 100; i++) {
+                    String row[] = {"codigo_"+i, "Produto_"+i, "11/11/2019", "5", "6", "20", "Fornecedores aqui"};
+                    data.add(row);
+                }
+                ReportModel relatorio = new ReportModel(filename, header, infos, data);
+                // gera o pdf
+                new PDFGenerator(relatorio, this);
+                
+                
             }
             
         });
+    }
+    
+    /**
+     * Atualiza os parâmetros de filtro pra o relatório
+     */
+    private void updateParams() {
+        params.setProperty("dataDe", dataDe);
+        params.setProperty("dataAte", dataAte);
+        if (fornecedorSelecionado != null) {
+            params.setProperty("fornecedorId", fornecedorSelecionado.getId() + "");
+        } else {
+            params.setProperty("fornecedorId", "");
+        }
+        if (produtoSelecionado != null) {
+            params.setProperty("produtoId", produtoSelecionado.getId() + "");
+        } else {
+            params.setProperty("produtoId", "");
+        }
     }
     
     private void clearErrors() {
