@@ -12,6 +12,7 @@ import DAO.ProdutoDAO;
 import Models.Fornecedor;
 import Models.Produto;
 import Models.RelatorioPedido;
+import Models.RelatorioProduto;
 import Models.ReportModel;
 import Utils.DateHandler;
 import Utils.Dialogs;
@@ -202,7 +203,6 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                 String header[] = {
                     Methods.getTranslation("Codigo"),
                     Methods.getTranslation("Produto"),
-                    Methods.getTranslation("Data"),
                     "Entrada",
                     "Saída",
                     "Estoque Atual",
@@ -216,19 +216,29 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                         + Methods.getTranslation("Ate") + " " + params.getProperty("dataAte", "")
                 };
                 
-                produtoDao.relatorioProduto();
+                ArrayList<RelatorioProduto> relatorioProdutos = produtoDao.relatorioProduto(params);
                 
-                //Dialogs.showLoadPopup(self);
-                //timerTest();
-                ArrayList<String[]> data = new ArrayList();
-                for (int i = 0; i < 100; i++) {
-                    String row[] = {"codigo_"+i, "Produto_"+i, "11/11/2019", "5", "6", "20", "Fornecedores aqui"};
-                    data.add(row);
+                if (relatorioProdutos.size() > 0) {
+                    ArrayList<String[]> data = new ArrayList();
+                    relatorioProdutos.forEach(item -> {
+                        String row[] = {
+                            item.getCodigo()+"",
+                            item.getProduto(),
+                            item.getEntrada()+"",
+                            item.getSaida()+"",
+                            item.getEstoqueAtual()+"",
+                            item.getFornecedores()
+                        };
+                        data.add(row);
+                    });
+                    ReportModel relatorio = new ReportModel(filename, header, infos, data);
+
+                    // gera o pdf
+                    new PDFGenerator(relatorio, this);
+                } else {
+                    // mensagem de erro
+                    JOptionPane.showMessageDialog(null, Methods.getTranslation("NenhumDadoEncontrado"));
                 }
-                ReportModel relatorio = new ReportModel(filename, header, infos, data);
-                // gera o pdf
-                new PDFGenerator(relatorio, this);
-                
                 
             }
             
@@ -253,20 +263,12 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         }
     }
     
+    /**
+     * Limpa as mensagens de erro
+     */
     private void clearErrors() {
         edatafrom.setText("");
         edatato.setText("");
-    }
-    
-    private Timer t;
-    private void timerTest() {
-        
-        t = new Timer(250, (ActionEvent e) -> {
-            Dialogs.hideLoadPopup(self);
-            JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
-            t.stop();
-        });
-        t.start();
     }
 
     /**
@@ -289,7 +291,6 @@ public class RelatorioProdutos extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

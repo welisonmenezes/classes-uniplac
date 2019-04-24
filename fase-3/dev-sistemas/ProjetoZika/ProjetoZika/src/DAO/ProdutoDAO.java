@@ -7,6 +7,7 @@ package DAO;
 
 import Models.GraphModel;
 import Models.Produto;
+import Models.RelatorioProduto;
 import Utils.FillModel;
 import Utils.DateHandler;
 import java.sql.Connection;
@@ -250,7 +251,13 @@ public class ProdutoDAO {
         return sql;
     }
     
-    public void relatorioProduto() {
+    public ArrayList<RelatorioProduto> relatorioProduto(Properties params) {
+        
+        String dataDe = params.getProperty("dataDe", "");
+        String dataAte = params.getProperty("dataAte", "");
+        String fornecedorId = params.getProperty("fornecedorId", "");
+        String produtoId = params.getProperty("produtoId", "");
+        
         String sql = "SELECT produtos.Id AS 'codigo', "
                 + "CONCAT(produtos.Nome, '/', produtos.Unidade) AS 'produto', "
                 + "GROUP_CONCAT(DISTINCT(fornecedores.Nome) SEPARATOR '\n') AS 'fornecedores', "
@@ -262,12 +269,24 @@ public class ProdutoDAO {
                 + "LEFT JOIN notasfiscaisprodutos ON notasfiscaisprodutos.ProdutoId = produtos.Id "
                 + "LEFT JOIN notasfiscais ON notasfiscais.Id = notasfiscaisprodutos.NotaFiscalId "
                 + "LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId "
-                + "WHERE produtos.Id > 0 "
-                + "AND fornecedores.Id = 2 "
-                + "AND produtos.Id = 26 "
-                + "AND notasfiscaisprodutos.Created >= '02016-04-23' "
-                + "AND notasfiscaisprodutos.Created <= '02019-04-23' "
-                + "AND produtos.Status != 'Deleted' "
+                + "WHERE produtos.Id > 0 ";
+        
+        if (! fornecedorId.equals("")) {
+            sql += "AND fornecedores.Id = " + fornecedorId + " ";
+        }
+        if (! produtoId.equals("")) {
+            sql += "AND produtos.Id = " + produtoId + " ";
+        }
+        if (! dataDe.equals("") ) {
+            dataDe = DateHandler.getSqlDateTime(dataDe);
+            sql += "AND notasfiscaisprodutos.Created >= '" + dataDe + "' ";
+        }
+        if (! dataAte.equals("") ) {
+            dataAte = DateHandler.getSqlDateTime(dataAte);
+            sql += "AND notasfiscaisprodutos.Created <= '" + dataAte + "' ";
+        }
+        
+        sql += "AND produtos.Status != 'Deleted' "
                 + "AND fornecedores.Status != 'Deleted' "
                 + "AND notasfiscais.Status != 'Deleted' "
                 + "GROUP BY produtos.Id "
@@ -276,11 +295,20 @@ public class ProdutoDAO {
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
+            ArrayList<RelatorioProduto> relatorioProdutos = new ArrayList<>();
             while(rs.next()) {
-                System.out.println(rs.getInt("codigo")+" - "+rs.getString("produto")+" - "+rs.getInt("entrada")+" - "+rs.getInt("saida")+" - "+rs.getInt("estoqueAtual")+" - "+rs.getString("fornecedores"));
+                RelatorioProduto item = new RelatorioProduto();
+                item.setCodigo(rs.getInt("codigo"));
+                item.setProduto(rs.getString("produto"));
+                item.setEntrada(rs.getInt("entrada"));
+                item.setSaida(rs.getInt("saida"));
+                item.setEstoqueAtual(rs.getInt("estoqueAtual"));
+                item.setFornecedores(rs.getString("fornecedores"));
+                relatorioProdutos.add(item);
             }
-            System.out.println(sql);
+            //System.out.println(sql);
             st.close();
+            return relatorioProdutos;
         } catch(Exception error) {
             throw new RuntimeException("ProdutoDAO.relatorioProduto: " + error);
         }
