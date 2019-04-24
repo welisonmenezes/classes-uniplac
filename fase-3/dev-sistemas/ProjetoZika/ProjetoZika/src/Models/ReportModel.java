@@ -13,14 +13,16 @@ import java.util.ArrayList;
  */
 public class ReportModel {
     private String filename;
+    private String title;
     private String columns[];
     private String infos[];
     private ArrayList<String[]> data;
     
     public ReportModel() {}
     
-    public ReportModel(String filename, String columns[], String infos[], ArrayList<String[]> data) {
+    public ReportModel(String filename, String title, String columns[], String infos[], ArrayList<String[]> data) {
         this.filename = filename;
+        this.title = title;
         this.columns = columns;
         this.infos = infos;
         this.data = data;
@@ -34,6 +36,14 @@ public class ReportModel {
         this.filename = filename;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
     public String[] getColumns() {
         return columns;
     }

@@ -200,6 +200,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                 // meta infos a serem exibidos no pdf
                 String infoFornecedor = (fornecedorSelecionado == null) ? Methods.getTranslation("Todos") : fornecedorSelecionado.getDescription();
                 String infoProduto = (produtoSelecionado == null) ? Methods.getTranslation("Todos") : produtoSelecionado.getDescription();
+                String title = "ProjetoZika - " + Methods.getTranslation("Produtos");
                 String filename = "ProjetoZika-Produtos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {
                     Methods.getTranslation("Codigo"),
@@ -232,7 +233,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                         };
                         data.add(row);
                     });
-                    ReportModel relatorio = new ReportModel(filename, header, infos, data);
+                    ReportModel relatorio = new ReportModel(filename, title, header, infos, data);
 
                     // gera o pdf
                     new PDFGenerator(relatorio, this);

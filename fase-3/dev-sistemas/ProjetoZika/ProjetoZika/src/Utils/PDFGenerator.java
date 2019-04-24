@@ -45,6 +45,7 @@ public final class PDFGenerator {
     private final String infos[];
     private final int cols;
     private final ArrayList<String[]> data;
+    private final String title;
     
     /**
      * Gera o relatório em PDF
@@ -53,6 +54,7 @@ public final class PDFGenerator {
      */
     public PDFGenerator(ReportModel report, JPanel context) {
         this.filename = report.getFilename();
+        this.title = report.getTitle();
         this.document = new Document();
         this.fileChooser = new JFileChooser();
         this.context = context;
@@ -118,7 +120,7 @@ public final class PDFGenerator {
             top.addCell(logo);
             
             // add/style text
-            PdfPCell c1 = new PdfPCell(new Phrase("ProjetoZika - " + Methods.getTranslation("Pedidos")));
+            PdfPCell c1 = new PdfPCell(new Phrase(title));
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             c1.setBorder(0);
             top.addCell(c1);

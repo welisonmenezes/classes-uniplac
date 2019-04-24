@@ -249,6 +249,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                 String infoProduto = (produtoSelecionado == null) ? Methods.getTranslation("Todos") : produtoSelecionado.getDescription();
                 String infoStatus = (statusSelecionado.equals("")) ? Methods.getTranslation("Todos") : statusSelecionado;
                 String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
+                String title = "ProjetoZika - " + Methods.getTranslation("Pedidos");
                 String header[] = {
                     Methods.getTranslation("Codigo"),
                     Methods.getTranslation("Solicitante"),
@@ -284,7 +285,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                         };
                         data.add(row);
                     });
-                    ReportModel relatorio = new ReportModel(filename, header, infos, data);
+                    ReportModel relatorio = new ReportModel(filename, title, header, infos, data);
 
                     // gera o pdf
                     new PDFGenerator(relatorio, this);
