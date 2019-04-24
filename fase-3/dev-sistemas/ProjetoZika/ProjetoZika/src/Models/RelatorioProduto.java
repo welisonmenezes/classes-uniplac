@@ -6,8 +6,8 @@
 package Models;
 
 /**
- *
- * @author welis
+ * Modelo para cada item do Relatório de produtos
+ * @author welison
  */
 public class RelatorioProduto {
     private int codigo;

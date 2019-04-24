@@ -82,10 +82,13 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         fornecedorDao = new FornecedorDAO();
         fornecedores = new ArrayList<>();
         
-        addCamposPedidos();
+        addCamposProdutos();
     }
     
-    private void addCamposPedidos() {
+    /**
+     * Cria e estiliza os elementos da tela
+     */
+    private void addCamposProdutos() {
         setBackground(new Color(27, 28, 29));
         setLayout(new AbsoluteLayout());
         
@@ -118,7 +121,6 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         };
         add(sfornecedor, new AbsoluteConstraints(20, 90, -1, -1));
         
-        
         lproduto = new JLabel(Methods.getTranslation("Produto"));
         Styles.defaultLabel(lproduto);
         add(lproduto, new AbsoluteConstraints(340, 60, -1, -1));
@@ -141,7 +143,6 @@ public class RelatorioProdutos extends javax.swing.JPanel {
             }
         };
         add(sproduto, new AbsoluteConstraints(340, 90, -1, -1));
-        
         
         ldatafrom = new JLabel(Methods.getTranslation("De"));
         Styles.defaultLabel(ldatafrom);
@@ -170,7 +171,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         edatato.setPreferredSize( new Dimension( 300, 20 ) );
         add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
         
-        
+        // action para gerar relatório
         btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 250, -1, -1));
@@ -203,15 +204,15 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                 String header[] = {
                     Methods.getTranslation("Codigo"),
                     Methods.getTranslation("Produto"),
-                    "Entrada",
-                    "Saída",
-                    "Estoque Atual",
+                    Methods.getTranslation("Entrada"),
+                    Methods.getTranslation("Saida"),
+                    Methods.getTranslation("EstoqueAtual"),
                     Methods.getTranslation("Fornecedores")
                 };
                 String infos[] = {
                     Methods.getTranslation("Fornecedor") + ": " + infoFornecedor,
                     Methods.getTranslation("Produto") + ": " + infoProduto,
-                    Methods.getTranslation("Periodo") + "Período: "
+                    Methods.getTranslation("Periodo") + ": "
                         + Methods.getTranslation("De") + " "+ params.getProperty("dataDe", "") +" "
                         + Methods.getTranslation("Ate") + " " + params.getProperty("dataAte", "")
                 };

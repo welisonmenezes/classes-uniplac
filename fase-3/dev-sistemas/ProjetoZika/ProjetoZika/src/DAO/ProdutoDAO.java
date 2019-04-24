@@ -251,6 +251,11 @@ public class ProdutoDAO {
         return sql;
     }
     
+    /**
+     * constrói a query baseado nos dados parâmetros e faz a consulta para o relatório de produtos
+     * @param params os parâmetros de filtro e paginação
+     * @return Uma lista de RelatorioProduto
+     */
     public ArrayList<RelatorioProduto> relatorioProduto(Properties params) {
         
         String dataDe = params.getProperty("dataDe", "");
@@ -260,7 +265,7 @@ public class ProdutoDAO {
         
         String sql = "SELECT produtos.Id AS 'codigo', "
                 + "CONCAT(produtos.Nome, '/', produtos.Unidade) AS 'produto', "
-                + "GROUP_CONCAT(DISTINCT(fornecedores.Nome) SEPARATOR '\n') AS 'fornecedores', "
+                + "GROUP_CONCAT(DISTINCT(fornecedores.Nome) SEPARATOR '\n\n') AS 'fornecedores', "
                 + "(SELECT SUM(notasfiscaisprodutos.Quantidade) FROM notasfiscaisprodutos WHERE notasfiscaisprodutos.ProdutoId = produtos.Id) AS 'entrada', "
                 + "(SELECT SUM(QuantidadeAprovada) from pedidosprodutos WHERE pedidosprodutos.ProdutoId = produtos.Id) AS 'saida', "
                 + "estoque.Total AS 'estoqueAtual' "

@@ -215,6 +215,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         edatato.setPreferredSize( new Dimension( 300, 20 ) );
         add(edatato, new AbsoluteConstraints(340, 300, -1, -1));
         
+        // action para gerar relatório
         btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
         Styles.defaultButton(btnRelatorioPedido, 300);
         add(btnRelatorioPedido, new AbsoluteConstraints(340, 360, -1, -1));
@@ -262,7 +263,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                     Methods.getTranslation("Aprovador") + ": " + infoAprovador,
                     Methods.getTranslation("Produto") + ": " + infoProduto,
                     Methods.getTranslation("Status") + ": " + infoStatus,
-                    Methods.getTranslation("Periodo") + "Período: "
+                    Methods.getTranslation("Periodo") + ": "
                         + Methods.getTranslation("De") + " "+ params.getProperty("dataDe", "") +" "
                         + Methods.getTranslation("Ate") + " " + params.getProperty("dataAte", "")
                 };
