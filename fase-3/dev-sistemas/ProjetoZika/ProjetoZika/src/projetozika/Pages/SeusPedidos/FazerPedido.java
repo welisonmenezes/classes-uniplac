@@ -110,6 +110,7 @@ public class FazerPedido extends Templates.BaseFrame {
     private void initPage(String title) {
         
         AccessibilityManager.setAccessibility(this);
+        setTitle(title);
         
         // carrega os dados
         pedidoDao = new PedidoDAO();

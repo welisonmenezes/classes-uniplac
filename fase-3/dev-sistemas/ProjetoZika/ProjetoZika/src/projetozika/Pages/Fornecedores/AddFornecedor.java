@@ -104,6 +104,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     private void initPage(String title) {
         
         AccessibilityManager.setAccessibility(this);
+        setTitle(title);
         
         // cria objetos para carregar dados posteriormente
         fornecedorDao = new FornecedorDAO();

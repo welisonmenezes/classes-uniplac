@@ -132,6 +132,7 @@ public class AddUsuario extends Templates.BaseFrame {
     private void initPage(String title) {
         
         AccessibilityManager.setAccessibility(this);
+        setTitle(title);
         
         // cria objetos para carregar dados posteriormente
         usuarioDao = new UsuarioDAO();

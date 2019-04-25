@@ -93,6 +93,7 @@ public class EditarPedido extends Templates.BaseFrame {
     private void initPage(String title) {
         
         AccessibilityManager.setAccessibility(this);
+        setTitle(title);
         
         // adiciona elementos na tela
         initComponents();

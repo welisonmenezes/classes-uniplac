@@ -64,7 +64,8 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         initComponents();
         Styles.internalFrame(this, 280, 360);
         createBaseLayout();
-        addTopContent("Normalizar Estoque");
+        addTopContent(Methods.getTranslation("NormalizarEstoque"));
+        setTitle(Methods.getTranslation("NormalizarEstoque"));
         addCenterContent();
     }
     

@@ -44,6 +44,7 @@ public class AvisoQuantidade extends Templates.BaseFrame {
     private void initPage(String title) {
         
         AccessibilityManager.setAccessibility(this);
+        setTitle(title);
         
         // carrega os elementos e o design da tela
         initComponents();
