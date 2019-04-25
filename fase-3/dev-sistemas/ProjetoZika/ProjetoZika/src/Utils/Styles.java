@@ -65,6 +65,20 @@ public class Styles {
                 btn.setContentAreaFilled(false);
             }
         });
+        // focus event
+        btn.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                btn.setForeground(new Color(0, 0, 0));
+                btn.setContentAreaFilled(true);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                btn.setForeground(new Color(8, 253, 216));
+                btn.setContentAreaFilled(false);
+            }
+        });
     }
     
     /**
@@ -111,7 +125,7 @@ public class Styles {
         field.setCaretColor(new Color(255, 255, 255));
         field.setOpaque(false);
         field.setPreferredSize(new Dimension(200, 39));
-        
+        // focus event
         field.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -147,7 +161,7 @@ public class Styles {
         field.setOpaque(false);
         panel.setViewportView(field);
         panel.setPreferredSize( new Dimension( 200, 80 ) );
-        
+        // focus event
         field.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -171,7 +185,7 @@ public class Styles {
         fDate.getDateEditor().getUiComponent().setBackground(new Color(55, 57, 59));
         fDate.getDateEditor().getUiComponent().setForeground(new Color(255, 255, 255));
         fDate.setPreferredSize(new Dimension(200, 39));
-        
+        // focus event
         fDate.getDateEditor().getUiComponent().addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -290,6 +304,18 @@ public class Styles {
         btn.setPreferredSize(new Dimension(35, 35));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa.png")));
+        // focus event
+        btn.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa-hover.png")));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                btn.setIcon(new ImageIcon(btn.getClass().getResource("/sources/lupa.png")));
+            }
+        });
     }
     
     /**
@@ -297,11 +323,23 @@ public class Styles {
      * @param btn o JButton a ser estilizado
      * @param source o caminho/nome do arquivo
      */
-    public static void iconButton(JButton btn, String source) {
+    public static void iconButton(JButton btn, String source, String hoverSource) {
         btn.setContentAreaFilled(false);
         btn.setPreferredSize(new Dimension(30, 30));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.setIcon(new ImageIcon(btn.getClass().getResource(source)));
+        // focus event
+        btn.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                btn.setIcon(new ImageIcon(btn.getClass().getResource(hoverSource)));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                btn.setIcon(new ImageIcon(btn.getClass().getResource(source)));
+            }
+        });
     }
     
     /**

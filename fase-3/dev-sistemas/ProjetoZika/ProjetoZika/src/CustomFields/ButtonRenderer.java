@@ -1,6 +1,7 @@
 package CustomFields;
 
 import Utils.Methods;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
@@ -18,13 +19,13 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
     public ButtonRenderer() {
         setOpaque(true);
         setPreferredSize(new Dimension(35, 35));
-        
     }
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
             boolean isSelected, boolean hasFocus, int row, int column) {
 
+        // change styles during select
         if (isSelected) {
             setForeground(table.getSelectionForeground());
             setBackground(table.getSelectionBackground());
@@ -58,6 +59,13 @@ public class ButtonRenderer extends JButton implements TableCellRenderer {
         } else {
             setEnabled(true);
             setVisible(true);
+        }
+        
+        // change color during focus
+        if (hasFocus) {
+            setBackground(new Color(8, 253, 216));
+        } else {
+            setBackground(UIManager.getColor("Button.background"));
         }
         
         //setText(value.toString());

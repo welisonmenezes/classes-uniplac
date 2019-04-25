@@ -62,9 +62,9 @@ public class Menu extends javax.swing.JPanel {
         Styles.menuButton(bPerfil);
         Styles.menuButton(bRelatorios);
         
-        Styles.iconButton(logout, "/sources/logout.png");
-        Styles.iconButton(bHelp, "/sources/help.png");
-        Styles.iconButton(bInfo, "/sources/information.png");
+        Styles.iconButton(logout, "/sources/logout.png", "/sources/logout-hover.png");
+        Styles.iconButton(bHelp, "/sources/help.png", "/sources/help-hover.png");
+        Styles.iconButton(bInfo, "/sources/information.png", "/sources/information-hover.png");
         
         pLinks.setOpaque(false);
         

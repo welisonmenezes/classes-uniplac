@@ -95,7 +95,7 @@ public class Perfil extends Templates.BaseLayout {
             {Methods.getTranslation("Permissao"), usuario.getPermissao()},
             {Methods.getTranslation("DataDeNascimento"), DateHandler.getFriendlyBirthday((usuario.getDataNascimento()))},
             {Methods.getTranslation("Login"), usuario.getLogin()},
-            {Methods.getTranslation("Senha"), usuario.getSenha()}
+            {Methods.getTranslation("Senha"), "*********"}
         };
         tableModel = new DefaultTableModel(data, colunas) {
             @Override
