@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utils;
 
 import java.awt.Component;
@@ -203,25 +198,25 @@ public class Methods {
      */
     public static void disabledFields(JComponent wrap) {
         Component[] comps = wrap.getComponents();
-        for (int i = 0; i < comps.length; i++) {
+        for (Component comp1 : comps) {
             //System.out.println(comps[i]);
-            if(comps[i] instanceof JScrollPane) {
-                JScrollPane comp = (JScrollPane) comps[i];
+            if (comp1 instanceof JScrollPane) {
+                JScrollPane comp = (JScrollPane) comp1;
                 disabledFields(comp);
-            } else if(comps[i] instanceof JViewport) {
-                JViewport comp = (JViewport) comps[i];
+            } else if (comp1 instanceof JViewport) {
+                JViewport comp = (JViewport) comp1;
                 disabledFields(comp);
-            } else if (comps[i] instanceof JTextField) {
-                JTextField comp = (JTextField)comps[i];
+            } else if (comp1 instanceof JTextField) {
+                JTextField comp = (JTextField) comp1;
                 comp.setEditable(false);
-            } else if (comps[i] instanceof JTextArea) {
-                JTextArea comp = (JTextArea)comps[i];
+            } else if (comp1 instanceof JTextArea) {
+                JTextArea comp = (JTextArea) comp1;
                 comp.setEditable(false);
-            } else if (comps[i] instanceof JButton) {
-                JButton comp = (JButton)comps[i];
+            } else if (comp1 instanceof JButton) {
+                JButton comp = (JButton) comp1;
                 comp.setVisible(false);
             } else {
-                comps[i].setEnabled(false);
+                comp1.setEnabled(false);
             }
         }
     }

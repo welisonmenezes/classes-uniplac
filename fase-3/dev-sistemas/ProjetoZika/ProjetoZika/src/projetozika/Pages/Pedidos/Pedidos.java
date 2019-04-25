@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Pedidos;
 
 import Config.Environment;
@@ -10,6 +5,7 @@ import DAO.PedidoDAO;
 import Models.Pedido;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
+import Templates.BaseLayout;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.Methods;
@@ -40,7 +36,7 @@ import javax.swing.table.TableColumn;
  * Tela de listagem do pedidos
  * @author Welison
  */
-public class Pedidos extends Templates.BaseLayout {
+public class Pedidos extends BaseLayout {
 
     private JDateChooser fData;
     private JTextField fNome;
@@ -59,7 +55,7 @@ public class Pedidos extends Templates.BaseLayout {
      */
     public Pedidos(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params; 
         initPage();
     }
@@ -147,10 +143,7 @@ public class Pedidos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 4 && column != 5) {
-                   return false;
-               }
-               return true;
+               return !(column != 4 && column != 5);
             }
             @Override
             public Class<?> getColumnClass(int column) {

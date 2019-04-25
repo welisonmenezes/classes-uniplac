@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages;
 
+import Templates.BaseFrame;
 import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
@@ -20,7 +16,7 @@ import javax.swing.JScrollPane;
  * Tela de ajuda
  * @author welison
  */
-public class Ajuda extends Templates.BaseFrame {
+public class Ajuda extends BaseFrame {
     private JScrollPane barraRolagem;
     private JPanel wrapText;
     private JLabel textContainer;

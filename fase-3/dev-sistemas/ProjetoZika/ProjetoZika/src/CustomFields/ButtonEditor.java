@@ -3,7 +3,6 @@ package CustomFields;
 import Utils.Methods;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,11 +23,8 @@ public class ButtonEditor extends DefaultCellEditor {
         super(checkBox);
         button = new JButton();
         button.setOpaque(true);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fireEditingStopped();
-            }
+        button.addActionListener((ActionEvent e) -> {
+            fireEditingStopped();
         });
     }
 
@@ -62,7 +58,7 @@ public class ButtonEditor extends DefaultCellEditor {
             button.setIcon(new ImageIcon(this.getClass().getResource("/sources/cancel.png")));
         }
         
-        label = (value == null) ? "" : value.toString();
+        label = value.toString();
         //button.setText(label);
         button.setActionCommand(label);
         isPushed = true;

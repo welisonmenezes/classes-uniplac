@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Fornecedores;
 
 import CustomFields.MaxSize;
@@ -10,6 +5,7 @@ import DAO.FornecedorDAO;
 import Models.Fornecedor;
 import CustomFields.ComboItem;
 import CustomFields.MaskFactory;
+import Templates.BaseFrame;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -34,7 +30,7 @@ import projetozika.Pages.NotasFiscais.AddNotaFiscal;
  * Tela de add/ver/editar fornecedor
  * @author Welison
  */
-public class AddFornecedor extends Templates.BaseFrame {
+public class AddFornecedor extends BaseFrame {
     private JPanel bg;
     private JTextField fname;
     private JLabel lname;
@@ -55,7 +51,7 @@ public class AddFornecedor extends Templates.BaseFrame {
     * @param params parâmetros de filtro e paginação
     */
     public AddFornecedor(Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = "add";
         this.params = params;
         initPage(Methods.getTranslation("AdicionarFornecedor"));
@@ -67,7 +63,7 @@ public class AddFornecedor extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public AddFornecedor(JPanel panelCaller, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = "nota";
         this.params = params;
         initPage(Methods.getTranslation("AdicionarFornecedorPelaNota"));
@@ -80,7 +76,7 @@ public class AddFornecedor extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public AddFornecedor(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         

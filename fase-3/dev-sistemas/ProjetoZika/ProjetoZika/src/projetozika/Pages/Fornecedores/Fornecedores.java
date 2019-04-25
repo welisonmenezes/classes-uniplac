@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Fornecedores;
 
 import DAO.FornecedorDAO;
@@ -10,6 +5,7 @@ import Models.Fornecedor;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import CustomFields.MaskFactory;
+import Templates.BaseLayout;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -42,7 +38,7 @@ import javax.swing.table.TableColumn;
  * Tela de listagem do fornecedores
  * @author Welison
  */
-public class Fornecedores extends Templates.BaseLayout {
+public class Fornecedores extends BaseLayout {
     
     private JButton addMore;
     private JFormattedTextField fCnpj;
@@ -62,7 +58,7 @@ public class Fornecedores extends Templates.BaseLayout {
      */
     public Fornecedores(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         
         initPage();
@@ -153,10 +149,7 @@ public class Fornecedores extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 4 && column != 5 && column != 6) {
-                   return false;
-               }
-               return true;
+               return !(column != 4 && column != 5 && column != 6);
             }
             @Override
             public Class<?> getColumnClass(int column) {

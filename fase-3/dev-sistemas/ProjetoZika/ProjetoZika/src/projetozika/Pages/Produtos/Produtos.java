@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
@@ -10,6 +5,7 @@ import DAO.ProdutoDAO;
 import Models.Produto;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
+import Templates.BaseLayout;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
@@ -46,7 +42,7 @@ import javax.swing.table.TableColumn;
  * Tela de listagem do produtos
  * @author Welison
  */
-public class Produtos extends Templates.BaseLayout {
+public class Produtos extends BaseLayout {
 
     private JButton addMore;
     private JTextField fNome;
@@ -67,7 +63,7 @@ public class Produtos extends Templates.BaseLayout {
      */
     public Produtos(Properties params) {
         super();
-        self = this;
+        self = getInstance();
         this.params = params;
         initPage();
     }
@@ -159,10 +155,7 @@ public class Produtos extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 5 && column != 6 && column != 7) {
-                   return false;
-               }
-               return true;
+               return !(column != 5 && column != 6 && column != 7);
             }
             @Override
             public Class<?> getColumnClass(int column) {

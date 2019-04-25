@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Produtos;
 
 import Config.Environment;
@@ -11,6 +6,7 @@ import DAO.ProdutoDAO;
 import Models.Produto;
 import CustomFields.ComboItem;
 import DAO.EstoqueDAO;
+import Templates.BaseFrame;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -41,7 +37,7 @@ import projetozika.Pages.NotasFiscais.SelecionarProduto;
  * Tela de add/ver/editar produto
  * @author Welison
  */
-public class AddProduto extends Templates.BaseFrame {
+public class AddProduto extends BaseFrame {
 
     private JPanel bg;
     private JTextField fnome;
@@ -66,7 +62,7 @@ public class AddProduto extends Templates.BaseFrame {
     * @param params parâmetros de filtro e paginação
     */
     public AddProduto(Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = "add";
         this.params = params;
         initPage(Methods.getTranslation("AdicionarProduto"));
@@ -78,7 +74,7 @@ public class AddProduto extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public AddProduto(JPanel panelCaller, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         this.mode = "nota";
         
@@ -93,7 +89,7 @@ public class AddProduto extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public AddProduto(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         this.id = id;

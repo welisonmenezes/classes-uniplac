@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CustomFields;
 
 import static Utils.Styles.defaultComboBox;
@@ -131,8 +126,8 @@ public class SuggestionsBox {
      */
     private void setSelectedItem(String value) {
         Combo.setSelectedIndex(0);
-        for (int i = 0; i < Model.size(); i++) {
-            ComboItem item = (ComboItem) Model.get(i);
+        for (ComboItem Model1 : Model) {
+            ComboItem item = (ComboItem) Model1;
             if (value.equals(item.getDescription())) {
                 Combo.setSelectedItem(item);
                 break;

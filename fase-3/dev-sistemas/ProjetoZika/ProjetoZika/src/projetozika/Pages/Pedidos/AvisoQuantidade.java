@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Pedidos;
 
 import Models.EstoqueAviso;
+import Templates.BaseFrame;
 import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
@@ -22,7 +18,7 @@ import org.jfree.ui.tabbedui.VerticalLayout;
  * Janela pra informar pedido que excede quantidade em estoque
  * @author welison
  */
-public class AvisoQuantidade extends Templates.BaseFrame {
+public class AvisoQuantidade extends BaseFrame {
     
     private JScrollPane bgScroll;
     private JPanel bg;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.NotasFiscais;
 
 import CustomFields.FormataDecimal;
@@ -34,7 +29,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
  * Tela para selecionar produto para a nota fiscal
  * @author Welison
  */
-public class SelecionarProduto extends javax.swing.JPanel {
+public class SelecionarProduto extends JPanel {
     
     private final JPanel self;
     private JLabel lnome;
@@ -66,16 +61,24 @@ public class SelecionarProduto extends javax.swing.JPanel {
      */
     public SelecionarProduto(JFrame caller) {
         initComponents();
-        this.self = this;
+        this.self = getInstance();
         this.caller = (AddNotaFiscal)caller;
         
-        Styles.setBorderTitle(this, Methods.getTranslation("Adicionar/SelecionarProduto"));
+        Styles.setBorderTitle(getInstance(), Methods.getTranslation("Adicionar/SelecionarProduto"));
         
         addElements();
         
         // carrega os dados
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
+    }
+    
+    /**
+     * retorna a instância atual
+     * @return a instância atual do JPanel
+     */
+    private JPanel getInstance() {
+        return this;
     }
     
     /**

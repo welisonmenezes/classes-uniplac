@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.NotasFiscais;
 
 import Config.Environment;
@@ -17,6 +12,7 @@ import CustomFields.ComboItem;
 import CustomFields.MaskFactory;
 import CustomFields.SuggestionsBox;
 import DAO.EstoqueDAO;
+import Templates.BaseFrame;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
@@ -50,7 +46,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela de add/ver/editar nota fiscal
  * @author Welison
  */
-public class AddNotaFiscal extends Templates.BaseFrame {
+public class AddNotaFiscal extends BaseFrame {
     private JScrollPane bgScroll;
     private JPanel bg;
     private JLabel lnumero;
@@ -89,7 +85,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public AddNotaFiscal(Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = "add";
         this.params = params;
         
@@ -103,7 +99,7 @@ public class AddNotaFiscal extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação 
      */
     public AddNotaFiscal(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         this.id = id;

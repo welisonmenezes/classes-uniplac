@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages;
 
+import Templates.BaseLayout;
 import Utils.Methods;
 
 /**
  * Tela de erro
  * @author Welison
  */
-public class NotFound extends Templates.BaseLayout {
+public class NotFound extends BaseLayout {
 
     /**
      * Cria a tela de erro

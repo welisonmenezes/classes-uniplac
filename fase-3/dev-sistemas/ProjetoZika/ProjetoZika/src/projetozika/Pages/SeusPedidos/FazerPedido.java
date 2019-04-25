@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.SeusPedidos;
 
 import Config.Environment;
@@ -16,6 +11,7 @@ import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
 import CustomFields.ComboItem;
 import CustomFields.SuggestionsBox;
+import Templates.BaseFrame;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -47,7 +43,7 @@ import javax.swing.table.TableColumn;
  *  Tela de fazer/ver/editar pedido
  * @author Welison
  */
-public class FazerPedido extends Templates.BaseFrame {
+public class FazerPedido extends BaseFrame {
     private JPanel bg;
     private JTable tabela;
     private DefaultTableModel tableModel;
@@ -72,7 +68,7 @@ public class FazerPedido extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public FazerPedido(Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = "add";
         this.params = params;
 
@@ -86,7 +82,7 @@ public class FazerPedido extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public FazerPedido(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         this.id = id;
@@ -210,7 +206,7 @@ public class FazerPedido extends Templates.BaseFrame {
                     if (produto != null && produto.getId() > 0) {
                         Usuario usuario = Environment.getLoggedUser();
                         if (usuario != null && usuario.getId() > 0) {
-                            Pedido pedido = new Pedido ("", Methods.getTranslation("Pendente"), usuario);
+                            pedido = new Pedido ("", Methods.getTranslation("Pendente"), usuario);
                             PedidoProduto pp = new PedidoProduto(produto, pedido, 1);
                             pedidosProdutos.add(pp);
                             updateCenterContent();
@@ -236,13 +232,7 @@ public class FazerPedido extends Templates.BaseFrame {
      * @return true se existir produto com o dado id
      */
     private boolean hasProduct(int id) {
-        for (int i = 0; i < pedidosProdutos.size(); i++) {
-            PedidoProduto pp = pedidosProdutos.get(i);
-            if (id == pp.getProduto().getId()) {
-                return true;
-            }
-        }
-        return false;
+        return pedidosProdutos.stream().anyMatch((pp) -> (id == pp.getProduto().getId()));
     }
     
     /**
@@ -336,8 +326,7 @@ public class FazerPedido extends Templates.BaseFrame {
                 String newQtd = Methods.selectedTableItemValue(tabela, 3);
                 String idTable = Methods.selectedTableItemId(tabela);
                 // atualiza a quantidade do produto edito na tabela
-                for (int i = 0; i < pedidosProdutos.size(); i++) {
-                    PedidoProduto pp = pedidosProdutos.get(i);
+                for (PedidoProduto pp : pedidosProdutos) {
                     int idModel = pp.getProduto().getId();
                     if (idTable.equals(""+idModel)) {
                         pp.setQuantidade(Integer.parseInt(newQtd));

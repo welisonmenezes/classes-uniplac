@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
@@ -10,6 +5,7 @@ import CustomFields.MaskFactory;
 import CustomFields.MaxSize;
 import DAO.UsuarioDAO;
 import Models.Usuario;
+import Templates.BaseFrame;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
@@ -42,7 +38,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela para add/ver/editar usuário
  * @author Welison
  */
-public class AddUsuario extends Templates.BaseFrame {
+public class AddUsuario extends BaseFrame {
 
     private JPanel bg;
     private JTextField fnome;
@@ -92,7 +88,7 @@ public class AddUsuario extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public AddUsuario(Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = "add";
         this.params = params;
         initPage(Methods.getTranslation("AdicionarUsuario"));
@@ -105,7 +101,7 @@ public class AddUsuario extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação 
      */
     public AddUsuario(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         this.id = id;

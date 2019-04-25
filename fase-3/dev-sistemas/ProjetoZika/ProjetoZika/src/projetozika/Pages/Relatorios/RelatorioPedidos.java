@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Relatorios;
 
 import Config.Environment;
@@ -42,7 +37,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela para gerar relatórios de pedidos
  * @author welison
  */
-public class RelatorioPedidos extends javax.swing.JPanel {
+public class RelatorioPedidos extends JPanel {
     private JLabel lusuario;
     private JPanel susuario;
     private JTextField fusuario;
@@ -85,7 +80,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
      */
     public RelatorioPedidos() {
         initComponents();
-        this.self = this;
+        this.self = getInstance();
         this.params = new Properties();
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
@@ -95,6 +90,14 @@ public class RelatorioPedidos extends javax.swing.JPanel {
         pedidoDao = new PedidoDAO();
         
         addCamposPedidos();
+    }
+    
+    /**
+     * retorna a instância atual
+     * @return a instância atual do JPanel
+     */
+    private JPanel getInstance() {
+        return this;
     }
     
     /**
@@ -249,7 +252,7 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                 String infoProduto = (produtoSelecionado == null) ? Methods.getTranslation("Todos") : produtoSelecionado.getDescription();
                 String infoStatus = (statusSelecionado.equals("")) ? Methods.getTranslation("Todos") : statusSelecionado;
                 String filename = "ProjetoZika-Pedidos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
-                String title = "ProjetoZika - " + Methods.getTranslation("Pedidos");
+                String tituloRelatorio = "ProjetoZika - " + Methods.getTranslation("Pedidos");
                 String header[] = {
                     Methods.getTranslation("Codigo"),
                     Methods.getTranslation("Solicitante"),
@@ -285,10 +288,10 @@ public class RelatorioPedidos extends javax.swing.JPanel {
                         };
                         data.add(row);
                     });
-                    ReportModel relatorio = new ReportModel(filename, title, header, infos, data);
+                    ReportModel relatorio = new ReportModel(filename, tituloRelatorio, header, infos, data);
 
                     // gera o pdf
-                    new PDFGenerator(relatorio, this);
+                    PDFGenerator pdfGenerator = new PDFGenerator(relatorio, this);
                 } else {
                     // mensagem de erro
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("NenhumDadoEncontrado"));

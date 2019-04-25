@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Pedidos;
 
 import DAO.PedidoDAO;
@@ -10,6 +5,7 @@ import DAO.UsuarioDAO;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Usuario;
+import Templates.BaseFrame;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -40,7 +36,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela de entregar pedido
  * @author Welison
  */
-public class EntregarPedido extends Templates.BaseFrame {
+public class EntregarPedido extends BaseFrame {
 
     private JTable tabela;
     private DefaultTableModel tableModel;
@@ -69,7 +65,7 @@ public class EntregarPedido extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public EntregarPedido(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CustomFields;
 
 import java.awt.Component;
@@ -23,13 +18,10 @@ public class ItemRenderer extends BasicComboBoxRenderer {
         if (value != null) {
             ComboItem item = (ComboItem)value;
             setText( item.getDescription());
+            if (index == -1) {
+                setText(item.getId() + "");
+            }
         }
-
-        if (index == -1) {
-            ComboItem item = (ComboItem)value;
-            setText(item.getId() + "");
-        }
-        
         return this;
     }
 }

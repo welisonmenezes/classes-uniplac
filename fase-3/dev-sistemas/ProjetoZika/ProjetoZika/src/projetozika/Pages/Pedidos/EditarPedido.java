@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Pedidos;
 
 import Config.Environment;
@@ -14,6 +9,7 @@ import Models.EstoqueAviso;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Usuario;
+import Templates.BaseFrame;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -42,7 +38,7 @@ import javax.swing.table.TableColumn;
  *  Tela de editar/ver pedido
  * @author Welison
  */
-public class EditarPedido extends Templates.BaseFrame {
+public class EditarPedido extends BaseFrame {
     private JPanel bg;
     private JTable tabela;
     private DefaultTableModel tableModel;
@@ -64,7 +60,7 @@ public class EditarPedido extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public EditarPedido(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.mode = mode;
         this.params = params;
         
@@ -198,10 +194,7 @@ public class EditarPedido extends Templates.BaseFrame {
                 if (mode.equals("view")) {
                     return false;
                 } else {
-                    if (column != 3){
-                        return false;
-                    }
-                    return true;
+                    return column == 3;
                 }
             }
         };
@@ -251,8 +244,7 @@ public class EditarPedido extends Templates.BaseFrame {
         int row = tabela.getSelectedRow();
         if (row != -1) {
             String idTable = tabela.getValueAt(row, 0).toString();
-            for (int i = 0; i < pedidosProdutos.size(); i++) {
-                PedidoProduto pp = pedidosProdutos.get(i);
+            for (PedidoProduto pp : pedidosProdutos) {
                 int idModel = pp.getId();
                 if (idTable.equals(""+idModel)) {
                     if (value.equals("")) value = "0";

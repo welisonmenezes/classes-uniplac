@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CustomFields;
 
 import javax.swing.text.AttributeSet;
@@ -14,13 +9,14 @@ import javax.swing.text.PlainDocument;
  * @author Welison
  */
 public class MaxSize extends PlainDocument {
-    private int maxSize;
+    private final int maxSize;
     
     public MaxSize(int maxSize) {  
         super();  
         this.maxSize = maxSize;  
     }
     
+    @Override
     public void insertString(int offset, String str, AttributeSet attr)  
                     throws BadLocationException {
         

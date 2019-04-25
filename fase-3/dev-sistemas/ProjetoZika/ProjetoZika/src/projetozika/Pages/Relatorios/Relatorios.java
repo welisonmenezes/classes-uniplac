@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Relatorios;
 
+import Templates.BaseLayout;
 import Utils.Methods;
 import java.awt.BorderLayout;
 import java.util.Properties;
@@ -15,7 +11,7 @@ import javax.swing.JTabbedPane;
  * Tela de listagem do fornecedores
  * @author Welison
  */
-public class Relatorios extends Templates.BaseLayout {
+public class Relatorios extends BaseLayout {
 
     private JTabbedPane jTabbedPane1;
     private JPanel panelPedidos;
@@ -27,7 +23,7 @@ public class Relatorios extends Templates.BaseLayout {
      */
     public Relatorios(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         
         initComponents();

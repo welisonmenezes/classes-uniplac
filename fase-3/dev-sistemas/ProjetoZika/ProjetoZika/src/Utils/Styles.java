@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utils;
 
 import com.toedter.calendar.JDateChooser;
@@ -322,6 +317,7 @@ public class Styles {
      * Estliza o JButton de busca da aplicação
      * @param btn o JButton a ser estilizado
      * @param source o caminho/nome do arquivo
+     * @param hoverSource o caminho/nome do arquivo do hover
      */
     public static void iconButton(JButton btn, String source, String hoverSource) {
         btn.setContentAreaFilled(false);

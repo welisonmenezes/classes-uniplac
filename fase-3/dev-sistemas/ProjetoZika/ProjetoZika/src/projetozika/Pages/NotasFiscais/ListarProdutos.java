@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.NotasFiscais;
 
 import Models.NotaFiscalProduto;
@@ -14,6 +9,7 @@ import java.awt.BorderLayout;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -23,7 +19,7 @@ import javax.swing.table.TableColumn;
  * panel de listar produtos da nota
  * @author Welison
  */
-public class ListarProdutos extends javax.swing.JPanel {
+public class ListarProdutos extends JPanel {
     
     private DefaultTableModel tableModel;
     private JTable tabela;
@@ -161,13 +157,7 @@ public class ListarProdutos extends javax.swing.JPanel {
      * @return true se existe, false se não
      */
     private boolean hasProduct(int id) {
-        for (int i = 0; i < notaProdutos.size(); i++) {
-            NotaFiscalProduto nfp = notaProdutos.get(i);
-            if (id == nfp.getProduto().getId()) {
-                return true;
-            }
-        }
-        return false;
+        return notaProdutos.stream().anyMatch((nfp) -> (id == nfp.getProduto().getId()));
     }
 
     /**

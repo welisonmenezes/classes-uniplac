@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package CustomFields;
 
 import javax.swing.text.AttributeSet;
@@ -89,15 +84,6 @@ public class FormataDecimal extends PlainDocument {
                 } else {
                     if (original.length() == 0) {
                         String vlPadrao = "";
-                        /*if (casasDecimais == 0) {
-                         vlPadrao = "0";
-                         } else if (casasDecimais == 1) {
-                         vlPadrao = "0.0";
-                         } else if (casasDecimais == 2) {
-                         vlPadrao = "0.00";
-                         } else if (casasDecimais == 3) {
-                         vlPadrao = "0.000";
-                         }*/
                         super.insertString(0, vlPadrao, a);
                     }
                 }

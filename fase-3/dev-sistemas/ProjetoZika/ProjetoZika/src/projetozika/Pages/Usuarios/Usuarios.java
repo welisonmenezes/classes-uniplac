@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Usuarios;
 
 import Config.Environment;
@@ -10,6 +5,7 @@ import DAO.UsuarioDAO;
 import Models.Usuario;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
+import Templates.BaseLayout;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -42,7 +38,7 @@ import javax.swing.table.TableColumn;
  * Tela de listagem de usuários
  * @author Welison
  */
-public class Usuarios extends Templates.BaseLayout {
+public class Usuarios extends BaseLayout {
     
     private JButton addMore;
     private JTextField fEmail;
@@ -63,7 +59,7 @@ public class Usuarios extends Templates.BaseLayout {
      */
     public Usuarios(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         
         initPage();
@@ -155,10 +151,7 @@ public class Usuarios extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 5 && column != 6 && column != 7) {
-                   return false;
-               }
-               return true;
+               return !(column != 5 && column != 6 && column != 7);
             }
             @Override
             public Class<?> getColumnClass(int column) {

@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Produtos;
 
 import CustomFields.FormataDecimal;
 import DAO.EstoqueDAO;
 import DAO.ProdutoDAO;
 import Models.Produto;
+import Templates.BaseFrame;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
 import Utils.Methods;
@@ -30,7 +26,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela para normalizar quantidade do produto no estoque
  * @author welison
  */
-public class NormalizaEstoque extends Templates.BaseFrame {
+public class NormalizaEstoque extends BaseFrame {
     private JPanel bg;
     private JLabel lprod;
     private JLabel lqtd;
@@ -49,11 +45,11 @@ public class NormalizaEstoque extends Templates.BaseFrame {
      * @param params parâmetros de filtro e paginação
      */
     public NormalizaEstoque(String id, String mode, Properties params) {
-        this.self = this;
+        this.self = getInstance();
         this.id = id;
         this.params = params;
         
-        AccessibilityManager.setAccessibility(this);
+        AccessibilityManager.setAccessibility(getInstance());
         
         // cria objetos para carregar dados posteriormente
         produtoDao = new ProdutoDAO();
@@ -62,7 +58,7 @@ public class NormalizaEstoque extends Templates.BaseFrame {
         
         // carrega os elementos e o design da tela
         initComponents();
-        Styles.internalFrame(this, 280, 360);
+        Styles.internalFrame(getInstance(), 280, 360);
         createBaseLayout();
         addTopContent(Methods.getTranslation("NormalizarEstoque"));
         setTitle(Methods.getTranslation("NormalizarEstoque"));

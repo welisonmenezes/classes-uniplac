@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika;
 
 import Utils.AccessibilityManager;
@@ -13,13 +8,14 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
  * A tela principal da aplicação
  * @author Welison
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends JFrame {
     
     private JPanel jBG; // container geral
     private JPanel jBODY; // container do conteúdo
@@ -35,7 +31,7 @@ public class Main extends javax.swing.JFrame {
         menu = new Menu(this);
         initLayout();
         
-        AccessibilityManager.setAccessibility(this);
+        AccessibilityManager.setAccessibility(getInstance());
         
         translation();
         
@@ -48,6 +44,14 @@ public class Main extends javax.swing.JFrame {
                 menuTray.optionsClosing();
             }
         });
+    }
+    
+    /**
+     * retorna a instância atual
+     * @return a instância atual do JFrame
+     */
+    private JFrame getInstance() {
+        return this;
     }
     
     /**
@@ -148,10 +152,8 @@ public class Main extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Main().setVisible(true);
         });
     }
     

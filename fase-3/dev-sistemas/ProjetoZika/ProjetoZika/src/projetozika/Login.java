@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika;
 
 import Config.Environment;
@@ -20,9 +15,9 @@ import javax.swing.JFrame;
  * Tela de login
  * @author Welison
  */
-public class Login extends javax.swing.JFrame {
+public class Login extends JFrame {
     
-    private Properties params;
+    private final Properties params;
     private final UsuarioDAO usuarioDao;
     private Usuario usuario;
 
@@ -41,7 +36,7 @@ public class Login extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
         // posiciona o frame na tela
-        Methods.positionFrameInCenter(this);
+        Methods.positionFrameInCenter(getInstance());
         
         // seta estilos aos elementos
         Styles.defaultButton(bentrar);
@@ -49,10 +44,18 @@ public class Login extends javax.swing.JFrame {
         Styles.defaultField(fsenha);
         
         // seta a acessibilidade
-        AccessibilityManager.setAccessibility(this);
+        AccessibilityManager.setAccessibility(getInstance());
         
         // Tradução
         translation();
+    }
+    
+    /**
+     * retorna a instância atual
+     * @return a instância atual do JFrame
+     */
+    private JFrame getInstance() {
+        return this;
     }
     
     /**
@@ -198,10 +201,8 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
         });
     }
     

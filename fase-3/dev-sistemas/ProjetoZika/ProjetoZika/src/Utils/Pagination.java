@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Utils;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -44,7 +40,7 @@ public class Pagination {
         this.pages = (int) pag;
         this.params = params;
         this.offset = Integer.parseInt(params.getProperty("offset", "0"));
-        this.page = Integer.parseInt(params.getProperty("page", "1"));;
+        this.page = Integer.parseInt(params.getProperty("page", "1"));
 
         Methods.clearStage(context);
         if (total > limit) {
@@ -118,7 +114,7 @@ public class Pagination {
     /**
      * Seta o estilo do link ativo da paginação
      */
-    public void updateActivePage() {
+    public final void updateActivePage() {
         
         offset = (page - 1) * (limit);
         params.setProperty("offset", offset + "");

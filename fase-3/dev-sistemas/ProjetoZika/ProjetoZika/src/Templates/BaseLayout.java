@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  * O Jpanel que é raíz de cada menu deve extende-la.
  * @author Welison
  */
-public class BaseLayout extends javax.swing.JPanel {
+public class BaseLayout extends JPanel {
     protected JPanel pTop;
     protected JPanel pCenter;
     protected JPanel pFilter;
@@ -37,6 +37,14 @@ public class BaseLayout extends javax.swing.JPanel {
         setBackground(new Color(37, 38, 39));
         setBorder(BorderFactory.createEmptyBorder(50, 25, 50, 25));
         setLayout(new BorderLayout());
+    }
+    
+    /**
+     * retorna a instância atual
+     * @return a instância atual do BaseFrame
+     */
+    protected final BaseLayout getInstance() {
+        return this;
     }
     
     /**

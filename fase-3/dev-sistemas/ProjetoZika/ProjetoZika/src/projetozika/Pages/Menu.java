@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages;
 
 import Config.Environment;
@@ -15,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Properties;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import projetozika.Login;
 import projetozika.Main;
@@ -23,7 +19,7 @@ import projetozika.Main;
  * O menu da aplicação
  * @author Welison
  */
-public class Menu extends javax.swing.JPanel {
+public class Menu extends JPanel {
     
     private final Main main;
     private final Properties params;
@@ -96,15 +92,15 @@ public class Menu extends javax.swing.JPanel {
      */
     private void addHotLinkToMenu() {
         
-        new AccessibilityManager(bDashboard,
-            "dashboard",
-            KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
-            params);
+        AccessibilityManager accessibilityManager = new AccessibilityManager(bDashboard,
+                "dashboard",
+                KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK),
+                params);
         
-        new AccessibilityManager(bPedidos,
-            "pedidos",
-            KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
-            params);
+        AccessibilityManager accessibilityManager1 = new AccessibilityManager(bPedidos,
+                "pedidos",
+                KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK),
+                params);
         
         new AccessibilityManager(bFornecedores, 
             "fornecedores",
@@ -140,6 +136,7 @@ public class Menu extends javax.swing.JPanel {
             "perfil",
             KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK),
             params) {
+                @Override
                 public void actionLinkMenuContext() {
                     params.clear();
                     Navigation.updateLayout(page, params);
@@ -148,20 +145,20 @@ public class Menu extends javax.swing.JPanel {
             }
                 .addContextMenuAddNew("editarPerfil", Methods.getTranslation("EditarPerfil"));
         
-        new AccessibilityManager(bRelatorios, 
-            "relatorios",
-            KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
-            params);
+        AccessibilityManager accessibilityManager2 = new AccessibilityManager(bRelatorios, 
+                "relatorios",
+                KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK),
+                params);
         
-        new AccessibilityManager(bHelp,
-            "ajuda",
-            KeyStroke.getKeyStroke("F1"),
-            params);
+        AccessibilityManager accessibilityManager3 = new AccessibilityManager(bHelp,
+                "ajuda",
+                KeyStroke.getKeyStroke("F1"),
+                params);
         
-        new AccessibilityManager(bInfo,
-            "sobre",
-            KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
-            params);
+        AccessibilityManager accessibilityManager4 = new AccessibilityManager(bInfo,
+                "sobre",
+                KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK),
+                params);
         
         new AccessibilityManager(logout,
             "",

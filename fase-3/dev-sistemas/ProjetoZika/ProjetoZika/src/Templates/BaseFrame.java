@@ -16,7 +16,7 @@ import javax.swing.JPanel;
  * As telas internas às telas raízes deve extende-la
  * @author Welison
  */
-public class BaseFrame extends javax.swing.JFrame{
+public class BaseFrame extends JFrame{
     protected JPanel pTop;
     protected JPanel pCenter;
     protected JPanel pFilter;
@@ -37,9 +37,16 @@ public class BaseFrame extends javax.swing.JFrame{
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
         
         // desabilita menu e componentes da tela principal
-        Methods.disableEnableRootAndMenuPanel(this);
+        Methods.disableEnableRootAndMenuPanel(getInstance());
     }
     
+    /**
+     * retorna a instância atual
+     * @return a instância atual do BaseFrame
+     */
+    protected final BaseFrame getInstance() {
+        return this;
+    }
     
     /**
      * Adiciona um título para o topo do grid

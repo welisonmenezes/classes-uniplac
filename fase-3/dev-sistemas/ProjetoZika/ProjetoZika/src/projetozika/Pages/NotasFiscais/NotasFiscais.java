@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.NotasFiscais;
-
 
 import DAO.NotaFiscalDAO;
 import Models.NotaFiscal;
@@ -13,6 +7,7 @@ import CustomFields.ButtonRenderer;
 import CustomFields.MaskFactory;
 import DAO.EstoqueDAO;
 import Models.NotaFiscalProduto;
+import Templates.BaseLayout;
 import Utils.DateHandler;
 import Utils.Dialogs;
 import Utils.AccessibilityManager;
@@ -48,7 +43,7 @@ import javax.swing.table.TableColumn;
  * Tela de listagem das notas fiscais
  * @author Welison
  */
-public class NotasFiscais extends Templates.BaseLayout {
+public class NotasFiscais extends BaseLayout {
 
     private JButton addMore;
     private JDateChooser fdata;
@@ -69,7 +64,7 @@ public class NotasFiscais extends Templates.BaseLayout {
      */
     public NotasFiscais(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         
         initPage();
@@ -163,10 +158,7 @@ public class NotasFiscais extends Templates.BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               if (column != 5 && column != 6 && column != 7) {
-                   return false;
-               }
-               return true;
+               return !(column != 5 && column != 6 && column != 7);
             }
             @Override
             public Class<?> getColumnClass(int column) {

@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Perfil;
 
 import Config.Environment;
 import Models.Usuario;
+import Templates.BaseLayout;
 import Utils.DateHandler;
 import Utils.Methods;
 import Utils.Navigation;
@@ -23,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  * Tela do perfil do usuário logado
  * @author Welison
  */
-public class Perfil extends Templates.BaseLayout {
+public class Perfil extends BaseLayout {
     
     private JButton btnEditar;
     private Usuario usuario;
@@ -34,7 +30,7 @@ public class Perfil extends Templates.BaseLayout {
      */
     public Perfil(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         
         initPage();

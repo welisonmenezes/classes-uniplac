@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages.Relatorios;
 
 import CustomFields.ComboItem;
@@ -39,7 +34,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela para gerar relatório de produtos
  * @author welison
  */
-public class RelatorioProdutos extends javax.swing.JPanel {
+public class RelatorioProdutos extends JPanel {
     private JLabel lfornecedor;
     private JPanel sfornecedor;
     private JTextField ffornecedor;
@@ -72,7 +67,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
      */
     public RelatorioProdutos() {
         initComponents();
-        this.self = this;
+        this.self = getInstance();
         this.params = new Properties();
         produtoDao = new ProdutoDAO();
         produtos = new ArrayList<>();
@@ -80,6 +75,14 @@ public class RelatorioProdutos extends javax.swing.JPanel {
         fornecedores = new ArrayList<>();
         
         addCamposProdutos();
+    }
+    
+    /**
+     * retorna a instância atual
+     * @return a instância atual do JPanel
+     */
+    private JPanel getInstance() {
+        return this;
     }
     
     /**
@@ -197,7 +200,7 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                 // meta infos a serem exibidos no pdf
                 String infoFornecedor = (fornecedorSelecionado == null) ? Methods.getTranslation("Todos") : fornecedorSelecionado.getDescription();
                 String infoProduto = (produtoSelecionado == null) ? Methods.getTranslation("Todos") : produtoSelecionado.getDescription();
-                String title = "ProjetoZika - " + Methods.getTranslation("Produtos");
+                String tituloRelatorio = "ProjetoZika - " + Methods.getTranslation("Produtos");
                 String filename = "ProjetoZika-Produtos-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {
                     Methods.getTranslation("Codigo"),
@@ -230,10 +233,10 @@ public class RelatorioProdutos extends javax.swing.JPanel {
                         };
                         data.add(row);
                     });
-                    ReportModel relatorio = new ReportModel(filename, title, header, infos, data);
+                    ReportModel relatorio = new ReportModel(filename, tituloRelatorio, header, infos, data);
 
                     // gera o pdf
-                    new PDFGenerator(relatorio, this);
+                    PDFGenerator pdfGenerator = new PDFGenerator(relatorio, this);
                 } else {
                     // mensagem de erro
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("NenhumDadoEncontrado"));

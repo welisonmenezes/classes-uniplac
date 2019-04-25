@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetozika.Pages;
 
 import Config.Environment;
 import DAO.PedidoDAO;
 import DAO.ProdutoDAO;
 import Models.GraphModel;
+import Templates.BaseLayout;
 import Utils.Methods;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,7 +24,7 @@ import org.netbeans.lib.awtextra.AbsoluteLayout;
  * Tela do dashboard
  * @author Welison
  */
-public class Dashboard extends Templates.BaseLayout {
+public class Dashboard extends BaseLayout {
     private JPanel bg;
     private ProdutoDAO produtoDao;
     private ArrayList<GraphModel> produtosDados;
@@ -41,7 +37,7 @@ public class Dashboard extends Templates.BaseLayout {
      */
     public Dashboard(Properties params) {
         super();
-        this.self = this;
+        this.self = getInstance();
         this.params = params;
         
         // inicia os componentes
