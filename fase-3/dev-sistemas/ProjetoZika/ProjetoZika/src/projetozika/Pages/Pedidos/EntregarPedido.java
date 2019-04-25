@@ -60,6 +60,7 @@ public class EntregarPedido extends Templates.BaseFrame {
     private final UsuarioDAO usuarioDao;
     private Usuario usuario;
     private Pedido pedido;
+    private Usuario solicitante;
     
     /**
      * chamada pra entregar pedido
@@ -156,6 +157,7 @@ public class EntregarPedido extends Templates.BaseFrame {
         
         linfo = new JLabel();
         Styles.errorLabel(linfo);
+        linfo.setPreferredSize(new Dimension(200, 20));
         pform.add(linfo, new AbsoluteConstraints(100, 260, -1, -1));
         
         btnConfirm = new JButton(Methods.getTranslation("ConfirmarRetirada"));
@@ -172,9 +174,15 @@ public class EntregarPedido extends Templates.BaseFrame {
             if (pedidosProdutos.size() > 0) {
                 String login = flogin.getText().trim();
                 String password = new String(fsenha.getPassword());
-                if (login.equals(usuario.getLogin()) && password.equals(usuario.getSenha())) {
-                    Dialogs.showLoadPopup(pCenter);
-                    timerTest();
+                
+                solicitante = usuarioDao.selecionarAposLogin(login, password);
+                if (solicitante != null && solicitante.getId() > 0) {
+                    if (usuario.getId() == solicitante.getId()) {
+                        Dialogs.showLoadPopup(pCenter);
+                        timerTest();
+                    } else {
+                        linfo.setText(Methods.getTranslation("OPedidoNaoEDesteUsuario"));
+                    }
                 } else {
                     linfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
                 }

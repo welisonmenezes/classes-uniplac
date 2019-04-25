@@ -43,7 +43,7 @@ public class UsuarioDAO {
     public int inserir(Usuario usuario) {
         String sql = "INSERT INTO usuarios "
                 + "(Cpf, Nome, Sexo, Email, Telefone, Celular, DataNascimento, Setor, Permissao, Login, Senha, Status, Created) "
-                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,SHA2(?, 224),?,?)";
         try {
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, usuario.getCpf());
@@ -78,10 +78,18 @@ public class UsuarioDAO {
      * @param usuario o usuario a ser alterado
      */
     public void alterar(Usuario usuario) {
-        String sql = "UPDATE usuarios "
+        String sql;
+        if (! usuario.getSenha().equals("")) {
+            sql = "UPDATE usuarios "
                 + "SET Cpf=?, Nome=?, Sexo=?, Email=?, Telefone=?, Celular=?, "
-                + "DataNascimento=?, Setor=?, Permissao=?, Login=?, Senha=? "
+                + "DataNascimento=?, Setor=?, Permissao=?, Login=?, Senha=SHA2(?, 224) "
                 + "WHERE Id=?";
+        } else {
+            sql = "UPDATE usuarios "
+                + "SET Cpf=?, Nome=?, Sexo=?, Email=?, Telefone=?, Celular=?, "
+                + "DataNascimento=?, Setor=?, Permissao=?, Login=? "
+                + "WHERE Id=?";
+        }
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, usuario.getCpf());
@@ -94,8 +102,12 @@ public class UsuarioDAO {
             stmt.setString(8, usuario.getSetor());
             stmt.setString(9, usuario.getPermissao());
             stmt.setString(10, usuario.getLogin());
-            stmt.setString(11, usuario.getSenha());
-            stmt.setInt(12, usuario.getId());
+            if (! usuario.getSenha().equals("")) {
+                stmt.setString(11, usuario.getSenha());
+                stmt.setInt(12, usuario.getId());
+            } else {
+                stmt.setInt(11, usuario.getId());
+            }
             stmt.execute();
             stmt.close();
         } catch(Exception error) {
@@ -217,7 +229,7 @@ public class UsuarioDAO {
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarAposLogin(String login, String senha) {
-        String sql = "SELECT * FROM usuarios WHERE Login ='" + login + "' AND Senha ='" + senha + "' AND Status != 'Deleted'";
+        String sql = "SELECT * FROM usuarios WHERE Login ='" + login + "' AND Senha = SHA2('" + senha + "', 224) AND Status != 'Deleted'";
         try {
             st = conn.createStatement();
             rs = st.executeQuery(sql);

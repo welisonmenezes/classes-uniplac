@@ -339,7 +339,7 @@ public class AddUsuario extends Templates.BaseFrame {
             if (! Validator.validaCampo(fsetor, esetor)) isValid = false;
             if (! Validator.validaCampo(fpermissao, epermissao)) isValid = false;
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;
-            if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
+            if (! Validator.validaCampo(fsenha, esenha) && this.mode.equals("add")) isValid = false;
             if (isValid) {
                 String newCpf = fcpf.getText().trim().replace(".","").replace("-","").replace("_","");
                 // seta os valores do formulário ao usuário corrente
@@ -419,7 +419,7 @@ public class AddUsuario extends Templates.BaseFrame {
             fsetor.setSelectedItem(usuario.getSetor());
             fpermissao.setSelectedItem(usuario.getPermissao());
             flogin.setText(usuario.getLogin());
-            fsenha.setText(usuario.getSenha());
+            //fsenha.setText(usuario.getSenha());
         }
     }
     
