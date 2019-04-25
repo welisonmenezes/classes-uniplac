@@ -45,6 +45,7 @@ public class Ajuda extends Templates.BaseFrame {
         initComponents();
         Styles.internalFrame(this, 600, 500);
         createBaseLayout();
+        setTitle(Methods.getTranslation("Ajuda"));
         addTopContent(Methods.getTranslation("Ajuda"));
         addCenterContent();
         
@@ -69,6 +70,8 @@ public class Ajuda extends Templates.BaseFrame {
         
         if (System.getProperty("user.language").equals("en")) {
             helpContentEN();
+        } if (System.getProperty("user.language").equals("es")) {
+            helpContentES();
         } else {
             helpContentPT();
         }
@@ -102,6 +105,28 @@ public class Ajuda extends Templates.BaseFrame {
                 + "<li>Help: <code>F1</code></li>"
                 + "<li>Logout: <code>CTRL + L</code> ou <code>ESC</code></li>"
                 + "<li>Add new: <code>CTRL + N</code></li>"
+                + "</ul>";
+    }
+    
+    /**
+     * Conteúdo de página em inglês
+     */
+    private void helpContentES() {
+        textContent = "<h2>Accesos rápidos</h2>"
+                + "<ul>"
+                + "<li>Dashboard: <code>CTRL + D</code></li>"
+                + "<li>Sus pedidos: <code>CTRL + Y</code></li>"
+                + "<li>Aplicaciones: <code>CTRL + O</code></li>"
+                + "<li>Proveedores: <code>CTRL + F</code></li>"
+                + "<li>Notas fiscales: <code>CTRL + I</code></li>"
+                + "<li>Productos: <code>CTRL + P</code></li>"
+                + "<li>Usuarios: <code>CTRL + U</code></li>"
+                + "<li>Perfil: <code>CTRL + M</code></li>"
+                + "<li>Informes: <code>CTRL + R</code></li>"
+                + "<li>Acerca de: <code>CTRL + A</code></li>"
+                + "<li>Ayuda: <code>F1</code></li>"
+                + "<li>Salir: <code>CTRL + L</code> ou <code>ESC</code></li>"
+                + "<li>Añadir nuevo: <code>CTRL + N</code></li>"
                 + "</ul>";
     }
        
