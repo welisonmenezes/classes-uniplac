@@ -39,7 +39,7 @@ INSERT INTO `usuarios` (`Id`, `CPF`, `Nome`, `Sexo`, `Email`, `Telefone`, `Celul
 VALUES (NULL, '12222322234', 'Jhonny Bravo', 'Masculino', 'jb@mail.com', '32322211', '98979897', '2000-04-29', 'Recursos Humanos', 'Usuário', 'bravo', '123456', 'Publish', '2019-04-29 00:00:00');
 
 INSERT INTO `usuarios` (`Id`, `CPF`, `Nome`, `Sexo`, `Email`, `Telefone`, `Celular`, `DataNascimento`, `Setor`, `Permissao`, `Login`, `Senha`, `Status`, `Created`) 
-VALUES (NULL, '12222322234', 'Maria Ferreira', 'Feminino', 'maria@mail.com', '32325456', '98943597', '1998-04-29', 'Administração', 'Admnistrador', 'maria', '123456', 'Publish', '2019-04-29 00:00:00');
+VALUES (NULL, '44222322234', 'Maria Ferreira', 'Feminino', 'maria@mail.com', '32325456', '98943597', '1998-04-29', 'Administração', 'Admnistrador', 'maria', '123456', 'Publish', '2019-04-29 00:00:00');
 
 
 
@@ -90,7 +90,7 @@ VALUES ('2', '1', '2.3', '18', '2019-04-29 00:00:00');
 # pedido 1
 
 INSERT INTO `pedidos` (`Id`, `Status`, `Created`, `UsuarioId`, `AlmoxarifeId`) 
-VALUES (NULL, 'Pendente', '2019-04-29 00:00:00', '11', NULL);
+VALUES (NULL, 'Pendente', '2019-04-29 00:00:00', '1', NULL);
 
 # produtos pedido 1
 
@@ -103,7 +103,7 @@ VALUES (NULL, '1', '2', '2', NULL);
 # pedido 2
 
 INSERT INTO `pedidos` (`Id`, `Status`, `Created`, `UsuarioId`, `AlmoxarifeId`) 
-VALUES (NULL, 'Pendente', '2019-04-29 00:00:00', '11', NULL);
+VALUES (NULL, 'Pendente', '2019-04-29 00:00:00', '2', NULL);
 
 # produtos pedido 2
 
@@ -118,34 +118,3 @@ VALUES (NULL, '2', '1', '1', NULL);
 
 INSERT INTO `pedidosprodutos` (`Id`, `PedidoId`, `ProdutoId`, `QuantidadeSolicitada`, `QuantidadeAprovada`) 
 VALUES (NULL, '2', '5', '3', NULL);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
