@@ -3,6 +3,7 @@ package DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -42,7 +43,7 @@ public class EstoqueDAO {
             }
             stmt.close();
             return lastInsertedId;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("EstoqueDAO.inserir: " + error);
         }
     }
@@ -61,7 +62,7 @@ public class EstoqueDAO {
             stmt.setInt(3, idProduto);
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("EstoqueDAO.alterar: " + error);
         }
     }
@@ -82,7 +83,7 @@ public class EstoqueDAO {
             }
             st.close();
             return total;
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("EstoqueDAO.quantidade: " + error);
         }
     }
@@ -100,7 +101,7 @@ public class EstoqueDAO {
             stmt.setInt(2, idProduto);
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("EstoqueDAO.normalizarEstoqueProduto: " + error);
         }
     }

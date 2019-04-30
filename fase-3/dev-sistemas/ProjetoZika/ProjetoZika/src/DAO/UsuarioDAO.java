@@ -5,6 +5,7 @@ import Utils.FillModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +64,7 @@ public class UsuarioDAO {
             }
             stmt.close();
             return lastInsertedId;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.inserir: " + error);
         }
     }
@@ -105,7 +106,7 @@ public class UsuarioDAO {
             }
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.alterar: " + error);
         }
     }
@@ -121,7 +122,7 @@ public class UsuarioDAO {
             stmt.setString(1, Id);
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.deletar: " + error);
         }
     }
@@ -142,7 +143,7 @@ public class UsuarioDAO {
             }
             st.close();
             return usuario;
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorCpf: " + error);
         }
     }
@@ -163,7 +164,7 @@ public class UsuarioDAO {
             }
             st.close();
             return usuario;
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
         }
     }
@@ -186,7 +187,7 @@ public class UsuarioDAO {
             }
             st.close();
             return usuarios;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
         }
     }
@@ -212,7 +213,7 @@ public class UsuarioDAO {
             }
             st.close();
             return usuarios;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
         }
     }
@@ -234,7 +235,7 @@ public class UsuarioDAO {
             }
             st.close();
             return usuario;
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
         }
     }
@@ -251,7 +252,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             rs.next();
             return rs.getInt(1);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.temCpf: " + error);
         }
     }
@@ -268,7 +269,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             rs.next();
             return rs.getInt(1);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.temLogin: " + error);
         }
     }
@@ -290,7 +291,7 @@ public class UsuarioDAO {
             }
             st.close();
             return usuarios;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionar: " + error);
         }
     }
@@ -307,7 +308,7 @@ public class UsuarioDAO {
             rs = st.executeQuery(sql);
             rs.next();
             return rs.getInt(1);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.total: " + error);
         }
     }

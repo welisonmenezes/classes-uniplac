@@ -8,6 +8,7 @@ import Utils.DateHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,7 +57,7 @@ public class ProdutoDAO {
             }
             stmt.close();
             return lastInsertedId;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.inserir: " + error);
         }
     }
@@ -75,7 +76,7 @@ public class ProdutoDAO {
             stmt.setInt(4, produto.getId());
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.alterar: " + error);
         }
     }
@@ -91,7 +92,7 @@ public class ProdutoDAO {
             stmt.setInt(1, Id);
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.deletar: " + error);
         }
     }
@@ -112,7 +113,7 @@ public class ProdutoDAO {
             }
             st.close();
             return produto;
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("ProdutoDAO.selecionarPorId: " + error);
         }
     }
@@ -136,7 +137,7 @@ public class ProdutoDAO {
             }
             st.close();
             return produtos;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.selecionarPorNome: " + error);
         }
     }
@@ -162,7 +163,7 @@ public class ProdutoDAO {
             }
             st.close();
             return graphs;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.graphData: " + error);
         }
     }
@@ -184,7 +185,7 @@ public class ProdutoDAO {
             }
             st.close();
             return produtos;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.selecionar: " + error);
         }
     }
@@ -201,7 +202,7 @@ public class ProdutoDAO {
             rs = st.executeQuery(sql);
             rs.next();
             return rs.getInt(1);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.total: " + error);
         }
     }
@@ -308,7 +309,7 @@ public class ProdutoDAO {
             }
             st.close();
             return relatorioProdutos;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.relatorioProduto: " + error);
         }
     }

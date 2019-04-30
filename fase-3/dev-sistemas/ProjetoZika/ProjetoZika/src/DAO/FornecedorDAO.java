@@ -5,6 +5,7 @@ import Utils.FillModel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +54,7 @@ public class FornecedorDAO {
             }
             stmt.close();
             return lastInsertedId;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.inserir: " + error);
         }
     }
@@ -72,7 +73,7 @@ public class FornecedorDAO {
             stmt.setInt(4, fornecedor.getId());
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.alterar: " + error);
         }
     }
@@ -88,7 +89,7 @@ public class FornecedorDAO {
             stmt.setInt(1, Id);
             stmt.execute();
             stmt.close();
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.deletar: " + error);
         }
     }
@@ -109,7 +110,7 @@ public class FornecedorDAO {
             }
             st.close();
             return fornecedor;
-        } catch (Exception error) {
+        } catch (SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorId: " + error);
         }
     }
@@ -126,7 +127,7 @@ public class FornecedorDAO {
             rs = st.executeQuery(sql);
             rs.next();
             return rs.getInt(1);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.temCnpj: " + error);
         }
     }
@@ -148,7 +149,7 @@ public class FornecedorDAO {
             }
             st.close();
             return fornecedores;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorCnpj: " + error);
         }
     }
@@ -170,7 +171,7 @@ public class FornecedorDAO {
             }
             st.close();
             return fornecedores;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorNome: " + error);
         }
     }
@@ -192,7 +193,7 @@ public class FornecedorDAO {
             }
             st.close();
             return fornecedores;
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionar: " + error);
         }
     }
@@ -209,7 +210,7 @@ public class FornecedorDAO {
             rs = st.executeQuery(sql);
             rs.next();
             return rs.getInt(1);
-        } catch(Exception error) {
+        } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.total: " + error);
         }
     }
