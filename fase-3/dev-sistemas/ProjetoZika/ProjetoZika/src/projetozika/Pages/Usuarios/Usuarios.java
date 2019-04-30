@@ -14,6 +14,7 @@ import Utils.Pagination;
 import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -212,7 +213,7 @@ public class Usuarios extends BaseLayout {
                     try {
                         usuarioDao.deletar(idTabel);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("DeletadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarDeletar"));
                         throw new RuntimeException("Usuarios.delete: " + error);
                     }

@@ -23,6 +23,7 @@ import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -407,7 +408,7 @@ public class AddNotaFiscal extends BaseFrame {
                             }
                         }
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
                         throw new RuntimeException("AddNotaFiscal.add: " + error);
                     }
@@ -446,7 +447,7 @@ public class AddNotaFiscal extends BaseFrame {
                             }
                         }
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
                         throw new RuntimeException("AddNotaFiscal.edit: " + error);
                     }

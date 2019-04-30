@@ -20,6 +20,7 @@ import Utils.Styles;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -378,7 +379,7 @@ public class FazerPedido extends BaseFrame {
                             pedidoDao.inserirProduto(pp);
                         });
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoEnviadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEnviar"));
                         throw new RuntimeException("FazerPedido.add: " + error);
                     }
@@ -394,7 +395,7 @@ public class FazerPedido extends BaseFrame {
                             });
                             JOptionPane.showMessageDialog(null, Methods.getTranslation("PedidoAtualizadoComSucesso"));
                         }
-                    } catch (Exception error) {
+                    } catch (HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAtualizar"));
                         throw new RuntimeException("FazerPedido.edit: " + error);
                     }

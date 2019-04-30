@@ -13,6 +13,7 @@ import Utils.Navigation;
 import Utils.Styles;
 import Utils.Validator;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JButton;
@@ -246,7 +247,7 @@ public class AddFornecedor extends BaseFrame {
                         // edita o fornecedor
                         fornecedorDao.alterar(fornecedor);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
                         throw new RuntimeException("AddFornecedor.edit: " + error);
                     }
@@ -259,7 +260,7 @@ public class AddFornecedor extends BaseFrame {
                         // adiciona um novo fornecedor
                         fornecedorDao.inserir(fornecedor);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
                         throw new RuntimeException("AddFornecedor.add: " + error);
                     }

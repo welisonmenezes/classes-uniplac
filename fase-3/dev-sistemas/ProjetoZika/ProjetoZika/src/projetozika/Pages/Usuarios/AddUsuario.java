@@ -16,6 +16,7 @@ import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
@@ -450,7 +451,7 @@ public class AddUsuario extends BaseFrame {
                         // edita o usuario
                         usuarioDao.alterar(usuario);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
                         throw new RuntimeException("AddUsuario.edit: " + error);
                     }
@@ -465,7 +466,7 @@ public class AddUsuario extends BaseFrame {
                         // adiciona um novo produto
                         usuarioDao.inserir(usuario);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
                         throw new RuntimeException("AddUsuario.add: " + error);
                     }
@@ -482,7 +483,7 @@ public class AddUsuario extends BaseFrame {
                         usuario = usuarioDao.selecionarPorId(id);
                         Environment.setLoggedUser(usuario);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
                         throw new RuntimeException("AddUsuario.perfil: " + error);
                     }

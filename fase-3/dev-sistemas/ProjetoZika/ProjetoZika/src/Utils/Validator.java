@@ -345,7 +345,7 @@ public class Validator {
                 edatato.setText(Methods.getTranslation("DataMaiorQueODe"));
                 return false;
             } 
-        } catch (Exception error) {
+        } catch (ParseException error) {
             edatato.setText(Methods.getTranslation("DataMaiorQueODe"));
             return false;
         }

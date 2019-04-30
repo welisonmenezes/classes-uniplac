@@ -123,12 +123,8 @@ public final class PDFGenerator {
             // add in document
             document.add(top);
             
-        } catch(DocumentException de) {
+        } catch(DocumentException | IOException de) {
             throw new ExceptionConverter(de);
-        } catch (MalformedURLException e) {
-            throw new ExceptionConverter(e);
-        } catch (IOException e) {
-            throw new ExceptionConverter(e);
         }
     }
     

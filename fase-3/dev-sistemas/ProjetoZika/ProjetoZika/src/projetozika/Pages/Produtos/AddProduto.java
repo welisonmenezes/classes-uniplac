@@ -15,6 +15,7 @@ import Utils.Styles;
 import Utils.Validator;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -282,7 +283,7 @@ public class AddProduto extends BaseFrame {
                         // edita o produto
                         produtoDao.alterar(produto);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("EditadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarEditar"));
                         throw new RuntimeException("AddProduto.edit: " + error);
                     }
@@ -296,7 +297,7 @@ public class AddProduto extends BaseFrame {
                         int idProduto = produtoDao.inserir(produto);
                         estoqueDao.inserir(idProduto, 0);
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("AdicionadoComSucesso"));
-                    } catch(Exception error) {
+                    } catch(HeadlessException error) {
                         JOptionPane.showMessageDialog(null, Methods.getTranslation("ErroAoTentarAdicionar"));
                         throw new RuntimeException("AddProduto.add: " + error);
                     }
