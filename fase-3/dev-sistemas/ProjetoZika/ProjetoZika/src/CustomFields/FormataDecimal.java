@@ -11,7 +11,7 @@ import javax.swing.text.SimpleAttributeSet;
  */
 public class FormataDecimal extends PlainDocument {
 
-    private static final SimpleAttributeSet nullAttribute = new SimpleAttributeSet();
+    private static final SimpleAttributeSet NULLATTRIBUTE = new SimpleAttributeSet();
     private final int qtdaDigitos;
     private final int casasDecimais;
 
@@ -27,7 +27,7 @@ public class FormataDecimal extends PlainDocument {
             //verifica se esta dentro do tamanho maximo definido
             if (original.length() <= qtdaDigitos) {
                 StringBuilder mascarado = new StringBuilder();
-                if (a != nullAttribute) {
+                if (a != NULLATTRIBUTE) {
                     //limpa o campo
                     remove(-1, getLength());
                     mascarado.append((original + str).replaceAll("[^0-9]", ""));
@@ -41,36 +41,46 @@ public class FormataDecimal extends PlainDocument {
 
                     if (mascarado.length() < (casasDecimais + 1)) {
 
-                        if (casasDecimais == 0) {
-                            //
-                        } else if (casasDecimais == 1) {
-                            if (mascarado.length() == 1) {
-                                mascarado.insert(0, ".");
-                                mascarado.insert(0, "0");
-                            }
-                        } else if (casasDecimais == 2) {
-                            if (mascarado.length() == 1) {
-                                mascarado.insert(0, "0");
-                                mascarado.insert(0, ".");
-                                mascarado.insert(0, "0");
-                            } else if (mascarado.length() == 2) {
-                                mascarado.insert(0, ".");
-                                mascarado.insert(0, "0");
-                            }
-                        } else if (casasDecimais == 3) {
-                            if (mascarado.length() == 1) {
-                                mascarado.insert(0, "0");
-                                mascarado.insert(0, "0");
-                                mascarado.insert(0, ".");
-                                mascarado.insert(0, "0");
-                            } else if (mascarado.length() == 2) {
-                                mascarado.insert(0, "0");
-                                mascarado.insert(0, ".");
-                                mascarado.insert(0, "0");
-                            } else if (mascarado.length() == 3) {
-                                mascarado.insert(0, ".");
-                                mascarado.insert(0, "0");
-                            }
+                        switch (casasDecimais) {
+                        //
+                            case 0:
+                                break;
+                            case 1:
+                                if (mascarado.length() == 1) {
+                                    mascarado.insert(0, ".");
+                                    mascarado.insert(0, "0");
+                                }   break;
+                            case 2:
+                                if (mascarado.length() == 1) {
+                                    mascarado.insert(0, "0");
+                                    mascarado.insert(0, ".");
+                                    mascarado.insert(0, "0");
+                                } else if (mascarado.length() == 2) {
+                                    mascarado.insert(0, ".");
+                                    mascarado.insert(0, "0");
+                                }   break;
+                            case 3:
+                                switch (mascarado.length()) {
+                                    case 1:
+                                        mascarado.insert(0, "0");
+                                        mascarado.insert(0, "0");
+                                        mascarado.insert(0, ".");
+                                        mascarado.insert(0, "0");
+                                        break;
+                                    case 2:
+                                        mascarado.insert(0, "0");
+                                        mascarado.insert(0, ".");
+                                        mascarado.insert(0, "0");
+                                        break;
+                                    case 3:
+                                        mascarado.insert(0, ".");
+                                        mascarado.insert(0, "0");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            default:
+                                break;
                         }
 
                     } else {  //add o ponto separador de decimal conforme as casas decimais definidas
@@ -96,7 +106,7 @@ public class FormataDecimal extends PlainDocument {
         if (len == getLength()) {
             super.remove(0, len);
             if (offs != -1) {
-                insertString(0, "", nullAttribute);
+                insertString(0, "", NULLATTRIBUTE);
             }
         } else {
             String original = getText(0, getLength()).substring(0, offs) + getText(0, getLength()).substring(offs + len);
