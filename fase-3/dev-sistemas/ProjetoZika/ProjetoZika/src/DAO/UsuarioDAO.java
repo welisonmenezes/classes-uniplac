@@ -225,15 +225,17 @@ public class UsuarioDAO {
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarAposLogin(String login, String senha) {
-        String sql = "SELECT * FROM usuarios WHERE Login ='" + login + "' AND Senha = SHA2('" + senha + "', 224) AND Status != 'Deleted'";
+        String sql = "SELECT * FROM usuarios WHERE Login = ? AND Senha = SHA2(?, 224) AND Status != 'Deleted'";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, login);
+            stmt.setString(2, senha);
+            rs = stmt.executeQuery();
             Usuario usuario = new Usuario();
             while(rs.next()) {
                 this.helper.fillUsuario(usuario, rs);
             }
-            st.close();
+            stmt.close();
             return usuario;
         } catch (SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
