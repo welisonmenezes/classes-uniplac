@@ -129,20 +129,21 @@ public class UsuarioDAO {
     }
     
     /**
-     * seleciona um usuário da base de dados pelo seu Id
+     * seleciona um usuário da base de dados pelo seu Cpf
      * @param Cpf o Cpf do usuário a ser retornado
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarPorCpf(String Cpf) {
-        String sql = "SELECT * FROM usuarios WHERE Cpf = '" + Cpf + "'";
+        String sql = "SELECT * FROM usuarios WHERE Cpf =?";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, Cpf);
+            rs = stmt.executeQuery();
             Usuario usuario = new Usuario();
             while(rs.next()) {
                 this.helper.fillUsuario(usuario, rs);
             }
-            st.close();
+            stmt.close();
             return usuario;
         } catch (SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorCpf: " + error);
@@ -155,15 +156,17 @@ public class UsuarioDAO {
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarPorId(String Id) {
-        String sql = "SELECT * FROM usuarios WHERE Id = " + Id;
+        String sql = "SELECT * FROM usuarios WHERE Id = ?";
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             Usuario usuario = new Usuario();
             while(rs.next()) {
                 this.helper.fillUsuario(usuario, rs);
             }
-            st.close();
+            stmt.close();
             return usuario;
         } catch (SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
@@ -177,16 +180,17 @@ public class UsuarioDAO {
      */
     public ArrayList<Usuario> selecionarPorNome(String nome) {
         String sql = "SELECT * FROM usuarios "
-                + "WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
+                + "WHERE Status != 'Deleted' AND Nome LIKE ? LIMIT 50";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%"+nome+"%");
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Usuario usuario = new Usuario();
                 this.helper.fillUsuario(usuario, rs);
                 usuarios.add(usuario);
             }
-            st.close();
+            stmt.close();
             return usuarios;
         } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
@@ -202,17 +206,19 @@ public class UsuarioDAO {
     public ArrayList<Usuario> selecionarPorNomeEPermissaoExcluida(String nome, String permissao) {
         String sql = "SELECT * FROM usuarios "
                 + "WHERE Status != 'Deleted' "
-                + "AND Permissao != '" + permissao + "' "
-                + "AND Nome LIKE '%" + nome + "%' LIMIT 50";
+                + "AND Permissao != ? "
+                + "AND Nome LIKE ? LIMIT 50";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, permissao);
+            stmt.setString(2, "%"+nome+"%");
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Usuario usuario = new Usuario();
                 this.helper.fillUsuario(usuario, rs);
                 usuarios.add(usuario);
             }
-            st.close();
+            stmt.close();
             return usuarios;
         } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
@@ -249,12 +255,15 @@ public class UsuarioDAO {
      * @return o total de resultados
      */
     public int temCpf(String cpf) {
-        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Cpf = '" + cpf + "'";
+        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Cpf = ?";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cpf);
+            rs = stmt.executeQuery();
             rs.next();
-            return rs.getInt(1);
+            int ret = rs.getInt(1);
+            stmt.close();
+            return ret;
         } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.temCpf: " + error);
         }
@@ -266,12 +275,15 @@ public class UsuarioDAO {
      * @return o total de resultados
      */
     public int temLogin(String login) {
-        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Login = '" + login + "'";
+        String sql = "SELECT COUNT(Id) FROM usuarios WHERE Login = ?";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, login);
+            rs = stmt.executeQuery();
             rs.next();
-            return rs.getInt(1);
+            int ret = rs.getInt(1);
+            stmt.close();
+            return ret;
         } catch(SQLException error) {
             throw new RuntimeException("UsuarioDAO.temLogin: " + error);
         }
