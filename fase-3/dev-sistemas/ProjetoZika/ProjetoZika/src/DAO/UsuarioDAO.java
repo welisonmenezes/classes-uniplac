@@ -2,6 +2,7 @@ package DAO;
 
 import Models.Usuario;
 import Utils.FillModel;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -323,9 +324,9 @@ public class UsuarioDAO {
      */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String nome = params.getProperty("nome", "");
-        String email = params.getProperty("email", "");
-        String setor = params.getProperty("setor", "");
+        String nome = Methods.scapeSQL(params.getProperty("nome", ""));
+        String email = Methods.scapeSQL(params.getProperty("email", ""));
+        String setor = Methods.scapeSQL(params.getProperty("setor", ""));
         String sql;
         
         if (! isCount) {
@@ -350,7 +351,6 @@ public class UsuarioDAO {
             sql += " ORDER BY " + params.getProperty("orderby", "Id") + " " + params.getProperty("order", "DESC");
             sql += " LIMIT 10 OFFSET " + (offset);
         }
-            
         return sql;
     }
 }

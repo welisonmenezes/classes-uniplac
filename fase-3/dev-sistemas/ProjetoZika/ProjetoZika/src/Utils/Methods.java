@@ -272,4 +272,20 @@ public class Methods {
         list.add( new RowSorter.SortKey(Integer.parseInt(params.getProperty("orderkey", "0")), so));
         sorter.setSortKeys(list);
     }
+    
+    public static String scapeSQL(String str){
+        String data = null;
+        if (str != null) {
+            str = str.replace("\\", "");
+            str = str.replace("'", "");
+            str = str.replace("\0", "");
+            str = str.replace("\n", "");
+            str = str.replace("\r", "");
+            str = str.replace("\"", "");
+            str = str.replace("\\x1a", "");
+            str = str.replace("%", "");
+            data = str;
+        }
+        return data;
+    }
 }
