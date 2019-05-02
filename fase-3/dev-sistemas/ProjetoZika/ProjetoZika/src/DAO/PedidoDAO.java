@@ -8,6 +8,7 @@ import Models.RelatorioPedido;
 import Models.Usuario;
 import Utils.FillModel;
 import Utils.DateHandler;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -186,10 +187,12 @@ public class PedidoDAO {
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
                 + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
                 + "LEFT JOIN usuarios ON pedidos.UsuarioId = usuarios.Id "
-                + "WHERE pedidos.Id = " + Id;
+                + "WHERE pedidos.Id = ?";
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Pedido pedido = new Pedido();
                 this.helper.fillPedido(pedido, rs);
@@ -206,7 +209,7 @@ public class PedidoDAO {
                 
                 pedidosProdutos.add(pedidoProduto);
             }
-            st.close();
+            stmt.close();
             return pedidosProdutos;
         } catch (SQLException error) {
             throw new RuntimeException("PedidoDAO.selecionarPorId: " + error);
@@ -246,10 +249,12 @@ public class PedidoDAO {
                 + "LEFT JOIN pedidos ON pedidosprodutos.PedidoId = pedidos.Id "
                 + "LEFT JOIN produtos ON pedidosprodutos.ProdutoId = produtos.Id "
                 + "LEFT JOIN estoque ON estoque.ProdutoId = produtos.Id "
-                + "WHERE pedidosprodutos.PedidoId = " + Id;
+                + "WHERE pedidosprodutos.PedidoId = ?";
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Pedido pedido = new Pedido();
                 this.helper.fillPedido(pedido, rs);
@@ -262,7 +267,7 @@ public class PedidoDAO {
                 
                 pedidosProdutos.add(pedidoProduto);
             }
-            st.close();
+            stmt.close();
             return pedidosProdutos;
         } catch (SQLException error) {
             throw new RuntimeException("PedidoDAO.selecionarPedidoProdutoPorUsuario: " + error);
@@ -365,9 +370,9 @@ public class PedidoDAO {
      */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String nome = params.getProperty("nome", "");
-        String status = params.getProperty("status", "");
-        String data = params.getProperty("data", "");
+        String nome = Methods.scapeSQL(params.getProperty("nome", ""));
+        String status = Methods.scapeSQL(params.getProperty("status", ""));
+        String data = Methods.scapeSQL(params.getProperty("data", ""));
         String sql;
         
         if (! isCount) {
@@ -408,8 +413,8 @@ public class PedidoDAO {
      */
     private String buildSelectQueryPorUsuario (Properties params, boolean isCount, Usuario usuario) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String status = params.getProperty("status", "");
-        String data = params.getProperty("data", "");
+        String status = Methods.scapeSQL(params.getProperty("status", ""));
+        String data = Methods.scapeSQL(params.getProperty("data", ""));
         String sql;
         
         if (! isCount) {
@@ -444,12 +449,12 @@ public class PedidoDAO {
      */
     public ArrayList<RelatorioPedido> relatorioPedido(Properties params) {
         
-        String dataDe = params.getProperty("dataDe", "");
-        String dataAte = params.getProperty("dataAte", "");
-        String usuarioId = params.getProperty("usuarioId", "");
-        String aprovadorId = params.getProperty("aprovadorId", "");
-        String produtoId = params.getProperty("produtoId", "");
-        String status = params.getProperty("status", "");
+        String dataDe = Methods.scapeSQL(params.getProperty("dataDe", ""));
+        String dataAte = Methods.scapeSQL(params.getProperty("dataAte", ""));
+        String usuarioId = Methods.scapeSQL(params.getProperty("usuarioId", ""));
+        String aprovadorId = Methods.scapeSQL(params.getProperty("aprovadorId", ""));
+        String produtoId = Methods.scapeSQL(params.getProperty("produtoId", ""));
+        String status = Methods.scapeSQL(params.getProperty("status", ""));
         
         String sql = "SELECT pedidos.Id AS 'codigo', "
                 + "usuarios.Nome AS 'solicitante', "
