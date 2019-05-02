@@ -73,15 +73,16 @@ public class EstoqueDAO {
      * @return o total do produto
      */
     public int quantidade(int IdProduto) {
-        String sql = "SELECT total FROM estoque WHERE ProdutoId=" + IdProduto;
+        String sql = "SELECT total FROM estoque WHERE ProdutoId= ?";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, IdProduto);
+            rs = stmt.executeQuery();
             int total = 0;
             while(rs.next()) {
                 total = rs.getInt("Total");
             }
-            st.close();
+            stmt.close();
             return total;
         } catch (SQLException error) {
             throw new RuntimeException("EstoqueDAO.quantidade: " + error);
