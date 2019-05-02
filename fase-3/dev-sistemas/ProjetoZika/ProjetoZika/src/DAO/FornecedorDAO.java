@@ -2,6 +2,7 @@ package DAO;
 
 import Models.Fornecedor;
 import Utils.FillModel;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,15 +101,17 @@ public class FornecedorDAO {
      * @return o fornecedor com Id correspondente
      */
     public Fornecedor selecionarPorId(String Id) {
-        String sql = "SELECT * FROM fornecedores WHERE Id = " + Id;
+        String sql = "SELECT * FROM fornecedores WHERE Id = ?" ;
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             Fornecedor fornecedor = new Fornecedor();
             while(rs.next()) {
                 this.helper.fillFornecedor(fornecedor, rs);
             }
-            st.close();
+            stmt.close();
             return fornecedor;
         } catch (SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorId: " + error);
@@ -121,12 +124,15 @@ public class FornecedorDAO {
      * @return o total de resultados
      */
     public int temCnpj(String cnpj) {
-        String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = '" + cnpj + "'";
+        String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = ?";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cnpj);
+            rs = stmt.executeQuery();
             rs.next();
-            return rs.getInt(1);
+            int ret = rs.getInt(1);
+            stmt.close();
+            return ret;
         } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.temCnpj: " + error);
         }
@@ -138,16 +144,17 @@ public class FornecedorDAO {
      * @return uma lista de fornecedores correspondentes
      */
     public ArrayList<Fornecedor> selecionarPorCnpj(String cnpj) {
-        String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Cnpj LIKE '%"+ cnpj +"%' LIMIT 50";
+        String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Cnpj LIKE ? LIMIT 50";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%"+cnpj+"%");
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Fornecedor fornecedor = new Fornecedor();
                 this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
-            st.close();
+            stmt.close();
             return fornecedores;
         } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorCnpj: " + error);
@@ -160,16 +167,17 @@ public class FornecedorDAO {
      * @return uma lista de fornecedores correspondentes
      */
     public ArrayList<Fornecedor> selecionarPorNome(String nome) {
-        String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Nome LIKE '%"+ nome +"%' LIMIT 50";
+        String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Nome LIKE ? LIMIT 50";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%"+nome+"%");
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Fornecedor fornecedor = new Fornecedor();
                 this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
-            st.close();
+            stmt.close();
             return fornecedores;
         } catch(SQLException error) {
             throw new RuntimeException("FornecedorDAO.selecionarPorNome: " + error);
@@ -223,9 +231,9 @@ public class FornecedorDAO {
      */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String nome = params.getProperty("nome", "");
-        String cnpj = params.getProperty("cnpj", "");
-        String telefone = params.getProperty("telefone", "");
+        String nome = Methods.scapeSQL(params.getProperty("nome", ""));
+        String cnpj = Methods.scapeSQL(params.getProperty("cnpj", ""));
+        String telefone = Methods.scapeSQL(params.getProperty("telefone", ""));
         String sql;
         
         if (! isCount) {
