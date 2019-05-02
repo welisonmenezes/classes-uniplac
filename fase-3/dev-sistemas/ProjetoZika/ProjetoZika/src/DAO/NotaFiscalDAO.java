@@ -5,6 +5,7 @@ import Models.NotaFiscalProduto;
 import Models.Produto;
 import Utils.FillModel;
 import Utils.DateHandler;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -175,15 +176,17 @@ public class NotaFiscalDAO {
                     + "notasFiscais.Created as nCreated, fornecedores.Id as fId, fornecedores.Cnpj as fCnpj,"
                     + "fornecedores.Nome as fNome, fornecedores.Status as fStatus, fornecedores.Telefone as fTelefone,"
                     + "fornecedores.Created as fCreated"
-                    + " FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasFiscais.FornecedorId WHERE notasFiscais.Id = " + Id;
+                    + " FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasFiscais.FornecedorId WHERE notasFiscais.Id = ?";
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             NotaFiscal notaFiscal = new NotaFiscal();
             while(rs.next()) {
                 this.helper.fillNotas(notaFiscal, rs);
             }
-            st.close();
+            stmt.close();
             return notaFiscal;
         } catch (SQLException error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarPorId: " + error);
@@ -198,11 +201,12 @@ public class NotaFiscalDAO {
     public ArrayList<NotaFiscalProduto> selecionarProdutos(String Id) {
         String sql = "SELECT * FROM notasfiscaisprodutos\n" +
                     "LEFT JOIN produtos on notasfiscaisprodutos.ProdutoId = produtos.Id\n" +
-                    "WHERE NotaFiscalId = " + Id + " AND produtos.Status != 'Deleted'";
+                    "WHERE NotaFiscalId = ? AND produtos.Status != 'Deleted'";
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
-            
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             ArrayList<NotaFiscalProduto> nfps = new ArrayList();
             while(rs.next()) {
                 NotaFiscalProduto nfp = new NotaFiscalProduto();
@@ -221,7 +225,7 @@ public class NotaFiscalDAO {
                 nfp.setProduto(p);
                 nfps.add(nfp);
             }
-            st.close();
+            stmt.close();
             return nfps;
         } catch (SQLException error) {
             throw new RuntimeException("NotaFiscalDAO.selecionarProdutos: " + error);
@@ -275,9 +279,9 @@ public class NotaFiscalDAO {
      */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String numero = params.getProperty("numero", "");
-        String cnpj = params.getProperty("cnpj", "");
-        String data = params.getProperty("data", "");
+        String numero = Methods.scapeSQL(params.getProperty("numero", ""));
+        String cnpj = Methods.scapeSQL(params.getProperty("cnpj", ""));
+        String data = Methods.scapeSQL(params.getProperty("data", ""));
         String sql;
         
         if (! isCount) {
