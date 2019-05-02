@@ -273,6 +273,11 @@ public class Methods {
         sorter.setSortKeys(list);
     }
     
+    /**
+     * Limpa string de sql injections
+     * @param str a string a ser limpa
+     * @return a string limpa
+     */
     public static String scapeSQL(String str){
         String data = null;
         if (str != null) {

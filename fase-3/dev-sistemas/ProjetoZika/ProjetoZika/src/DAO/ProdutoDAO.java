@@ -5,6 +5,7 @@ import Models.Produto;
 import Models.RelatorioProduto;
 import Utils.FillModel;
 import Utils.DateHandler;
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -103,15 +104,17 @@ public class ProdutoDAO {
      * @return o produto com Id correspondente
      */
     public Produto selecionarPorId(String Id) {
-        String sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Id = " + Id;
+        String sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Id = ?";
+        int queryId = Integer.parseInt(Id);
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, queryId);
+            rs = stmt.executeQuery();
             Produto produto = new Produto();
             while(rs.next()) {
                 this.helper.fillProduto(produto, rs);
             }
-            st.close();
+            stmt.close();
             return produto;
         } catch (SQLException error) {
             throw new RuntimeException("ProdutoDAO.selecionarPorId: " + error);
@@ -126,16 +129,17 @@ public class ProdutoDAO {
     public ArrayList<Produto> selecionarPorNome(String nome) {
         String sql = "SELECT * FROM produtos "
                 + "LEFT JOIN estoque ON estoque.ProdutoId=Id "
-                + "WHERE Status != 'Deleted' AND Nome LIKE '%" + nome + "%' LIMIT 50";
+                + "WHERE Status != 'Deleted' AND Nome LIKE ? LIMIT 50";
         try {
-            st = conn.createStatement();
-            rs = st.executeQuery(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, "%" + nome + "%");
+            rs = stmt.executeQuery();
             while(rs.next()) {
                 Produto produto = new Produto();
                 this.helper.fillProduto(produto, rs);
                 produtos.add(produto);
             }
-            st.close();
+            stmt.close();
             return produtos;
         } catch(SQLException error) {
             throw new RuntimeException("ProdutoDAO.selecionarPorNome: " + error);
@@ -215,9 +219,9 @@ public class ProdutoDAO {
      */
     private String buildSelectQuery (Properties params, boolean isCount) {
         int offset = Integer.parseInt(params.getProperty("offset", "0"));
-        String nome = params.getProperty("nome", "");
-        String unidade = params.getProperty("unidade", "");
-        String data = params.getProperty("data", "");
+        String nome = Methods.scapeSQL(params.getProperty("nome", ""));
+        String unidade = Methods.scapeSQL(params.getProperty("unidade", ""));
+        String data = Methods.scapeSQL(params.getProperty("data", ""));
         String sql;
         
         if (! isCount) {
@@ -254,10 +258,10 @@ public class ProdutoDAO {
      */
     public ArrayList<RelatorioProduto> relatorioProduto(Properties params) {
         
-        String dataDe = params.getProperty("dataDe", "");
-        String dataAte = params.getProperty("dataAte", "");
-        String fornecedorId = params.getProperty("fornecedorId", "");
-        String produtoId = params.getProperty("produtoId", "");
+        String dataDe = Methods.scapeSQL(params.getProperty("dataDe", ""));
+        String dataAte = Methods.scapeSQL(params.getProperty("dataAte", ""));
+        String fornecedorId = Methods.scapeSQL(params.getProperty("fornecedorId", ""));
+        String produtoId = Methods.scapeSQL(params.getProperty("produtoId", ""));
         
         String sql = "SELECT produtos.Id AS 'codigo', "
                 + "CONCAT(produtos.Nome, '/', produtos.Unidade) AS 'produto', "
