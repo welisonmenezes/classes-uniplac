@@ -1,0 +1,3 @@
+[INFO ] 2019-05-09 15:21:30.448 [AWT-EventQueue-0] ConnectionFactory - ConnectionFactory.getConexao: Conexão
+[DEBUG] 2019-05-09 15:21:30.559 [AWT-EventQueue-0] ConnectionFactory - ConnectionFactory.getConexao: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Access denied for user ''@'localhost' to database 'projetozika'
+[DEBUG] 2019-05-09 15:24:07.534 [AWT-EventQueue-0] Methods - ConnectionFactory.getConexao: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Access denied for user ''@'localhost' to database 'projetozika'

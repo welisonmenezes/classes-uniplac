@@ -24,6 +24,8 @@ import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Metodos e funcionalidades genéricas da aplicação
@@ -292,5 +294,13 @@ public class Methods {
             data = str;
         }
         return data;
+    }
+    
+    /**
+     * Retorna o logger para criação de loggings
+     * @return o logger
+     */
+    public static Logger getLogger() {
+        return LogManager.getLogger();
     }
 }

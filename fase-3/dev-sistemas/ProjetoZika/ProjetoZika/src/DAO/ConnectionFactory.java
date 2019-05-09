@@ -1,5 +1,6 @@
 package DAO;
 
+import Utils.Methods;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ public class ConnectionFactory {
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost/projetozika", "root", "");
         } catch(SQLException error) {
+            Methods.getLogger().debug("ConnectionFactory.getConexao: " + error);
             throw new RuntimeException("ConnectionFactory.getConexao: " + error);
         }
     }
