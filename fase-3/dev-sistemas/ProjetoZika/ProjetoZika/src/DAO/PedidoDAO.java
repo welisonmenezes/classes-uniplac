@@ -61,6 +61,7 @@ public class PedidoDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.inserir: " + error);
             throw new RuntimeException("PedidoDAO.inserir: " + error);
         }
     }
@@ -87,6 +88,7 @@ public class PedidoDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.inserirProduto: " + error);
             throw new RuntimeException("PedidoDAO.inserirProduto: " + error);
         }
     }
@@ -104,6 +106,7 @@ public class PedidoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.mudaStatus: " + error);
             throw new RuntimeException("PedidoDAO.mudaStatus: " + error);
         }
     }
@@ -123,6 +126,7 @@ public class PedidoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.finalizar: " + error);
             throw new RuntimeException("PedidoDAO.finalizar: " + error);
         }
     }
@@ -140,6 +144,7 @@ public class PedidoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.mudaQuantidadeAprovada: " + error);
             throw new RuntimeException("PedidoDAO.mudaQuantidadeAprovada: " + error);
         }
     }
@@ -156,6 +161,7 @@ public class PedidoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.deletarPedidoProdutos: " + error);
             throw new RuntimeException("PedidoDAO.deletarPedidoProdutos: " + error);
         }
     }
@@ -172,6 +178,7 @@ public class PedidoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.deletar: " + error);
             throw new RuntimeException("PedidoDAO.deletar: " + error);
         }
     }
@@ -212,6 +219,7 @@ public class PedidoDAO {
             stmt.close();
             return pedidosProdutos;
         } catch (SQLException error) {
+            Methods.getLogger().error("PedidoDAO.selecionarPorId: " + error);
             throw new RuntimeException("PedidoDAO.selecionarPorId: " + error);
         }
     }
@@ -235,6 +243,7 @@ public class PedidoDAO {
             st.close();
             return pedidos;
         } catch (SQLException error) {
+            Methods.getLogger().error("PedidoDAO.selecionarPorUsuario: " + error);
             throw new RuntimeException("PedidoDAO.selecionarPorUsuario: " + error);
         }
     }
@@ -270,6 +279,7 @@ public class PedidoDAO {
             stmt.close();
             return pedidosProdutos;
         } catch (SQLException error) {
+            Methods.getLogger().error("PedidoDAO.selecionarPedidoProdutoPorUsuario: " + error);
             throw new RuntimeException("PedidoDAO.selecionarPedidoProdutoPorUsuario: " + error);
         }
     }
@@ -288,6 +298,7 @@ public class PedidoDAO {
             rs.next();
             return rs.getInt(1);
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.total: " + error);
             throw new RuntimeException("PedidoDAO.total: " + error);
         }
     }
@@ -314,6 +325,7 @@ public class PedidoDAO {
             st.close();
             return graphs;
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.graphData: " + error);
             throw new RuntimeException("PedidoDAO.graphData: " + error);
         }
     }
@@ -341,6 +353,7 @@ public class PedidoDAO {
             st.close();
             return pedidos;
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.selecionar: " + error);
             throw new RuntimeException("PedidoDAO.selecionar: " + error);
         }
     }
@@ -358,6 +371,7 @@ public class PedidoDAO {
             rs.next();
             return rs.getInt(1);
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.total: " + error);
             throw new RuntimeException("PedidoDAO.total: " + error);
         }
     }
@@ -514,6 +528,7 @@ public class PedidoDAO {
             st.close();
             return relatorioPedidos;
         } catch(SQLException error) {
+            Methods.getLogger().error("PedidoDAO.relatorioPedido: " + error);
             throw new RuntimeException("PedidoDAO.relatorioPedido: " + error);
         }
     }
