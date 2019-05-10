@@ -59,6 +59,7 @@ public class ProdutoDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.inserir: " + error);
             throw new RuntimeException("ProdutoDAO.inserir: " + error);
         }
     }
@@ -78,6 +79,7 @@ public class ProdutoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.alterar: " + error);
             throw new RuntimeException("ProdutoDAO.alterar: " + error);
         }
     }
@@ -94,6 +96,7 @@ public class ProdutoDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.deletar: " + error);
             throw new RuntimeException("ProdutoDAO.deletar: " + error);
         }
     }
@@ -117,6 +120,7 @@ public class ProdutoDAO {
             stmt.close();
             return produto;
         } catch (SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.selecionarPorId: " + error);
             throw new RuntimeException("ProdutoDAO.selecionarPorId: " + error);
         }
     }
@@ -142,6 +146,7 @@ public class ProdutoDAO {
             stmt.close();
             return produtos;
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.selecionarPorNome: " + error);
             throw new RuntimeException("ProdutoDAO.selecionarPorNome: " + error);
         }
     }
@@ -168,6 +173,7 @@ public class ProdutoDAO {
             st.close();
             return graphs;
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.graphData: " + error);
             throw new RuntimeException("ProdutoDAO.graphData: " + error);
         }
     }
@@ -190,6 +196,7 @@ public class ProdutoDAO {
             st.close();
             return produtos;
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.selecionar: " + error);
             throw new RuntimeException("ProdutoDAO.selecionar: " + error);
         }
     }
@@ -207,6 +214,7 @@ public class ProdutoDAO {
             rs.next();
             return rs.getInt(1);
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.total: " + error);
             throw new RuntimeException("ProdutoDAO.total: " + error);
         }
     }
@@ -314,6 +322,7 @@ public class ProdutoDAO {
             st.close();
             return relatorioProdutos;
         } catch(SQLException error) {
+            Methods.getLogger().error("ProdutoDAO.relatorioProduto: " + error);
             throw new RuntimeException("ProdutoDAO.relatorioProduto: " + error);
         }
     }
