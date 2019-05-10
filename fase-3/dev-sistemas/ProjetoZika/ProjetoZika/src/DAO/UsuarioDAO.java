@@ -66,6 +66,7 @@ public class UsuarioDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.inserir: " + error);
             throw new RuntimeException("UsuarioDAO.inserir: " + error);
         }
     }
@@ -108,6 +109,7 @@ public class UsuarioDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.alterar: " + error);
             throw new RuntimeException("UsuarioDAO.alterar: " + error);
         }
     }
@@ -124,6 +126,7 @@ public class UsuarioDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.deletar: " + error);
             throw new RuntimeException("UsuarioDAO.deletar: " + error);
         }
     }
@@ -146,6 +149,7 @@ public class UsuarioDAO {
             stmt.close();
             return usuario;
         } catch (SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.selecionarPorCpf: " + error);
             throw new RuntimeException("UsuarioDAO.selecionarPorCpf: " + error);
         }
     }
@@ -169,6 +173,7 @@ public class UsuarioDAO {
             stmt.close();
             return usuario;
         } catch (SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.selecionarPorId: " + error);
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
         }
     }
@@ -193,6 +198,7 @@ public class UsuarioDAO {
             stmt.close();
             return usuarios;
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.selecionarPorNome: " + error);
             throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
         }
     }
@@ -221,6 +227,7 @@ public class UsuarioDAO {
             stmt.close();
             return usuarios;
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.selecionarPorNome: " + error);
             throw new RuntimeException("UsuarioDAO.selecionarPorNome: " + error);
         }
     }
@@ -245,6 +252,7 @@ public class UsuarioDAO {
             stmt.close();
             return usuario;
         } catch (SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.selecionarPorId: " + error);
             throw new RuntimeException("UsuarioDAO.selecionarPorId: " + error);
         }
     }
@@ -265,6 +273,7 @@ public class UsuarioDAO {
             stmt.close();
             return ret;
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.temCpf: " + error);
             throw new RuntimeException("UsuarioDAO.temCpf: " + error);
         }
     }
@@ -285,6 +294,7 @@ public class UsuarioDAO {
             stmt.close();
             return ret;
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.temLogin: " + error);
             throw new RuntimeException("UsuarioDAO.temLogin: " + error);
         }
     }
@@ -307,6 +317,7 @@ public class UsuarioDAO {
             st.close();
             return usuarios;
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.selecionar: " + error);
             throw new RuntimeException("UsuarioDAO.selecionar: " + error);
         }
     }
@@ -324,6 +335,7 @@ public class UsuarioDAO {
             rs.next();
             return rs.getInt(1);
         } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.total: " + error);
             throw new RuntimeException("UsuarioDAO.total: " + error);
         }
     }
