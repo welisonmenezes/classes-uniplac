@@ -166,8 +166,7 @@ public class ProdutoDAO {
             ArrayList graphs = new ArrayList();
             while(rs.next()) {
                 GraphModel graph = new GraphModel();
-                graph.setQuantidade(rs.getInt("total"));
-                graph.setMonth(rs.getInt("month"));
+                this.helper.fillGraph(graph, rs);
                 graphs.add(graph);
             }
             st.close();
@@ -311,12 +310,7 @@ public class ProdutoDAO {
             ArrayList<RelatorioProduto> relatorioProdutos = new ArrayList<>();
             while(rs.next()) {
                 RelatorioProduto item = new RelatorioProduto();
-                item.setCodigo(rs.getInt("codigo"));
-                item.setProduto(rs.getString("produto"));
-                item.setEntrada(rs.getInt("entrada"));
-                item.setSaida(rs.getInt("saida"));
-                item.setEstoqueAtual(rs.getInt("estoqueAtual"));
-                item.setFornecedores(rs.getString("fornecedores"));
+                this.helper.fillRelatorioProduto(item, rs);
                 relatorioProdutos.add(item);
             }
             st.close();

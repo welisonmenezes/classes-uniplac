@@ -318,8 +318,7 @@ public class PedidoDAO {
             ArrayList graphs = new ArrayList();
             while(rs.next()) {
                 GraphModel graph = new GraphModel();
-                graph.setQuantidade(rs.getInt("total"));
-                graph.setMonth(rs.getInt("month"));
+                this.helper.fillGraph(graph, rs);
                 graphs.add(graph);
             }
             st.close();
@@ -516,13 +515,7 @@ public class PedidoDAO {
             ArrayList<RelatorioPedido> relatorioPedidos = new ArrayList<>();
             while(rs.next()) {
                 RelatorioPedido item = new RelatorioPedido();
-                item.setCodigo(rs.getInt("codigo"));
-                item.setSoliciante(rs.getString("solicitante"));
-                item.setAprovador(rs.getString("aprovador"));
-                item.setStatus(rs.getString("status"));
-                item.setTotal(rs.getInt("total"));
-                item.setData(rs.getString("data"));
-                item.setProdutos(rs.getString("produtos"));
+                this.helper.fillRelatorioPedido(item, rs);
                 relatorioPedidos.add(item);
             }
             st.close();

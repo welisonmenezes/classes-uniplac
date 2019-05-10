@@ -190,7 +190,7 @@ public class NotaFiscalDAO {
             rs = stmt.executeQuery();
             NotaFiscal notaFiscal = new NotaFiscal();
             while(rs.next()) {
-                this.helper.fillNotas(notaFiscal, rs);
+                this.helper.fillNota(notaFiscal, rs);
             }
             stmt.close();
             return notaFiscal;
@@ -217,19 +217,7 @@ public class NotaFiscalDAO {
             ArrayList<NotaFiscalProduto> nfps = new ArrayList();
             while(rs.next()) {
                 NotaFiscalProduto nfp = new NotaFiscalProduto();
-                nfp.setQuantidade(rs.getInt("Quantidade"));
-                nfp.setValor(rs.getFloat("Valor"));
-                nfp.setCreated(rs.getString("notasfiscaisprodutos.Created"));
-                // o produto da nota
-                Produto p = new Produto();
-                p.setId(rs.getInt("Id"));
-                p.setNome(rs.getString("Nome"));
-                p.setDescricao(rs.getString("Descricao"));
-                p.setStatus(rs.getString("Status"));
-                p.setUnidade(rs.getString("Unidade"));
-                p.setCreated(rs.getString("produtos.Created"));
-                
-                nfp.setProduto(p);
+                this.helper.fillNotaFiscalProduto(nfp, rs);
                 nfps.add(nfp);
             }
             stmt.close();
@@ -252,7 +240,7 @@ public class NotaFiscalDAO {
             rs = st.executeQuery(sql);
             while(rs.next()) {
                 NotaFiscal notaFiscal = new NotaFiscal();
-                this.helper.fillNotas(notaFiscal, rs);
+                this.helper.fillNota(notaFiscal, rs);
                 notasFiscais.add(notaFiscal);
             }
             st.close();

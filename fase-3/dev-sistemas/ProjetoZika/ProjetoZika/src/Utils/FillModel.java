@@ -1,10 +1,14 @@
 package Utils;
 
 import Models.Fornecedor;
+import Models.GraphModel;
 import Models.NotaFiscal;
+import Models.NotaFiscalProduto;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
+import Models.RelatorioPedido;
+import Models.RelatorioProduto;
 import Models.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +33,8 @@ public class FillModel {
             fornecedor.setTelefone(rs.getString("Telefone"));
             fornecedor.setCreated(rs.getString("Created"));
         } catch (SQLException error) {
-            throw new RuntimeException("FornecedorDAO.fillFornecedor: " + error);
+            Methods.getLogger().error("FillModel.fillFornecedor: " + error);
+            throw new RuntimeException("FillModel.fillFornecedor: " + error);
         }
     }
     
@@ -38,7 +43,7 @@ public class FillModel {
      * @param notaFiscal a nota fiscal a ser populada
      * @param rs o ResultSet da consulta
      */
-    public void fillNotas(NotaFiscal notaFiscal, ResultSet rs) {
+    public void fillNota(NotaFiscal notaFiscal, ResultSet rs) {
         try {
             notaFiscal.setId(rs.getInt("nId"));
             notaFiscal.setNumero(rs.getLong("nNumero"));
@@ -57,7 +62,8 @@ public class FillModel {
             fornecedor.setCreated(rs.getString("fCreated"));
             notaFiscal.setFornecedor(fornecedor);
         } catch(SQLException error) {
-            throw new RuntimeException("NotaFiscalDAO.fillUser: " + error);
+            Methods.getLogger().error("FillModel.fillNota: " + error);
+            throw new RuntimeException("FillModel.fillNota: " + error);
         }
     }
     
@@ -83,7 +89,8 @@ public class FillModel {
             usuario.setStatus(rs.getString("usuarios.Status"));
             usuario.setSexo(rs.getString("usuarios.Sexo"));
         } catch(SQLException error) {
-            throw new RuntimeException("PedidoDAO.fillUser: " + error);
+            Methods.getLogger().error("FillModel.fillUser: " + error);
+            throw new RuntimeException("FillModel.fillUser: " + error);
         }
     }
     
@@ -102,7 +109,8 @@ public class FillModel {
             produto.setTotal(rs.getInt("estoque.Total"));
             produto.setCreated(rs.getString("produtos.Created"));
         } catch(SQLException error) {
-            throw new RuntimeException("PedidoDAO.fillProduto: " + error);
+            Methods.getLogger().error("FillModel.fillProduto: " + error);
+            throw new RuntimeException("FillModel.fillProduto: " + error);
         }
     }
     
@@ -118,7 +126,8 @@ public class FillModel {
             pedido.setCreated(rs.getString("pedidos.Created"));
             pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
         } catch(SQLException error) {
-            throw new RuntimeException("PedidoDAO.fillProduto: " + error);
+            Methods.getLogger().error("FillModel.fillPedido: " + error);
+            throw new RuntimeException("FillModel.fillPedido: " + error);
         }
     }
     
@@ -137,7 +146,67 @@ public class FillModel {
             pedidoProduto.setPedido(pedido);
             pedidoProduto.setProduto(produto);
         } catch(SQLException error) {
-            throw new RuntimeException("PedidoDAO.fillPedidoProduto: " + error);
+            Methods.getLogger().error("FillModel.fillPedidoProduto: " + error);
+            throw new RuntimeException("FillModel.fillPedidoProduto: " + error);
+        }
+    }
+    
+    public void fillGraph(GraphModel graph, ResultSet rs) {
+        try {
+            graph.setQuantidade(rs.getInt("total"));
+            graph.setMonth(rs.getInt("month"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillGraph: " + error);
+            throw new RuntimeException("FillModel.fillGraph: " + error);
+        }
+    }
+    
+    public void fillRelatorioProduto(RelatorioProduto item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setProduto(rs.getString("produto"));
+            item.setEntrada(rs.getInt("entrada"));
+            item.setSaida(rs.getInt("saida"));
+            item.setEstoqueAtual(rs.getInt("estoqueAtual"));
+            item.setFornecedores(rs.getString("fornecedores"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioProduto: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioProduto: " + error);
+        }
+    }
+    
+    public void fillRelatorioPedido(RelatorioPedido item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setSoliciante(rs.getString("solicitante"));
+            item.setAprovador(rs.getString("aprovador"));
+            item.setStatus(rs.getString("status"));
+            item.setTotal(rs.getInt("total"));
+            item.setData(rs.getString("data"));
+            item.setProdutos(rs.getString("produtos"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioPedido: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioPedido: " + error);
+        }
+    }
+    
+    public void fillNotaFiscalProduto(NotaFiscalProduto nfp, ResultSet rs) {
+        try {
+            nfp.setQuantidade(rs.getInt("Quantidade"));
+            nfp.setValor(rs.getFloat("Valor"));
+            nfp.setCreated(rs.getString("notasfiscaisprodutos.Created"));
+            // o produto da nota
+            Produto p = new Produto();
+            p.setId(rs.getInt("Id"));
+            p.setNome(rs.getString("Nome"));
+            p.setDescricao(rs.getString("Descricao"));
+            p.setStatus(rs.getString("Status"));
+            p.setUnidade(rs.getString("Unidade"));
+            p.setCreated(rs.getString("produtos.Created"));
+            nfp.setProduto(p);
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillNotaFiscalProduto: " + error);
+            throw new RuntimeException("FillModel.fillNotaFiscalProduto: " + error);
         }
     }
 }
