@@ -333,7 +333,9 @@ public class UsuarioDAO {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
-            return rs.getInt(1);
+            int total = rs.getInt(1);
+            st.close();
+            return total;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.total: " + error);
             throw new RuntimeException("UsuarioDAO.total: " + error);

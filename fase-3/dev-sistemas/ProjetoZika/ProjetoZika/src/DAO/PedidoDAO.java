@@ -296,7 +296,9 @@ public class PedidoDAO {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
-            return rs.getInt(1);
+            int total = rs.getInt(1);
+            st.close();
+            return total;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.total: " + error);
             throw new RuntimeException("PedidoDAO.total: " + error);
@@ -368,7 +370,9 @@ public class PedidoDAO {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
-            return rs.getInt(1);
+            int total = rs.getInt(1);
+            st.close();
+            return total;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.total: " + error);
             throw new RuntimeException("PedidoDAO.total: " + error);

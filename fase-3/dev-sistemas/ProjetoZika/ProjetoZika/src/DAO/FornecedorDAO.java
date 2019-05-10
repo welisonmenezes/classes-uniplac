@@ -18,18 +18,19 @@ import java.util.Properties;
  */
 public class FornecedorDAO {
     
-    private final Connection conn;
+    private Connection conn;
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
     private final ArrayList<Fornecedor> fornecedores = new ArrayList();
     private final FillModel helper = new FillModel();
+    private final ConnectionFactory connFac;
     
     /**
      * método construtor, inicializa a conexão
      */
     public FornecedorDAO() {
-        conn = new ConnectionFactory().getConexao();
+        connFac = new ConnectionFactory();
     }
     
     /**
@@ -40,6 +41,7 @@ public class FornecedorDAO {
     public int inserir(Fornecedor fornecedor) {
         String sql = "INSERT INTO fornecedores (Nome, Telefone, Cnpj, Status, Created) VALUES (?, ?, ?, ?, ?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, fornecedor.getNome());
             stmt.setString(2, fornecedor.getTelefone());
@@ -53,7 +55,7 @@ public class FornecedorDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.inserir: " + error);
@@ -68,13 +70,14 @@ public class FornecedorDAO {
     public void alterar(Fornecedor fornecedor) {
         String sql = "UPDATE fornecedores SET Nome=?, Telefone=?, Cnpj=? WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, fornecedor.getNome());
             stmt.setString(2, fornecedor.getTelefone());
             stmt.setString(3, fornecedor.getCnpj());
             stmt.setInt(4, fornecedor.getId());
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.alterar: " + error);
             throw new RuntimeException("FornecedorDAO.alterar: " + error);
@@ -88,10 +91,11 @@ public class FornecedorDAO {
     public void deletar(int Id) {
         String sql = "UPDATE fornecedores SET Status='Deleted' WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, Id);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.deletar: " + error);
             throw new RuntimeException("FornecedorDAO.deletar: " + error);
@@ -107,6 +111,7 @@ public class FornecedorDAO {
         String sql = "SELECT * FROM fornecedores WHERE Id = ?" ;
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -114,7 +119,7 @@ public class FornecedorDAO {
             while(rs.next()) {
                 this.helper.fillFornecedor(fornecedor, rs);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return fornecedor;
         } catch (SQLException error) {
             Methods.getLogger().error("FornecedorDAO.selecionarPorId: " + error);
@@ -130,12 +135,13 @@ public class FornecedorDAO {
     public int temCnpj(String cnpj) {
         String sql = "SELECT COUNT(Id) FROM fornecedores WHERE Cnpj = ?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, cnpj);
             rs = stmt.executeQuery();
             rs.next();
             int ret = rs.getInt(1);
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return ret;
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.temCnpj: " + error);
@@ -151,6 +157,7 @@ public class FornecedorDAO {
     public ArrayList<Fornecedor> selecionarPorCnpj(String cnpj) {
         String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Cnpj LIKE ? LIMIT 50";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, "%"+cnpj+"%");
             rs = stmt.executeQuery();
@@ -159,7 +166,7 @@ public class FornecedorDAO {
                 this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return fornecedores;
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.selecionarPorCnpj: " + error);
@@ -175,6 +182,7 @@ public class FornecedorDAO {
     public ArrayList<Fornecedor> selecionarPorNome(String nome) {
         String sql = "SELECT * FROM fornecedores WHERE Status != 'Deleted' AND Nome LIKE ? LIMIT 50";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, "%"+nome+"%");
             rs = stmt.executeQuery();
@@ -183,7 +191,7 @@ public class FornecedorDAO {
                 this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return fornecedores;
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.selecionarPorNome: " + error);
@@ -199,6 +207,7 @@ public class FornecedorDAO {
     public ArrayList<Fornecedor> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
@@ -206,7 +215,7 @@ public class FornecedorDAO {
                 this.helper.fillFornecedor(fornecedor, rs);
                 fornecedores.add(fornecedor);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return fornecedores;
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.selecionar: " + error);
@@ -222,10 +231,13 @@ public class FornecedorDAO {
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
-            return rs.getInt(1);
+            int total = rs.getInt(1);
+            connFac.closeAll(rs, stmt, st, conn);
+            return total;
         } catch(SQLException error) {
             Methods.getLogger().error("FornecedorDAO.total: " + error);
             throw new RuntimeException("FornecedorDAO.total: " + error);

@@ -211,7 +211,9 @@ public class ProdutoDAO {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
-            return rs.getInt(1);
+            int total = rs.getInt(1);
+            st.close();
+            return total;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.total: " + error);
             throw new RuntimeException("ProdutoDAO.total: " + error);

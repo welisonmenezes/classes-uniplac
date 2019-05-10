@@ -2,7 +2,6 @@ package DAO;
 
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
-import Models.Produto;
 import Utils.FillModel;
 import Utils.DateHandler;
 import Utils.Methods;
@@ -262,7 +261,9 @@ public class NotaFiscalDAO {
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
-            return rs.getInt(1);
+            int total = rs.getInt(1);
+            st.close();
+            return total;
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.total: " + error);
             throw new RuntimeException("NotaFiscalDAO.total: " + error);

@@ -3,7 +3,10 @@ package DAO;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Faz a conexão com o banco de dados
@@ -21,6 +24,33 @@ public class ConnectionFactory {
         } catch(SQLException error) {
             Methods.getLogger().error("ConnectionFactory.getConexao: " + error);
             throw new RuntimeException("ConnectionFactory.getConexao: " + error);
+        }
+    }
+    
+    /**
+     * Close all possible connections
+     * @param rs the ResultSet
+     * @param stmt the PreparedStatement
+     * @param st the Statement
+     * @param conn the Connection
+     */
+    public void closeAll(ResultSet rs, PreparedStatement stmt, Statement st, Connection conn) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch(SQLException error) {
+            Methods.getLogger().error("EstoqueDAO.closeAll: " + error);
+            throw new RuntimeException("EstoqueDAO.closeAll: " + error);
         }
     }
 }

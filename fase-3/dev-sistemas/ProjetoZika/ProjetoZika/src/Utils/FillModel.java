@@ -151,6 +151,11 @@ public class FillModel {
         }
     }
     
+    /**
+     * Popula o objeto do gráfico com o resultado da consulta
+     * @param graph o objeto a ser populado
+     * @param rs o ResultSet da consulta
+     */
     public void fillGraph(GraphModel graph, ResultSet rs) {
         try {
             graph.setQuantidade(rs.getInt("total"));
@@ -161,6 +166,11 @@ public class FillModel {
         }
     }
     
+    /**
+     * Popula o relatório do produto com o resultado da consulta
+     * @param item o relatório do produto a ser populado
+     * @param rs o ResultSet da consulta
+     */
     public void fillRelatorioProduto(RelatorioProduto item, ResultSet rs) {
         try {
             item.setCodigo(rs.getInt("codigo"));
@@ -175,6 +185,11 @@ public class FillModel {
         }
     }
     
+    /**
+     * Popula o relatório do pedido com o resultado da consulta
+     * @param item o relatório do pedido a ser populado
+     * @param rs o ResultSet da consulta
+     */
     public void fillRelatorioPedido(RelatorioPedido item, ResultSet rs) {
         try {
             item.setCodigo(rs.getInt("codigo"));
@@ -190,6 +205,11 @@ public class FillModel {
         }
     }
     
+    /**
+     * Popula o produto da nota fiscal com o resultado da consulta
+     * @param nfp o produto da nota fiscal a ser populado
+     * @param rs o ResultSet da consulta
+     */
     public void fillNotaFiscalProduto(NotaFiscalProduto nfp, ResultSet rs) {
         try {
             nfp.setQuantidade(rs.getInt("Quantidade"));
