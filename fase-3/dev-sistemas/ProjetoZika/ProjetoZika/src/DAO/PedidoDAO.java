@@ -24,10 +24,11 @@ import java.util.Properties;
  */
 public class PedidoDAO {
     
-    private final Connection conn;
+    private Connection conn;
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
+    private final ConnectionFactory connFac;
     private final ArrayList<Pedido> pedidos = new ArrayList();
     private final ArrayList<PedidoProduto> pedidosProdutos = new ArrayList();
     private final FillModel helper = new FillModel();
@@ -36,7 +37,7 @@ public class PedidoDAO {
      * método construtor, inicializa a conexão
      */
     public PedidoDAO() {
-        conn = new ConnectionFactory().getConexao();
+        connFac = new ConnectionFactory();
     }
     
     /**
@@ -47,6 +48,7 @@ public class PedidoDAO {
     public int inserir(Pedido pedido) {
         String sql = "INSERT INTO pedidos (Status, Created, UsuarioId) VALUES (?, ?, ?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, "Pendente");
             java.sql.Date sqlDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -58,7 +60,7 @@ public class PedidoDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.inserir: " + error);
@@ -74,6 +76,7 @@ public class PedidoDAO {
     public int inserirProduto(PedidoProduto pedidoProduto) {
         String sql = "INSERT INTO pedidosprodutos (PedidoId, ProdutoId, QuantidadeSolicitada, QuantidadeAprovada) VALUES (?, ?, ?, ?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, pedidoProduto.getPedido().getId());
             stmt.setInt(2, pedidoProduto.getProduto().getId());
@@ -85,7 +88,7 @@ public class PedidoDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.inserirProduto: " + error);
@@ -100,11 +103,12 @@ public class PedidoDAO {
     public void mudaStatus(Pedido pedido) {
         String sql = "UPDATE pedidos SET Status=? WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, pedido.getStatus());
             stmt.setInt(2, pedido.getId());
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.mudaStatus: " + error);
             throw new RuntimeException("PedidoDAO.mudaStatus: " + error);
@@ -119,12 +123,13 @@ public class PedidoDAO {
     public void finalizar(Pedido pedido, Usuario almoxarife) {
         String sql = "UPDATE pedidos SET Status=?, AlmoxarifeId=? WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, pedido.getStatus());
             stmt.setInt(2, almoxarife.getId());
             stmt.setInt(3, pedido.getId());
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.finalizar: " + error);
             throw new RuntimeException("PedidoDAO.finalizar: " + error);
@@ -138,11 +143,12 @@ public class PedidoDAO {
     public void mudaQuantidadeAprovada(PedidoProduto pedidoProduto) {
         String sql = "UPDATE pedidosprodutos SET QuantidadeAprovada=? WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, pedidoProduto.getQuantidadeAprovada());
             stmt.setInt(2, pedidoProduto.getId());
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.mudaQuantidadeAprovada: " + error);
             throw new RuntimeException("PedidoDAO.mudaQuantidadeAprovada: " + error);
@@ -156,10 +162,11 @@ public class PedidoDAO {
     public void deletarPedidoProdutos(int pedidoId) {
         String sql = "DELETE FROM pedidosprodutos WHERE PedidoId=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, pedidoId);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.deletarPedidoProdutos: " + error);
             throw new RuntimeException("PedidoDAO.deletarPedidoProdutos: " + error);
@@ -173,10 +180,11 @@ public class PedidoDAO {
     public void deletar(int Id) {
         String sql = "UPDATE pedidos SET Status='Deleted' WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, Id);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.deletar: " + error);
             throw new RuntimeException("PedidoDAO.deletar: " + error);
@@ -197,6 +205,7 @@ public class PedidoDAO {
                 + "WHERE pedidos.Id = ?";
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -216,7 +225,7 @@ public class PedidoDAO {
                 
                 pedidosProdutos.add(pedidoProduto);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return pedidosProdutos;
         } catch (SQLException error) {
             Methods.getLogger().error("PedidoDAO.selecionarPorId: " + error);
@@ -233,6 +242,7 @@ public class PedidoDAO {
     public ArrayList<Pedido> selecionarPorUsuario(Usuario usuario, Properties params) {
         String sql = buildSelectQueryPorUsuario(params, false, usuario);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
@@ -240,7 +250,7 @@ public class PedidoDAO {
                 this.helper.fillPedido(pedido, rs);
                 pedidos.add(pedido);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return pedidos;
         } catch (SQLException error) {
             Methods.getLogger().error("PedidoDAO.selecionarPorUsuario: " + error);
@@ -261,6 +271,7 @@ public class PedidoDAO {
                 + "WHERE pedidosprodutos.PedidoId = ?";
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -276,7 +287,7 @@ public class PedidoDAO {
                 
                 pedidosProdutos.add(pedidoProduto);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return pedidosProdutos;
         } catch (SQLException error) {
             Methods.getLogger().error("PedidoDAO.selecionarPedidoProdutoPorUsuario: " + error);
@@ -293,11 +304,12 @@ public class PedidoDAO {
     public int totalPorUsuario(Usuario usuario, Properties params) {
         String sql = buildSelectQueryPorUsuario(params, true, usuario);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             int total = rs.getInt(1);
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return total;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.total: " + error);
@@ -315,6 +327,7 @@ public class PedidoDAO {
                         "WHERE Created > DATE_SUB(now(), INTERVAL 6 MONTH) " +
                         "GROUP BY MONTH(Created) ORDER BY Created";
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             ArrayList graphs = new ArrayList();
@@ -323,7 +336,7 @@ public class PedidoDAO {
                 this.helper.fillGraph(graph, rs);
                 graphs.add(graph);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return graphs;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.graphData: " + error);
@@ -339,6 +352,7 @@ public class PedidoDAO {
     public ArrayList<Pedido> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
@@ -351,7 +365,7 @@ public class PedidoDAO {
                 
                 pedidos.add(pedido);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return pedidos;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.selecionar: " + error);
@@ -367,11 +381,12 @@ public class PedidoDAO {
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             int total = rs.getInt(1);
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return total;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.total: " + error);
@@ -514,6 +529,7 @@ public class PedidoDAO {
                 + "ORDER BY pedidos.Id DESC";
         
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             ArrayList<RelatorioPedido> relatorioPedidos = new ArrayList<>();
@@ -522,7 +538,7 @@ public class PedidoDAO {
                 this.helper.fillRelatorioPedido(item, rs);
                 relatorioPedidos.add(item);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return relatorioPedidos;
         } catch(SQLException error) {
             Methods.getLogger().error("PedidoDAO.relatorioPedido: " + error);

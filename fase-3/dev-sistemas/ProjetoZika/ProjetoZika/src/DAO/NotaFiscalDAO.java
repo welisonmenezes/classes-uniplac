@@ -20,10 +20,11 @@ import java.util.Properties;
  */
 public class NotaFiscalDAO {
     
-    private final Connection conn;
+    private Connection conn;
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
+    private final ConnectionFactory connFac;
     private final ArrayList<NotaFiscal> notasFiscais = new ArrayList();
     private final FillModel helper = new FillModel();
     
@@ -31,7 +32,7 @@ public class NotaFiscalDAO {
      * método construtor, inicializa a conexão
      */
     public NotaFiscalDAO() {
-        conn = new ConnectionFactory().getConexao();
+        connFac = new ConnectionFactory();
     }
     
     /**
@@ -42,6 +43,7 @@ public class NotaFiscalDAO {
     public int inserir(NotaFiscal notaFiscal) {
         String sql = "INSERT INTO notasfiscais (Numero, Serie, Valor, Data, Status, Created, FornecedorId) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, notaFiscal.getNumero());
             stmt.setInt(2, notaFiscal.getSerie());
@@ -57,7 +59,7 @@ public class NotaFiscalDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.inserir: " + error);
@@ -73,6 +75,7 @@ public class NotaFiscalDAO {
     public int inserirProduto(NotaFiscalProduto notaProduto) {
         String sql = "INSERT INTO notasfiscaisprodutos (NotaFiscalId, ProdutoId, Valor, Quantidade, Created) VALUES (?, ?, ?, ?, ?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, notaProduto.getNotaFiscal().getId());
             stmt.setInt(2, notaProduto.getProduto().getId());
@@ -86,7 +89,7 @@ public class NotaFiscalDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.inserirProduto: " + error);
@@ -102,6 +105,7 @@ public class NotaFiscalDAO {
         String sql = "UPDATE notasfiscais SET Numero=?, Serie=?, Valor=?, "
                 + "Data=?, FornecedorId=? WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, notaFiscal.getNumero());
             stmt.setInt(2, notaFiscal.getSerie());
@@ -110,7 +114,7 @@ public class NotaFiscalDAO {
             stmt.setInt(5, notaFiscal.getFornecedor().getId());
             stmt.setInt(6, notaFiscal.getId());
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.alterar: " + error);
             throw new RuntimeException("NotaFiscalDAO.alterar: " + error);
@@ -124,10 +128,11 @@ public class NotaFiscalDAO {
     public void deletarProdutos(int notaId) {
         String sql = "DELETE FROM notasfiscaisprodutos WHERE NotaFiscalId=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, notaId);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.deletarProdutos: " + error);
             throw new RuntimeException("NotaFiscalDAO.deletarProdutos: " + error);
@@ -142,11 +147,12 @@ public class NotaFiscalDAO {
     public void deletarProduto(int notaId, int ProdutoId) {
         String sql = "DELETE FROM notasfiscaisprodutos WHERE NotaFiscalId=? AND ProdutoId=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, notaId);
             stmt.setInt(2, ProdutoId);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.deletarProduto: " + error);
             throw new RuntimeException("NotaFiscalDAO.deletarProduto: " + error);
@@ -160,10 +166,11 @@ public class NotaFiscalDAO {
     public void deletar(int notaId) {
         String sql = "UPDATE notasfiscais SET Status='Deleted' WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, notaId);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.deletar: " + error);
             throw new RuntimeException("NotaFiscalDAO.deletar: " + error);
@@ -184,6 +191,7 @@ public class NotaFiscalDAO {
                     + " FROM notasFiscais LEFT JOIN fornecedores ON fornecedores.Id = notasFiscais.FornecedorId WHERE notasFiscais.Id = ?";
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -191,7 +199,7 @@ public class NotaFiscalDAO {
             while(rs.next()) {
                 this.helper.fillNota(notaFiscal, rs);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return notaFiscal;
         } catch (SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.selecionarPorId: " + error);
@@ -210,6 +218,7 @@ public class NotaFiscalDAO {
                     "WHERE NotaFiscalId = ? AND produtos.Status != 'Deleted'";
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -219,7 +228,7 @@ public class NotaFiscalDAO {
                 this.helper.fillNotaFiscalProduto(nfp, rs);
                 nfps.add(nfp);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return nfps;
         } catch (SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.selecionarProdutos: " + error);
@@ -235,6 +244,7 @@ public class NotaFiscalDAO {
     public ArrayList<NotaFiscal> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
@@ -242,7 +252,7 @@ public class NotaFiscalDAO {
                 this.helper.fillNota(notaFiscal, rs);
                 notasFiscais.add(notaFiscal);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return notasFiscais;
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.selecionar: " + error);
@@ -258,11 +268,12 @@ public class NotaFiscalDAO {
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             int total = rs.getInt(1);
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return total;
         } catch(SQLException error) {
             Methods.getLogger().error("NotaFiscalDAO.total: " + error);
