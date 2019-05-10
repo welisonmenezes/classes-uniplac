@@ -32,7 +32,8 @@ public class DateHandler {
                 field.setDate(newDate);
             }
         } catch (ParseException error) {
-            throw new RuntimeException("Methods.setParamsToDateChooser: " + error);
+            Methods.getLogger().error("DateHandler.setParamsToDateChooser: " + error);
+            throw new RuntimeException("DateHandler.setParamsToDateChooser: " + error);
         }
     }
     
@@ -48,7 +49,8 @@ public class DateHandler {
             Date newDate = sdf.parse(date);
             field.setDate(newDate);
         } catch (ParseException error) {
-            throw new RuntimeException("Methods.setDateToDateChooser: " + error);
+            Methods.getLogger().error("DateHandler.setDateToDateChooser: " + error);
+            throw new RuntimeException("DateHandler.setDateToDateChooser: " + error);
         }
     }
     
@@ -82,7 +84,8 @@ public class DateHandler {
             return dt.format(date);
             
         } catch (ParseException error) {
-            throw new RuntimeException("Methods.getSqlDate: " + error);
+            Methods.getLogger().error("DateHandler.getSqlDate: " + error);
+            throw new RuntimeException("DateHandler.getSqlDate: " + error);
         }
     }
     
@@ -103,7 +106,8 @@ public class DateHandler {
             }
             return sdf.format(date);
         } catch (ParseException error) {
-            throw new RuntimeException("Methods.getFriendlyDate: " + error);
+            Methods.getLogger().error("DateHandler.getFriendlyDate: " + error);
+            throw new RuntimeException("DateHandler.getFriendlyDate: " + error);
         }
     }
     
@@ -117,7 +121,8 @@ public class DateHandler {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyy-MM-dd");
             Date d = sdf.parse(date);
             return d;
-        } catch (ParseException ex) {
+        } catch (ParseException error) {
+            Methods.getLogger().error("DateHandler.getJavaDate: " + error);
             return null;
         }
     }

@@ -73,7 +73,8 @@ public class MenuTray {
         try {
             tray.add(trayIcon);
             context.setState(JFrame.ICONIFIED);
-        } catch (AWTException e) {
+        } catch (AWTException error) {
+            Methods.getLogger().error("MenuTray.addTrayIcon: " + error);
             System.out.println("TrayIcon could not be added.");
         }
     }

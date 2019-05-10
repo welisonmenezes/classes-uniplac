@@ -17,7 +17,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -90,8 +89,9 @@ public final class PDFGenerator {
                 // mensagem de sucesso
                 JOptionPane.showMessageDialog(null, Methods.getTranslation("RelatorioGeradoComSucesso"));
             }
-        } catch (IOException | DocumentException de) {
-            throw new ExceptionConverter(de);
+        } catch (IOException | DocumentException error) {
+            Methods.getLogger().error("PDFGenerator.chooseDirectory: " + error);
+            throw new ExceptionConverter(error);
         }
     }
     
@@ -124,6 +124,7 @@ public final class PDFGenerator {
             document.add(top);
             
         } catch(DocumentException | IOException de) {
+            Methods.getLogger().error("PDFGenerator.addTop: " + de);
             throw new ExceptionConverter(de);
         }
     }
@@ -141,6 +142,7 @@ public final class PDFGenerator {
             }
             
         } catch(DocumentException de) {
+            Methods.getLogger().error("PDFGenerator.addInfo: " + de);
             throw new ExceptionConverter(de);
         }
     }
@@ -172,6 +174,7 @@ public final class PDFGenerator {
             document.add(header);
             
         }  catch(DocumentException de) {
+            Methods.getLogger().error("PDFGenerator.addTableHeader: " + de);
             throw new ExceptionConverter(de);
         }
     }
@@ -206,6 +209,7 @@ public final class PDFGenerator {
             document.add(tableMain);
             
         }  catch(DocumentException de) {
+            Methods.getLogger().error("PDFGenerator.addTableMain: " + de);
             throw new ExceptionConverter(de);
         }
     }
