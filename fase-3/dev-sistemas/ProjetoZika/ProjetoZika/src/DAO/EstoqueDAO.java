@@ -45,7 +45,7 @@ public class EstoqueDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
-            Methods.getLogger().debug("EstoqueDAO.inserir: " + error);
+            Methods.getLogger().error("EstoqueDAO.inserir: " + error);
             throw new RuntimeException("EstoqueDAO.inserir: " + error);
         }
     }
@@ -65,7 +65,7 @@ public class EstoqueDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("EstoqueDAO.alterar: " + error);
+            Methods.getLogger().error("EstoqueDAO.alterar: " + error);
             throw new RuntimeException("EstoqueDAO.alterar: " + error);
         }
     }
@@ -88,7 +88,7 @@ public class EstoqueDAO {
             stmt.close();
             return total;
         } catch (SQLException error) {
-            Methods.getLogger().debug("EstoqueDAO.quantidade: " + error);
+            Methods.getLogger().error("EstoqueDAO.quantidade: " + error);
             throw new RuntimeException("EstoqueDAO.quantidade: " + error);
         }
     }
@@ -107,7 +107,7 @@ public class EstoqueDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("EstoqueDAO.normalizarEstoqueProduto: " + error);
+            Methods.getLogger().error("EstoqueDAO.normalizarEstoqueProduto: " + error);
             throw new RuntimeException("EstoqueDAO.normalizarEstoqueProduto: " + error);
         }
     }

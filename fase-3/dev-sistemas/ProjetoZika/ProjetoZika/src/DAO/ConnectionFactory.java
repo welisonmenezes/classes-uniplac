@@ -19,7 +19,7 @@ public class ConnectionFactory {
         try {
             return DriverManager.getConnection("jdbc:mysql://localhost/projetozika", "root", "");
         } catch(SQLException error) {
-            Methods.getLogger().debug("ConnectionFactory.getConexao: " + error);
+            Methods.getLogger().error("ConnectionFactory.getConexao: " + error);
             throw new RuntimeException("ConnectionFactory.getConexao: " + error);
         }
     }

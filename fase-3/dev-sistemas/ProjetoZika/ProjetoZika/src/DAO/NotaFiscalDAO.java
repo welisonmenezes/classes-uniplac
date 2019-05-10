@@ -61,7 +61,7 @@ public class NotaFiscalDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.inserir: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.inserir: " + error);
             throw new RuntimeException("NotaFiscalDAO.inserir: " + error);
         }
     }
@@ -90,7 +90,7 @@ public class NotaFiscalDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.inserirProduto: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.inserirProduto: " + error);
             throw new RuntimeException("NotaFiscalDAO.inserirProduto: " + error);
         }
     }
@@ -113,7 +113,7 @@ public class NotaFiscalDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.alterar: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.alterar: " + error);
             throw new RuntimeException("NotaFiscalDAO.alterar: " + error);
         }
     }
@@ -130,7 +130,7 @@ public class NotaFiscalDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.deletarProdutos: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.deletarProdutos: " + error);
             throw new RuntimeException("NotaFiscalDAO.deletarProdutos: " + error);
         }
     }
@@ -149,7 +149,7 @@ public class NotaFiscalDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.deletarProduto: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.deletarProduto: " + error);
             throw new RuntimeException("NotaFiscalDAO.deletarProduto: " + error);
         }
     }
@@ -166,7 +166,7 @@ public class NotaFiscalDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.deletar: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.deletar: " + error);
             throw new RuntimeException("NotaFiscalDAO.deletar: " + error);
         }
     }
@@ -195,7 +195,7 @@ public class NotaFiscalDAO {
             stmt.close();
             return notaFiscal;
         } catch (SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.selecionarPorId: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.selecionarPorId: " + error);
             throw new RuntimeException("NotaFiscalDAO.selecionarPorId: " + error);
         }
     }
@@ -235,7 +235,7 @@ public class NotaFiscalDAO {
             stmt.close();
             return nfps;
         } catch (SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.selecionarProdutos: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.selecionarProdutos: " + error);
             throw new RuntimeException("NotaFiscalDAO.selecionarProdutos: " + error);
         }
     }
@@ -258,7 +258,7 @@ public class NotaFiscalDAO {
             st.close();
             return notasFiscais;
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.selecionar: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.selecionar: " + error);
             throw new RuntimeException("NotaFiscalDAO.selecionar: " + error);
         }
     }
@@ -276,7 +276,7 @@ public class NotaFiscalDAO {
             rs.next();
             return rs.getInt(1);
         } catch(SQLException error) {
-            Methods.getLogger().debug("NotaFiscalDAO.total: " + error);
+            Methods.getLogger().error("NotaFiscalDAO.total: " + error);
             throw new RuntimeException("NotaFiscalDAO.total: " + error);
         }
     }

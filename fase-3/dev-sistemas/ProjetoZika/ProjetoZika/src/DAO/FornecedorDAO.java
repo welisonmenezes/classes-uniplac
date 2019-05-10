@@ -56,7 +56,7 @@ public class FornecedorDAO {
             stmt.close();
             return lastInsertedId;
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.inserir: " + error);
+            Methods.getLogger().error("FornecedorDAO.inserir: " + error);
             throw new RuntimeException("FornecedorDAO.inserir: " + error);
         }
     }
@@ -76,7 +76,7 @@ public class FornecedorDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.alterar: " + error);
+            Methods.getLogger().error("FornecedorDAO.alterar: " + error);
             throw new RuntimeException("FornecedorDAO.alterar: " + error);
         }
     }
@@ -93,7 +93,7 @@ public class FornecedorDAO {
             stmt.execute();
             stmt.close();
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.deletar: " + error);
+            Methods.getLogger().error("FornecedorDAO.deletar: " + error);
             throw new RuntimeException("FornecedorDAO.deletar: " + error);
         }
     }
@@ -117,7 +117,7 @@ public class FornecedorDAO {
             stmt.close();
             return fornecedor;
         } catch (SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.selecionarPorId: " + error);
+            Methods.getLogger().error("FornecedorDAO.selecionarPorId: " + error);
             throw new RuntimeException("FornecedorDAO.selecionarPorId: " + error);
         }
     }
@@ -138,7 +138,7 @@ public class FornecedorDAO {
             stmt.close();
             return ret;
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.temCnpj: " + error);
+            Methods.getLogger().error("FornecedorDAO.temCnpj: " + error);
             throw new RuntimeException("FornecedorDAO.temCnpj: " + error);
         }
     }
@@ -162,7 +162,7 @@ public class FornecedorDAO {
             stmt.close();
             return fornecedores;
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.selecionarPorCnpj: " + error);
+            Methods.getLogger().error("FornecedorDAO.selecionarPorCnpj: " + error);
             throw new RuntimeException("FornecedorDAO.selecionarPorCnpj: " + error);
         }
     }
@@ -186,7 +186,7 @@ public class FornecedorDAO {
             stmt.close();
             return fornecedores;
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.selecionarPorNome: " + error);
+            Methods.getLogger().error("FornecedorDAO.selecionarPorNome: " + error);
             throw new RuntimeException("FornecedorDAO.selecionarPorNome: " + error);
         }
     }
@@ -209,7 +209,7 @@ public class FornecedorDAO {
             st.close();
             return fornecedores;
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.selecionar: " + error);
+            Methods.getLogger().error("FornecedorDAO.selecionar: " + error);
             throw new RuntimeException("FornecedorDAO.selecionar: " + error);
         }
     }
@@ -227,7 +227,7 @@ public class FornecedorDAO {
             rs.next();
             return rs.getInt(1);
         } catch(SQLException error) {
-            Methods.getLogger().debug("FornecedorDAO.total: " + error);
+            Methods.getLogger().error("FornecedorDAO.total: " + error);
             throw new RuntimeException("FornecedorDAO.total: " + error);
         }
     }
