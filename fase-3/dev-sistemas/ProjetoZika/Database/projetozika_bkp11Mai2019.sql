@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 23-Abr-2019 às 20:02
+-- Generation Time: 11-Maio-2019 às 19:04
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -38,23 +38,23 @@ CREATE TABLE `estoque` (
 --
 
 INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
-(1, 45),
+(1, 55),
 (2, 80),
 (3, 11),
 (4, 56),
 (5, 21),
 (6, 65),
-(7, 15),
+(7, 35),
 (8, 76),
 (9, 12),
-(10, 31),
-(11, 21),
-(12, 11),
+(10, 61),
+(11, 20),
+(12, 7),
 (13, 10),
 (14, 21),
 (15, 44),
 (16, 12),
-(17, 20),
+(17, 25),
 (18, 43),
 (19, 13),
 (20, 70),
@@ -63,7 +63,10 @@ INSERT INTO `estoque` (`ProdutoId`, `Total`) VALUES
 (23, 10),
 (24, 20),
 (25, 22),
-(26, 15);
+(26, 15),
+(27, 11),
+(28, 10),
+(29, 50);
 
 -- --------------------------------------------------------
 
@@ -93,7 +96,8 @@ INSERT INTO `fornecedores` (`Id`, `Cnpj`, `Nome`, `Telefone`, `Status`, `Created
 (6, '66666666663333', 'Staples.com', '333333333', 'Publish', '2019-03-31 00:00:00'),
 (7, '77777777777333', 'Venda ESC SA', '23234545', 'Publish', '2019-04-02 00:00:00'),
 (8, '99999999999999', 'VendaESCOnline', '222222222', 'Publish', '2019-04-18 00:00:00'),
-(9, '88888888888888', 'Escolar.com', '32323232', 'Publish', '2019-04-20 00:00:00');
+(9, '88888888888888', 'Escolar.com', '32323232', 'Publish', '2019-04-20 00:00:00'),
+(10, '10121444444555', 'Plast House', '21212323', 'Publish', '2019-04-29 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -128,7 +132,10 @@ INSERT INTO `notasfiscais` (`Id`, `Numero`, `Serie`, `Valor`, `Data`, `Status`, 
 (10, 333333333335557, 43556990, 22.22, '2019-04-09', 'Publish', '2019-04-09 00:00:00', 7),
 (11, 88878677878, 325534, 33.33, '2019-04-03', 'Publish', '2019-04-09 00:00:00', 5),
 (12, 4343434343, 43434434, 43.44, '2019-04-02', 'Publish', '2019-04-20 00:00:00', 5),
-(13, 32322332323332, 33434, 44.55, '2019-04-23', 'Publish', '2019-04-23 00:00:00', 2);
+(13, 32322332323332, 33434, 44.55, '2019-04-23', 'Publish', '2019-04-23 00:00:00', 2),
+(14, 65676567, 6765, 30.00, '2019-04-29', 'Publish', '2019-04-29 00:00:00', 1),
+(15, 3333333333444433, 2423323, 55.55, '2019-05-01', 'Publish', '2019-05-02 00:00:00', 6),
+(16, 44333444333, 34343, 44.44, '2019-05-10', 'Publish', '2019-05-11 00:00:00', 10);
 
 -- --------------------------------------------------------
 
@@ -182,7 +189,13 @@ INSERT INTO `notasfiscaisprodutos` (`NotaFiscalId`, `ProdutoId`, `Valor`, `Quant
 (11, 24, 3.99, 20, '2019-04-20 00:00:00'),
 (12, 4, 1.11, 11, '2019-04-20 00:00:00'),
 (12, 25, 2.22, 22, '2019-04-20 00:00:00'),
-(13, 26, 4.44, 20, '2019-04-23 00:00:00');
+(13, 26, 4.44, 20, '2019-04-23 00:00:00'),
+(14, 24, 3.00, 30, '2019-04-29 00:00:00'),
+(15, 7, 1.22, 20, '2019-05-02 00:00:00'),
+(15, 29, 1.11, 50, '2019-05-02 00:00:00'),
+(16, 1, 13.33, 10, '2019-05-11 00:00:00'),
+(16, 10, 33.33, 30, '2019-05-11 00:00:00'),
+(16, 17, 2.22, 5, '2019-05-11 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -221,7 +234,12 @@ INSERT INTO `pedidos` (`Id`, `Status`, `Created`, `UsuarioId`, `AlmoxarifeId`) V
 (21, 'Pendente', '2019-04-20 00:00:00', 7, NULL),
 (22, 'Pendente', '2019-04-22 00:00:00', 9, NULL),
 (23, 'Pendente', '2019-04-22 00:00:00', 6, NULL),
-(24, 'Aguardando entrega', '2019-04-23 00:00:00', 6, 5);
+(24, 'Aguardando entrega', '2019-04-23 00:00:00', 6, 5),
+(25, 'Negado', '2019-04-25 00:00:00', 10, 5),
+(26, 'Finalizado', '2019-04-25 00:00:00', 10, 9),
+(27, 'Pendente', '2019-04-25 00:00:00', 11, NULL),
+(28, 'Pendente', '2019-04-29 00:00:00', 11, NULL),
+(29, 'Pendente', '2019-05-11 00:00:00', 10, NULL);
 
 -- --------------------------------------------------------
 
@@ -300,7 +318,25 @@ INSERT INTO `pedidosprodutos` (`Id`, `PedidoId`, `ProdutoId`, `QuantidadeSolicit
 (75, 23, 9, 1, 1),
 (76, 23, 18, 5, 5),
 (77, 23, 21, 1, 1),
-(78, 24, 26, 6, 5);
+(78, 24, 26, 6, 5),
+(79, 25, 7, 1, 0),
+(80, 25, 9, 3, 0),
+(81, 25, 13, 4, 0),
+(82, 26, 11, 1, 1),
+(83, 26, 12, 4, 4),
+(84, 27, 1, 5, 5),
+(85, 27, 9, 1, 1),
+(86, 27, 6, 3, 3),
+(87, 27, 23, 1, 1),
+(88, 27, 19, 1, 1),
+(89, 27, 18, 1, 1),
+(90, 27, 24, 1, 1),
+(91, 27, 25, 3, 3),
+(92, 28, 24, 4, NULL),
+(93, 29, 24, 1, 1),
+(94, 29, 29, 3, 3),
+(95, 29, 9, 1, 1),
+(96, 29, 17, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -347,7 +383,10 @@ INSERT INTO `produtos` (`Id`, `Nome`, `Unidade`, `Descricao`, `Status`, `Created
 (23, 'Calculadora de Mesa', 'Unidade', 'Calculadora de mesa Maxprint', 'Publish', '2019-04-09 00:00:00'),
 (24, 'Agenda 2019', 'Unidade', 'Agenda diária 2019', 'Publish', '2018-12-24 00:00:00'),
 (25, 'Pilha AA', 'Pacote', 'Pilha AA pequena', 'Publish', '2019-04-20 00:00:00'),
-(26, 'Phone de Ouvido', 'Unidade', 'Phone de ouvido Sansumg', 'Publish', '2019-04-23 00:00:00');
+(26, 'Phone de Ouvido', 'Unidade', 'Phone de ouvido Sansumg', 'Publish', '2019-04-23 00:00:00'),
+(27, 'Prancheta', 'Unidade', 'Prancheta madeira A4', 'Publish', '2019-04-29 00:00:00'),
+(28, 'Porta Moeda', 'Unidade', 'Porta moeda importado', 'Publish', '2019-05-02 00:00:00'),
+(29, 'Cartolina Branca', 'Unidade', 'Cartolina branca folha grossa', 'Publish', '2019-05-02 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -377,11 +416,14 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`Id`, `CPF`, `Nome`, `Sexo`, `Email`, `Telefone`, `Celular`, `DataNascimento`, `Setor`, `Permissao`, `Login`, `Senha`, `Status`, `Created`) VALUES
-(5, '11111111111', 'Welison Menezes', 'Masculino', 'welison@email.com', '333333332222', '99999999', '1987-01-06', 'Administração', 'Administrador', 'welison', '123456', 'Publish', '2019-03-28 00:00:00'),
-(6, '22222222222', 'José', 'Masculino', 'js@email.com', '33333333', '99999999', '1999-03-06', 'Recursos Humanos', 'Usuário', 'jose', '123456', 'Publish', '2019-03-28 00:00:00'),
-(7, '33333333333', 'Maria Luiza', 'Feminino', 'maria@luiza.com', '22111133', '99889988', '2000-06-05', 'Recursos Humanos', 'Almoxarife', 'maria', '123456', 'Publish', '2019-03-28 00:00:00'),
-(8, '44444444444', 'Bruce Banner', 'Masculino', 'batman@email', '22333344', '99009900', '1999-07-06', 'Contabilidade', 'Usuário', 'batman', '123456', 'Publish', '2019-03-29 00:00:00'),
-(9, '55555555555', 'Tony Stark', 'Masculino', 'iron@man.com', '22222233323', '77766776677', '2000-04-04', 'Almoxarifado', 'Almoxarife', 'tony', '123456', 'Publish', '2019-04-10 00:00:00');
+(5, '11111111111', 'Welison Menezes', 'Masculino', 'welison@email.com', '333333332222', '99999999', '1987-01-06', 'Administração', 'Administrador', 'welison', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-03-28 00:00:00'),
+(6, '22222222222', 'José', 'Masculino', 'js@email.com', '33333333', '99999999', '1999-03-06', 'Recursos Humanos', 'Usuário', 'jose', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-03-28 00:00:00'),
+(7, '33333333333', 'Maria Clara', 'Feminino', 'maria@luiza.com', '22111133', '99889988', '2000-06-05', 'Recursos Humanos', 'Almoxarife', 'maria', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-03-28 00:00:00'),
+(8, '44444444444', 'Bruce Banner', 'Masculino', 'batman@email', '22333344', '99009900', '1999-07-06', 'Contabilidade', 'Usuário', 'batman', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-03-29 00:00:00'),
+(9, '55555555555', 'Tony Stark', 'Masculino', 'iron@man.com', '22222233323', '77766776677', '2000-04-04', 'Almoxarifado', 'Almoxarife', 'tony', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-04-10 00:00:00'),
+(10, '32223333333', 'Luiza Canadá', 'Feminino', 'luiza@canada.com', '21212324', '98989897', '2013-04-27', 'Administração', 'Administrador', 'luiza', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-04-25 00:00:00'),
+(11, '43434454345', 'Carol Castro', 'Feminino', 'carol@mail.com', '4343434343', '5454565454', '1998-04-03', 'Recursos Humanos', 'Usuário', 'carol', 'f8cdb04495ded47615258f9dc6a3f4707fd2405434fefc3cbf4ef4e6', 'Publish', '2019-04-25 00:00:00'),
+(12, '12222322234', 'Jhonny Bravo', 'Masculino', 'jb@mail.com', '32322211', '98979897', '2000-04-29', 'Recursos Humanos', 'Usuário', 'bravo', '123456', 'Publish', '2019-04-29 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -453,37 +495,37 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `fornecedores`
 --
 ALTER TABLE `fornecedores`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `notasfiscais`
 --
 ALTER TABLE `notasfiscais`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `pedidosprodutos`
 --
 ALTER TABLE `pedidosprodutos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
