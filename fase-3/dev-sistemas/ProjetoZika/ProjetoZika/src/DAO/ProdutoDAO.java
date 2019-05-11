@@ -21,10 +21,11 @@ import java.util.Properties;
  */
 public class ProdutoDAO {
     
-    private final Connection conn;
+    private Connection conn;
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
+    private final ConnectionFactory connFac;
     private final ArrayList<Produto> produtos = new ArrayList();
     private final FillModel helper = new FillModel();
     
@@ -32,7 +33,7 @@ public class ProdutoDAO {
      * método construtor, inicializa a conexão
      */
     public ProdutoDAO() {
-        conn = new ConnectionFactory().getConexao();
+        connFac = new ConnectionFactory();
     }
     
     /**
@@ -43,6 +44,7 @@ public class ProdutoDAO {
     public int inserir(Produto produto) {
         String sql = "INSERT INTO produtos (Nome, Unidade, Descricao, Status, Created) VALUES (?, ?, ?, ?, ?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getUnidade());
@@ -56,7 +58,7 @@ public class ProdutoDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.inserir: " + error);
@@ -71,13 +73,14 @@ public class ProdutoDAO {
     public void alterar(Produto produto) {
         String sql = "UPDATE produtos SET Nome=?, Unidade=?, Descricao=? WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getUnidade());
             stmt.setString(3, produto.getDescricao());
             stmt.setInt(4, produto.getId());
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.alterar: " + error);
             throw new RuntimeException("ProdutoDAO.alterar: " + error);
@@ -91,10 +94,11 @@ public class ProdutoDAO {
     public void deletar(int Id) {
         String sql = "UPDATE produtos SET Status='Deleted' WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, Id);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.deletar: " + error);
             throw new RuntimeException("ProdutoDAO.deletar: " + error);
@@ -110,6 +114,7 @@ public class ProdutoDAO {
         String sql = "SELECT * FROM produtos LEFT JOIN estoque ON estoque.ProdutoId=Id WHERE Id = ?";
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -117,7 +122,7 @@ public class ProdutoDAO {
             while(rs.next()) {
                 this.helper.fillProduto(produto, rs);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return produto;
         } catch (SQLException error) {
             Methods.getLogger().error("ProdutoDAO.selecionarPorId: " + error);
@@ -135,6 +140,7 @@ public class ProdutoDAO {
                 + "LEFT JOIN estoque ON estoque.ProdutoId=Id "
                 + "WHERE Status != 'Deleted' AND Nome LIKE ? LIMIT 50";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, "%" + nome + "%");
             rs = stmt.executeQuery();
@@ -143,7 +149,7 @@ public class ProdutoDAO {
                 this.helper.fillProduto(produto, rs);
                 produtos.add(produto);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return produtos;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.selecionarPorNome: " + error);
@@ -161,6 +167,7 @@ public class ProdutoDAO {
                         "WHERE Created > DATE_SUB(now(), INTERVAL 6 MONTH) " +
                         "GROUP BY MONTH(Created) ORDER BY Created";
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             ArrayList graphs = new ArrayList();
@@ -169,7 +176,7 @@ public class ProdutoDAO {
                 this.helper.fillGraph(graph, rs);
                 graphs.add(graph);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return graphs;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.graphData: " + error);
@@ -185,6 +192,7 @@ public class ProdutoDAO {
     public ArrayList<Produto> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
@@ -192,7 +200,7 @@ public class ProdutoDAO {
                 this.helper.fillProduto(produto, rs);
                 produtos.add(produto);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return produtos;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.selecionar: " + error);
@@ -208,11 +216,12 @@ public class ProdutoDAO {
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             int total = rs.getInt(1);
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return total;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.total: " + error);
@@ -307,6 +316,7 @@ public class ProdutoDAO {
                 + "ORDER BY produtos.Id DESC";
         
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             ArrayList<RelatorioProduto> relatorioProdutos = new ArrayList<>();
@@ -315,7 +325,7 @@ public class ProdutoDAO {
                 this.helper.fillRelatorioProduto(item, rs);
                 relatorioProdutos.add(item);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return relatorioProdutos;
         } catch(SQLException error) {
             Methods.getLogger().error("ProdutoDAO.relatorioProduto: " + error);

@@ -18,10 +18,11 @@ import java.util.Properties;
  */
 public class UsuarioDAO {
     
-    private final Connection conn;
+    private Connection conn;
     private PreparedStatement stmt;
     private Statement st;
     private ResultSet rs;
+    private final ConnectionFactory connFac;
     private final ArrayList<Usuario> usuarios = new ArrayList();
     private final FillModel helper = new FillModel();
     
@@ -29,7 +30,7 @@ public class UsuarioDAO {
      * método construtor, inicializa a conexão
      */
     public UsuarioDAO() {
-        conn = new ConnectionFactory().getConexao();
+        connFac = new ConnectionFactory();
     }
     
     /**
@@ -42,6 +43,7 @@ public class UsuarioDAO {
                 + "(Cpf, Nome, Sexo, Email, Telefone, Celular, DataNascimento, Setor, Permissao, Login, Senha, Status, Created) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,SHA2(?, 224),?,?)";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, usuario.getCpf());
             stmt.setString(2, usuario.getNome());
@@ -63,7 +65,7 @@ public class UsuarioDAO {
             if(rs.next()) {
                 lastInsertedId = rs.getInt(1);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return lastInsertedId;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.inserir: " + error);
@@ -89,6 +91,7 @@ public class UsuarioDAO {
                 + "WHERE Id=?";
         }
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, usuario.getCpf());
             stmt.setString(2, usuario.getNome());
@@ -107,7 +110,7 @@ public class UsuarioDAO {
                 stmt.setInt(11, usuario.getId());
             }
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.alterar: " + error);
             throw new RuntimeException("UsuarioDAO.alterar: " + error);
@@ -121,10 +124,11 @@ public class UsuarioDAO {
     public void deletar(String Id) {
         String sql = "UPDATE usuarios SET Status='Deleted' WHERE Id=?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, Id);
             stmt.execute();
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.deletar: " + error);
             throw new RuntimeException("UsuarioDAO.deletar: " + error);
@@ -139,6 +143,7 @@ public class UsuarioDAO {
     public Usuario selecionarPorCpf(String Cpf) {
         String sql = "SELECT * FROM usuarios WHERE Cpf =?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, Cpf);
             rs = stmt.executeQuery();
@@ -146,7 +151,7 @@ public class UsuarioDAO {
             while(rs.next()) {
                 this.helper.fillUsuario(usuario, rs);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return usuario;
         } catch (SQLException error) {
             Methods.getLogger().error("UsuarioDAO.selecionarPorCpf: " + error);
@@ -163,6 +168,7 @@ public class UsuarioDAO {
         String sql = "SELECT * FROM usuarios WHERE Id = ?";
         int queryId = Integer.parseInt(Id);
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, queryId);
             rs = stmt.executeQuery();
@@ -170,7 +176,7 @@ public class UsuarioDAO {
             while(rs.next()) {
                 this.helper.fillUsuario(usuario, rs);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return usuario;
         } catch (SQLException error) {
             Methods.getLogger().error("UsuarioDAO.selecionarPorId: " + error);
@@ -187,6 +193,7 @@ public class UsuarioDAO {
         String sql = "SELECT * FROM usuarios "
                 + "WHERE Status != 'Deleted' AND Nome LIKE ? LIMIT 50";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, "%"+nome+"%");
             rs = stmt.executeQuery();
@@ -195,7 +202,7 @@ public class UsuarioDAO {
                 this.helper.fillUsuario(usuario, rs);
                 usuarios.add(usuario);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return usuarios;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.selecionarPorNome: " + error);
@@ -215,6 +222,7 @@ public class UsuarioDAO {
                 + "AND Permissao != ? "
                 + "AND Nome LIKE ? LIMIT 50";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, permissao);
             stmt.setString(2, "%"+nome+"%");
@@ -224,7 +232,7 @@ public class UsuarioDAO {
                 this.helper.fillUsuario(usuario, rs);
                 usuarios.add(usuario);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return usuarios;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.selecionarPorNome: " + error);
@@ -241,6 +249,7 @@ public class UsuarioDAO {
     public Usuario selecionarAposLogin(String login, String senha) {
         String sql = "SELECT * FROM usuarios WHERE Login = ? AND Senha = SHA2(?, 224) AND Status != 'Deleted'";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, login);
             stmt.setString(2, senha);
@@ -249,7 +258,7 @@ public class UsuarioDAO {
             while(rs.next()) {
                 this.helper.fillUsuario(usuario, rs);
             }
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return usuario;
         } catch (SQLException error) {
             Methods.getLogger().error("UsuarioDAO.selecionarPorId: " + error);
@@ -265,12 +274,13 @@ public class UsuarioDAO {
     public int temCpf(String cpf) {
         String sql = "SELECT COUNT(Id) FROM usuarios WHERE Cpf = ?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, cpf);
             rs = stmt.executeQuery();
             rs.next();
             int ret = rs.getInt(1);
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return ret;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.temCpf: " + error);
@@ -286,12 +296,13 @@ public class UsuarioDAO {
     public int temLogin(String login) {
         String sql = "SELECT COUNT(Id) FROM usuarios WHERE Login = ?";
         try {
+            conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, login);
             rs = stmt.executeQuery();
             rs.next();
             int ret = rs.getInt(1);
-            stmt.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return ret;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.temLogin: " + error);
@@ -307,6 +318,7 @@ public class UsuarioDAO {
     public ArrayList<Usuario> selecionar(Properties params) {
         String sql = buildSelectQuery(params, false);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             while(rs.next()) {
@@ -314,7 +326,7 @@ public class UsuarioDAO {
                 this.helper.fillUsuario(usuario, rs);
                 usuarios.add(usuario);
             }
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return usuarios;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.selecionar: " + error);
@@ -330,11 +342,12 @@ public class UsuarioDAO {
     public int total(Properties params) {
         String sql = buildSelectQuery(params, true);
         try {
+            conn = connFac.getConexao();
             st = conn.createStatement();
             rs = st.executeQuery(sql);
             rs.next();
             int total = rs.getInt(1);
-            st.close();
+            connFac.closeAll(rs, stmt, st, conn);
             return total;
         } catch(SQLException error) {
             Methods.getLogger().error("UsuarioDAO.total: " + error);
