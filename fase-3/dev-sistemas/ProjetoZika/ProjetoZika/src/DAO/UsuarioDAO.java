@@ -247,7 +247,7 @@ public class UsuarioDAO {
      * @return o usuário com Id correspondente
      */
     public Usuario selecionarAposLogin(String login, String senha) {
-        String sql = "SELECT * FROM usuarios WHERE Login = ? AND Senha = SHA2(?, 224) AND Status != 'Deleted'";
+        String sql = "SELECT * FROM usuarios WHERE BINARY Login = ? AND BINARY Senha = SHA2(?, 224) AND Status != 'Deleted'";
         try {
             conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);

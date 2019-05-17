@@ -1,18 +1,24 @@
 package Utils;
 
+import java.awt.AWTKeyStroke;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import projetozika.Main;
 
@@ -142,5 +148,29 @@ public class AccessibilityManager {
                 }
             }
         });
+    }
+    
+    /**
+     * Navega entre as tabs por ctrl+tab
+     * @param tabbedPane o JTabbedPane
+     */
+    public static void setupTabTraversalKeys(JTabbedPane tabbedPane) {
+        KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
+        KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
+
+        // Remove ctrl-tab from normal focus traversal
+        Set<AWTKeyStroke> forwardKeys = new HashSet<>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        forwardKeys.remove(ctrlTab);
+        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+
+        // Remove ctrl-shift-tab from normal focus traversal
+        Set<AWTKeyStroke> backwardKeys = new HashSet<>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+        backwardKeys.remove(ctrlShiftTab);
+        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
+
+        // Add keys to the tab's input map
+        InputMap inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        inputMap.put(ctrlTab, "navigateNext");
+        inputMap.put(ctrlShiftTab, "navigatePrevious");
     }
 }

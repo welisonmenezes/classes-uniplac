@@ -1,11 +1,19 @@
 package projetozika.Pages.Relatorios;
 
 import Templates.BaseLayout;
+import Utils.AccessibilityManager;
 import Utils.Methods;
+import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
+import java.awt.KeyboardFocusManager;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 
 /**
  * Tela de listagem do fornecedores
@@ -43,6 +51,8 @@ public class Relatorios extends BaseLayout {
         
         jTabbedPane1.addTab(Methods.getTranslation("Pedidos"), panelPedidos);
         jTabbedPane1.addTab(Methods.getTranslation("Produtos"), panelProdutos);
+        
+        AccessibilityManager.setupTabTraversalKeys(jTabbedPane1);
 
         pCenter.add(jTabbedPane1, BorderLayout.CENTER);
     }

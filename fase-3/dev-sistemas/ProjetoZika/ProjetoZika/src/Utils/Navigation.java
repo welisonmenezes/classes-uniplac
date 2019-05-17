@@ -292,6 +292,7 @@ public class Navigation {
     private static void addNewPage() {
         getJBody().add(tmpPanel, BorderLayout.CENTER);
         tmpPanel.setVisible(true);
+        tmpPanel.transferFocus();
     }
     
     /**

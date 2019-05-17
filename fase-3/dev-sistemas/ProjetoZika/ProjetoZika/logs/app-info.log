@@ -1,1 +1,2 @@
-[ERROR] 2019-05-10 17:21:56.356 [AWT-EventQueue-0] Methods - FornecedorDAO.total: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+[ERROR] 2019-05-16 20:44:14.189 [AWT-EventQueue-0] Methods - PedidoDAO.graphData: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+[ERROR] 2019-05-16 20:44:19.798 [AWT-EventQueue-0] Methods - UsuarioDAO.selecionar: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
