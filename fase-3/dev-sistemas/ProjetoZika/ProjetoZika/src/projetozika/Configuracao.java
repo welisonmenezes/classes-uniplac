@@ -1,15 +1,14 @@
 package projetozika;
 
-import Config.Environment;
-import DAO.UsuarioDAO;
-import Models.Usuario;
 import Utils.AccessibilityManager;
-import Utils.Navigation;
+import Utils.Dialogs;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 /**
  * Tela de login
@@ -18,12 +17,15 @@ import javax.swing.JFrame;
 public class Configuracao extends JFrame {
     
     private final Properties params;
-
+    private JFrame login;
+    
     /**
      * Creates new form Login
      */
-    public Configuracao() {
+    public Configuracao(JFrame login) {
         
+       this.login = login;
+       timerTest();
         
         initComponents();
         this.params = new Properties();
@@ -65,6 +67,16 @@ public class Configuracao extends JFrame {
         luser.setText(Methods.getTranslation("Usuario"));
         bentrar.setText(Methods.getTranslation("Entrar"));
         setTitle(Methods.getTranslation("ProjetoZika"));
+    }
+    
+    private Timer t;
+    private void timerTest() {
+        
+        t = new Timer(250, (ActionEvent e) -> {
+            login.setVisible(false);
+            t.stop();
+        });
+        t.start();
     }
 
     /**
@@ -146,40 +158,7 @@ public class Configuracao extends JFrame {
         System.out.println("xxx");
    
     }//GEN-LAST:event_bentrarActionPerformed
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Configuracao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Configuracao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Configuracao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Configuracao.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new Configuracao().setVisible(true);
-        });
-    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bentrar;

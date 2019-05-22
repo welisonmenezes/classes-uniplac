@@ -17,8 +17,8 @@ import javax.swing.JFrame;
  */
 public class Login extends JFrame {
     
-    private final Properties params;
-    private final UsuarioDAO usuarioDao;
+    private Properties params;
+    private UsuarioDAO usuarioDao;
     private Usuario usuario;
 
     /**
@@ -26,28 +26,35 @@ public class Login extends JFrame {
      */
     public Login() {
         
-        // carrega os dados
-        usuarioDao = new UsuarioDAO();
-        
-        initComponents();
-        this.params = new Properties();
-        
-        // add icon
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
-        
-        // posiciona o frame na tela
-        Methods.positionFrameInCenter(getInstance());
-        
-        // seta estilos aos elementos
-        Styles.defaultButton(bentrar);
-        Styles.defaultField(flogin);
-        Styles.defaultField(fsenha);
-        
-        // seta a acessibilidade
-        AccessibilityManager.setAccessibility(getInstance());
-        
-        // Tradução
-        translation();
+        if (true) {
+            JFrame config = new Configuracao(this);
+            config.setVisible(true);
+            
+            setTitle("xxxx");
+        } else {
+           // carrega os dados
+            usuarioDao = new UsuarioDAO();
+
+            initComponents();
+            this.params = new Properties();
+
+            // add icon
+            setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
+
+            // posiciona o frame na tela
+            Methods.positionFrameInCenter(getInstance());
+
+            // seta estilos aos elementos
+            Styles.defaultButton(bentrar);
+            Styles.defaultField(flogin);
+            Styles.defaultField(fsenha);
+
+            // seta a acessibilidade
+            AccessibilityManager.setAccessibility(getInstance());
+
+            // Tradução
+            translation(); 
+        }
     }
     
     /**
