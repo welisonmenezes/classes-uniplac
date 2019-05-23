@@ -8,6 +8,7 @@ import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
+import java.io.File;
 import java.util.Properties;
 import javax.swing.JFrame;
 
@@ -26,7 +27,10 @@ public class Login extends JFrame {
      */
     public Login() {
         
-        if (true) {
+        File tempFile = new File("./connection-config.xml");
+        boolean exists = tempFile.exists();
+        
+        if (!exists) {
             JFrame config = new Configuracao(this);
             config.setVisible(true);
             

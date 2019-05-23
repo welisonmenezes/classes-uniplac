@@ -1,7 +1,7 @@
 package projetozika;
 
 import Utils.AccessibilityManager;
-import Utils.Dialogs;
+import Utils.ConfigGenerator;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
@@ -17,10 +17,11 @@ import javax.swing.Timer;
 public class Configuracao extends JFrame {
     
     private final Properties params;
-    private JFrame login;
+    private final JFrame login;
     
     /**
      * Creates new form Login
+     * @param login the Login JFrame
      */
     public Configuracao(JFrame login) {
         
@@ -47,6 +48,8 @@ public class Configuracao extends JFrame {
         
         // Tradução
         translation();
+        
+        ConfigGenerator configGenerator = new ConfigGenerator("host-enviado", "user-enviado", "password-enviado");
     }
     
     /**
@@ -65,7 +68,7 @@ public class Configuracao extends JFrame {
         lsenha.setText(Methods.getTranslation("Senha"));
         lhost.setText(Methods.getTranslation("Host"));
         luser.setText(Methods.getTranslation("Usuario"));
-        bentrar.setText(Methods.getTranslation("Entrar"));
+        bentrar.setText(Methods.getTranslation("Salvar"));
         setTitle(Methods.getTranslation("ProjetoZika"));
     }
     
@@ -116,35 +119,35 @@ public class Configuracao extends JFrame {
         lhost.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lhost.setForeground(new java.awt.Color(255, 255, 255));
         lhost.setText("Path");
-        jBg.add(lhost, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, -1, 20));
-        jBg.add(fhost, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 240, -1));
+        jBg.add(lhost, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, -1, 20));
+        jBg.add(fhost, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 240, -1));
 
         lsenha.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lsenha.setForeground(new java.awt.Color(255, 255, 255));
         lsenha.setText("Senha");
-        jBg.add(lsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, 20));
+        jBg.add(lsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, -1, 20));
 
-        bentrar.setText("Entrar");
+        bentrar.setText("Salvar");
         bentrar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         bentrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bentrarActionPerformed(evt);
             }
         });
-        jBg.add(bentrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 70, 30));
+        jBg.add(bentrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 320, 70, 30));
 
         lInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lInfo.setForeground(new java.awt.Color(255, 0, 0));
         jBg.add(lInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 160, 30));
-        jBg.add(fsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 240, -1));
+        jBg.add(fsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 240, -1));
 
         luser.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         luser.setForeground(new java.awt.Color(255, 255, 255));
         luser.setText("Usuário");
-        jBg.add(luser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, -1, 20));
-        jBg.add(fuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 240, -1));
+        jBg.add(luser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, -1, 20));
+        jBg.add(fuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 240, -1));
 
-        getContentPane().add(jBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+        getContentPane().add(jBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 390));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
