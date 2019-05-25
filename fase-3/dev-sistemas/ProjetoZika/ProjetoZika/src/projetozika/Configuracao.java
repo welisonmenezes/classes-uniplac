@@ -4,6 +4,7 @@ import Utils.AccessibilityManager;
 import Utils.ConfigGenerator;
 import Utils.Methods;
 import Utils.Styles;
+import Utils.Validator;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
@@ -42,6 +43,9 @@ public class Configuracao extends JFrame {
         Styles.defaultField(fhost);
         Styles.defaultField(fuser);
         Styles.defaultField(fsenha);
+        Styles.errorLabel(ehost);
+        Styles.errorLabel(euser);
+        Styles.errorLabel(epassword);
         
         // seta a acessibilidade
         AccessibilityManager.setAccessibility(getInstance());
@@ -49,7 +53,10 @@ public class Configuracao extends JFrame {
         // Tradução
         translation();
         
-        ConfigGenerator configGenerator = new ConfigGenerator("host-enviado", "user-enviado", "password-enviado");
+        // reseta errors
+        _resetaErrors();
+        
+        //ConfigGenerator configGenerator = new ConfigGenerator("host-enviado", "user-enviado", "password-enviado");
     }
     
     /**
@@ -70,6 +77,12 @@ public class Configuracao extends JFrame {
         luser.setText(Methods.getTranslation("Usuario"));
         bentrar.setText(Methods.getTranslation("Salvar"));
         setTitle(Methods.getTranslation("ProjetoZika"));
+    }
+    
+    private void _resetaErrors() {
+        ehost.setText("");
+        euser.setText("");
+        epassword.setText("");
     }
     
     private Timer t;
@@ -101,6 +114,9 @@ public class Configuracao extends JFrame {
         fsenha = new javax.swing.JPasswordField();
         luser = new javax.swing.JLabel();
         fuser = new javax.swing.JTextField();
+        epassword = new javax.swing.JLabel();
+        ehost = new javax.swing.JLabel();
+        euser = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(37, 38, 39));
@@ -147,6 +163,15 @@ public class Configuracao extends JFrame {
         jBg.add(luser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, -1, 20));
         jBg.add(fuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, 240, -1));
 
+        epassword.setText("error");
+        jBg.add(epassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 310, -1, -1));
+
+        ehost.setText("error");
+        jBg.add(ehost, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
+
+        euser.setText("error");
+        jBg.add(euser, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, -1, -1));
+
         getContentPane().add(jBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 390));
 
         pack();
@@ -158,13 +183,25 @@ public class Configuracao extends JFrame {
      */
     private void bentrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bentrarActionPerformed
         
-        System.out.println("xxx");
-   
+        this._resetaErrors();
+        // validação
+        boolean isValid = true;
+        if (! Validator.validaCampo(fhost, ehost, 1000)) isValid = false;
+        if (! Validator.validaCampo(fuser, euser, 1000)) isValid = false;
+        if (! Validator.validaCampo(fsenha, epassword, 1000)) isValid = false;
+        if (isValid) {
+            System.out.println("passou!");
+        } else {
+            System.out.println("deu ruim!");
+        }
     }//GEN-LAST:event_bentrarActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bentrar;
+    private javax.swing.JLabel ehost;
+    private javax.swing.JLabel epassword;
+    private javax.swing.JLabel euser;
     private javax.swing.JTextField fhost;
     private javax.swing.JPasswordField fsenha;
     private javax.swing.JTextField fuser;
