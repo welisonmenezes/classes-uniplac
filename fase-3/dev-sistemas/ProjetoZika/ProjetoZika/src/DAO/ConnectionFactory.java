@@ -28,6 +28,22 @@ public class ConnectionFactory {
     }
     
     /**
+     * Retorna a conexão com o banco de dados
+     * @param host
+     * @param user
+     * @param password
+     * @return a conexão com o banco de dados
+     */
+    public boolean testConexao(String host, String user, String password) {
+        try {
+            DriverManager.getConnection(host, user, password).close();
+            return true;
+        } catch(SQLException error) {
+            return false;
+        }
+    } 
+    
+    /**
      * Close all possible connections
      * @param rs the ResultSet
      * @param stmt the PreparedStatement

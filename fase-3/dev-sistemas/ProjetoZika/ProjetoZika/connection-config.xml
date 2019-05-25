@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><configConnection><host>host-enviado</host><user>user-enviado</user><password>password-enviado</password></configConnection>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><configConnection><host>jdbc:mysql://localhost/projetozika</host><user>root</user><password/></configConnection>

@@ -1,5 +1,6 @@
 package projetozika;
 
+import DAO.ConnectionFactory;
 import Utils.AccessibilityManager;
 import Utils.ConfigGenerator;
 import Utils.Methods;
@@ -9,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
@@ -18,13 +20,13 @@ import javax.swing.Timer;
 public class Configuracao extends JFrame {
     
     private final Properties params;
-    private final JFrame login;
+    private final Login login;
     
     /**
      * Creates new form Login
      * @param login the Login JFrame
      */
-    public Configuracao(JFrame login) {
+    public Configuracao(Login login) {
         
        this.login = login;
        timerTest();
@@ -187,12 +189,21 @@ public class Configuracao extends JFrame {
         // validação
         boolean isValid = true;
         if (! Validator.validaCampo(fhost, ehost, 1000)) isValid = false;
-        if (! Validator.validaCampo(fuser, euser, 1000)) isValid = false;
-        if (! Validator.validaCampo(fsenha, epassword, 1000)) isValid = false;
+        //if (! Validator.validaCampo(fuser, euser, 1000)) isValid = false;
+        //if (! Validator.validaCampo(fsenha, epassword, 1000)) isValid = false;
         if (isValid) {
-            System.out.println("passou!");
-        } else {
-            System.out.println("deu ruim!");
+            ConnectionFactory conTest = new ConnectionFactory();
+            String password = new String(fsenha.getPassword()).trim();
+            String host = fhost.getText().trim();
+            String user = fuser.getText().trim();
+            if (conTest.testConexao(host, user, password)) {
+                ConfigGenerator configGenerator = new ConfigGenerator(host, user, password);
+                this.dispose();
+                this.login.setVisible(true);
+                this.login.buildPage();
+            } else {
+                JOptionPane.showMessageDialog(null, "Conexão falha");
+            }
         }
     }//GEN-LAST:event_bentrarActionPerformed
 

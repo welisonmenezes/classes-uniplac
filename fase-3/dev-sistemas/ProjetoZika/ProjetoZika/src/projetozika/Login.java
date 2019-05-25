@@ -37,29 +37,33 @@ public class Login extends JFrame {
             
             setTitle("xxxx");
         } else {
-           // carrega os dados
-            usuarioDao = new UsuarioDAO();
-
-            initComponents();
-            this.params = new Properties();
-
-            // add icon
-            setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
-
-            // posiciona o frame na tela
-            Methods.positionFrameInCenter(getInstance());
-
-            // seta estilos aos elementos
-            Styles.defaultButton(bentrar);
-            Styles.defaultField(flogin);
-            Styles.defaultField(fsenha);
-
-            // seta a acessibilidade
-            AccessibilityManager.setAccessibility(getInstance());
-
-            // Tradução
-            translation(); 
+            this.buildPage();
         }
+    }
+    
+    public void buildPage() {
+        // carrega os dados
+        usuarioDao = new UsuarioDAO();
+
+        initComponents();
+        this.params = new Properties();
+
+        // add icon
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/sources/saturn.png")));
+
+        // posiciona o frame na tela
+        Methods.positionFrameInCenter(getInstance());
+
+        // seta estilos aos elementos
+        Styles.defaultButton(bentrar);
+        Styles.defaultField(flogin);
+        Styles.defaultField(fsenha);
+
+        // seta a acessibilidade
+        AccessibilityManager.setAccessibility(getInstance());
+
+        // Tradução
+        translation();
     }
     
     /**
