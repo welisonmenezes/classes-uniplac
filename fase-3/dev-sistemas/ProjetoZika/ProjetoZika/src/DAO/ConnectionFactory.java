@@ -33,17 +33,18 @@ public class ConnectionFactory {
     }
     
     /**
-     * Retorna a conexão com o banco de dados
+     * Testa a conexão com o banco de dados
      * @param host
      * @param user
      * @param password
-     * @return a conexão com o banco de dados
+     * @return boolean 
      */
     public boolean testConexao(String host, String user, String password) {
         try {
             DriverManager.getConnection(host, user, password).close();
             return true;
         } catch(SQLException error) {
+            Methods.getLogger().error("ConnectionFactory.testConexao: " + error);
             return false;
         }
     } 

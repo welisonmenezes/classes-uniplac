@@ -1,2 +1,1 @@
-[ERROR] 2019-05-16 20:44:14.189 [AWT-EventQueue-0] Methods - PedidoDAO.graphData: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
-[ERROR] 2019-05-16 20:44:19.798 [AWT-EventQueue-0] Methods - UsuarioDAO.selecionar: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+[ERROR] 2019-05-25 23:13:55.608 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: java.sql.SQLException: No suitable driver found for dfdf

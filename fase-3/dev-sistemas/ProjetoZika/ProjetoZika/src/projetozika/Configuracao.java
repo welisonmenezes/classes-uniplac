@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 /**
- * Tela de login
+ * Tela de configuração da conexão
  * @author Welison
  */
 public class Configuracao extends JFrame {
@@ -23,7 +23,7 @@ public class Configuracao extends JFrame {
     private final Login login;
     
     /**
-     * Creates new form Login
+     * Creates new form de configuração da conexão
      * @param login the Login JFrame
      */
     public Configuracao(Login login) {
@@ -81,6 +81,9 @@ public class Configuracao extends JFrame {
         setTitle(Methods.getTranslation("ProjetoZika"));
     }
     
+    /**
+     * Reseta os campos de erro
+     */
     private void _resetaErrors() {
         ehost.setText("");
         euser.setText("");
@@ -88,6 +91,9 @@ public class Configuracao extends JFrame {
     }
     
     private Timer t;
+    /**
+     * Apos algum tempo esconde a tela de login
+     */
     private void timerTest() {
         
         t = new Timer(250, (ActionEvent e) -> {
@@ -196,14 +202,18 @@ public class Configuracao extends JFrame {
             String password = new String(fsenha.getPassword()).trim();
             String host = fhost.getText().trim();
             String user = fuser.getText().trim();
+            
+            // testa a conexão
             if (conTest.testConexao(host, user, password)) {
                 ConfigGenerator configGenerator = new ConfigGenerator();
                 configGenerator.createConfig(host, user, password);
+                
+                // esconde a janela corrente e mostra a de login
                 this.dispose();
                 this.login.setVisible(true);
                 this.login.buildPage();
             } else {
-                JOptionPane.showMessageDialog(null, "Conexão falha");
+                JOptionPane.showMessageDialog(null, Methods.getTranslation("ConexaoFalha"));
             }
         }
     }//GEN-LAST:event_bentrarActionPerformed

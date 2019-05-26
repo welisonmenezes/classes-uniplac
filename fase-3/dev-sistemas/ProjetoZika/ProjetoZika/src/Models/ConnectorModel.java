@@ -6,7 +6,7 @@
 package Models;
 
 /**
- *
+ * Model com os dados da conexão
  * @author Welison
  */
 public class ConnectorModel {
@@ -37,6 +37,5 @@ public class ConnectorModel {
     public void setPassword(String password) {
         this.password = password;
     }
-    
     
 }

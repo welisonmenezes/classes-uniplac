@@ -27,20 +27,24 @@ public class Login extends JFrame {
      */
     public Login() {
         
+        // open file com configuraçãos da conexão
         File tempFile = new File("./connection-config.xml");
         boolean exists = tempFile.exists();
         //exists = false;
         
+        // verifica se arquivo da conexão existe
         if (!exists) {
+            // se não, abre tela pra configurar
             JFrame config = new Configuracao(this);
             config.setVisible(true);
-            
-            setTitle("xxxx");
         } else {
             this.buildPage();
         }
     }
     
+    /**
+     * Inicializa a página de login
+     */
     public void buildPage() {
         // carrega os dados
         usuarioDao = new UsuarioDAO();
