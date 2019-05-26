@@ -1,5 +1,6 @@
 package Utils;
 
+import Models.ConnectorModel;
 import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,47 +12,70 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class ConfigGenerator {
 
-	public ConfigGenerator(String path, String login, String pass) {
+    public void createConfig(String path, String login, String pass) {
 
-	  try {
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("configConnection");
+            doc.appendChild(rootElement);
 
-		// root elements
-		Document doc = docBuilder.newDocument();
-		Element rootElement = doc.createElement("configConnection");
-		doc.appendChild(rootElement);
+            // host element
+            Element host = doc.createElement("host");
+            host.appendChild(doc.createTextNode(path));
+            rootElement.appendChild(host);
 
-		// host element
-		Element host = doc.createElement("host");
-		host.appendChild(doc.createTextNode(path));
-		rootElement.appendChild(host);
+            // user element
+            Element user = doc.createElement("user");
+            user.appendChild(doc.createTextNode(login));
+            rootElement.appendChild(user);
 
-		// user element
-		Element user = doc.createElement("user");
-		user.appendChild(doc.createTextNode(login));
-		rootElement.appendChild(user);
+            // password element
+            Element password = doc.createElement("password");
+            password.appendChild(doc.createTextNode(pass));
+            rootElement.appendChild(password);
 
-		// password element
-		Element password = doc.createElement("password");
-		password.appendChild(doc.createTextNode(pass));
-		rootElement.appendChild(password);
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File("./connection-config.xml"));
 
-		// write the content into xml file
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File("./connection-config.xml"));
+            transformer.transform(source, result);
 
-		transformer.transform(source, result);
+        } catch (ParserConfigurationException | TransformerException error) {
+            Methods.getLogger().error("ConfigGenerator.ConfigGenerator: " + error);
+            throw new RuntimeException("ConfigGenerator.ConfigGenerator: " + error);
+        }
+    }
+    
+    public ConnectorModel getConnector() {
+        ConnectorModel conM = new ConnectorModel();
+        try {
 
-	  } catch (ParserConfigurationException | TransformerException error) {
-                Methods.getLogger().error("ConfigGenerator.ConfigGenerator: " + error);
-                throw new RuntimeException("ConfigGenerator.ConfigGenerator: " + error);
-          }
-	}
+            File fXmlFile = new File("./connection-config.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            
+            NodeList host = doc.getElementsByTagName("host");
+            NodeList user = doc.getElementsByTagName("user");
+            NodeList password = doc.getElementsByTagName("password");
+            
+            conM.setHost(host.item(0).getTextContent());
+            conM.setUser(user.item(0).getTextContent());
+            conM.setPassword(password.item(0).getTextContent());
+            
+        }  catch (Exception e) {
+            System.out.println(e);
+        }
+        return conM;
+    }
 }

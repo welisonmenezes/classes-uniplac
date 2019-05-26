@@ -29,7 +29,7 @@ public class Login extends JFrame {
         
         File tempFile = new File("./connection-config.xml");
         boolean exists = tempFile.exists();
-        exists = false;
+        //exists = false;
         
         if (!exists) {
             JFrame config = new Configuracao(this);

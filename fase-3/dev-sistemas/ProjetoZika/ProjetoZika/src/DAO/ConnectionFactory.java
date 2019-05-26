@@ -1,5 +1,7 @@
 package DAO;
 
+import Models.ConnectorModel;
+import Utils.ConfigGenerator;
 import Utils.Methods;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +22,10 @@ public class ConnectionFactory {
      */
     public Connection getConexao() {
         try {
-            return DriverManager.getConnection("jdbc:mysql://localhost/projetozika", "root", "");
+            ConfigGenerator cg = new ConfigGenerator();
+            ConnectorModel cn = cg.getConnector();
+            return DriverManager.getConnection(cn.getHost(), cn.getUser(), cn.getPassword());
+            //return DriverManager.getConnection("jdbc:mysql://localhost/projetozika", "root", "");
         } catch(SQLException error) {
             Methods.getLogger().error("ConnectionFactory.getConexao: " + error);
             throw new RuntimeException("ConnectionFactory.getConexao: " + error);

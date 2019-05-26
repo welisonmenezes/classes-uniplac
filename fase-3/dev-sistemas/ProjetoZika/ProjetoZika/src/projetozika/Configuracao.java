@@ -197,7 +197,8 @@ public class Configuracao extends JFrame {
             String host = fhost.getText().trim();
             String user = fuser.getText().trim();
             if (conTest.testConexao(host, user, password)) {
-                ConfigGenerator configGenerator = new ConfigGenerator(host, user, password);
+                ConfigGenerator configGenerator = new ConfigGenerator();
+                configGenerator.createConfig(host, user, password);
                 this.dispose();
                 this.login.setVisible(true);
                 this.login.buildPage();
