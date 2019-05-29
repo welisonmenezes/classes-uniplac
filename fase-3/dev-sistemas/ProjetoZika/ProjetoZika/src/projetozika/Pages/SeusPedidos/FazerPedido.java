@@ -118,6 +118,7 @@ public class FazerPedido extends BaseFrame {
         if (! mode.equals("add")) {
             pedidosProdutos = pedidoDao.selecionarPedidoProdutoPorId(id);
             pedido = pedidosProdutos.get(0).getPedido();
+            //System.out.println(pedido.getId());
         }
         
         // carrega os elementos e o design da tela
@@ -207,7 +208,9 @@ public class FazerPedido extends BaseFrame {
                     if (produto != null && produto.getId() > 0) {
                         Usuario usuario = Environment.getLoggedUser();
                         if (usuario != null && usuario.getId() > 0) {
-                            pedido = new Pedido ("", Methods.getTranslation("Pendente"), usuario);
+                            if (this.mode.equals("add")) {
+                                pedido = new Pedido ("", Methods.getTranslation("Pendente"), usuario);
+                            }
                             PedidoProduto pp = new PedidoProduto(produto, pedido, 1);
                             pedidosProdutos.add(pp);
                             updateCenterContent();
