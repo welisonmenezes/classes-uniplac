@@ -1,1 +1,1 @@
-[ERROR] 2019-05-25 23:13:23.801 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: java.sql.SQLException: Access denied for user 'xxx'@'localhost' (using password: NO)
+[ERROR] 2019-05-25 23:13:55.608 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: java.sql.SQLException: No suitable driver found for dfdf
