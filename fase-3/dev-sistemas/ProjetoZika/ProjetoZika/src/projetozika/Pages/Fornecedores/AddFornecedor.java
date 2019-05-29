@@ -196,8 +196,10 @@ public class AddFornecedor extends BaseFrame {
                 
                 // valida campos únicos
                 if (mode.equals("edit") && (!oldCnpj.equals(newCnpj)) && (fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0)) {
+                    Toolkit.getDefaultToolkit().beep();
                     ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
                 } else if((!mode.equals("edit")) && fornecedorDao.temCnpj(fornecedor.getCnpj()) > 0) {
+                    Toolkit.getDefaultToolkit().beep();
                     ecnpj.setText(Methods.getTranslation("EsteCNPJJaExiste"));
                 } else {
                     Dialogs.showLoadPopup(bg);

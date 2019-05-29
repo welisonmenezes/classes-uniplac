@@ -213,8 +213,11 @@ public class Configuracao extends JFrame {
                 this.login.setVisible(true);
                 this.login.buildPage();
             } else {
+                Toolkit.getDefaultToolkit().beep();
                 JOptionPane.showMessageDialog(null, Methods.getTranslation("ConexaoFalha"));
             }
+        } else {
+            Toolkit.getDefaultToolkit().beep();
         }
     }//GEN-LAST:event_bentrarActionPerformed
 

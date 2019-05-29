@@ -18,6 +18,7 @@ import Utils.Validator;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -296,6 +297,8 @@ public class RelatorioPedidos extends JPanel {
                     // mensagem de erro
                     JOptionPane.showMessageDialog(null, Methods.getTranslation("NenhumDadoEncontrado"));
                 }
+            } else {
+                Toolkit.getDefaultToolkit().beep();
             }
             
         });

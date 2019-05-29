@@ -6,6 +6,7 @@ import Utils.AccessibilityManager;
 import Utils.Methods;
 import Utils.Navigation;
 import Utils.Styles;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class AvisoQuantidade extends BaseFrame {
     public AvisoQuantidade(ArrayList<EstoqueAviso> avisos) {
         this.avisos = avisos;
         initPage(Methods.getTranslation("EstoqueInsuficienteParaOsItensAbaixo"));
+        Toolkit.getDefaultToolkit().beep();
     }
     
     /**

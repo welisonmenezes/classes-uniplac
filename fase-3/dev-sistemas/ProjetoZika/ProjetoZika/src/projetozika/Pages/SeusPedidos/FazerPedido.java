@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -256,6 +257,7 @@ public class FazerPedido extends BaseFrame {
                 Dialogs.showLoadPopup(bg);
                 timerTest();
             } else {
+                Toolkit.getDefaultToolkit().beep();
                 efinalizar.setText(Methods.getTranslation("SelecioneUmProduto"));
             }
             

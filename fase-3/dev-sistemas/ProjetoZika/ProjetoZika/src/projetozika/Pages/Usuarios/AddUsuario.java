@@ -17,6 +17,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
@@ -336,7 +337,9 @@ public class AddUsuario extends BaseFrame {
             if (! Validator.validaCampo(fsetor, esetor)) isValid = false;
             if (! Validator.validaCampo(fpermissao, epermissao)) isValid = false;
             if (! Validator.validaCampo(flogin, elogin)) isValid = false;
-            if (! Validator.validaCampo(fsenha, esenha) && this.mode.equals("add")) isValid = false;
+            if (this.mode.equals("add")) {
+                if (! Validator.validaCampo(fsenha, esenha)) isValid = false;
+            }
             if (isValid) {
                 String newCpf = fcpf.getText().trim().replace(".","").replace("-","").replace("_","");
                 // seta os valores do formulário ao usuário corrente
@@ -365,17 +368,23 @@ public class AddUsuario extends BaseFrame {
                 
                 // valida campos únicos
                 if (!mode.equals("add") && (!oldCpf.equals(newCpf)) && (usuarioDao.temCpf(usuario.getCpf()) > 0)) {
+                    Toolkit.getDefaultToolkit().beep();
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
                 } else if (!mode.equals("add") && (!oldLogin.equals(flogin.getText().trim())) && (usuarioDao.temLogin(usuario.getLogin()) > 0)) {
+                    Toolkit.getDefaultToolkit().beep();
                     elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
                 } else if((mode.equals("add")) && usuarioDao.temCpf(usuario.getCpf()) > 0) {
+                    Toolkit.getDefaultToolkit().beep();
                     ecpf.setText(Methods.getTranslation("EsteCPFJaExiste"));
                 } else if((mode.equals("add")) && usuarioDao.temLogin(usuario.getLogin()) > 0) {
+                    Toolkit.getDefaultToolkit().beep();
                     elogin.setText(Methods.getTranslation("EsteLoginJaExiste"));
                 } else {
                     Dialogs.showLoadPopup(bg);
                     timerTest();
                 }
+            } else {
+                Toolkit.getDefaultToolkit().beep();
             }
             
         });

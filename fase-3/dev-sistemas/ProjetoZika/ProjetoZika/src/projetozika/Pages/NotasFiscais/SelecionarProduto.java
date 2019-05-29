@@ -12,6 +12,7 @@ import Utils.Styles;
 import Utils.Validator;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -201,6 +202,7 @@ public class SelecionarProduto extends JPanel {
                 if (caller.addProduto(notaProduto)) {
                     clearFields();
                 } else {
+                    Toolkit.getDefaultToolkit().beep();
                     eselProd.setText(Methods.getTranslation("ProdutoJaAdicionado"));
                 }
             }
