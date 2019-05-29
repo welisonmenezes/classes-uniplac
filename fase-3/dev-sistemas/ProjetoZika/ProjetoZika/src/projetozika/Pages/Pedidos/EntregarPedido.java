@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -177,9 +178,11 @@ public class EntregarPedido extends BaseFrame {
                         Dialogs.showLoadPopup(pCenter);
                         timerTest();
                     } else {
+                        Toolkit.getDefaultToolkit().beep();
                         linfo.setText(Methods.getTranslation("OPedidoNaoEDesteUsuario"));
                     }
                 } else {
+                    Toolkit.getDefaultToolkit().beep();
                     linfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
                 }
             }

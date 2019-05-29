@@ -188,6 +188,7 @@ public class Login extends JFrame {
             }
 
         } else {
+            Toolkit.getDefaultToolkit().beep();
             lInfo.setText(Methods.getTranslation("LoginOuSenhaInvalidos"));
         }
    

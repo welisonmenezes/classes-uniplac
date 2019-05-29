@@ -14,6 +14,7 @@ import Utils.Styles;
 import Utils.Validator;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import javax.swing.JButton;
@@ -202,8 +203,8 @@ public class AddFornecedor extends BaseFrame {
                     Dialogs.showLoadPopup(bg);
                     timerTest();
                 }
-                
-                
+            } else {
+                Toolkit.getDefaultToolkit().beep();
             }
 
         });
