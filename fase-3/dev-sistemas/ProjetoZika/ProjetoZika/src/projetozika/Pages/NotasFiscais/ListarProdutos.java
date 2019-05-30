@@ -3,15 +3,20 @@ package projetozika.Pages.NotasFiscais;
 import Models.NotaFiscalProduto;
 import CustomFields.ButtonEditor;
 import CustomFields.ButtonRenderer;
+import CustomFields.FormataDecimal;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.BorderLayout;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -98,13 +103,30 @@ public class ListarProdutos extends JPanel {
                 if (mode.equals("view")) {
                     return false;
                 } else {
-                    if(column != 5){
+                    if(column != 3 && column != 4 && column != 5){
                         return false;
                     }
                 }
                return true;
             }
         };
+       
+        // change cell event
+        tableModel.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                int row = tabela.getSelectedRow();
+                if (row != -1) {
+                    double valor = Double.parseDouble(tabela.getValueAt(row, 3).toString().replace(",", "."));
+                    int quantidade = Integer.parseInt(tabela.getValueAt(row, 4).toString());
+                    notaProdutos.get(row).setValor(valor);
+                    notaProdutos.get(row).setQuantidade(quantidade);
+                    //notaProdutos.get(row);
+                    //System.out.println(notaProdutos.get(row).getValor());
+                }
+            }
+        });
+        
         // adiciona linhas
         notaProdutos.forEach(np -> {
             Object[] data = {np.getProduto().getId(),np.getProduto().getNome(),np.getProduto().getUnidade(),df2.format(np.getValor()),np.getQuantidade(),""};
@@ -135,6 +157,16 @@ public class ListarProdutos extends JPanel {
                 }
             });
         }
+        
+        // set formata decimal para o campo valor na tabela
+        JTextField jtValor = new JTextField();
+        jtValor.setDocument(new FormataDecimal(10, 2));
+        tabela.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(jtValor));
+        
+        // set formata decimal para o campo quantidade na tabela
+        JTextField jtQuantidade = new JTextField();
+        jtQuantidade.setDocument(new FormataDecimal(10, 0));
+        tabela.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(jtQuantidade));
     }
     
     /**
