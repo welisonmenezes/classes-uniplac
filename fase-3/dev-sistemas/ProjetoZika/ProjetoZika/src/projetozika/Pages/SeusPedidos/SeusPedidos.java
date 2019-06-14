@@ -152,7 +152,7 @@ public class SeusPedidos extends BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               return !(column != 3 && column != 4 && column != 5 && column != 6 && column != 7);
+               return !(column != 5 && column != 6 && column != 7);
             }
             @Override
             public Class<?> getColumnClass(int column) {
@@ -201,7 +201,7 @@ public class SeusPedidos extends BaseLayout {
             public void buttonAction() {
                 String id = Methods.selectedTableItemId(tabela);
                 int row = tabela.getSelectedRow();
-                String actionValue = (String)tabela.getModel().getValueAt(row, 4);
+                String actionValue = (String)tabela.getModel().getValueAt(row, 5);
                 if (!actionValue.equals("")) {
                     Navigation.updateLayout("editarSeuPedido", id, params);
                 }
@@ -216,7 +216,7 @@ public class SeusPedidos extends BaseLayout {
             @Override
             public void buttonAction() {
                 int row = tabela.getSelectedRow();
-                String actionValue = (String)tabela.getModel().getValueAt(row, 4);
+                String actionValue = (String)tabela.getModel().getValueAt(row, 6);
                 String idTabel = Methods.selectedTableItemId(tabela);
                 
                 if (!actionValue.equals("")) {
