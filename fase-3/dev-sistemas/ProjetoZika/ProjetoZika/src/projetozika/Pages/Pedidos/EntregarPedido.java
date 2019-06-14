@@ -1,5 +1,6 @@
 package projetozika.Pages.Pedidos;
 
+import Config.Environment;
 import DAO.PedidoDAO;
 import DAO.UsuarioDAO;
 import Models.Pedido;
@@ -232,7 +233,8 @@ public class EntregarPedido extends BaseFrame {
             
             // finaliza o pedido na base de dados
             pedido.setStatus(Methods.getTranslation("Finalizado"));
-            pedidoDao.mudaStatus(pedido);
+            //pedidoDao.mudaStatus(pedido);
+            pedidoDao.finalizar(pedido, Environment.getLoggedUser());
             JOptionPane.showMessageDialog(null, Methods.getTranslation("RetiradaRealizadaComSucesso"));
             
             Navigation.updateLayout("", new Properties());

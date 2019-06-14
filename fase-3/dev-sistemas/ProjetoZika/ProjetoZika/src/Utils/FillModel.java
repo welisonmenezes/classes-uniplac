@@ -125,6 +125,8 @@ public class FillModel {
             pedido.setStatus(rs.getString("pedidos.Status"));
             pedido.setCreated(rs.getString("pedidos.Created"));
             pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
+            pedido.setDone(rs.getString("pedidos.Done"));
+            pedido.setAproved(rs.getString("pedidos.Aproved"));
         } catch(SQLException error) {
             Methods.getLogger().error("FillModel.fillPedido: " + error);
             throw new RuntimeException("FillModel.fillPedido: " + error);

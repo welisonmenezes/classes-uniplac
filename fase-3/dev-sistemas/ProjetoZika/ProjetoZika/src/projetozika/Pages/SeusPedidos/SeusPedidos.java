@@ -129,8 +129,10 @@ public class SeusPedidos extends BaseLayout {
         // seta colunas
         String[] colunas = {
             Methods.getTranslation("Codigo"), 
-            Methods.getTranslation("Data"), 
-            Methods.getTranslation("Status"), 
+            Methods.getTranslation("CriadoEm"), 
+            Methods.getTranslation("Status"),
+            Methods.getTranslation("AprovadoEm"),
+            Methods.getTranslation("FinalizadoEm"),
             "", 
             "", 
             ""
@@ -139,7 +141,9 @@ public class SeusPedidos extends BaseLayout {
         final Class<?>[] columnClasses = new Class<?>[] {
             Integer.class,
             Date.class, 
-            String.class, 
+            String.class,
+            String.class,
+            String.class,
             String.class, 
             String.class, 
             String.class
@@ -148,7 +152,7 @@ public class SeusPedidos extends BaseLayout {
         tableModel = new DefaultTableModel(null, colunas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-               return !(column != 3 && column != 4 && column != 5);
+               return !(column != 3 && column != 4 && column != 5 && column != 6 && column != 7);
             }
             @Override
             public Class<?> getColumnClass(int column) {
@@ -167,6 +171,8 @@ public class SeusPedidos extends BaseLayout {
                 p.getId(),
                 DateHandler.getJavaDate(p.getCreated()),
                 p.getStatus(),
+                p.getAproved(),
+                p.getDone(),
                 btnEditar,
                 btnCancelar,
                 Methods.getTranslation("Ver")
@@ -187,7 +193,7 @@ public class SeusPedidos extends BaseLayout {
      * adiciona ações para os botões da tabela
      */
     private void actionsTable() {
-        TableColumn colEditar = tabela.getColumnModel().getColumn(3);
+        TableColumn colEditar = tabela.getColumnModel().getColumn(5);
         colEditar.setMaxWidth(40);
         colEditar.setCellRenderer(new ButtonRenderer());
         colEditar.setCellEditor(new ButtonEditor(new JCheckBox()){
@@ -202,7 +208,7 @@ public class SeusPedidos extends BaseLayout {
             }
         });
         
-        TableColumn colCancelar = tabela.getColumnModel().getColumn(4);
+        TableColumn colCancelar = tabela.getColumnModel().getColumn(6);
         colCancelar.setMaxWidth(40);
         colCancelar.setPreferredWidth(40);
         colCancelar.setCellRenderer(new ButtonRenderer());
@@ -235,7 +241,7 @@ public class SeusPedidos extends BaseLayout {
             }
         });
         
-        TableColumn colVer = tabela.getColumnModel().getColumn(5);
+        TableColumn colVer = tabela.getColumnModel().getColumn(7);
         colVer.setMaxWidth(40);
         colVer.setCellRenderer(new ButtonRenderer());
         colVer.setCellEditor(new ButtonEditor(new JCheckBox()){
