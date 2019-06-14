@@ -7,6 +7,7 @@ import Models.NotaFiscalProduto;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
+import Models.RelatorioFornecedor;
 import Models.RelatorioNota;
 import Models.RelatorioPedido;
 import Models.RelatorioProduto;
@@ -223,6 +224,24 @@ public class FillModel {
         } catch(SQLException error) {
             Methods.getLogger().error("FillModel.fillRelatorioUsuario: " + error);
             throw new RuntimeException("FillModel.fillRelatorioUsuario: " + error);
+        }
+    }
+    
+    /**
+     * Popula o relatório de fornecedores com o resultado da consulta
+     * @param item o relatório de fornecedores a ser populado
+     * @param rs o ResultSet da consulta
+     */
+    public void fillRelatorioFornecedor(RelatorioFornecedor item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setNome(rs.getString("nome"));
+            item.setData(rs.getString("data"));
+            item.setCnpj(rs.getString("cnpj"));
+            item.setTotalNotas(rs.getInt("totalNotas"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioFornecedor: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioFornecedor: " + error);
         }
     }
     

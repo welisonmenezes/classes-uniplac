@@ -1,1 +1,1 @@
-[ERROR] 2019-06-14 14:09:23.908 [AWT-EventQueue-0] Methods - FillModel.fillRelatorioUsuario: java.sql.SQLException: Column 'codigo' not found.
+[ERROR] 2019-06-14 15:04:09.610 [AWT-EventQueue-0] Methods - DateHandler.getSqlDate: java.text.ParseException: Unparseable date: ""

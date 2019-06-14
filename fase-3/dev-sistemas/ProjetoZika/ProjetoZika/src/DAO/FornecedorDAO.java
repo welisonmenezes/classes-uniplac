@@ -1,6 +1,9 @@
 package DAO;
 
 import Models.Fornecedor;
+import Models.RelatorioFornecedor;
+import Models.RelatorioUsuario;
+import Utils.DateHandler;
 import Utils.FillModel;
 import Utils.Methods;
 import java.sql.Connection;
@@ -281,5 +284,56 @@ public class FornecedorDAO {
         }
             
         return sql;
+    }
+    
+    /**
+     * constrói a query baseado nos dados parâmetros e faz a consulta para o relatório de fornecedores
+     * @param params os parâmetros de filtro e paginação
+     * @return Uma lista de RelatorioFornecedor
+     */
+    public ArrayList<RelatorioFornecedor> relatorioFornecedor(Properties params) {
+        
+        String dataDe = Methods.scapeSQL(params.getProperty("dataDe", ""));
+        String dataAte = Methods.scapeSQL(params.getProperty("dataAte", ""));
+        
+        String sql = "SELECT fornecedores.Id AS codigo, "
+                + "fornecedores.Nome AS nome, "
+                + "fornecedores.Cnpj AS cnpj, "
+                + "fornecedores.Created AS data, "
+                + "COUNT(notasfiscais.Id) AS totalNotas "
+                + "FROM fornecedores "
+                + "LEFT JOIN notasfiscais ON notasfiscais.FornecedorId = fornecedores.Id "
+                + "WHERE fornecedores.Id > 0 ";
+        
+
+        if (! dataDe.equals("") ) {
+            dataDe = DateHandler.getSqlDateTime(dataDe);
+            sql += "AND fornecedores.Created >= '" + dataDe + "' ";
+        }
+        if (! dataAte.equals("") ) {
+            dataAte = DateHandler.getSqlDateTime(dataAte);
+            sql += "AND fornecedores.Created <= '" + dataAte + "' ";
+        }
+        
+        sql += "AND fornecedores.Status != 'Deleted' "
+                + "GROUP BY fornecedores.Id "
+                + "ORDER BY fornecedores.Id DESC";
+        
+        try {
+            conn = connFac.getConexao();
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            ArrayList<RelatorioFornecedor> relatorioFornecedores = new ArrayList<>();
+            while(rs.next()) {
+                RelatorioFornecedor item = new RelatorioFornecedor();
+                this.helper.fillRelatorioFornecedor(item, rs);
+                relatorioFornecedores.add(item);
+            }
+            connFac.closeAll(rs, stmt, st, conn);
+            return relatorioFornecedores;
+        } catch(SQLException error) {
+            Methods.getLogger().error("FornecedorDAO.relatorioFornecedor: " + error);
+            throw new RuntimeException("FornecedorDAO.relatorioFornecedor: " + error);
+        }
     }
 }

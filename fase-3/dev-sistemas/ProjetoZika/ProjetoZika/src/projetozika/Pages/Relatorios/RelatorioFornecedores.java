@@ -1,8 +1,7 @@
 package projetozika.Pages.Relatorios;
 
-import Config.Environment;
-import DAO.UsuarioDAO;
-import Models.RelatorioUsuario;
+import DAO.FornecedorDAO;
+import Models.RelatorioFornecedor;
 import Models.ReportModel;
 import Utils.DateHandler;
 import Utils.Methods;
@@ -18,9 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,12 +26,10 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
 /**
- * Tela para gerar relatório de produtos
+ * Tela para gerar relatório de fornecedores
  * @author welison
  */
-public class RelatorioUsuarios extends JPanel {
-    private JLabel lfornecedor;
-    private JLabel lproduto;
+public class RelatorioFornecedores extends JPanel {
     private JLabel ldatafrom;
     private JDateChooser fdatafrom;
     private JLabel edatafrom;
@@ -44,23 +39,19 @@ public class RelatorioUsuarios extends JPanel {
     private JButton btnRelatorioPedido;
     private final JPanel self;
     private JLabel title;
-    private final UsuarioDAO usuarioDao;
     private String dataDe;
     private String dataAte;
     private final Properties params;
-    private JComboBox fStatus;
-    private JComboBox fPermissao;
-    private String permissaoSelecionada;
-    private String statusSelecionado;
+    private final FornecedorDAO fornecedorDao;
 
     /**
      * Creates new form RelatorioPedidos
      */
-    public RelatorioUsuarios() {
+    public RelatorioFornecedores() {
         initComponents();
         this.self = getInstance();
         this.params = new Properties();
-        usuarioDao = new UsuarioDAO();
+        fornecedorDao = new FornecedorDAO();
         
         addCamposProdutos();
     }
@@ -83,53 +74,35 @@ public class RelatorioUsuarios extends JPanel {
         title = new JLabel();
         title.setFont(new java.awt.Font("Tahoma", 1, 24));
         title.setForeground(new java.awt.Color(255, 255, 255));
-        title.setText(Methods.getTranslation("RelatorioDeUsuarios"));
+        title.setText(Methods.getTranslation("RelatorioDeFornecedores"));
         add(title, new AbsoluteConstraints(20, 20, -1, -1));
-        
-        lfornecedor = new JLabel(Methods.getTranslation("Setor"));
-        Styles.defaultLabel(lfornecedor);
-        add(lfornecedor, new AbsoluteConstraints(20, 60, -1, -1));
-        
-        fStatus = new JComboBox();
-        fStatus.setModel(new DefaultComboBoxModel(Environment.SETORES));
-        Styles.defaultComboBox(fStatus, 300, 39);
-        add(fStatus, new AbsoluteConstraints(20, 90, -1, -1));
-        
-        lproduto = new JLabel(Methods.getTranslation("Permissao"));
-        Styles.defaultLabel(lproduto);
-        add(lproduto, new AbsoluteConstraints(340, 60, -1, -1));
-        
-        fPermissao = new JComboBox();
-        fPermissao.setModel(new DefaultComboBoxModel(Environment.PERMISSOES));
-        Styles.defaultComboBox(fPermissao, 300, 39);
-        add(fPermissao, new AbsoluteConstraints(340, 90, -1, -1));
         
         ldatafrom = new JLabel(Methods.getTranslation("De"));
         Styles.defaultLabel(ldatafrom);
-        add(ldatafrom, new AbsoluteConstraints(20, 140, -1, -1));
+        add(ldatafrom, new AbsoluteConstraints(20, 60, -1, -1));
         
         fdatafrom = new JDateChooser();
         Styles.defaultDateChooser(fdatafrom, 300);
         DateHandler.setDateChooserFormat(fdatafrom);
-        add(fdatafrom, new AbsoluteConstraints(20, 170, -1, -1));
+        add(fdatafrom, new AbsoluteConstraints(20, 90, -1, -1));
         
         edatafrom = new JLabel("");
         Styles.errorLabel(edatafrom);
-        add(edatafrom, new AbsoluteConstraints(20, 210, -1, -1));
+        add(edatafrom, new AbsoluteConstraints(20, 130, -1, -1));
         
         ldatato = new JLabel(Methods.getTranslation("Ate"));
         Styles.defaultLabel(ldatato);
-        add(ldatato, new AbsoluteConstraints(340, 140, -1, -1));
+        add(ldatato, new AbsoluteConstraints(340, 60, -1, -1));
         
         fdatato = new JDateChooser();
         Styles.defaultDateChooser(fdatato, 300);
         DateHandler.setDateChooserFormat(fdatato);
-        add(fdatato, new AbsoluteConstraints(340, 170, -1, -1));
+        add(fdatato, new AbsoluteConstraints(340, 90, -1, -1));
         
         edatato = new JLabel("");
         Styles.errorLabel(edatato);
         edatato.setPreferredSize( new Dimension( 300, 20 ) );
-        add(edatato, new AbsoluteConstraints(340, 210, -1, -1));
+        add(edatato, new AbsoluteConstraints(340, 130, -1, -1));
         
         // action para gerar relatório
         btnRelatorioPedido = new JButton(Methods.getTranslation("GerarRelatorio"));
@@ -151,43 +124,37 @@ public class RelatorioUsuarios extends JPanel {
                 // pega dados do formulário
                 dataDe = ((JTextField)fdatafrom.getDateEditor().getUiComponent()).getText();
                 dataAte = ((JTextField)fdatato.getDateEditor().getUiComponent()).getText();
-                permissaoSelecionada = fPermissao.getSelectedItem().toString();
-                statusSelecionado = fStatus.getSelectedItem().toString();
                 
                 // atualiza os parametros a serem enviados apra a consulta sql
                 this.updateParams();
                 
                 // meta infos a serem exibidos no pdf
-                String infoPermissao = (permissaoSelecionada == null) ? Methods.getTranslation("Todos") : permissaoSelecionada;
-                String infoStatus = (statusSelecionado == null) ? Methods.getTranslation("Todos") : statusSelecionado;
-                String tituloRelatorio = "ProjetoZika - " + Methods.getTranslation("Usuarios");
-                String filename = "ProjetoZika-Usuarios-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
+                String tituloRelatorio = "ProjetoZika - " + Methods.getTranslation("Fornecedores");
+                String filename = "ProjetoZika-Fornecedores-" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + ".pdf";
                 String header[] = {
                     Methods.getTranslation("Codigo"),
                     Methods.getTranslation("Nome"),
                     Methods.getTranslation("Data"),
-                    Methods.getTranslation("Permissao"),
-                    Methods.getTranslation("Setor")
+                    Methods.getTranslation("CNPJ"),
+                    Methods.getTranslation("TotalNotas")
                 };
                 String infos[] = {
-                    Methods.getTranslation("Permissao") + ": " + infoPermissao,
-                    Methods.getTranslation("Status") + ": " + infoStatus,
                     Methods.getTranslation("Periodo") + ": "
                         + Methods.getTranslation("De") + " "+ params.getProperty("dataDe", "") +" "
                         + Methods.getTranslation("Ate") + " " + params.getProperty("dataAte", "")
                 };
                 
-                ArrayList<RelatorioUsuario> relatorioUsuarios = usuarioDao.relatorioUsuario(params);
+                ArrayList<RelatorioFornecedor> relatorioFornecedores = fornecedorDao.relatorioFornecedor(params);
                 
-                if (relatorioUsuarios.size() > 0) {
+                if (relatorioFornecedores.size() > 0) {
                     ArrayList<String[]> data = new ArrayList();
-                    relatorioUsuarios.forEach(item -> {
+                    relatorioFornecedores.forEach(item -> {
                         String row[] = {
                             item.getCodigo()+"",
                             item.getNome(),
                             item.getData(),
-                            item.getPermissao(),
-                            item.getSetor()
+                            item.getCnpj(),
+                            item.getTotalNotas()+""
                         };
                         data.add(row);
                     });
@@ -212,16 +179,6 @@ public class RelatorioUsuarios extends JPanel {
     private void updateParams() {
         params.setProperty("dataDe", dataDe);
         params.setProperty("dataAte", dataAte);
-        if (statusSelecionado != null) {
-            params.setProperty("statusSelecionado", statusSelecionado + "");
-        } else {
-            params.setProperty("statusSelecionado", "");
-        }
-        if (permissaoSelecionada != null) {
-            params.setProperty("permissaoSelecionada", permissaoSelecionada + "");
-        } else {
-            params.setProperty("permissaoSelecionada", "");
-        }
     }
     
     /**

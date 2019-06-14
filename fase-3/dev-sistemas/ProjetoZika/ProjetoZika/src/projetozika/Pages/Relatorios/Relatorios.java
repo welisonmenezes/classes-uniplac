@@ -19,6 +19,7 @@ public class Relatorios extends BaseLayout {
     private JPanel panelProdutos;
     private JPanel panelNotas;
     private JPanel panelUsuarios;
+    private JPanel panelFornecedores;
 
     /**
      * Cria a tela de fornecedores
@@ -45,11 +46,13 @@ public class Relatorios extends BaseLayout {
         panelProdutos = new RelatorioProdutos();
         panelNotas = new RelatorioNotas();
         panelUsuarios = new RelatorioUsuarios();
+        panelFornecedores = new RelatorioFornecedores();
         
         jTabbedPane1.addTab(Methods.getTranslation("Pedidos"), panelPedidos);
         jTabbedPane1.addTab(Methods.getTranslation("Produtos"), panelProdutos);
         jTabbedPane1.addTab(Methods.getTranslation("NotasFiscais"), panelNotas);
         jTabbedPane1.addTab(Methods.getTranslation("Usuarios"), panelUsuarios);
+        jTabbedPane1.addTab(Methods.getTranslation("Fornecedores"), panelFornecedores);
         
         AccessibilityManager.setupTabTraversalKeys(jTabbedPane1);
 
