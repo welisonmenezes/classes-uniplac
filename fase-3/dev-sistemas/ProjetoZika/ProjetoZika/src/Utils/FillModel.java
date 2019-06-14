@@ -10,6 +10,7 @@ import Models.Produto;
 import Models.RelatorioNota;
 import Models.RelatorioPedido;
 import Models.RelatorioProduto;
+import Models.RelatorioUsuario;
 import Models.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -204,6 +205,24 @@ public class FillModel {
         } catch(SQLException error) {
             Methods.getLogger().error("FillModel.fillRelatorioNota: " + error);
             throw new RuntimeException("FillModel.fillRelatorioNota: " + error);
+        }
+    }
+    
+    /**
+     * Popula o relatório de usuários com o resultado da consulta
+     * @param item o relatório de usuários a ser populado
+     * @param rs o ResultSet da consulta
+     */
+    public void fillRelatorioUsuario(RelatorioUsuario item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setNome(rs.getString("nome"));
+            item.setData(rs.getString("data"));
+            item.setSetor(rs.getString("setor"));
+            item.setPermissao(rs.getString("permissao"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioUsuario: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioUsuario: " + error);
         }
     }
     

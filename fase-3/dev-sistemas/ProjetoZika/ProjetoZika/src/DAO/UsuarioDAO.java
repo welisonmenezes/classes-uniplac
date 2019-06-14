@@ -1,6 +1,8 @@
 package DAO;
 
+import Models.RelatorioUsuario;
 import Models.Usuario;
+import Utils.DateHandler;
 import Utils.FillModel;
 import Utils.Methods;
 import java.sql.Connection;
@@ -391,5 +393,62 @@ public class UsuarioDAO {
             sql += " LIMIT 10 OFFSET " + (offset);
         }
         return sql;
+    }
+    
+     /**
+     * constrói a query baseado nos dados parâmetros e faz a consulta para o relatório de usuários
+     * @param params os parâmetros de filtro e paginação
+     * @return Uma lista de RelatorioUsuario
+     */
+    public ArrayList<RelatorioUsuario> relatorioUsuario(Properties params) {
+        
+        String dataDe = Methods.scapeSQL(params.getProperty("dataDe", ""));
+        String dataAte = Methods.scapeSQL(params.getProperty("dataAte", ""));
+        String statusSelecionado = Methods.scapeSQL(params.getProperty("statusSelecionado", ""));
+        String permissaoSelecionada = Methods.scapeSQL(params.getProperty("permissaoSelecionada", ""));
+        
+        String sql = "SELECT Id AS codigo, "
+                + "Setor AS setor, "
+                + "Permissao AS permissao, "
+                + "Nome AS nome, "
+                + "Created AS data "
+                + " FROM usuarios "
+                + "WHERE usuarios.Id > 0 ";
+        
+        if (! statusSelecionado.equals("")) {
+            sql += "AND usuarios.Setor = '" + statusSelecionado + "' ";
+        }
+        if (! permissaoSelecionada.equals("")) {
+            sql += "AND usuarios.Permissao = '" + permissaoSelecionada + "' ";
+        }
+        if (! dataDe.equals("") ) {
+            dataDe = DateHandler.getSqlDateTime(dataDe);
+            sql += "AND usuarios.Created >= '" + dataDe + "' ";
+        }
+        if (! dataAte.equals("") ) {
+            dataAte = DateHandler.getSqlDateTime(dataAte);
+            sql += "AND usuarios.Created <= '" + dataAte + "' ";
+        }
+        
+        sql += "AND usuarios.Status != 'Deleted' "
+                + "GROUP BY usuarios.Id "
+                + "ORDER BY usuarios.Id DESC";
+        
+        try {
+            conn = connFac.getConexao();
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            ArrayList<RelatorioUsuario> relatorioUsuarios = new ArrayList<>();
+            while(rs.next()) {
+                RelatorioUsuario item = new RelatorioUsuario();
+                this.helper.fillRelatorioUsuario(item, rs);
+                relatorioUsuarios.add(item);
+            }
+            connFac.closeAll(rs, stmt, st, conn);
+            return relatorioUsuarios;
+        } catch(SQLException error) {
+            Methods.getLogger().error("UsuarioDAO.relatorioUsuario: " + error);
+            throw new RuntimeException("UsuarioDAO.relatorioUsuario: " + error);
+        }
     }
 }

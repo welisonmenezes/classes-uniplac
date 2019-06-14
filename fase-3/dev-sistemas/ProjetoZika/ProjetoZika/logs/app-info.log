@@ -1,1 +1,1 @@
-[ERROR] 2019-06-14 13:10:13.551 [AWT-EventQueue-0] Methods - ProdutoDAO.relatorioProduto: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'fornecedores.Nome AS fornecedor, GROUP_CONCAT(DISTINCT(produtos.Nome) SEPARATOR ' at line 1
+[ERROR] 2019-06-14 14:09:23.908 [AWT-EventQueue-0] Methods - FillModel.fillRelatorioUsuario: java.sql.SQLException: Column 'codigo' not found.
