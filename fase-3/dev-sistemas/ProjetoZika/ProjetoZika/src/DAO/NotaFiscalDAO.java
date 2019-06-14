@@ -2,6 +2,7 @@ package DAO;
 
 import Models.NotaFiscal;
 import Models.NotaFiscalProduto;
+import Models.RelatorioNota;
 import Utils.FillModel;
 import Utils.DateHandler;
 import Utils.Methods;
@@ -324,5 +325,68 @@ public class NotaFiscalDAO {
         }
             
         return sql;
+    }
+    
+    /**
+     * constrói a query baseado nos dados parâmetros e faz a consulta para o relatório de notas fiscais
+     * @param params os parâmetros de filtro e paginação
+     * @return Uma lista de RelatorioNota
+     */
+    public ArrayList<RelatorioNota> relatorioNota(Properties params) {
+        
+        String dataDe = Methods.scapeSQL(params.getProperty("dataDe", ""));
+        String dataAte = Methods.scapeSQL(params.getProperty("dataAte", ""));
+        String fornecedorId = Methods.scapeSQL(params.getProperty("fornecedorId", ""));
+        String produtoId = Methods.scapeSQL(params.getProperty("produtoId", ""));
+        
+        String sql = "SELECT notasfiscais.Id AS codigo, "
+                + "notasfiscais.Created AS data, "
+                + "notasfiscais.Numero AS numero, "
+                + "notasfiscais.Valor AS valor, "
+                + "fornecedores.Nome AS fornecedor, "
+                + "GROUP_CONCAT(DISTINCT(produtos.Nome) SEPARATOR '\\n\\n') AS 'produtos' "
+                + "FROM notasfiscais  "
+                + "LEFT JOIN notasfiscaisprodutos ON notasfiscaisprodutos.NotaFiscalId = notasfiscais.Id "
+                + "LEFT JOIN fornecedores ON fornecedores.Id = notasfiscais.FornecedorId "
+                + "LEFT JOIN produtos ON produtos.Id = notasfiscaisprodutos.ProdutoId "
+                + "WHERE notasfiscais.Id > 0 ";
+        
+        if (! fornecedorId.equals("")) {
+            sql += "AND fornecedores.Id = " + fornecedorId + " ";
+        }
+        if (! produtoId.equals("")) {
+            sql += "AND produtos.Id = " + produtoId + " ";
+        }
+        if (! dataDe.equals("") ) {
+            dataDe = DateHandler.getSqlDateTime(dataDe);
+            sql += "AND notasfiscais.Created >= '" + dataDe + "' ";
+        }
+        if (! dataAte.equals("") ) {
+            dataAte = DateHandler.getSqlDateTime(dataAte);
+            sql += "AND notasfiscais.Created <= '" + dataAte + "' ";
+        }
+        
+        sql += "AND produtos.Status != 'Deleted' "
+                + "AND fornecedores.Status != 'Deleted' "
+                + "AND notasfiscais.Status != 'Deleted' "
+                + "GROUP BY notasfiscais.Id "
+                + "ORDER BY notasfiscais.Id DESC";
+        
+        try {
+            conn = connFac.getConexao();
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            ArrayList<RelatorioNota> relatorioNotas = new ArrayList<>();
+            while(rs.next()) {
+                RelatorioNota item = new RelatorioNota();
+                this.helper.fillRelatorioNota(item, rs);
+                relatorioNotas.add(item);
+            }
+            connFac.closeAll(rs, stmt, st, conn);
+            return relatorioNotas;
+        } catch(SQLException error) {
+            Methods.getLogger().error("NotaFiscalDAO.relatorioNota: " + error);
+            throw new RuntimeException("NotaFiscalDAO.relatorioNota: " + error);
+        }
     }
 }

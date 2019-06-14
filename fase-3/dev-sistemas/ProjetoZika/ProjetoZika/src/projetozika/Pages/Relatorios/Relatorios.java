@@ -17,6 +17,7 @@ public class Relatorios extends BaseLayout {
     private JTabbedPane jTabbedPane1;
     private JPanel panelPedidos;
     private JPanel panelProdutos;
+    private JPanel panelNotas;
 
     /**
      * Cria a tela de fornecedores
@@ -41,9 +42,11 @@ public class Relatorios extends BaseLayout {
         
         panelPedidos = new RelatorioPedidos();
         panelProdutos = new RelatorioProdutos();
+        panelNotas = new RelatorioNotas();
         
         jTabbedPane1.addTab(Methods.getTranslation("Pedidos"), panelPedidos);
         jTabbedPane1.addTab(Methods.getTranslation("Produtos"), panelProdutos);
+        jTabbedPane1.addTab(Methods.getTranslation("NotasFiscais"), panelNotas);
         
         AccessibilityManager.setupTabTraversalKeys(jTabbedPane1);
 
