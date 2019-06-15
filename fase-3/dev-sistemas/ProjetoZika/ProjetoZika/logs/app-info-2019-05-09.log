@@ -1,12 +1,1 @@
-[ERROR] 2019-05-28 21:08:24.027 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-[ERROR] 2019-05-28 21:08:36.900 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-[ERROR] 2019-05-28 21:08:47.545 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-[ERROR] 2019-05-28 21:09:09.108 [AWT-EventQueue-0] Methods - ConnectionFactory.testConexao: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+[ERROR] 2019-06-01 19:49:37.009 [AWT-EventQueue-0] Methods - ConnectionFactory.getConexao: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown database 'projetozikaz'
