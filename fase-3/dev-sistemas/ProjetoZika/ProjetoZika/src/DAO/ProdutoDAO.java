@@ -3,6 +3,7 @@ package DAO;
 import Models.GraphModel;
 import Models.Produto;
 import Models.RelatorioProduto;
+import Models.RelatorioUsuario;
 import Utils.FillModel;
 import Utils.DateHandler;
 import Utils.Methods;

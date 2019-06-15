@@ -100,7 +100,7 @@ public class PedidoDAO {
      * Muda o status do pedido na base de dados
      * @param pedido o pedido a ser alterado
      */
-    public void mudaStatus(Pedido pedido) {
+    public void xxxmudaStatus(Pedido pedido) {
         String sql = "UPDATE pedidos SET Status=? WHERE Id=?";
         try {
             conn = connFac.getConexao();
@@ -121,7 +121,15 @@ public class PedidoDAO {
      * @param almoxarife o Almoxarife que aprovou ou negou
      */
     public void finalizar(Pedido pedido, Usuario almoxarife) {
-        String sql = "UPDATE pedidos SET Status=?, AlmoxarifeId=? WHERE Id=?";
+        String sql;
+        if (pedido.getStatus().equals(Methods.getTranslation("AguardandoEntrega"))) {
+            sql = "UPDATE pedidos SET Status=?, AlmoxarifeId=?, Aproved=(SELECT NOW()) WHERE Id=?";
+        } else if (pedido.getStatus().equals(Methods.getTranslation("Finalizado"))) {
+            sql = "UPDATE pedidos SET Status=?, AlmoxarifeId=?, Done=(SELECT NOW()) WHERE Id=?";
+        } else {
+            sql = "UPDATE pedidos SET Status=?, AlmoxarifeId=? WHERE Id=?";
+        }
+        System.out.println(sql);
         try {
             conn = connFac.getConexao();
             stmt = conn.prepareStatement(sql);

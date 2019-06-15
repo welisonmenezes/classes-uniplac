@@ -7,8 +7,11 @@ import Models.NotaFiscalProduto;
 import Models.Pedido;
 import Models.PedidoProduto;
 import Models.Produto;
+import Models.RelatorioFornecedor;
+import Models.RelatorioNota;
 import Models.RelatorioPedido;
 import Models.RelatorioProduto;
+import Models.RelatorioUsuario;
 import Models.Usuario;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -125,6 +128,8 @@ public class FillModel {
             pedido.setStatus(rs.getString("pedidos.Status"));
             pedido.setCreated(rs.getString("pedidos.Created"));
             pedido.setAlmoxarifeId(rs.getInt("pedidos.AlmoxarifeId"));
+            pedido.setDone(rs.getString("pedidos.Done"));
+            pedido.setAproved(rs.getString("pedidos.Aproved"));
         } catch(SQLException error) {
             Methods.getLogger().error("FillModel.fillPedido: " + error);
             throw new RuntimeException("FillModel.fillPedido: " + error);
@@ -182,6 +187,61 @@ public class FillModel {
         } catch(SQLException error) {
             Methods.getLogger().error("FillModel.fillRelatorioProduto: " + error);
             throw new RuntimeException("FillModel.fillRelatorioProduto: " + error);
+        }
+    }
+    
+    /**
+     * Popula o relatório do nota fiscal com o resultado da consulta
+     * @param item o relatório do nota fiscal a ser populado
+     * @param rs o ResultSet da consulta
+     */
+    public void fillRelatorioNota(RelatorioNota item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setEntrada(rs.getString("data"));
+            item.setFornecedore(rs.getString("fornecedor"));
+            item.setProdutos(rs.getString("produtos"));
+            item.setNumero(rs.getLong("numero"));
+            item.setValor(rs.getDouble("valor"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioNota: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioNota: " + error);
+        }
+    }
+    
+    /**
+     * Popula o relatório de usuários com o resultado da consulta
+     * @param item o relatório de usuários a ser populado
+     * @param rs o ResultSet da consulta
+     */
+    public void fillRelatorioUsuario(RelatorioUsuario item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setNome(rs.getString("nome"));
+            item.setData(rs.getString("data"));
+            item.setSetor(rs.getString("setor"));
+            item.setPermissao(rs.getString("permissao"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioUsuario: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioUsuario: " + error);
+        }
+    }
+    
+    /**
+     * Popula o relatório de fornecedores com o resultado da consulta
+     * @param item o relatório de fornecedores a ser populado
+     * @param rs o ResultSet da consulta
+     */
+    public void fillRelatorioFornecedor(RelatorioFornecedor item, ResultSet rs) {
+        try {
+            item.setCodigo(rs.getInt("codigo"));
+            item.setNome(rs.getString("nome"));
+            item.setData(rs.getString("data"));
+            item.setCnpj(rs.getString("cnpj"));
+            item.setTotalNotas(rs.getInt("totalNotas"));
+        } catch(SQLException error) {
+            Methods.getLogger().error("FillModel.fillRelatorioFornecedor: " + error);
+            throw new RuntimeException("FillModel.fillRelatorioFornecedor: " + error);
         }
     }
     

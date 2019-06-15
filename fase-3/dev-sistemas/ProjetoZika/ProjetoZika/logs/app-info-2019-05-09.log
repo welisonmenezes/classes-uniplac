@@ -1,1 +1,0 @@
-[ERROR] 2019-06-01 19:49:37.009 [AWT-EventQueue-0] Methods - ConnectionFactory.getConexao: com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown database 'projetozikaz'
