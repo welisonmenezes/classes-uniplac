@@ -97,25 +97,6 @@ public class PedidoDAO {
     }
     
     /**
-     * Muda o status do pedido na base de dados
-     * @param pedido o pedido a ser alterado
-     */
-    public void xxxmudaStatus(Pedido pedido) {
-        String sql = "UPDATE pedidos SET Status=? WHERE Id=?";
-        try {
-            conn = connFac.getConexao();
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, pedido.getStatus());
-            stmt.setInt(2, pedido.getId());
-            stmt.execute();
-            connFac.closeAll(rs, stmt, st, conn);
-        } catch(SQLException error) {
-            Methods.getLogger().error("PedidoDAO.mudaStatus: " + error);
-            throw new RuntimeException("PedidoDAO.mudaStatus: " + error);
-        }
-    }
-    
-    /**
      * Finaliza ou nega o pedido na base de dados
      * @param pedido o pedido a ser alterado
      * @param almoxarife o Almoxarife que aprovou ou negou
