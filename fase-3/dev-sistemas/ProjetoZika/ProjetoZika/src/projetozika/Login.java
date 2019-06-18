@@ -8,7 +8,11 @@ import Utils.Navigation;
 import Utils.Methods;
 import Utils.Styles;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
 import javax.swing.JFrame;
 
@@ -27,6 +31,9 @@ public class Login extends JFrame {
      */
     public Login() {
         
+        // set language
+        this.setLanguage();
+                
         // open file com configuraçãos da conexão
         File tempFile = new File("./connection-config.xml");
         boolean exists = tempFile.exists();
@@ -39,6 +46,30 @@ public class Login extends JFrame {
             config.setVisible(true);
         } else {
             this.buildPage();
+        }
+    }
+    
+    /**
+     * Set de app language
+     */
+    private void setLanguage() {
+        try {
+            BufferedReader brLang = new BufferedReader(new FileReader("./language.txt"));
+            String lang = brLang.readLine();
+            switch (lang) {
+                case "english":
+                    Locale.setDefault(new Locale("en", "US"));
+                    break;
+                case "spanish":
+                    Locale.setDefault(new Locale("es", "ES"));
+                    break;
+                default:
+                    Locale.setDefault(new Locale("pt", "BR"));
+                    break;
+            }
+         } catch(IOException error) {
+            Methods.getLogger().error("Login.setLanguage: " + error);
+            Locale.setDefault(new Locale("pt", "BR"));
         }
     }
     
@@ -126,7 +157,11 @@ public class Login extends JFrame {
         llogin.setText("Login");
         jBg.add(llogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, -1, 20));
 
-        flogin.setText("welison");
+        flogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                floginActionPerformed(evt);
+            }
+        });
         jBg.add(flogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 240, -1));
 
         lsenha.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -146,8 +181,6 @@ public class Login extends JFrame {
         lInfo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lInfo.setForeground(new java.awt.Color(255, 0, 0));
         jBg.add(lInfo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 220, 160, 30));
-
-        fsenha.setText("123456");
         jBg.add(fsenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 170, 240, -1));
 
         getContentPane().add(jBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
@@ -193,6 +226,10 @@ public class Login extends JFrame {
         }
    
     }//GEN-LAST:event_bentrarActionPerformed
+
+    private void floginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_floginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_floginActionPerformed
     
     /**
      * @param args the command line arguments

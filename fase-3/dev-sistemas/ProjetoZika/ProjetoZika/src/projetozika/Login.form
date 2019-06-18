@@ -81,9 +81,9 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JTextField" name="flogin">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="welison"/>
-          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="floginActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="80" y="100" width="240" height="-1"/>
@@ -138,9 +138,6 @@
           </Constraints>
         </Component>
         <Component class="javax.swing.JPasswordField" name="fsenha">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="123456"/>
-          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
               <AbsoluteConstraints x="80" y="170" width="240" height="-1"/>
