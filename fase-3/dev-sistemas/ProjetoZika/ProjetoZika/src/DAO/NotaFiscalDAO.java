@@ -372,6 +372,8 @@ public class NotaFiscalDAO {
                 + "GROUP BY notasfiscais.Id "
                 + "ORDER BY notasfiscais.Id DESC";
         
+        System.out.println(sql);
+        
         try {
             conn = connFac.getConexao();
             st = conn.createStatement();
